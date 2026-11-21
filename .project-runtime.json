@@ -1,0 +1,71 @@
+{
+  "language": "Go",
+  "project_shape": "backend",
+  "source_extensions": [
+    ".go"
+  ],
+  "build_command": "go build ./...",
+  "testing": "deferred",
+  "workflow_checks": [
+    {
+      "workflow_id": "register",
+      "command": "python3 examples/walkthrough.py --workflow register"
+    },
+    {
+      "workflow_id": "edit",
+      "command": "python3 examples/walkthrough.py --workflow edit"
+    },
+    {
+      "workflow_id": "reframe",
+      "command": "python3 examples/walkthrough.py --workflow reframe"
+    },
+    {
+      "workflow_id": "window",
+      "command": "python3 examples/walkthrough.py --workflow window"
+    },
+    {
+      "workflow_id": "locate",
+      "command": "python3 examples/walkthrough.py --workflow locate"
+    },
+    {
+      "workflow_id": "nearest",
+      "command": "python3 examples/walkthrough.py --workflow nearest"
+    },
+    {
+      "workflow_id": "join",
+      "command": "python3 examples/walkthrough.py --workflow join"
+    },
+    {
+      "workflow_id": "coverage",
+      "command": "python3 examples/walkthrough.py --workflow coverage"
+    },
+    {
+      "workflow_id": "inspect",
+      "command": "python3 examples/walkthrough.py --workflow inspect"
+    },
+    {
+      "workflow_id": "seams",
+      "command": "python3 examples/walkthrough.py --workflow seams"
+    },
+    {
+      "workflow_id": "audit",
+      "command": "python3 examples/walkthrough.py --workflow audit"
+    },
+    {
+      "workflow_id": "relation",
+      "command": "python3 examples/walkthrough.py --workflow relation"
+    },
+    {
+      "workflow_id": "export",
+      "command": "python3 examples/walkthrough.py --workflow export"
+    },
+    {
+      "workflow_id": "restore",
+      "command": "python3 examples/walkthrough.py --workflow restore"
+    },
+    {
+      "workflow_id": "reopen",
+      "command": "python3 examples/walkthrough.py --workflow reopen"
+    }
+  ]
+}

@@ -1,0 +1,5376 @@
+{
+  "task_source_schema_version": 1,
+  "cc_feedback_profile": "cc-feedback-2611",
+  "project_domain": "基础设施",
+  "project_subdirection": "数据库",
+  "supported_task_types": [
+    "功能开发",
+    "功能优化",
+    "泛Agent需求",
+    "代码重构",
+    "依赖升级与迁移",
+    "质量保障",
+    "项目维护",
+    "技术讨论",
+    "问题排查与诊断",
+    "部署运维"
+  ],
+  "type_coverage": {
+    "功能开发": {
+      "status": "supported",
+      "reason": "几何关系、持久写入和同一视图可组合成新的空间能力",
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/db/relation.go",
+        "internal/spatial/seams.go"
+      ]
+    },
+    "功能优化": {
+      "status": "supported",
+      "reason": "已有空间读取和目录写入具备可观察的行为边界",
+      "source_anchors": [
+        "internal/db/query.go",
+        "internal/db/mutation.go",
+        "internal/packed/nearest.go"
+      ]
+    },
+    "泛Agent需求": {
+      "status": "supported",
+      "reason": "生产 API 提供独立空间数据合成、清理和对照所需的事实",
+      "source_anchors": [
+        "internal/spatial/coverage.go",
+        "internal/db/relation.go",
+        "internal/db/topology.go"
+      ]
+    },
+    "代码重构": {
+      "status": "supported",
+      "reason": "写入的阶段验证与耐久发布有可保持的外部边界",
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/db/database.go",
+        "internal/db/query.go"
+      ]
+    },
+    "依赖升级与迁移": {
+      "status": "supported",
+      "reason": "实际运行的 MPB v1 文件和 HTTP v1 客户端具备迁移对象及可运行的旧格式",
+      "source_anchors": [
+        "internal/db/image.go",
+        "internal/db/database.go"
+      ]
+    },
+    "质量保障": {
+      "status": "supported",
+      "reason": "确定性边界、尾部排序和原子提交可以用独立数据交叉验证",
+      "source_anchors": [
+        "internal/packed/nearest.go",
+        "internal/spatial/seams.go",
+        "internal/db/query.go"
+      ]
+    },
+    "项目维护": {
+      "status": "supported",
+      "reason": "修订和坐标兼容性需要可复核的外部维护说明",
+      "source_anchors": [
+        "internal/db/relation.go",
+        "internal/db/query.go",
+        "internal/db/image.go"
+      ]
+    },
+    "技术讨论": {
+      "status": "supported",
+      "reason": "索引构建、精确几何和耐久发布都有可比较且受限的设计方案",
+      "source_anchors": [
+        "internal/db/query.go",
+        "internal/db/database.go",
+        "internal/packed/nearest.go"
+      ]
+    },
+    "问题排查与诊断": {
+      "status": "supported",
+      "reason": "可复演几何差异、进程锁与书签失效的真实现象",
+      "source_anchors": [
+        "internal/spatial/seams.go",
+        "internal/db/database.go",
+        "internal/db/query.go"
+      ]
+    },
+    "部署运维": {
+      "status": "supported",
+      "reason": "真实启动入口、目录独占、状态检查和镜像恢复可组成运行演练",
+      "source_anchors": [
+        "internal/db/database.go",
+        "internal/db/image.go"
+      ]
+    },
+    "Bugfix": {
+      "status": "no_verified_defect",
+      "reason": "生产工作流检查未确认现存的契约缺陷"
+    }
+  },
+  "prompt_contract": {
+    "schema_version": 1,
+    "mode": "integrated",
+    "baseline_tier": "deep-task-ready",
+    "generation_scope": {
+      "mode": "all_supported"
+    },
+    "minimum_active_prompts": {
+      "功能开发": 20,
+      "功能优化": 20,
+      "泛Agent需求": 10,
+      "代码重构": 2,
+      "依赖升级与迁移": 2,
+      "质量保障": 2,
+      "项目维护": 2,
+      "技术讨论": 2,
+      "问题排查与诊断": 2,
+      "部署运维": 2
+    },
+    "minimum_anchors": {
+      "功能开发": 25,
+      "功能优化": 25,
+      "泛Agent需求": 15,
+      "代码重构": 15,
+      "依赖升级与迁移": 15,
+      "质量保障": 15,
+      "项目维护": 15,
+      "技术讨论": 15,
+      "问题排查与诊断": 15,
+      "部署运维": 15
+    },
+    "capacity_floor": {
+      "modules": 8,
+      "workflows": 10,
+      "mechanisms": 8,
+      "entities": 8,
+      "state_machines": 5,
+      "extension_seams": 12,
+      "tension_points": 10
+    }
+  },
+  "entities": [
+    {
+      "id": "stratum",
+      "label": "图层",
+      "invariants": [
+        "拥有边界、类型、排他定义和当前记录"
+      ]
+    },
+    {
+      "id": "feature",
+      "label": "地物",
+      "invariants": [
+        "ID 在图层中唯一"
+      ]
+    },
+    {
+      "id": "mark",
+      "label": "点几何",
+      "invariants": [
+        "采用整数坐标和半开归属"
+      ]
+    },
+    {
+      "id": "extent",
+      "label": "矩形几何",
+      "invariants": [
+        "具有正面积并处于图层边界内"
+      ]
+    },
+    {
+      "id": "edit",
+      "label": "编辑命令",
+      "invariants": [
+        "作用于某一图层内的指定 ID"
+      ]
+    },
+    {
+      "id": "catalog",
+      "label": "数据库目录",
+      "invariants": [
+        "全库修订值单调递增"
+      ]
+    },
+    {
+      "id": "bookmark",
+      "label": "书签",
+      "invariants": [
+        "绑定一个图层修订和谓词"
+      ]
+    },
+    {
+      "id": "packed-node",
+      "label": "索引节点",
+      "invariants": [
+        "精确包覆子树记录"
+      ]
+    },
+    {
+      "id": "image",
+      "label": "数据库镜像",
+      "invariants": [
+        "内容、长度和摘要一致"
+      ]
+    },
+    {
+      "id": "writer",
+      "label": "写者",
+      "invariants": [
+        "单个目录只有一个锁持有者"
+      ]
+    }
+  ],
+  "state_machines": [
+    {
+      "subject": "edit",
+      "states": [
+        "received",
+        "staged",
+        "validated",
+        "published",
+        "rejected"
+      ],
+      "transitions": [
+        "received->staged",
+        "staged->validated",
+        "staged->rejected",
+        "validated->published",
+        "validated->rejected"
+      ],
+      "invariants": [
+        "拒绝或未持久化时无可见的新状态"
+      ]
+    },
+    {
+      "subject": "stratum",
+      "states": [
+        "absent",
+        "active",
+        "reframed",
+        "replaced"
+      ],
+      "transitions": [
+        "absent->active",
+        "active->reframed",
+        "active->replaced",
+        "reframed->replaced"
+      ],
+      "invariants": [
+        "重建期间旧读视图保持有效"
+      ]
+    },
+    {
+      "subject": "image",
+      "states": [
+        "encoded",
+        "checked",
+        "rebuilt",
+        "installed",
+        "rejected"
+      ],
+      "transitions": [
+        "encoded->checked",
+        "encoded->rejected",
+        "checked->rebuilt",
+        "checked->rejected",
+        "rebuilt->installed",
+        "rebuilt->rejected"
+      ],
+      "invariants": [
+        "镜像结构、地物规则和 CAS 都先于安装"
+      ]
+    },
+    {
+      "subject": "writer",
+      "states": [
+        "unlocked",
+        "open",
+        "fenced",
+        "closed"
+      ],
+      "transitions": [
+        "unlocked->open",
+        "open->fenced",
+        "open->closed",
+        "fenced->closed"
+      ],
+      "invariants": [
+        "仅持有独占锁的实例可以写入"
+      ]
+    },
+    {
+      "subject": "bookmark",
+      "states": [
+        "issued",
+        "usable",
+        "expired",
+        "rejected"
+      ],
+      "transitions": [
+        "issued->usable",
+        "issued->expired",
+        "issued->rejected",
+        "usable->expired",
+        "usable->rejected"
+      ],
+      "invariants": [
+        "谓词相同且层修订未变化才能续页"
+      ]
+    }
+  ],
+  "capability_families": [
+    {
+      "family": "创建图层",
+      "occupied_by": [
+        "register"
+      ],
+      "available": true
+    },
+    {
+      "family": "原子编辑",
+      "occupied_by": [
+        "edit"
+      ],
+      "available": true
+    },
+    {
+      "family": "变更空间约束",
+      "occupied_by": [
+        "reframe"
+      ],
+      "available": true
+    },
+    {
+      "family": "带书签空间窗口",
+      "occupied_by": [
+        "window"
+      ],
+      "available": true
+    },
+    {
+      "family": "点定位",
+      "occupied_by": [
+        "locate"
+      ],
+      "available": true
+    },
+    {
+      "family": "最近邻",
+      "occupied_by": [
+        "nearest"
+      ],
+      "available": true
+    },
+    {
+      "family": "跨层窗口配对",
+      "occupied_by": [
+        "join"
+      ],
+      "available": true
+    },
+    {
+      "family": "矩形覆盖面积",
+      "occupied_by": [
+        "coverage"
+      ],
+      "available": true
+    },
+    {
+      "family": "读取树统计",
+      "occupied_by": [
+        "inspect"
+      ],
+      "available": true
+    },
+    {
+      "family": "正长度共享边",
+      "occupied_by": [
+        "seams"
+      ],
+      "available": true
+    },
+    {
+      "family": "索引一致性核验",
+      "occupied_by": [
+        "audit"
+      ],
+      "available": true
+    },
+    {
+      "family": "有向几何关系",
+      "occupied_by": [
+        "relation"
+      ],
+      "available": true
+    },
+    {
+      "family": "固定提交导出",
+      "occupied_by": [
+        "export"
+      ],
+      "available": true
+    },
+    {
+      "family": "条件恢复镜像",
+      "occupied_by": [
+        "restore"
+      ],
+      "available": true
+    },
+    {
+      "family": "重启与恢复",
+      "occupied_by": [
+        "reopen"
+      ],
+      "available": true
+    }
+  ],
+  "extension_seams": [
+    {
+      "id": "register",
+      "anchor": "internal/db/mutation.go:Register",
+      "entry": "POST /strata",
+      "distinct_outcome": "名称与修订、空图层进入目录",
+      "mechanism": "policy_rules"
+    },
+    {
+      "id": "edit",
+      "anchor": "internal/db/mutation.go:applyEdit",
+      "entry": "POST /edits",
+      "distinct_outcome": "多层共享提交修订",
+      "mechanism": "batch_transaction"
+    },
+    {
+      "id": "reframe",
+      "anchor": "internal/db/mutation.go:Reframe",
+      "entry": "PUT /strata/{layer}/layout",
+      "distinct_outcome": "新边界与新策略有共同修订",
+      "mechanism": "versioning_audit"
+    },
+    {
+      "id": "window",
+      "anchor": "internal/db/query.go:Window",
+      "entry": "POST /strata/{layer}/window",
+      "distinct_outcome": "其他图层变化仍可续原层",
+      "mechanism": "snapshot_consistency"
+    },
+    {
+      "id": "locate",
+      "anchor": "internal/spatial/search.go:Locate",
+      "entry": "POST /strata/{layer}/locate",
+      "distinct_outcome": "共享边上的单侧归属可核验",
+      "mechanism": "policy_rules"
+    },
+    {
+      "id": "nearest",
+      "anchor": "internal/packed/nearest.go:Nearest",
+      "entry": "POST /strata/{layer}/nearest",
+      "distinct_outcome": "同距 ID 排序",
+      "mechanism": "ranking_reorder"
+    },
+    {
+      "id": "join",
+      "anchor": "internal/spatial/join.go:restrict",
+      "entry": "POST /join",
+      "distinct_outcome": "经剪裁交集和稳定有序配对",
+      "mechanism": "capacity"
+    },
+    {
+      "id": "coverage",
+      "anchor": "internal/spatial/coverage.go:Coverage",
+      "entry": "POST /strata/{layer}/coverage",
+      "distinct_outcome": "覆盖加未覆盖等于窗口面积",
+      "mechanism": "capacity"
+    },
+    {
+      "id": "inspect",
+      "anchor": "internal/db/query.go:Inspect",
+      "entry": "GET /strata/{layer}/index",
+      "distinct_outcome": "24 条记录形成 3 个节点",
+      "mechanism": "capacity"
+    },
+    {
+      "id": "seams",
+      "anchor": "internal/spatial/seams.go:Seams",
+      "entry": "POST /strata/{layer}/seams",
+      "distinct_outcome": "窗口左边界共享边保留且沿边剪裁",
+      "mechanism": "policy_rules"
+    },
+    {
+      "id": "audit",
+      "anchor": "internal/db/topology.go:Audit",
+      "entry": "GET /strata/{layer}/index-audit",
+      "distinct_outcome": "报告实际检查节点和目录条目",
+      "mechanism": "lineage"
+    },
+    {
+      "id": "relation",
+      "anchor": "internal/db/relation.go:Relate",
+      "entry": "POST /relation",
+      "distinct_outcome": "零距可与不相交并存，包含有方向",
+      "mechanism": "policy_rules"
+    },
+    {
+      "id": "export",
+      "anchor": "internal/db/image.go:Export",
+      "entry": "GET /image",
+      "distinct_outcome": "重复导出同一修订字节相同",
+      "mechanism": "export_freeze"
+    },
+    {
+      "id": "restore",
+      "anchor": "internal/db/image.go:Restore",
+      "entry": "PUT /image",
+      "distinct_outcome": "全部导入层重置到目标新修订",
+      "mechanism": "recovery_rollback"
+    },
+    {
+      "id": "reopen",
+      "anchor": "internal/db/database.go:openStore",
+      "entry": "服务启动及 GET /status",
+      "distinct_outcome": "带回原修订并提供正常查询",
+      "mechanism": "concurrency"
+    }
+  ],
+  "tension_points": [
+    {
+      "workflow_id": "register",
+      "description": "生成空目录条目；耐久发布时需满足：同名提交保留原定义",
+      "observable_failure": "重复名称或边界倒置被拒绝"
+    },
+    {
+      "workflow_id": "edit",
+      "description": "检查最终排他策略；同步发布时需满足：允许交换中间态重叠的两个矩形",
+      "observable_failure": "异层冲突整包回滚，旧读仍成立"
+    },
+    {
+      "workflow_id": "reframe",
+      "description": "查验所有既有地物；发布重建索引时需满足：已有地物不可越界",
+      "observable_failure": "重叠或越界维持旧政策"
+    },
+    {
+      "workflow_id": "window",
+      "description": "索引候选转精确结果；按 ID 续页时需满足：相同图层写入使旧页失效",
+      "observable_failure": "同层变化、篡改或换谓词拒绝"
+    },
+    {
+      "workflow_id": "locate",
+      "description": "搜索点包围盒；按精确归属过滤时需满足：上边界不匹配而下边界匹配",
+      "observable_failure": "越界坐标拒绝，未命中为空数组"
+    },
+    {
+      "workflow_id": "nearest",
+      "description": "优先访问下界；排序截断时需满足：开边上的点可能得到零距离",
+      "observable_failure": "非法 K 或坐标拒绝"
+    },
+    {
+      "workflow_id": "join",
+      "description": "窗口裁切并配对；检查预算时需满足：全局相交但窗内不相交不出对",
+      "observable_failure": "预算耗尽时完全无配对输出"
+    },
+    {
+      "workflow_id": "coverage",
+      "description": "x 扫描线更新 y 区间；累计面积时需满足：并集面积忽略重复覆盖次数",
+      "observable_failure": "点层无可用面积语义，拒绝"
+    },
+    {
+      "workflow_id": "inspect",
+      "description": "遍历树形；报告根边界和计数时需满足：叶容量与条目总数同时可见",
+      "observable_failure": "缺层返回 404"
+    },
+    {
+      "workflow_id": "seams",
+      "description": "识别相对边；单次稳定输出时需满足：双方之一完全在窗口外仍能贡献左边边线",
+      "observable_failure": "窗右边排除共享边或预算拒绝"
+    },
+    {
+      "workflow_id": "audit",
+      "description": "核对每条记录和节点边界时需满足：相同计数仍需对照内容与包围盒",
+      "observable_failure": "缺层或目录条目与树不一致时失败"
+    },
+    {
+      "workflow_id": "relation",
+      "description": "用形状语义比较时需满足：换向不改变距离但交换包含方向",
+      "observable_failure": "任一键缺失返回 404"
+    },
+    {
+      "workflow_id": "export",
+      "description": "固定顺序编码；随镜像返回修订时需满足：长度和摘要与图层内容对应",
+      "observable_failure": "超出镜像编码边界返回错误"
+    },
+    {
+      "workflow_id": "restore",
+      "description": "重建有效索引；按目标修订提交时需满足：镜像新旧不替代目标库条件",
+      "observable_failure": "镜像无效或目标修订变化都保留旧库"
+    },
+    {
+      "workflow_id": "reopen",
+      "description": "核验文件；重建空间索引时需满足：旧持有者退出后新实例才可打开",
+      "observable_failure": "目录被另一进程占用或镜像损坏时拒绝"
+    }
+  ],
+  "prompt_anchors": [
+    {
+      "id": "p1-01",
+      "task_type": "功能开发",
+      "capability_family": "原子编辑",
+      "subject": "原子编辑中的末态排他",
+      "state": "末态排他",
+      "invariant": "允许交换中间态重叠的两个矩形",
+      "observable": "POST /edits：允许交换中间态重叠的两个矩形",
+      "primary_mechanism": "batch_transaction",
+      "extension_seam_id": "edit",
+      "workflow_ids": [
+        "edit"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/packed/exclusion.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/packed/exclusion.go"
+        ],
+        "functions": [
+          "applyEdit",
+          "Conflict"
+        ]
+      }
+    },
+    {
+      "id": "p1-02",
+      "task_type": "功能开发",
+      "capability_family": "有向几何关系",
+      "subject": "有向几何关系中的有向包含",
+      "state": "有向包含",
+      "invariant": "换向不改变距离但交换包含方向",
+      "observable": "POST /relation：换向不改变距离但交换包含方向",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "relation",
+      "workflow_ids": [
+        "relation"
+      ],
+      "source_anchors": [
+        "internal/db/relation.go",
+        "internal/plane/relation.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/relation.go",
+          "internal/plane/relation.go"
+        ],
+        "functions": [
+          "Relate",
+          "contains"
+        ]
+      }
+    },
+    {
+      "id": "p1-03",
+      "task_type": "功能开发",
+      "capability_family": "正长度共享边",
+      "subject": "正长度共享边中的接边裁切",
+      "state": "接边裁切",
+      "invariant": "双方之一完全在窗口外仍能贡献左边边线",
+      "observable": "POST /strata/{layer}/seams：双方之一完全在窗口外仍能贡献左边边线",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "seams",
+      "workflow_ids": [
+        "seams"
+      ],
+      "source_anchors": [
+        "internal/spatial/seams.go",
+        "internal/plane/seam.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/seams.go",
+          "internal/plane/seam.go"
+        ],
+        "functions": [
+          "Seams",
+          "SharedBoundary"
+        ]
+      }
+    },
+    {
+      "id": "p1-04",
+      "task_type": "功能开发",
+      "capability_family": "矩形覆盖面积",
+      "subject": "矩形覆盖面积中的至少一次",
+      "state": "至少一次",
+      "invariant": "并集面积忽略重复覆盖次数",
+      "observable": "POST /strata/{layer}/coverage：并集面积忽略重复覆盖次数",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "coverage",
+      "workflow_ids": [
+        "coverage"
+      ],
+      "source_anchors": [
+        "internal/spatial/coverage.go",
+        "internal/spatial/lengths.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/coverage.go",
+          "internal/spatial/lengths.go"
+        ],
+        "functions": [
+          "Coverage",
+          "update"
+        ]
+      }
+    },
+    {
+      "id": "p1-05",
+      "task_type": "功能开发",
+      "capability_family": "条件恢复镜像",
+      "subject": "条件恢复镜像中的目标 CAS",
+      "state": "目标 CAS",
+      "invariant": "镜像新旧不替代目标库条件",
+      "observable": "PUT /image：镜像新旧不替代目标库条件",
+      "primary_mechanism": "recovery_rollback",
+      "extension_seam_id": "restore",
+      "workflow_ids": [
+        "restore"
+      ],
+      "source_anchors": [
+        "internal/db/image.go",
+        "internal/db/state.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/image.go",
+          "internal/db/state.go"
+        ],
+        "functions": [
+          "Restore",
+          "fromImage"
+        ]
+      }
+    },
+    {
+      "id": "p1-06",
+      "task_type": "功能开发",
+      "capability_family": "点定位",
+      "subject": "点定位中的半开归属",
+      "state": "半开归属",
+      "invariant": "上边界不匹配而下边界匹配",
+      "observable": "POST /strata/{layer}/locate：上边界不匹配而下边界匹配",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "locate",
+      "workflow_ids": [
+        "locate"
+      ],
+      "source_anchors": [
+        "internal/spatial/search.go",
+        "internal/plane/shape.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/search.go",
+          "internal/plane/shape.go"
+        ],
+        "functions": [
+          "Locate",
+          "At"
+        ]
+      }
+    },
+    {
+      "id": "p1-07",
+      "task_type": "功能开发",
+      "capability_family": "跨层窗口配对",
+      "subject": "跨层窗口配对中的窗口裁剪",
+      "state": "窗口裁剪",
+      "invariant": "全局相交但窗内不相交不出对",
+      "observable": "POST /join：全局相交但窗内不相交不出对",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "join",
+      "workflow_ids": [
+        "join"
+      ],
+      "source_anchors": [
+        "internal/spatial/join.go",
+        "internal/db/query.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/join.go",
+          "internal/db/query.go"
+        ],
+        "functions": [
+          "restrict",
+          "Join"
+        ]
+      }
+    },
+    {
+      "id": "p1-08",
+      "task_type": "功能开发",
+      "capability_family": "带书签空间窗口",
+      "subject": "带书签空间窗口中的书签层代数",
+      "state": "书签层代数",
+      "invariant": "相同图层写入使旧页失效",
+      "observable": "POST /strata/{layer}/window：相同图层写入使旧页失效",
+      "primary_mechanism": "snapshot_consistency",
+      "extension_seam_id": "window",
+      "workflow_ids": [
+        "window"
+      ],
+      "source_anchors": [
+        "internal/db/query.go",
+        "internal/bookmark/token.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/query.go",
+          "internal/bookmark/token.go"
+        ],
+        "functions": [
+          "Window",
+          "Open"
+        ]
+      }
+    },
+    {
+      "id": "p1-09",
+      "task_type": "功能开发",
+      "capability_family": "固定提交导出",
+      "subject": "固定提交导出中的规范编码",
+      "state": "规范编码",
+      "invariant": "长度和摘要与图层内容对应",
+      "observable": "GET /image：长度和摘要与图层内容对应",
+      "primary_mechanism": "export_freeze",
+      "extension_seam_id": "export",
+      "workflow_ids": [
+        "export"
+      ],
+      "source_anchors": [
+        "internal/db/image.go",
+        "internal/folio/image.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/image.go",
+          "internal/folio/image.go"
+        ],
+        "functions": [
+          "Export",
+          "Encode"
+        ]
+      }
+    },
+    {
+      "id": "p1-10",
+      "task_type": "功能开发",
+      "capability_family": "变更空间约束",
+      "subject": "变更空间约束中的边界收缩",
+      "state": "边界收缩",
+      "invariant": "已有地物不可越界",
+      "observable": "PUT /strata/{layer}/layout：已有地物不可越界",
+      "primary_mechanism": "versioning_audit",
+      "extension_seam_id": "reframe",
+      "workflow_ids": [
+        "reframe"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/db/state.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/db/state.go"
+        ],
+        "functions": [
+          "Reframe",
+          "buildLayer"
+        ]
+      }
+    },
+    {
+      "id": "p1-11",
+      "task_type": "功能开发",
+      "capability_family": "最近邻",
+      "subject": "最近邻中的闭包距离",
+      "state": "闭包距离",
+      "invariant": "开边上的点可能得到零距离",
+      "observable": "POST /strata/{layer}/nearest：开边上的点可能得到零距离",
+      "primary_mechanism": "ranking_reorder",
+      "extension_seam_id": "nearest",
+      "workflow_ids": [
+        "nearest"
+      ],
+      "source_anchors": [
+        "internal/packed/nearest.go",
+        "internal/plane/box.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/packed/nearest.go",
+          "internal/plane/box.go"
+        ],
+        "functions": [
+          "Nearest",
+          "DistanceSquared"
+        ]
+      }
+    },
+    {
+      "id": "p1-12",
+      "task_type": "功能开发",
+      "capability_family": "索引一致性核验",
+      "subject": "索引一致性核验中的树与目录",
+      "state": "树与目录",
+      "invariant": "相同计数仍需对照内容与包围盒",
+      "observable": "GET /strata/{layer}/index-audit：相同计数仍需对照内容与包围盒",
+      "primary_mechanism": "lineage",
+      "extension_seam_id": "audit",
+      "workflow_ids": [
+        "audit"
+      ],
+      "source_anchors": [
+        "internal/db/topology.go",
+        "internal/packed/audit.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/topology.go",
+          "internal/packed/audit.go"
+        ],
+        "functions": [
+          "Audit",
+          "auditNode"
+        ]
+      }
+    },
+    {
+      "id": "p1-13",
+      "task_type": "功能开发",
+      "capability_family": "创建图层",
+      "subject": "创建图层中的名称唯一",
+      "state": "名称唯一",
+      "invariant": "同名提交保留原定义",
+      "observable": "POST /strata：同名提交保留原定义",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "register",
+      "workflow_ids": [
+        "register"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/catalog/layer.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/catalog/layer.go"
+        ],
+        "functions": [
+          "Register",
+          "Validate"
+        ]
+      }
+    },
+    {
+      "id": "p1-14",
+      "task_type": "功能开发",
+      "capability_family": "重启与恢复",
+      "subject": "重启与恢复中的写者锁",
+      "state": "写者锁",
+      "invariant": "旧持有者退出后新实例才可打开",
+      "observable": "服务启动及 GET /status：旧持有者退出后新实例才可打开",
+      "primary_mechanism": "concurrency",
+      "extension_seam_id": "reopen",
+      "workflow_ids": [
+        "reopen"
+      ],
+      "source_anchors": [
+        "internal/db/database.go",
+        "internal/folio/store.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/database.go",
+          "internal/folio/store.go"
+        ],
+        "functions": [
+          "openStore",
+          "Open"
+        ]
+      }
+    },
+    {
+      "id": "p1-15",
+      "task_type": "功能开发",
+      "capability_family": "读取树统计",
+      "subject": "读取树统计中的树结构",
+      "state": "树结构",
+      "invariant": "叶容量与条目总数同时可见",
+      "observable": "GET /strata/{layer}/index：叶容量与条目总数同时可见",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "inspect",
+      "workflow_ids": [
+        "inspect"
+      ],
+      "source_anchors": [
+        "internal/db/query.go",
+        "internal/packed/stats.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/query.go",
+          "internal/packed/stats.go"
+        ],
+        "functions": [
+          "Inspect",
+          "accumulate"
+        ]
+      }
+    },
+    {
+      "id": "p1-16",
+      "task_type": "功能开发",
+      "capability_family": "原子编辑",
+      "subject": "原子编辑中的混合模式",
+      "state": "混合模式",
+      "invariant": "插入替换删除按输入顺序解释",
+      "observable": "POST /edits：插入替换删除按输入顺序解释",
+      "primary_mechanism": "batch_transaction",
+      "extension_seam_id": "edit",
+      "workflow_ids": [
+        "edit"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/packed/exclusion.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/packed/exclusion.go"
+        ],
+        "functions": [
+          "applyEdit",
+          "Conflict"
+        ]
+      }
+    },
+    {
+      "id": "p1-17",
+      "task_type": "功能开发",
+      "capability_family": "原子编辑",
+      "subject": "原子编辑中的跨层原子性",
+      "state": "跨层原子性",
+      "invariant": "一层排他冲突不能留下另一层写入",
+      "observable": "POST /edits：一层排他冲突不能留下另一层写入",
+      "primary_mechanism": "batch_transaction",
+      "extension_seam_id": "edit",
+      "workflow_ids": [
+        "edit"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/packed/exclusion.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/packed/exclusion.go"
+        ],
+        "functions": [
+          "applyEdit",
+          "Conflict"
+        ]
+      }
+    },
+    {
+      "id": "p1-18",
+      "task_type": "功能开发",
+      "capability_family": "原子编辑",
+      "subject": "原子编辑中的全库修订条件",
+      "state": "全库修订条件",
+      "invariant": "竞态时仅一个写包接受相同修订",
+      "observable": "POST /edits：竞态时仅一个写包接受相同修订",
+      "primary_mechanism": "batch_transaction",
+      "extension_seam_id": "edit",
+      "workflow_ids": [
+        "edit"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/packed/exclusion.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/packed/exclusion.go"
+        ],
+        "functions": [
+          "applyEdit",
+          "Conflict"
+        ]
+      }
+    },
+    {
+      "id": "p1-19",
+      "task_type": "功能开发",
+      "capability_family": "有向几何关系",
+      "subject": "有向几何关系中的闭包不蕴含交集",
+      "state": "闭包不蕴含交集",
+      "invariant": "点在矩形开边时距离为零且无交集",
+      "observable": "POST /relation：点在矩形开边时距离为零且无交集",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "relation",
+      "workflow_ids": [
+        "relation"
+      ],
+      "source_anchors": [
+        "internal/db/relation.go",
+        "internal/plane/relation.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/relation.go",
+          "internal/plane/relation.go"
+        ],
+        "functions": [
+          "Relate",
+          "contains"
+        ]
+      }
+    },
+    {
+      "id": "p1-20",
+      "task_type": "功能开发",
+      "capability_family": "正长度共享边",
+      "subject": "正长度共享边中的角点接触",
+      "state": "角点接触",
+      "invariant": "零长度接触不输出共享边",
+      "observable": "POST /strata/{layer}/seams：零长度接触不输出共享边",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "seams",
+      "workflow_ids": [
+        "seams"
+      ],
+      "source_anchors": [
+        "internal/spatial/seams.go",
+        "internal/plane/seam.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/seams.go",
+          "internal/plane/seam.go"
+        ],
+        "functions": [
+          "Seams",
+          "SharedBoundary"
+        ]
+      }
+    },
+    {
+      "id": "p1-21",
+      "task_type": "功能开发",
+      "capability_family": "矩形覆盖面积",
+      "subject": "矩形覆盖面积中的至少两次",
+      "state": "至少两次",
+      "invariant": "三重区域在 repeated 中只计一次",
+      "observable": "POST /strata/{layer}/coverage：三重区域在 repeated 中只计一次",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "coverage",
+      "workflow_ids": [
+        "coverage"
+      ],
+      "source_anchors": [
+        "internal/spatial/coverage.go",
+        "internal/spatial/lengths.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/coverage.go",
+          "internal/spatial/lengths.go"
+        ],
+        "functions": [
+          "Coverage",
+          "update"
+        ]
+      }
+    },
+    {
+      "id": "p1-22",
+      "task_type": "功能开发",
+      "capability_family": "矩形覆盖面积",
+      "subject": "矩形覆盖面积中的窗口未覆盖",
+      "state": "窗口未覆盖",
+      "invariant": "有几何候选并不等于覆盖全部窗口",
+      "observable": "POST /strata/{layer}/coverage：有几何候选并不等于覆盖全部窗口",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "coverage",
+      "workflow_ids": [
+        "coverage"
+      ],
+      "source_anchors": [
+        "internal/spatial/coverage.go",
+        "internal/spatial/lengths.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/coverage.go",
+          "internal/spatial/lengths.go"
+        ],
+        "functions": [
+          "Coverage",
+          "update"
+        ]
+      }
+    },
+    {
+      "id": "p1-23",
+      "task_type": "功能开发",
+      "capability_family": "条件恢复镜像",
+      "subject": "条件恢复镜像中的修订重定基",
+      "state": "修订重定基",
+      "invariant": "导入层不保留外部库修订",
+      "observable": "PUT /image：导入层不保留外部库修订",
+      "primary_mechanism": "recovery_rollback",
+      "extension_seam_id": "restore",
+      "workflow_ids": [
+        "restore"
+      ],
+      "source_anchors": [
+        "internal/db/image.go",
+        "internal/db/state.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/image.go",
+          "internal/db/state.go"
+        ],
+        "functions": [
+          "Restore",
+          "fromImage"
+        ]
+      }
+    },
+    {
+      "id": "p1-24",
+      "task_type": "功能开发",
+      "capability_family": "条件恢复镜像",
+      "subject": "条件恢复镜像中的摘要与语义",
+      "state": "摘要与语义",
+      "invariant": "通过摘要仍须检查重叠和排序",
+      "observable": "PUT /image：通过摘要仍须检查重叠和排序",
+      "primary_mechanism": "recovery_rollback",
+      "extension_seam_id": "restore",
+      "workflow_ids": [
+        "restore"
+      ],
+      "source_anchors": [
+        "internal/db/image.go",
+        "internal/db/state.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/image.go",
+          "internal/db/state.go"
+        ],
+        "functions": [
+          "Restore",
+          "fromImage"
+        ]
+      }
+    },
+    {
+      "id": "p1-25",
+      "task_type": "功能开发",
+      "capability_family": "点定位",
+      "subject": "点定位中的点同一性",
+      "state": "点同一性",
+      "invariant": "坐标相同才匹配 mark",
+      "observable": "POST /strata/{layer}/locate：坐标相同才匹配 mark",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "locate",
+      "workflow_ids": [
+        "locate"
+      ],
+      "source_anchors": [
+        "internal/spatial/search.go",
+        "internal/plane/shape.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/search.go",
+          "internal/plane/shape.go"
+        ],
+        "functions": [
+          "Locate",
+          "At"
+        ]
+      }
+    },
+    {
+      "id": "p2-01",
+      "task_type": "功能优化",
+      "capability_family": "带书签空间窗口",
+      "subject": "带书签空间窗口中的书签层代数",
+      "state": "书签层代数",
+      "invariant": "相同图层写入使旧页失效",
+      "observable": "POST /strata/{layer}/window：相同图层写入使旧页失效",
+      "primary_mechanism": "snapshot_consistency",
+      "extension_seam_id": "window",
+      "workflow_ids": [
+        "window"
+      ],
+      "source_anchors": [
+        "internal/db/query.go",
+        "internal/bookmark/token.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/query.go",
+          "internal/bookmark/token.go"
+        ],
+        "functions": [
+          "Window",
+          "Open"
+        ]
+      }
+    },
+    {
+      "id": "p2-02",
+      "task_type": "功能优化",
+      "capability_family": "原子编辑",
+      "subject": "原子编辑中的末态排他",
+      "state": "末态排他",
+      "invariant": "允许交换中间态重叠的两个矩形",
+      "observable": "POST /edits：允许交换中间态重叠的两个矩形",
+      "primary_mechanism": "batch_transaction",
+      "extension_seam_id": "edit",
+      "workflow_ids": [
+        "edit"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/packed/exclusion.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/packed/exclusion.go"
+        ],
+        "functions": [
+          "applyEdit",
+          "Conflict"
+        ]
+      }
+    },
+    {
+      "id": "p2-03",
+      "task_type": "功能优化",
+      "capability_family": "最近邻",
+      "subject": "最近邻中的闭包距离",
+      "state": "闭包距离",
+      "invariant": "开边上的点可能得到零距离",
+      "observable": "POST /strata/{layer}/nearest：开边上的点可能得到零距离",
+      "primary_mechanism": "ranking_reorder",
+      "extension_seam_id": "nearest",
+      "workflow_ids": [
+        "nearest"
+      ],
+      "source_anchors": [
+        "internal/packed/nearest.go",
+        "internal/plane/box.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/packed/nearest.go",
+          "internal/plane/box.go"
+        ],
+        "functions": [
+          "Nearest",
+          "DistanceSquared"
+        ]
+      }
+    },
+    {
+      "id": "p2-04",
+      "task_type": "功能优化",
+      "capability_family": "矩形覆盖面积",
+      "subject": "矩形覆盖面积中的至少一次",
+      "state": "至少一次",
+      "invariant": "并集面积忽略重复覆盖次数",
+      "observable": "POST /strata/{layer}/coverage：并集面积忽略重复覆盖次数",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "coverage",
+      "workflow_ids": [
+        "coverage"
+      ],
+      "source_anchors": [
+        "internal/spatial/coverage.go",
+        "internal/spatial/lengths.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/coverage.go",
+          "internal/spatial/lengths.go"
+        ],
+        "functions": [
+          "Coverage",
+          "update"
+        ]
+      }
+    },
+    {
+      "id": "p2-05",
+      "task_type": "功能优化",
+      "capability_family": "跨层窗口配对",
+      "subject": "跨层窗口配对中的窗口裁剪",
+      "state": "窗口裁剪",
+      "invariant": "全局相交但窗内不相交不出对",
+      "observable": "POST /join：全局相交但窗内不相交不出对",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "join",
+      "workflow_ids": [
+        "join"
+      ],
+      "source_anchors": [
+        "internal/spatial/join.go",
+        "internal/db/query.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/join.go",
+          "internal/db/query.go"
+        ],
+        "functions": [
+          "restrict",
+          "Join"
+        ]
+      }
+    },
+    {
+      "id": "p2-06",
+      "task_type": "功能优化",
+      "capability_family": "变更空间约束",
+      "subject": "变更空间约束中的边界收缩",
+      "state": "边界收缩",
+      "invariant": "已有地物不可越界",
+      "observable": "PUT /strata/{layer}/layout：已有地物不可越界",
+      "primary_mechanism": "versioning_audit",
+      "extension_seam_id": "reframe",
+      "workflow_ids": [
+        "reframe"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/db/state.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/db/state.go"
+        ],
+        "functions": [
+          "Reframe",
+          "buildLayer"
+        ]
+      }
+    },
+    {
+      "id": "p2-07",
+      "task_type": "功能优化",
+      "capability_family": "点定位",
+      "subject": "点定位中的半开归属",
+      "state": "半开归属",
+      "invariant": "上边界不匹配而下边界匹配",
+      "observable": "POST /strata/{layer}/locate：上边界不匹配而下边界匹配",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "locate",
+      "workflow_ids": [
+        "locate"
+      ],
+      "source_anchors": [
+        "internal/spatial/search.go",
+        "internal/plane/shape.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/search.go",
+          "internal/plane/shape.go"
+        ],
+        "functions": [
+          "Locate",
+          "At"
+        ]
+      }
+    },
+    {
+      "id": "p2-08",
+      "task_type": "功能优化",
+      "capability_family": "正长度共享边",
+      "subject": "正长度共享边中的接边裁切",
+      "state": "接边裁切",
+      "invariant": "双方之一完全在窗口外仍能贡献左边边线",
+      "observable": "POST /strata/{layer}/seams：双方之一完全在窗口外仍能贡献左边边线",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "seams",
+      "workflow_ids": [
+        "seams"
+      ],
+      "source_anchors": [
+        "internal/spatial/seams.go",
+        "internal/plane/seam.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/seams.go",
+          "internal/plane/seam.go"
+        ],
+        "functions": [
+          "Seams",
+          "SharedBoundary"
+        ]
+      }
+    },
+    {
+      "id": "p2-09",
+      "task_type": "功能优化",
+      "capability_family": "条件恢复镜像",
+      "subject": "条件恢复镜像中的目标 CAS",
+      "state": "目标 CAS",
+      "invariant": "镜像新旧不替代目标库条件",
+      "observable": "PUT /image：镜像新旧不替代目标库条件",
+      "primary_mechanism": "recovery_rollback",
+      "extension_seam_id": "restore",
+      "workflow_ids": [
+        "restore"
+      ],
+      "source_anchors": [
+        "internal/db/image.go",
+        "internal/db/state.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/image.go",
+          "internal/db/state.go"
+        ],
+        "functions": [
+          "Restore",
+          "fromImage"
+        ]
+      }
+    },
+    {
+      "id": "p2-10",
+      "task_type": "功能优化",
+      "capability_family": "读取树统计",
+      "subject": "读取树统计中的树结构",
+      "state": "树结构",
+      "invariant": "叶容量与条目总数同时可见",
+      "observable": "GET /strata/{layer}/index：叶容量与条目总数同时可见",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "inspect",
+      "workflow_ids": [
+        "inspect"
+      ],
+      "source_anchors": [
+        "internal/db/query.go",
+        "internal/packed/stats.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/query.go",
+          "internal/packed/stats.go"
+        ],
+        "functions": [
+          "Inspect",
+          "accumulate"
+        ]
+      }
+    },
+    {
+      "id": "p2-11",
+      "task_type": "功能优化",
+      "capability_family": "固定提交导出",
+      "subject": "固定提交导出中的规范编码",
+      "state": "规范编码",
+      "invariant": "长度和摘要与图层内容对应",
+      "observable": "GET /image：长度和摘要与图层内容对应",
+      "primary_mechanism": "export_freeze",
+      "extension_seam_id": "export",
+      "workflow_ids": [
+        "export"
+      ],
+      "source_anchors": [
+        "internal/db/image.go",
+        "internal/folio/image.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/image.go",
+          "internal/folio/image.go"
+        ],
+        "functions": [
+          "Export",
+          "Encode"
+        ]
+      }
+    },
+    {
+      "id": "p2-12",
+      "task_type": "功能优化",
+      "capability_family": "索引一致性核验",
+      "subject": "索引一致性核验中的树与目录",
+      "state": "树与目录",
+      "invariant": "相同计数仍需对照内容与包围盒",
+      "observable": "GET /strata/{layer}/index-audit：相同计数仍需对照内容与包围盒",
+      "primary_mechanism": "lineage",
+      "extension_seam_id": "audit",
+      "workflow_ids": [
+        "audit"
+      ],
+      "source_anchors": [
+        "internal/db/topology.go",
+        "internal/packed/audit.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/topology.go",
+          "internal/packed/audit.go"
+        ],
+        "functions": [
+          "Audit",
+          "auditNode"
+        ]
+      }
+    },
+    {
+      "id": "p2-13",
+      "task_type": "功能优化",
+      "capability_family": "有向几何关系",
+      "subject": "有向几何关系中的有向包含",
+      "state": "有向包含",
+      "invariant": "换向不改变距离但交换包含方向",
+      "observable": "POST /relation：换向不改变距离但交换包含方向",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "relation",
+      "workflow_ids": [
+        "relation"
+      ],
+      "source_anchors": [
+        "internal/db/relation.go",
+        "internal/plane/relation.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/relation.go",
+          "internal/plane/relation.go"
+        ],
+        "functions": [
+          "Relate",
+          "contains"
+        ]
+      }
+    },
+    {
+      "id": "p2-14",
+      "task_type": "功能优化",
+      "capability_family": "创建图层",
+      "subject": "创建图层中的名称唯一",
+      "state": "名称唯一",
+      "invariant": "同名提交保留原定义",
+      "observable": "POST /strata：同名提交保留原定义",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "register",
+      "workflow_ids": [
+        "register"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/catalog/layer.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/catalog/layer.go"
+        ],
+        "functions": [
+          "Register",
+          "Validate"
+        ]
+      }
+    },
+    {
+      "id": "p2-15",
+      "task_type": "功能优化",
+      "capability_family": "重启与恢复",
+      "subject": "重启与恢复中的写者锁",
+      "state": "写者锁",
+      "invariant": "旧持有者退出后新实例才可打开",
+      "observable": "服务启动及 GET /status：旧持有者退出后新实例才可打开",
+      "primary_mechanism": "concurrency",
+      "extension_seam_id": "reopen",
+      "workflow_ids": [
+        "reopen"
+      ],
+      "source_anchors": [
+        "internal/db/database.go",
+        "internal/folio/store.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/database.go",
+          "internal/folio/store.go"
+        ],
+        "functions": [
+          "openStore",
+          "Open"
+        ]
+      }
+    },
+    {
+      "id": "p2-16",
+      "task_type": "功能优化",
+      "capability_family": "带书签空间窗口",
+      "subject": "带书签空间窗口中的谓词绑定",
+      "state": "谓词绑定",
+      "invariant": "换类别或窗口拒绝旧书签",
+      "observable": "POST /strata/{layer}/window：换类别或窗口拒绝旧书签",
+      "primary_mechanism": "snapshot_consistency",
+      "extension_seam_id": "window",
+      "workflow_ids": [
+        "window"
+      ],
+      "source_anchors": [
+        "internal/db/query.go",
+        "internal/bookmark/token.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/query.go",
+          "internal/bookmark/token.go"
+        ],
+        "functions": [
+          "Window",
+          "Open"
+        ]
+      }
+    },
+    {
+      "id": "p2-17",
+      "task_type": "功能优化",
+      "capability_family": "带书签空间窗口",
+      "subject": "带书签空间窗口中的词典边界",
+      "state": "词典边界",
+      "invariant": "改变页大小不能产生重复项",
+      "observable": "POST /strata/{layer}/window：改变页大小不能产生重复项",
+      "primary_mechanism": "snapshot_consistency",
+      "extension_seam_id": "window",
+      "workflow_ids": [
+        "window"
+      ],
+      "source_anchors": [
+        "internal/db/query.go",
+        "internal/bookmark/token.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/query.go",
+          "internal/bookmark/token.go"
+        ],
+        "functions": [
+          "Window",
+          "Open"
+        ]
+      }
+    },
+    {
+      "id": "p2-18",
+      "task_type": "功能优化",
+      "capability_family": "原子编辑",
+      "subject": "原子编辑中的混合模式",
+      "state": "混合模式",
+      "invariant": "插入替换删除按输入顺序解释",
+      "observable": "POST /edits：插入替换删除按输入顺序解释",
+      "primary_mechanism": "batch_transaction",
+      "extension_seam_id": "edit",
+      "workflow_ids": [
+        "edit"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/packed/exclusion.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/packed/exclusion.go"
+        ],
+        "functions": [
+          "applyEdit",
+          "Conflict"
+        ]
+      }
+    },
+    {
+      "id": "p2-19",
+      "task_type": "功能优化",
+      "capability_family": "原子编辑",
+      "subject": "原子编辑中的跨层原子性",
+      "state": "跨层原子性",
+      "invariant": "一层排他冲突不能留下另一层写入",
+      "observable": "POST /edits：一层排他冲突不能留下另一层写入",
+      "primary_mechanism": "batch_transaction",
+      "extension_seam_id": "edit",
+      "workflow_ids": [
+        "edit"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/packed/exclusion.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/packed/exclusion.go"
+        ],
+        "functions": [
+          "applyEdit",
+          "Conflict"
+        ]
+      }
+    },
+    {
+      "id": "p2-20",
+      "task_type": "功能优化",
+      "capability_family": "原子编辑",
+      "subject": "原子编辑中的全库修订条件",
+      "state": "全库修订条件",
+      "invariant": "竞态时仅一个写包接受相同修订",
+      "observable": "POST /edits：竞态时仅一个写包接受相同修订",
+      "primary_mechanism": "batch_transaction",
+      "extension_seam_id": "edit",
+      "workflow_ids": [
+        "edit"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/packed/exclusion.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/packed/exclusion.go"
+        ],
+        "functions": [
+          "applyEdit",
+          "Conflict"
+        ]
+      }
+    },
+    {
+      "id": "p2-21",
+      "task_type": "功能优化",
+      "capability_family": "最近邻",
+      "subject": "最近邻中的下界同距",
+      "state": "下界同距",
+      "invariant": "不得剪掉能改变 ID 决胜的节点",
+      "observable": "POST /strata/{layer}/nearest：不得剪掉能改变 ID 决胜的节点",
+      "primary_mechanism": "ranking_reorder",
+      "extension_seam_id": "nearest",
+      "workflow_ids": [
+        "nearest"
+      ],
+      "source_anchors": [
+        "internal/packed/nearest.go",
+        "internal/plane/box.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/packed/nearest.go",
+          "internal/plane/box.go"
+        ],
+        "functions": [
+          "Nearest",
+          "DistanceSquared"
+        ]
+      }
+    },
+    {
+      "id": "p2-22",
+      "task_type": "功能优化",
+      "capability_family": "最近邻",
+      "subject": "最近邻中的类别与最邻",
+      "state": "类别与最邻",
+      "invariant": "不匹配类别不消耗输出限额",
+      "observable": "POST /strata/{layer}/nearest：不匹配类别不消耗输出限额",
+      "primary_mechanism": "ranking_reorder",
+      "extension_seam_id": "nearest",
+      "workflow_ids": [
+        "nearest"
+      ],
+      "source_anchors": [
+        "internal/packed/nearest.go",
+        "internal/plane/box.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/packed/nearest.go",
+          "internal/plane/box.go"
+        ],
+        "functions": [
+          "Nearest",
+          "DistanceSquared"
+        ]
+      }
+    },
+    {
+      "id": "p2-23",
+      "task_type": "功能优化",
+      "capability_family": "矩形覆盖面积",
+      "subject": "矩形覆盖面积中的至少两次",
+      "state": "至少两次",
+      "invariant": "三重区域在 repeated 中只计一次",
+      "observable": "POST /strata/{layer}/coverage：三重区域在 repeated 中只计一次",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "coverage",
+      "workflow_ids": [
+        "coverage"
+      ],
+      "source_anchors": [
+        "internal/spatial/coverage.go",
+        "internal/spatial/lengths.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/coverage.go",
+          "internal/spatial/lengths.go"
+        ],
+        "functions": [
+          "Coverage",
+          "update"
+        ]
+      }
+    },
+    {
+      "id": "p2-24",
+      "task_type": "功能优化",
+      "capability_family": "矩形覆盖面积",
+      "subject": "矩形覆盖面积中的窗口未覆盖",
+      "state": "窗口未覆盖",
+      "invariant": "有几何候选并不等于覆盖全部窗口",
+      "observable": "POST /strata/{layer}/coverage：有几何候选并不等于覆盖全部窗口",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "coverage",
+      "workflow_ids": [
+        "coverage"
+      ],
+      "source_anchors": [
+        "internal/spatial/coverage.go",
+        "internal/spatial/lengths.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/coverage.go",
+          "internal/spatial/lengths.go"
+        ],
+        "functions": [
+          "Coverage",
+          "update"
+        ]
+      }
+    },
+    {
+      "id": "p2-25",
+      "task_type": "功能优化",
+      "capability_family": "跨层窗口配对",
+      "subject": "跨层窗口配对中的输出原子性",
+      "state": "输出原子性",
+      "invariant": "超出配对上限拒绝整个查询",
+      "observable": "POST /join：超出配对上限拒绝整个查询",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "join",
+      "workflow_ids": [
+        "join"
+      ],
+      "source_anchors": [
+        "internal/spatial/join.go",
+        "internal/db/query.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/join.go",
+          "internal/db/query.go"
+        ],
+        "functions": [
+          "restrict",
+          "Join"
+        ]
+      }
+    },
+    {
+      "id": "p3-01",
+      "task_type": "泛Agent需求",
+      "capability_family": "矩形覆盖面积",
+      "subject": "矩形覆盖面积中的至少一次",
+      "state": "至少一次",
+      "invariant": "并集面积忽略重复覆盖次数",
+      "observable": "POST /strata/{layer}/coverage：并集面积忽略重复覆盖次数",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "coverage",
+      "workflow_ids": [
+        "coverage"
+      ],
+      "source_anchors": [
+        "internal/spatial/coverage.go",
+        "internal/spatial/lengths.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/coverage.go",
+          "internal/spatial/lengths.go"
+        ],
+        "functions": [
+          "Coverage",
+          "update"
+        ]
+      }
+    },
+    {
+      "id": "p3-02",
+      "task_type": "泛Agent需求",
+      "capability_family": "有向几何关系",
+      "subject": "有向几何关系中的有向包含",
+      "state": "有向包含",
+      "invariant": "换向不改变距离但交换包含方向",
+      "observable": "POST /relation：换向不改变距离但交换包含方向",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "relation",
+      "workflow_ids": [
+        "relation"
+      ],
+      "source_anchors": [
+        "internal/db/relation.go",
+        "internal/plane/relation.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/relation.go",
+          "internal/plane/relation.go"
+        ],
+        "functions": [
+          "Relate",
+          "contains"
+        ]
+      }
+    },
+    {
+      "id": "p3-03",
+      "task_type": "泛Agent需求",
+      "capability_family": "索引一致性核验",
+      "subject": "索引一致性核验中的树与目录",
+      "state": "树与目录",
+      "invariant": "相同计数仍需对照内容与包围盒",
+      "observable": "GET /strata/{layer}/index-audit：相同计数仍需对照内容与包围盒",
+      "primary_mechanism": "lineage",
+      "extension_seam_id": "audit",
+      "workflow_ids": [
+        "audit"
+      ],
+      "source_anchors": [
+        "internal/db/topology.go",
+        "internal/packed/audit.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/topology.go",
+          "internal/packed/audit.go"
+        ],
+        "functions": [
+          "Audit",
+          "auditNode"
+        ]
+      }
+    },
+    {
+      "id": "p3-04",
+      "task_type": "泛Agent需求",
+      "capability_family": "最近邻",
+      "subject": "最近邻中的闭包距离",
+      "state": "闭包距离",
+      "invariant": "开边上的点可能得到零距离",
+      "observable": "POST /strata/{layer}/nearest：开边上的点可能得到零距离",
+      "primary_mechanism": "ranking_reorder",
+      "extension_seam_id": "nearest",
+      "workflow_ids": [
+        "nearest"
+      ],
+      "source_anchors": [
+        "internal/packed/nearest.go",
+        "internal/plane/box.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/packed/nearest.go",
+          "internal/plane/box.go"
+        ],
+        "functions": [
+          "Nearest",
+          "DistanceSquared"
+        ]
+      }
+    },
+    {
+      "id": "p3-05",
+      "task_type": "泛Agent需求",
+      "capability_family": "跨层窗口配对",
+      "subject": "跨层窗口配对中的窗口裁剪",
+      "state": "窗口裁剪",
+      "invariant": "全局相交但窗内不相交不出对",
+      "observable": "POST /join：全局相交但窗内不相交不出对",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "join",
+      "workflow_ids": [
+        "join"
+      ],
+      "source_anchors": [
+        "internal/spatial/join.go",
+        "internal/db/query.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/join.go",
+          "internal/db/query.go"
+        ],
+        "functions": [
+          "restrict",
+          "Join"
+        ]
+      }
+    },
+    {
+      "id": "p3-06",
+      "task_type": "泛Agent需求",
+      "capability_family": "条件恢复镜像",
+      "subject": "条件恢复镜像中的目标 CAS",
+      "state": "目标 CAS",
+      "invariant": "镜像新旧不替代目标库条件",
+      "observable": "PUT /image：镜像新旧不替代目标库条件",
+      "primary_mechanism": "recovery_rollback",
+      "extension_seam_id": "restore",
+      "workflow_ids": [
+        "restore"
+      ],
+      "source_anchors": [
+        "internal/db/image.go",
+        "internal/db/state.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/image.go",
+          "internal/db/state.go"
+        ],
+        "functions": [
+          "Restore",
+          "fromImage"
+        ]
+      }
+    },
+    {
+      "id": "p3-07",
+      "task_type": "泛Agent需求",
+      "capability_family": "点定位",
+      "subject": "点定位中的半开归属",
+      "state": "半开归属",
+      "invariant": "上边界不匹配而下边界匹配",
+      "observable": "POST /strata/{layer}/locate：上边界不匹配而下边界匹配",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "locate",
+      "workflow_ids": [
+        "locate"
+      ],
+      "source_anchors": [
+        "internal/spatial/search.go",
+        "internal/plane/shape.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/search.go",
+          "internal/plane/shape.go"
+        ],
+        "functions": [
+          "Locate",
+          "At"
+        ]
+      }
+    },
+    {
+      "id": "p3-08",
+      "task_type": "泛Agent需求",
+      "capability_family": "正长度共享边",
+      "subject": "正长度共享边中的接边裁切",
+      "state": "接边裁切",
+      "invariant": "双方之一完全在窗口外仍能贡献左边边线",
+      "observable": "POST /strata/{layer}/seams：双方之一完全在窗口外仍能贡献左边边线",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "seams",
+      "workflow_ids": [
+        "seams"
+      ],
+      "source_anchors": [
+        "internal/spatial/seams.go",
+        "internal/plane/seam.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/seams.go",
+          "internal/plane/seam.go"
+        ],
+        "functions": [
+          "Seams",
+          "SharedBoundary"
+        ]
+      }
+    },
+    {
+      "id": "p3-09",
+      "task_type": "泛Agent需求",
+      "capability_family": "原子编辑",
+      "subject": "原子编辑中的末态排他",
+      "state": "末态排他",
+      "invariant": "允许交换中间态重叠的两个矩形",
+      "observable": "POST /edits：允许交换中间态重叠的两个矩形",
+      "primary_mechanism": "batch_transaction",
+      "extension_seam_id": "edit",
+      "workflow_ids": [
+        "edit"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/packed/exclusion.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/packed/exclusion.go"
+        ],
+        "functions": [
+          "applyEdit",
+          "Conflict"
+        ]
+      }
+    },
+    {
+      "id": "p3-10",
+      "task_type": "泛Agent需求",
+      "capability_family": "带书签空间窗口",
+      "subject": "带书签空间窗口中的书签层代数",
+      "state": "书签层代数",
+      "invariant": "相同图层写入使旧页失效",
+      "observable": "POST /strata/{layer}/window：相同图层写入使旧页失效",
+      "primary_mechanism": "snapshot_consistency",
+      "extension_seam_id": "window",
+      "workflow_ids": [
+        "window"
+      ],
+      "source_anchors": [
+        "internal/db/query.go",
+        "internal/bookmark/token.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/query.go",
+          "internal/bookmark/token.go"
+        ],
+        "functions": [
+          "Window",
+          "Open"
+        ]
+      }
+    },
+    {
+      "id": "p3-11",
+      "task_type": "泛Agent需求",
+      "capability_family": "读取树统计",
+      "subject": "读取树统计中的树结构",
+      "state": "树结构",
+      "invariant": "叶容量与条目总数同时可见",
+      "observable": "GET /strata/{layer}/index：叶容量与条目总数同时可见",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "inspect",
+      "workflow_ids": [
+        "inspect"
+      ],
+      "source_anchors": [
+        "internal/db/query.go",
+        "internal/packed/stats.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/query.go",
+          "internal/packed/stats.go"
+        ],
+        "functions": [
+          "Inspect",
+          "accumulate"
+        ]
+      }
+    },
+    {
+      "id": "p3-12",
+      "task_type": "泛Agent需求",
+      "capability_family": "固定提交导出",
+      "subject": "固定提交导出中的规范编码",
+      "state": "规范编码",
+      "invariant": "长度和摘要与图层内容对应",
+      "observable": "GET /image：长度和摘要与图层内容对应",
+      "primary_mechanism": "export_freeze",
+      "extension_seam_id": "export",
+      "workflow_ids": [
+        "export"
+      ],
+      "source_anchors": [
+        "internal/db/image.go",
+        "internal/folio/image.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/image.go",
+          "internal/folio/image.go"
+        ],
+        "functions": [
+          "Export",
+          "Encode"
+        ]
+      }
+    },
+    {
+      "id": "p3-13",
+      "task_type": "泛Agent需求",
+      "capability_family": "变更空间约束",
+      "subject": "变更空间约束中的边界收缩",
+      "state": "边界收缩",
+      "invariant": "已有地物不可越界",
+      "observable": "PUT /strata/{layer}/layout：已有地物不可越界",
+      "primary_mechanism": "versioning_audit",
+      "extension_seam_id": "reframe",
+      "workflow_ids": [
+        "reframe"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/db/state.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/db/state.go"
+        ],
+        "functions": [
+          "Reframe",
+          "buildLayer"
+        ]
+      }
+    },
+    {
+      "id": "p3-14",
+      "task_type": "泛Agent需求",
+      "capability_family": "创建图层",
+      "subject": "创建图层中的名称唯一",
+      "state": "名称唯一",
+      "invariant": "同名提交保留原定义",
+      "observable": "POST /strata：同名提交保留原定义",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "register",
+      "workflow_ids": [
+        "register"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/catalog/layer.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/catalog/layer.go"
+        ],
+        "functions": [
+          "Register",
+          "Validate"
+        ]
+      }
+    },
+    {
+      "id": "p3-15",
+      "task_type": "泛Agent需求",
+      "capability_family": "重启与恢复",
+      "subject": "重启与恢复中的写者锁",
+      "state": "写者锁",
+      "invariant": "旧持有者退出后新实例才可打开",
+      "observable": "服务启动及 GET /status：旧持有者退出后新实例才可打开",
+      "primary_mechanism": "concurrency",
+      "extension_seam_id": "reopen",
+      "workflow_ids": [
+        "reopen"
+      ],
+      "source_anchors": [
+        "internal/db/database.go",
+        "internal/folio/store.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/database.go",
+          "internal/folio/store.go"
+        ],
+        "functions": [
+          "openStore",
+          "Open"
+        ]
+      }
+    },
+    {
+      "id": "p4-01",
+      "task_type": "代码重构",
+      "capability_family": "原子编辑",
+      "subject": "原子编辑中的末态排他",
+      "state": "末态排他",
+      "invariant": "允许交换中间态重叠的两个矩形",
+      "observable": "POST /edits：允许交换中间态重叠的两个矩形",
+      "primary_mechanism": "batch_transaction",
+      "extension_seam_id": "edit",
+      "workflow_ids": [
+        "edit"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/packed/exclusion.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/packed/exclusion.go"
+        ],
+        "functions": [
+          "applyEdit",
+          "Conflict"
+        ]
+      }
+    },
+    {
+      "id": "p4-02",
+      "task_type": "代码重构",
+      "capability_family": "重启与恢复",
+      "subject": "重启与恢复中的写者锁",
+      "state": "写者锁",
+      "invariant": "旧持有者退出后新实例才可打开",
+      "observable": "服务启动及 GET /status：旧持有者退出后新实例才可打开",
+      "primary_mechanism": "concurrency",
+      "extension_seam_id": "reopen",
+      "workflow_ids": [
+        "reopen"
+      ],
+      "source_anchors": [
+        "internal/db/database.go",
+        "internal/folio/store.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/database.go",
+          "internal/folio/store.go"
+        ],
+        "functions": [
+          "openStore",
+          "Open"
+        ]
+      }
+    },
+    {
+      "id": "p4-03",
+      "task_type": "代码重构",
+      "capability_family": "带书签空间窗口",
+      "subject": "带书签空间窗口中的书签层代数",
+      "state": "书签层代数",
+      "invariant": "相同图层写入使旧页失效",
+      "observable": "POST /strata/{layer}/window：相同图层写入使旧页失效",
+      "primary_mechanism": "snapshot_consistency",
+      "extension_seam_id": "window",
+      "workflow_ids": [
+        "window"
+      ],
+      "source_anchors": [
+        "internal/db/query.go",
+        "internal/bookmark/token.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/query.go",
+          "internal/bookmark/token.go"
+        ],
+        "functions": [
+          "Window",
+          "Open"
+        ]
+      }
+    },
+    {
+      "id": "p4-04",
+      "task_type": "代码重构",
+      "capability_family": "变更空间约束",
+      "subject": "变更空间约束中的边界收缩",
+      "state": "边界收缩",
+      "invariant": "已有地物不可越界",
+      "observable": "PUT /strata/{layer}/layout：已有地物不可越界",
+      "primary_mechanism": "versioning_audit",
+      "extension_seam_id": "reframe",
+      "workflow_ids": [
+        "reframe"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/db/state.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/db/state.go"
+        ],
+        "functions": [
+          "Reframe",
+          "buildLayer"
+        ]
+      }
+    },
+    {
+      "id": "p4-05",
+      "task_type": "代码重构",
+      "capability_family": "索引一致性核验",
+      "subject": "索引一致性核验中的树与目录",
+      "state": "树与目录",
+      "invariant": "相同计数仍需对照内容与包围盒",
+      "observable": "GET /strata/{layer}/index-audit：相同计数仍需对照内容与包围盒",
+      "primary_mechanism": "lineage",
+      "extension_seam_id": "audit",
+      "workflow_ids": [
+        "audit"
+      ],
+      "source_anchors": [
+        "internal/db/topology.go",
+        "internal/packed/audit.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/topology.go",
+          "internal/packed/audit.go"
+        ],
+        "functions": [
+          "Audit",
+          "auditNode"
+        ]
+      }
+    },
+    {
+      "id": "p4-06",
+      "task_type": "代码重构",
+      "capability_family": "创建图层",
+      "subject": "创建图层中的名称唯一",
+      "state": "名称唯一",
+      "invariant": "同名提交保留原定义",
+      "observable": "POST /strata：同名提交保留原定义",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "register",
+      "workflow_ids": [
+        "register"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/catalog/layer.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/catalog/layer.go"
+        ],
+        "functions": [
+          "Register",
+          "Validate"
+        ]
+      }
+    },
+    {
+      "id": "p4-07",
+      "task_type": "代码重构",
+      "capability_family": "条件恢复镜像",
+      "subject": "条件恢复镜像中的目标 CAS",
+      "state": "目标 CAS",
+      "invariant": "镜像新旧不替代目标库条件",
+      "observable": "PUT /image：镜像新旧不替代目标库条件",
+      "primary_mechanism": "recovery_rollback",
+      "extension_seam_id": "restore",
+      "workflow_ids": [
+        "restore"
+      ],
+      "source_anchors": [
+        "internal/db/image.go",
+        "internal/db/state.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/image.go",
+          "internal/db/state.go"
+        ],
+        "functions": [
+          "Restore",
+          "fromImage"
+        ]
+      }
+    },
+    {
+      "id": "p4-08",
+      "task_type": "代码重构",
+      "capability_family": "固定提交导出",
+      "subject": "固定提交导出中的规范编码",
+      "state": "规范编码",
+      "invariant": "长度和摘要与图层内容对应",
+      "observable": "GET /image：长度和摘要与图层内容对应",
+      "primary_mechanism": "export_freeze",
+      "extension_seam_id": "export",
+      "workflow_ids": [
+        "export"
+      ],
+      "source_anchors": [
+        "internal/db/image.go",
+        "internal/folio/image.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/image.go",
+          "internal/folio/image.go"
+        ],
+        "functions": [
+          "Export",
+          "Encode"
+        ]
+      }
+    },
+    {
+      "id": "p4-09",
+      "task_type": "代码重构",
+      "capability_family": "矩形覆盖面积",
+      "subject": "矩形覆盖面积中的至少一次",
+      "state": "至少一次",
+      "invariant": "并集面积忽略重复覆盖次数",
+      "observable": "POST /strata/{layer}/coverage：并集面积忽略重复覆盖次数",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "coverage",
+      "workflow_ids": [
+        "coverage"
+      ],
+      "source_anchors": [
+        "internal/spatial/coverage.go",
+        "internal/spatial/lengths.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/coverage.go",
+          "internal/spatial/lengths.go"
+        ],
+        "functions": [
+          "Coverage",
+          "update"
+        ]
+      }
+    },
+    {
+      "id": "p4-10",
+      "task_type": "代码重构",
+      "capability_family": "最近邻",
+      "subject": "最近邻中的闭包距离",
+      "state": "闭包距离",
+      "invariant": "开边上的点可能得到零距离",
+      "observable": "POST /strata/{layer}/nearest：开边上的点可能得到零距离",
+      "primary_mechanism": "ranking_reorder",
+      "extension_seam_id": "nearest",
+      "workflow_ids": [
+        "nearest"
+      ],
+      "source_anchors": [
+        "internal/packed/nearest.go",
+        "internal/plane/box.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/packed/nearest.go",
+          "internal/plane/box.go"
+        ],
+        "functions": [
+          "Nearest",
+          "DistanceSquared"
+        ]
+      }
+    },
+    {
+      "id": "p4-11",
+      "task_type": "代码重构",
+      "capability_family": "跨层窗口配对",
+      "subject": "跨层窗口配对中的窗口裁剪",
+      "state": "窗口裁剪",
+      "invariant": "全局相交但窗内不相交不出对",
+      "observable": "POST /join：全局相交但窗内不相交不出对",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "join",
+      "workflow_ids": [
+        "join"
+      ],
+      "source_anchors": [
+        "internal/spatial/join.go",
+        "internal/db/query.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/join.go",
+          "internal/db/query.go"
+        ],
+        "functions": [
+          "restrict",
+          "Join"
+        ]
+      }
+    },
+    {
+      "id": "p4-12",
+      "task_type": "代码重构",
+      "capability_family": "正长度共享边",
+      "subject": "正长度共享边中的接边裁切",
+      "state": "接边裁切",
+      "invariant": "双方之一完全在窗口外仍能贡献左边边线",
+      "observable": "POST /strata/{layer}/seams：双方之一完全在窗口外仍能贡献左边边线",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "seams",
+      "workflow_ids": [
+        "seams"
+      ],
+      "source_anchors": [
+        "internal/spatial/seams.go",
+        "internal/plane/seam.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/seams.go",
+          "internal/plane/seam.go"
+        ],
+        "functions": [
+          "Seams",
+          "SharedBoundary"
+        ]
+      }
+    },
+    {
+      "id": "p4-13",
+      "task_type": "代码重构",
+      "capability_family": "有向几何关系",
+      "subject": "有向几何关系中的有向包含",
+      "state": "有向包含",
+      "invariant": "换向不改变距离但交换包含方向",
+      "observable": "POST /relation：换向不改变距离但交换包含方向",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "relation",
+      "workflow_ids": [
+        "relation"
+      ],
+      "source_anchors": [
+        "internal/db/relation.go",
+        "internal/plane/relation.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/relation.go",
+          "internal/plane/relation.go"
+        ],
+        "functions": [
+          "Relate",
+          "contains"
+        ]
+      }
+    },
+    {
+      "id": "p4-14",
+      "task_type": "代码重构",
+      "capability_family": "读取树统计",
+      "subject": "读取树统计中的树结构",
+      "state": "树结构",
+      "invariant": "叶容量与条目总数同时可见",
+      "observable": "GET /strata/{layer}/index：叶容量与条目总数同时可见",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "inspect",
+      "workflow_ids": [
+        "inspect"
+      ],
+      "source_anchors": [
+        "internal/db/query.go",
+        "internal/packed/stats.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/query.go",
+          "internal/packed/stats.go"
+        ],
+        "functions": [
+          "Inspect",
+          "accumulate"
+        ]
+      }
+    },
+    {
+      "id": "p4-15",
+      "task_type": "代码重构",
+      "capability_family": "点定位",
+      "subject": "点定位中的半开归属",
+      "state": "半开归属",
+      "invariant": "上边界不匹配而下边界匹配",
+      "observable": "POST /strata/{layer}/locate：上边界不匹配而下边界匹配",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "locate",
+      "workflow_ids": [
+        "locate"
+      ],
+      "source_anchors": [
+        "internal/spatial/search.go",
+        "internal/plane/shape.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/search.go",
+          "internal/plane/shape.go"
+        ],
+        "functions": [
+          "Locate",
+          "At"
+        ]
+      }
+    },
+    {
+      "id": "p5-01",
+      "task_type": "依赖升级与迁移",
+      "capability_family": "固定提交导出",
+      "subject": "固定提交导出中的规范编码",
+      "state": "规范编码",
+      "invariant": "长度和摘要与图层内容对应",
+      "observable": "GET /image：长度和摘要与图层内容对应",
+      "primary_mechanism": "export_freeze",
+      "extension_seam_id": "export",
+      "workflow_ids": [
+        "export"
+      ],
+      "source_anchors": [
+        "internal/db/image.go",
+        "internal/folio/image.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/image.go",
+          "internal/folio/image.go"
+        ],
+        "functions": [
+          "Export",
+          "Encode"
+        ]
+      }
+    },
+    {
+      "id": "p5-02",
+      "task_type": "依赖升级与迁移",
+      "capability_family": "条件恢复镜像",
+      "subject": "条件恢复镜像中的目标 CAS",
+      "state": "目标 CAS",
+      "invariant": "镜像新旧不替代目标库条件",
+      "observable": "PUT /image：镜像新旧不替代目标库条件",
+      "primary_mechanism": "recovery_rollback",
+      "extension_seam_id": "restore",
+      "workflow_ids": [
+        "restore"
+      ],
+      "source_anchors": [
+        "internal/db/image.go",
+        "internal/db/state.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/image.go",
+          "internal/db/state.go"
+        ],
+        "functions": [
+          "Restore",
+          "fromImage"
+        ]
+      }
+    },
+    {
+      "id": "p5-03",
+      "task_type": "依赖升级与迁移",
+      "capability_family": "重启与恢复",
+      "subject": "重启与恢复中的写者锁",
+      "state": "写者锁",
+      "invariant": "旧持有者退出后新实例才可打开",
+      "observable": "服务启动及 GET /status：旧持有者退出后新实例才可打开",
+      "primary_mechanism": "concurrency",
+      "extension_seam_id": "reopen",
+      "workflow_ids": [
+        "reopen"
+      ],
+      "source_anchors": [
+        "internal/db/database.go",
+        "internal/folio/store.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/database.go",
+          "internal/folio/store.go"
+        ],
+        "functions": [
+          "openStore",
+          "Open"
+        ]
+      }
+    },
+    {
+      "id": "p5-04",
+      "task_type": "依赖升级与迁移",
+      "capability_family": "原子编辑",
+      "subject": "原子编辑中的末态排他",
+      "state": "末态排他",
+      "invariant": "允许交换中间态重叠的两个矩形",
+      "observable": "POST /edits：允许交换中间态重叠的两个矩形",
+      "primary_mechanism": "batch_transaction",
+      "extension_seam_id": "edit",
+      "workflow_ids": [
+        "edit"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/packed/exclusion.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/packed/exclusion.go"
+        ],
+        "functions": [
+          "applyEdit",
+          "Conflict"
+        ]
+      }
+    },
+    {
+      "id": "p5-05",
+      "task_type": "依赖升级与迁移",
+      "capability_family": "带书签空间窗口",
+      "subject": "带书签空间窗口中的书签层代数",
+      "state": "书签层代数",
+      "invariant": "相同图层写入使旧页失效",
+      "observable": "POST /strata/{layer}/window：相同图层写入使旧页失效",
+      "primary_mechanism": "snapshot_consistency",
+      "extension_seam_id": "window",
+      "workflow_ids": [
+        "window"
+      ],
+      "source_anchors": [
+        "internal/db/query.go",
+        "internal/bookmark/token.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/query.go",
+          "internal/bookmark/token.go"
+        ],
+        "functions": [
+          "Window",
+          "Open"
+        ]
+      }
+    },
+    {
+      "id": "p5-06",
+      "task_type": "依赖升级与迁移",
+      "capability_family": "跨层窗口配对",
+      "subject": "跨层窗口配对中的窗口裁剪",
+      "state": "窗口裁剪",
+      "invariant": "全局相交但窗内不相交不出对",
+      "observable": "POST /join：全局相交但窗内不相交不出对",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "join",
+      "workflow_ids": [
+        "join"
+      ],
+      "source_anchors": [
+        "internal/spatial/join.go",
+        "internal/db/query.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/join.go",
+          "internal/db/query.go"
+        ],
+        "functions": [
+          "restrict",
+          "Join"
+        ]
+      }
+    },
+    {
+      "id": "p5-07",
+      "task_type": "依赖升级与迁移",
+      "capability_family": "有向几何关系",
+      "subject": "有向几何关系中的有向包含",
+      "state": "有向包含",
+      "invariant": "换向不改变距离但交换包含方向",
+      "observable": "POST /relation：换向不改变距离但交换包含方向",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "relation",
+      "workflow_ids": [
+        "relation"
+      ],
+      "source_anchors": [
+        "internal/db/relation.go",
+        "internal/plane/relation.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/relation.go",
+          "internal/plane/relation.go"
+        ],
+        "functions": [
+          "Relate",
+          "contains"
+        ]
+      }
+    },
+    {
+      "id": "p5-08",
+      "task_type": "依赖升级与迁移",
+      "capability_family": "点定位",
+      "subject": "点定位中的半开归属",
+      "state": "半开归属",
+      "invariant": "上边界不匹配而下边界匹配",
+      "observable": "POST /strata/{layer}/locate：上边界不匹配而下边界匹配",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "locate",
+      "workflow_ids": [
+        "locate"
+      ],
+      "source_anchors": [
+        "internal/spatial/search.go",
+        "internal/plane/shape.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/search.go",
+          "internal/plane/shape.go"
+        ],
+        "functions": [
+          "Locate",
+          "At"
+        ]
+      }
+    },
+    {
+      "id": "p5-09",
+      "task_type": "依赖升级与迁移",
+      "capability_family": "矩形覆盖面积",
+      "subject": "矩形覆盖面积中的至少一次",
+      "state": "至少一次",
+      "invariant": "并集面积忽略重复覆盖次数",
+      "observable": "POST /strata/{layer}/coverage：并集面积忽略重复覆盖次数",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "coverage",
+      "workflow_ids": [
+        "coverage"
+      ],
+      "source_anchors": [
+        "internal/spatial/coverage.go",
+        "internal/spatial/lengths.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/coverage.go",
+          "internal/spatial/lengths.go"
+        ],
+        "functions": [
+          "Coverage",
+          "update"
+        ]
+      }
+    },
+    {
+      "id": "p5-10",
+      "task_type": "依赖升级与迁移",
+      "capability_family": "最近邻",
+      "subject": "最近邻中的闭包距离",
+      "state": "闭包距离",
+      "invariant": "开边上的点可能得到零距离",
+      "observable": "POST /strata/{layer}/nearest：开边上的点可能得到零距离",
+      "primary_mechanism": "ranking_reorder",
+      "extension_seam_id": "nearest",
+      "workflow_ids": [
+        "nearest"
+      ],
+      "source_anchors": [
+        "internal/packed/nearest.go",
+        "internal/plane/box.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/packed/nearest.go",
+          "internal/plane/box.go"
+        ],
+        "functions": [
+          "Nearest",
+          "DistanceSquared"
+        ]
+      }
+    },
+    {
+      "id": "p5-11",
+      "task_type": "依赖升级与迁移",
+      "capability_family": "变更空间约束",
+      "subject": "变更空间约束中的边界收缩",
+      "state": "边界收缩",
+      "invariant": "已有地物不可越界",
+      "observable": "PUT /strata/{layer}/layout：已有地物不可越界",
+      "primary_mechanism": "versioning_audit",
+      "extension_seam_id": "reframe",
+      "workflow_ids": [
+        "reframe"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/db/state.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/db/state.go"
+        ],
+        "functions": [
+          "Reframe",
+          "buildLayer"
+        ]
+      }
+    },
+    {
+      "id": "p5-12",
+      "task_type": "依赖升级与迁移",
+      "capability_family": "正长度共享边",
+      "subject": "正长度共享边中的接边裁切",
+      "state": "接边裁切",
+      "invariant": "双方之一完全在窗口外仍能贡献左边边线",
+      "observable": "POST /strata/{layer}/seams：双方之一完全在窗口外仍能贡献左边边线",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "seams",
+      "workflow_ids": [
+        "seams"
+      ],
+      "source_anchors": [
+        "internal/spatial/seams.go",
+        "internal/plane/seam.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/seams.go",
+          "internal/plane/seam.go"
+        ],
+        "functions": [
+          "Seams",
+          "SharedBoundary"
+        ]
+      }
+    },
+    {
+      "id": "p5-13",
+      "task_type": "依赖升级与迁移",
+      "capability_family": "读取树统计",
+      "subject": "读取树统计中的树结构",
+      "state": "树结构",
+      "invariant": "叶容量与条目总数同时可见",
+      "observable": "GET /strata/{layer}/index：叶容量与条目总数同时可见",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "inspect",
+      "workflow_ids": [
+        "inspect"
+      ],
+      "source_anchors": [
+        "internal/db/query.go",
+        "internal/packed/stats.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/query.go",
+          "internal/packed/stats.go"
+        ],
+        "functions": [
+          "Inspect",
+          "accumulate"
+        ]
+      }
+    },
+    {
+      "id": "p5-14",
+      "task_type": "依赖升级与迁移",
+      "capability_family": "创建图层",
+      "subject": "创建图层中的名称唯一",
+      "state": "名称唯一",
+      "invariant": "同名提交保留原定义",
+      "observable": "POST /strata：同名提交保留原定义",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "register",
+      "workflow_ids": [
+        "register"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/catalog/layer.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/catalog/layer.go"
+        ],
+        "functions": [
+          "Register",
+          "Validate"
+        ]
+      }
+    },
+    {
+      "id": "p5-15",
+      "task_type": "依赖升级与迁移",
+      "capability_family": "索引一致性核验",
+      "subject": "索引一致性核验中的树与目录",
+      "state": "树与目录",
+      "invariant": "相同计数仍需对照内容与包围盒",
+      "observable": "GET /strata/{layer}/index-audit：相同计数仍需对照内容与包围盒",
+      "primary_mechanism": "lineage",
+      "extension_seam_id": "audit",
+      "workflow_ids": [
+        "audit"
+      ],
+      "source_anchors": [
+        "internal/db/topology.go",
+        "internal/packed/audit.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/topology.go",
+          "internal/packed/audit.go"
+        ],
+        "functions": [
+          "Audit",
+          "auditNode"
+        ]
+      }
+    },
+    {
+      "id": "p6-01",
+      "task_type": "质量保障",
+      "capability_family": "最近邻",
+      "subject": "最近邻中的闭包距离",
+      "state": "闭包距离",
+      "invariant": "开边上的点可能得到零距离",
+      "observable": "POST /strata/{layer}/nearest：开边上的点可能得到零距离",
+      "primary_mechanism": "ranking_reorder",
+      "extension_seam_id": "nearest",
+      "workflow_ids": [
+        "nearest"
+      ],
+      "source_anchors": [
+        "internal/packed/nearest.go",
+        "internal/plane/box.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/packed/nearest.go",
+          "internal/plane/box.go"
+        ],
+        "functions": [
+          "Nearest",
+          "DistanceSquared"
+        ]
+      }
+    },
+    {
+      "id": "p6-02",
+      "task_type": "质量保障",
+      "capability_family": "正长度共享边",
+      "subject": "正长度共享边中的接边裁切",
+      "state": "接边裁切",
+      "invariant": "双方之一完全在窗口外仍能贡献左边边线",
+      "observable": "POST /strata/{layer}/seams：双方之一完全在窗口外仍能贡献左边边线",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "seams",
+      "workflow_ids": [
+        "seams"
+      ],
+      "source_anchors": [
+        "internal/spatial/seams.go",
+        "internal/plane/seam.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/seams.go",
+          "internal/plane/seam.go"
+        ],
+        "functions": [
+          "Seams",
+          "SharedBoundary"
+        ]
+      }
+    },
+    {
+      "id": "p6-03",
+      "task_type": "质量保障",
+      "capability_family": "带书签空间窗口",
+      "subject": "带书签空间窗口中的书签层代数",
+      "state": "书签层代数",
+      "invariant": "相同图层写入使旧页失效",
+      "observable": "POST /strata/{layer}/window：相同图层写入使旧页失效",
+      "primary_mechanism": "snapshot_consistency",
+      "extension_seam_id": "window",
+      "workflow_ids": [
+        "window"
+      ],
+      "source_anchors": [
+        "internal/db/query.go",
+        "internal/bookmark/token.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/query.go",
+          "internal/bookmark/token.go"
+        ],
+        "functions": [
+          "Window",
+          "Open"
+        ]
+      }
+    },
+    {
+      "id": "p6-04",
+      "task_type": "质量保障",
+      "capability_family": "原子编辑",
+      "subject": "原子编辑中的末态排他",
+      "state": "末态排他",
+      "invariant": "允许交换中间态重叠的两个矩形",
+      "observable": "POST /edits：允许交换中间态重叠的两个矩形",
+      "primary_mechanism": "batch_transaction",
+      "extension_seam_id": "edit",
+      "workflow_ids": [
+        "edit"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/packed/exclusion.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/packed/exclusion.go"
+        ],
+        "functions": [
+          "applyEdit",
+          "Conflict"
+        ]
+      }
+    },
+    {
+      "id": "p6-05",
+      "task_type": "质量保障",
+      "capability_family": "变更空间约束",
+      "subject": "变更空间约束中的边界收缩",
+      "state": "边界收缩",
+      "invariant": "已有地物不可越界",
+      "observable": "PUT /strata/{layer}/layout：已有地物不可越界",
+      "primary_mechanism": "versioning_audit",
+      "extension_seam_id": "reframe",
+      "workflow_ids": [
+        "reframe"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/db/state.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/db/state.go"
+        ],
+        "functions": [
+          "Reframe",
+          "buildLayer"
+        ]
+      }
+    },
+    {
+      "id": "p6-06",
+      "task_type": "质量保障",
+      "capability_family": "条件恢复镜像",
+      "subject": "条件恢复镜像中的目标 CAS",
+      "state": "目标 CAS",
+      "invariant": "镜像新旧不替代目标库条件",
+      "observable": "PUT /image：镜像新旧不替代目标库条件",
+      "primary_mechanism": "recovery_rollback",
+      "extension_seam_id": "restore",
+      "workflow_ids": [
+        "restore"
+      ],
+      "source_anchors": [
+        "internal/db/image.go",
+        "internal/db/state.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/image.go",
+          "internal/db/state.go"
+        ],
+        "functions": [
+          "Restore",
+          "fromImage"
+        ]
+      }
+    },
+    {
+      "id": "p6-07",
+      "task_type": "质量保障",
+      "capability_family": "矩形覆盖面积",
+      "subject": "矩形覆盖面积中的至少一次",
+      "state": "至少一次",
+      "invariant": "并集面积忽略重复覆盖次数",
+      "observable": "POST /strata/{layer}/coverage：并集面积忽略重复覆盖次数",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "coverage",
+      "workflow_ids": [
+        "coverage"
+      ],
+      "source_anchors": [
+        "internal/spatial/coverage.go",
+        "internal/spatial/lengths.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/coverage.go",
+          "internal/spatial/lengths.go"
+        ],
+        "functions": [
+          "Coverage",
+          "update"
+        ]
+      }
+    },
+    {
+      "id": "p6-08",
+      "task_type": "质量保障",
+      "capability_family": "有向几何关系",
+      "subject": "有向几何关系中的有向包含",
+      "state": "有向包含",
+      "invariant": "换向不改变距离但交换包含方向",
+      "observable": "POST /relation：换向不改变距离但交换包含方向",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "relation",
+      "workflow_ids": [
+        "relation"
+      ],
+      "source_anchors": [
+        "internal/db/relation.go",
+        "internal/plane/relation.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/relation.go",
+          "internal/plane/relation.go"
+        ],
+        "functions": [
+          "Relate",
+          "contains"
+        ]
+      }
+    },
+    {
+      "id": "p6-09",
+      "task_type": "质量保障",
+      "capability_family": "跨层窗口配对",
+      "subject": "跨层窗口配对中的窗口裁剪",
+      "state": "窗口裁剪",
+      "invariant": "全局相交但窗内不相交不出对",
+      "observable": "POST /join：全局相交但窗内不相交不出对",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "join",
+      "workflow_ids": [
+        "join"
+      ],
+      "source_anchors": [
+        "internal/spatial/join.go",
+        "internal/db/query.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/join.go",
+          "internal/db/query.go"
+        ],
+        "functions": [
+          "restrict",
+          "Join"
+        ]
+      }
+    },
+    {
+      "id": "p6-10",
+      "task_type": "质量保障",
+      "capability_family": "点定位",
+      "subject": "点定位中的半开归属",
+      "state": "半开归属",
+      "invariant": "上边界不匹配而下边界匹配",
+      "observable": "POST /strata/{layer}/locate：上边界不匹配而下边界匹配",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "locate",
+      "workflow_ids": [
+        "locate"
+      ],
+      "source_anchors": [
+        "internal/spatial/search.go",
+        "internal/plane/shape.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/search.go",
+          "internal/plane/shape.go"
+        ],
+        "functions": [
+          "Locate",
+          "At"
+        ]
+      }
+    },
+    {
+      "id": "p6-11",
+      "task_type": "质量保障",
+      "capability_family": "创建图层",
+      "subject": "创建图层中的名称唯一",
+      "state": "名称唯一",
+      "invariant": "同名提交保留原定义",
+      "observable": "POST /strata：同名提交保留原定义",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "register",
+      "workflow_ids": [
+        "register"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/catalog/layer.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/catalog/layer.go"
+        ],
+        "functions": [
+          "Register",
+          "Validate"
+        ]
+      }
+    },
+    {
+      "id": "p6-12",
+      "task_type": "质量保障",
+      "capability_family": "重启与恢复",
+      "subject": "重启与恢复中的写者锁",
+      "state": "写者锁",
+      "invariant": "旧持有者退出后新实例才可打开",
+      "observable": "服务启动及 GET /status：旧持有者退出后新实例才可打开",
+      "primary_mechanism": "concurrency",
+      "extension_seam_id": "reopen",
+      "workflow_ids": [
+        "reopen"
+      ],
+      "source_anchors": [
+        "internal/db/database.go",
+        "internal/folio/store.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/database.go",
+          "internal/folio/store.go"
+        ],
+        "functions": [
+          "openStore",
+          "Open"
+        ]
+      }
+    },
+    {
+      "id": "p6-13",
+      "task_type": "质量保障",
+      "capability_family": "固定提交导出",
+      "subject": "固定提交导出中的规范编码",
+      "state": "规范编码",
+      "invariant": "长度和摘要与图层内容对应",
+      "observable": "GET /image：长度和摘要与图层内容对应",
+      "primary_mechanism": "export_freeze",
+      "extension_seam_id": "export",
+      "workflow_ids": [
+        "export"
+      ],
+      "source_anchors": [
+        "internal/db/image.go",
+        "internal/folio/image.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/image.go",
+          "internal/folio/image.go"
+        ],
+        "functions": [
+          "Export",
+          "Encode"
+        ]
+      }
+    },
+    {
+      "id": "p6-14",
+      "task_type": "质量保障",
+      "capability_family": "读取树统计",
+      "subject": "读取树统计中的树结构",
+      "state": "树结构",
+      "invariant": "叶容量与条目总数同时可见",
+      "observable": "GET /strata/{layer}/index：叶容量与条目总数同时可见",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "inspect",
+      "workflow_ids": [
+        "inspect"
+      ],
+      "source_anchors": [
+        "internal/db/query.go",
+        "internal/packed/stats.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/query.go",
+          "internal/packed/stats.go"
+        ],
+        "functions": [
+          "Inspect",
+          "accumulate"
+        ]
+      }
+    },
+    {
+      "id": "p6-15",
+      "task_type": "质量保障",
+      "capability_family": "索引一致性核验",
+      "subject": "索引一致性核验中的树与目录",
+      "state": "树与目录",
+      "invariant": "相同计数仍需对照内容与包围盒",
+      "observable": "GET /strata/{layer}/index-audit：相同计数仍需对照内容与包围盒",
+      "primary_mechanism": "lineage",
+      "extension_seam_id": "audit",
+      "workflow_ids": [
+        "audit"
+      ],
+      "source_anchors": [
+        "internal/db/topology.go",
+        "internal/packed/audit.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/topology.go",
+          "internal/packed/audit.go"
+        ],
+        "functions": [
+          "Audit",
+          "auditNode"
+        ]
+      }
+    },
+    {
+      "id": "p7-01",
+      "task_type": "项目维护",
+      "capability_family": "有向几何关系",
+      "subject": "有向几何关系中的有向包含",
+      "state": "有向包含",
+      "invariant": "换向不改变距离但交换包含方向",
+      "observable": "POST /relation：换向不改变距离但交换包含方向",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "relation",
+      "workflow_ids": [
+        "relation"
+      ],
+      "source_anchors": [
+        "internal/db/relation.go",
+        "internal/plane/relation.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/relation.go",
+          "internal/plane/relation.go"
+        ],
+        "functions": [
+          "Relate",
+          "contains"
+        ]
+      }
+    },
+    {
+      "id": "p7-02",
+      "task_type": "项目维护",
+      "capability_family": "带书签空间窗口",
+      "subject": "带书签空间窗口中的书签层代数",
+      "state": "书签层代数",
+      "invariant": "相同图层写入使旧页失效",
+      "observable": "POST /strata/{layer}/window：相同图层写入使旧页失效",
+      "primary_mechanism": "snapshot_consistency",
+      "extension_seam_id": "window",
+      "workflow_ids": [
+        "window"
+      ],
+      "source_anchors": [
+        "internal/db/query.go",
+        "internal/bookmark/token.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/query.go",
+          "internal/bookmark/token.go"
+        ],
+        "functions": [
+          "Window",
+          "Open"
+        ]
+      }
+    },
+    {
+      "id": "p7-03",
+      "task_type": "项目维护",
+      "capability_family": "条件恢复镜像",
+      "subject": "条件恢复镜像中的目标 CAS",
+      "state": "目标 CAS",
+      "invariant": "镜像新旧不替代目标库条件",
+      "observable": "PUT /image：镜像新旧不替代目标库条件",
+      "primary_mechanism": "recovery_rollback",
+      "extension_seam_id": "restore",
+      "workflow_ids": [
+        "restore"
+      ],
+      "source_anchors": [
+        "internal/db/image.go",
+        "internal/db/state.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/image.go",
+          "internal/db/state.go"
+        ],
+        "functions": [
+          "Restore",
+          "fromImage"
+        ]
+      }
+    },
+    {
+      "id": "p7-04",
+      "task_type": "项目维护",
+      "capability_family": "原子编辑",
+      "subject": "原子编辑中的末态排他",
+      "state": "末态排他",
+      "invariant": "允许交换中间态重叠的两个矩形",
+      "observable": "POST /edits：允许交换中间态重叠的两个矩形",
+      "primary_mechanism": "batch_transaction",
+      "extension_seam_id": "edit",
+      "workflow_ids": [
+        "edit"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/packed/exclusion.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/packed/exclusion.go"
+        ],
+        "functions": [
+          "applyEdit",
+          "Conflict"
+        ]
+      }
+    },
+    {
+      "id": "p7-05",
+      "task_type": "项目维护",
+      "capability_family": "正长度共享边",
+      "subject": "正长度共享边中的接边裁切",
+      "state": "接边裁切",
+      "invariant": "双方之一完全在窗口外仍能贡献左边边线",
+      "observable": "POST /strata/{layer}/seams：双方之一完全在窗口外仍能贡献左边边线",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "seams",
+      "workflow_ids": [
+        "seams"
+      ],
+      "source_anchors": [
+        "internal/spatial/seams.go",
+        "internal/plane/seam.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/seams.go",
+          "internal/plane/seam.go"
+        ],
+        "functions": [
+          "Seams",
+          "SharedBoundary"
+        ]
+      }
+    },
+    {
+      "id": "p7-06",
+      "task_type": "项目维护",
+      "capability_family": "矩形覆盖面积",
+      "subject": "矩形覆盖面积中的至少一次",
+      "state": "至少一次",
+      "invariant": "并集面积忽略重复覆盖次数",
+      "observable": "POST /strata/{layer}/coverage：并集面积忽略重复覆盖次数",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "coverage",
+      "workflow_ids": [
+        "coverage"
+      ],
+      "source_anchors": [
+        "internal/spatial/coverage.go",
+        "internal/spatial/lengths.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/coverage.go",
+          "internal/spatial/lengths.go"
+        ],
+        "functions": [
+          "Coverage",
+          "update"
+        ]
+      }
+    },
+    {
+      "id": "p7-07",
+      "task_type": "项目维护",
+      "capability_family": "点定位",
+      "subject": "点定位中的半开归属",
+      "state": "半开归属",
+      "invariant": "上边界不匹配而下边界匹配",
+      "observable": "POST /strata/{layer}/locate：上边界不匹配而下边界匹配",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "locate",
+      "workflow_ids": [
+        "locate"
+      ],
+      "source_anchors": [
+        "internal/spatial/search.go",
+        "internal/plane/shape.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/search.go",
+          "internal/plane/shape.go"
+        ],
+        "functions": [
+          "Locate",
+          "At"
+        ]
+      }
+    },
+    {
+      "id": "p7-08",
+      "task_type": "项目维护",
+      "capability_family": "最近邻",
+      "subject": "最近邻中的闭包距离",
+      "state": "闭包距离",
+      "invariant": "开边上的点可能得到零距离",
+      "observable": "POST /strata/{layer}/nearest：开边上的点可能得到零距离",
+      "primary_mechanism": "ranking_reorder",
+      "extension_seam_id": "nearest",
+      "workflow_ids": [
+        "nearest"
+      ],
+      "source_anchors": [
+        "internal/packed/nearest.go",
+        "internal/plane/box.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/packed/nearest.go",
+          "internal/plane/box.go"
+        ],
+        "functions": [
+          "Nearest",
+          "DistanceSquared"
+        ]
+      }
+    },
+    {
+      "id": "p7-09",
+      "task_type": "项目维护",
+      "capability_family": "跨层窗口配对",
+      "subject": "跨层窗口配对中的窗口裁剪",
+      "state": "窗口裁剪",
+      "invariant": "全局相交但窗内不相交不出对",
+      "observable": "POST /join：全局相交但窗内不相交不出对",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "join",
+      "workflow_ids": [
+        "join"
+      ],
+      "source_anchors": [
+        "internal/spatial/join.go",
+        "internal/db/query.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/join.go",
+          "internal/db/query.go"
+        ],
+        "functions": [
+          "restrict",
+          "Join"
+        ]
+      }
+    },
+    {
+      "id": "p7-10",
+      "task_type": "项目维护",
+      "capability_family": "索引一致性核验",
+      "subject": "索引一致性核验中的树与目录",
+      "state": "树与目录",
+      "invariant": "相同计数仍需对照内容与包围盒",
+      "observable": "GET /strata/{layer}/index-audit：相同计数仍需对照内容与包围盒",
+      "primary_mechanism": "lineage",
+      "extension_seam_id": "audit",
+      "workflow_ids": [
+        "audit"
+      ],
+      "source_anchors": [
+        "internal/db/topology.go",
+        "internal/packed/audit.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/topology.go",
+          "internal/packed/audit.go"
+        ],
+        "functions": [
+          "Audit",
+          "auditNode"
+        ]
+      }
+    },
+    {
+      "id": "p7-11",
+      "task_type": "项目维护",
+      "capability_family": "创建图层",
+      "subject": "创建图层中的名称唯一",
+      "state": "名称唯一",
+      "invariant": "同名提交保留原定义",
+      "observable": "POST /strata：同名提交保留原定义",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "register",
+      "workflow_ids": [
+        "register"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/catalog/layer.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/catalog/layer.go"
+        ],
+        "functions": [
+          "Register",
+          "Validate"
+        ]
+      }
+    },
+    {
+      "id": "p7-12",
+      "task_type": "项目维护",
+      "capability_family": "变更空间约束",
+      "subject": "变更空间约束中的边界收缩",
+      "state": "边界收缩",
+      "invariant": "已有地物不可越界",
+      "observable": "PUT /strata/{layer}/layout：已有地物不可越界",
+      "primary_mechanism": "versioning_audit",
+      "extension_seam_id": "reframe",
+      "workflow_ids": [
+        "reframe"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/db/state.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/db/state.go"
+        ],
+        "functions": [
+          "Reframe",
+          "buildLayer"
+        ]
+      }
+    },
+    {
+      "id": "p7-13",
+      "task_type": "项目维护",
+      "capability_family": "读取树统计",
+      "subject": "读取树统计中的树结构",
+      "state": "树结构",
+      "invariant": "叶容量与条目总数同时可见",
+      "observable": "GET /strata/{layer}/index：叶容量与条目总数同时可见",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "inspect",
+      "workflow_ids": [
+        "inspect"
+      ],
+      "source_anchors": [
+        "internal/db/query.go",
+        "internal/packed/stats.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/query.go",
+          "internal/packed/stats.go"
+        ],
+        "functions": [
+          "Inspect",
+          "accumulate"
+        ]
+      }
+    },
+    {
+      "id": "p7-14",
+      "task_type": "项目维护",
+      "capability_family": "固定提交导出",
+      "subject": "固定提交导出中的规范编码",
+      "state": "规范编码",
+      "invariant": "长度和摘要与图层内容对应",
+      "observable": "GET /image：长度和摘要与图层内容对应",
+      "primary_mechanism": "export_freeze",
+      "extension_seam_id": "export",
+      "workflow_ids": [
+        "export"
+      ],
+      "source_anchors": [
+        "internal/db/image.go",
+        "internal/folio/image.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/image.go",
+          "internal/folio/image.go"
+        ],
+        "functions": [
+          "Export",
+          "Encode"
+        ]
+      }
+    },
+    {
+      "id": "p7-15",
+      "task_type": "项目维护",
+      "capability_family": "重启与恢复",
+      "subject": "重启与恢复中的写者锁",
+      "state": "写者锁",
+      "invariant": "旧持有者退出后新实例才可打开",
+      "observable": "服务启动及 GET /status：旧持有者退出后新实例才可打开",
+      "primary_mechanism": "concurrency",
+      "extension_seam_id": "reopen",
+      "workflow_ids": [
+        "reopen"
+      ],
+      "source_anchors": [
+        "internal/db/database.go",
+        "internal/folio/store.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/database.go",
+          "internal/folio/store.go"
+        ],
+        "functions": [
+          "openStore",
+          "Open"
+        ]
+      }
+    },
+    {
+      "id": "p8-01",
+      "task_type": "技术讨论",
+      "capability_family": "读取树统计",
+      "subject": "读取树统计中的树结构",
+      "state": "树结构",
+      "invariant": "叶容量与条目总数同时可见",
+      "observable": "GET /strata/{layer}/index：叶容量与条目总数同时可见",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "inspect",
+      "workflow_ids": [
+        "inspect"
+      ],
+      "source_anchors": [
+        "internal/db/query.go",
+        "internal/packed/stats.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/query.go",
+          "internal/packed/stats.go"
+        ],
+        "functions": [
+          "Inspect",
+          "accumulate"
+        ]
+      }
+    },
+    {
+      "id": "p8-02",
+      "task_type": "技术讨论",
+      "capability_family": "重启与恢复",
+      "subject": "重启与恢复中的写者锁",
+      "state": "写者锁",
+      "invariant": "旧持有者退出后新实例才可打开",
+      "observable": "服务启动及 GET /status：旧持有者退出后新实例才可打开",
+      "primary_mechanism": "concurrency",
+      "extension_seam_id": "reopen",
+      "workflow_ids": [
+        "reopen"
+      ],
+      "source_anchors": [
+        "internal/db/database.go",
+        "internal/folio/store.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/database.go",
+          "internal/folio/store.go"
+        ],
+        "functions": [
+          "openStore",
+          "Open"
+        ]
+      }
+    },
+    {
+      "id": "p8-03",
+      "task_type": "技术讨论",
+      "capability_family": "最近邻",
+      "subject": "最近邻中的闭包距离",
+      "state": "闭包距离",
+      "invariant": "开边上的点可能得到零距离",
+      "observable": "POST /strata/{layer}/nearest：开边上的点可能得到零距离",
+      "primary_mechanism": "ranking_reorder",
+      "extension_seam_id": "nearest",
+      "workflow_ids": [
+        "nearest"
+      ],
+      "source_anchors": [
+        "internal/packed/nearest.go",
+        "internal/plane/box.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/packed/nearest.go",
+          "internal/plane/box.go"
+        ],
+        "functions": [
+          "Nearest",
+          "DistanceSquared"
+        ]
+      }
+    },
+    {
+      "id": "p8-04",
+      "task_type": "技术讨论",
+      "capability_family": "矩形覆盖面积",
+      "subject": "矩形覆盖面积中的至少一次",
+      "state": "至少一次",
+      "invariant": "并集面积忽略重复覆盖次数",
+      "observable": "POST /strata/{layer}/coverage：并集面积忽略重复覆盖次数",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "coverage",
+      "workflow_ids": [
+        "coverage"
+      ],
+      "source_anchors": [
+        "internal/spatial/coverage.go",
+        "internal/spatial/lengths.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/coverage.go",
+          "internal/spatial/lengths.go"
+        ],
+        "functions": [
+          "Coverage",
+          "update"
+        ]
+      }
+    },
+    {
+      "id": "p8-05",
+      "task_type": "技术讨论",
+      "capability_family": "原子编辑",
+      "subject": "原子编辑中的末态排他",
+      "state": "末态排他",
+      "invariant": "允许交换中间态重叠的两个矩形",
+      "observable": "POST /edits：允许交换中间态重叠的两个矩形",
+      "primary_mechanism": "batch_transaction",
+      "extension_seam_id": "edit",
+      "workflow_ids": [
+        "edit"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/packed/exclusion.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/packed/exclusion.go"
+        ],
+        "functions": [
+          "applyEdit",
+          "Conflict"
+        ]
+      }
+    },
+    {
+      "id": "p8-06",
+      "task_type": "技术讨论",
+      "capability_family": "带书签空间窗口",
+      "subject": "带书签空间窗口中的书签层代数",
+      "state": "书签层代数",
+      "invariant": "相同图层写入使旧页失效",
+      "observable": "POST /strata/{layer}/window：相同图层写入使旧页失效",
+      "primary_mechanism": "snapshot_consistency",
+      "extension_seam_id": "window",
+      "workflow_ids": [
+        "window"
+      ],
+      "source_anchors": [
+        "internal/db/query.go",
+        "internal/bookmark/token.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/query.go",
+          "internal/bookmark/token.go"
+        ],
+        "functions": [
+          "Window",
+          "Open"
+        ]
+      }
+    },
+    {
+      "id": "p8-07",
+      "task_type": "技术讨论",
+      "capability_family": "条件恢复镜像",
+      "subject": "条件恢复镜像中的目标 CAS",
+      "state": "目标 CAS",
+      "invariant": "镜像新旧不替代目标库条件",
+      "observable": "PUT /image：镜像新旧不替代目标库条件",
+      "primary_mechanism": "recovery_rollback",
+      "extension_seam_id": "restore",
+      "workflow_ids": [
+        "restore"
+      ],
+      "source_anchors": [
+        "internal/db/image.go",
+        "internal/db/state.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/image.go",
+          "internal/db/state.go"
+        ],
+        "functions": [
+          "Restore",
+          "fromImage"
+        ]
+      }
+    },
+    {
+      "id": "p8-08",
+      "task_type": "技术讨论",
+      "capability_family": "固定提交导出",
+      "subject": "固定提交导出中的规范编码",
+      "state": "规范编码",
+      "invariant": "长度和摘要与图层内容对应",
+      "observable": "GET /image：长度和摘要与图层内容对应",
+      "primary_mechanism": "export_freeze",
+      "extension_seam_id": "export",
+      "workflow_ids": [
+        "export"
+      ],
+      "source_anchors": [
+        "internal/db/image.go",
+        "internal/folio/image.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/image.go",
+          "internal/folio/image.go"
+        ],
+        "functions": [
+          "Export",
+          "Encode"
+        ]
+      }
+    },
+    {
+      "id": "p8-09",
+      "task_type": "技术讨论",
+      "capability_family": "有向几何关系",
+      "subject": "有向几何关系中的有向包含",
+      "state": "有向包含",
+      "invariant": "换向不改变距离但交换包含方向",
+      "observable": "POST /relation：换向不改变距离但交换包含方向",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "relation",
+      "workflow_ids": [
+        "relation"
+      ],
+      "source_anchors": [
+        "internal/db/relation.go",
+        "internal/plane/relation.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/relation.go",
+          "internal/plane/relation.go"
+        ],
+        "functions": [
+          "Relate",
+          "contains"
+        ]
+      }
+    },
+    {
+      "id": "p8-10",
+      "task_type": "技术讨论",
+      "capability_family": "跨层窗口配对",
+      "subject": "跨层窗口配对中的窗口裁剪",
+      "state": "窗口裁剪",
+      "invariant": "全局相交但窗内不相交不出对",
+      "observable": "POST /join：全局相交但窗内不相交不出对",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "join",
+      "workflow_ids": [
+        "join"
+      ],
+      "source_anchors": [
+        "internal/spatial/join.go",
+        "internal/db/query.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/join.go",
+          "internal/db/query.go"
+        ],
+        "functions": [
+          "restrict",
+          "Join"
+        ]
+      }
+    },
+    {
+      "id": "p8-11",
+      "task_type": "技术讨论",
+      "capability_family": "正长度共享边",
+      "subject": "正长度共享边中的接边裁切",
+      "state": "接边裁切",
+      "invariant": "双方之一完全在窗口外仍能贡献左边边线",
+      "observable": "POST /strata/{layer}/seams：双方之一完全在窗口外仍能贡献左边边线",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "seams",
+      "workflow_ids": [
+        "seams"
+      ],
+      "source_anchors": [
+        "internal/spatial/seams.go",
+        "internal/plane/seam.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/seams.go",
+          "internal/plane/seam.go"
+        ],
+        "functions": [
+          "Seams",
+          "SharedBoundary"
+        ]
+      }
+    },
+    {
+      "id": "p8-12",
+      "task_type": "技术讨论",
+      "capability_family": "创建图层",
+      "subject": "创建图层中的名称唯一",
+      "state": "名称唯一",
+      "invariant": "同名提交保留原定义",
+      "observable": "POST /strata：同名提交保留原定义",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "register",
+      "workflow_ids": [
+        "register"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/catalog/layer.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/catalog/layer.go"
+        ],
+        "functions": [
+          "Register",
+          "Validate"
+        ]
+      }
+    },
+    {
+      "id": "p8-13",
+      "task_type": "技术讨论",
+      "capability_family": "变更空间约束",
+      "subject": "变更空间约束中的边界收缩",
+      "state": "边界收缩",
+      "invariant": "已有地物不可越界",
+      "observable": "PUT /strata/{layer}/layout：已有地物不可越界",
+      "primary_mechanism": "versioning_audit",
+      "extension_seam_id": "reframe",
+      "workflow_ids": [
+        "reframe"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/db/state.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/db/state.go"
+        ],
+        "functions": [
+          "Reframe",
+          "buildLayer"
+        ]
+      }
+    },
+    {
+      "id": "p8-14",
+      "task_type": "技术讨论",
+      "capability_family": "点定位",
+      "subject": "点定位中的半开归属",
+      "state": "半开归属",
+      "invariant": "上边界不匹配而下边界匹配",
+      "observable": "POST /strata/{layer}/locate：上边界不匹配而下边界匹配",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "locate",
+      "workflow_ids": [
+        "locate"
+      ],
+      "source_anchors": [
+        "internal/spatial/search.go",
+        "internal/plane/shape.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/search.go",
+          "internal/plane/shape.go"
+        ],
+        "functions": [
+          "Locate",
+          "At"
+        ]
+      }
+    },
+    {
+      "id": "p8-15",
+      "task_type": "技术讨论",
+      "capability_family": "索引一致性核验",
+      "subject": "索引一致性核验中的树与目录",
+      "state": "树与目录",
+      "invariant": "相同计数仍需对照内容与包围盒",
+      "observable": "GET /strata/{layer}/index-audit：相同计数仍需对照内容与包围盒",
+      "primary_mechanism": "lineage",
+      "extension_seam_id": "audit",
+      "workflow_ids": [
+        "audit"
+      ],
+      "source_anchors": [
+        "internal/db/topology.go",
+        "internal/packed/audit.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/topology.go",
+          "internal/packed/audit.go"
+        ],
+        "functions": [
+          "Audit",
+          "auditNode"
+        ]
+      }
+    },
+    {
+      "id": "p9-01",
+      "task_type": "问题排查与诊断",
+      "capability_family": "正长度共享边",
+      "subject": "正长度共享边中的接边裁切",
+      "state": "接边裁切",
+      "invariant": "双方之一完全在窗口外仍能贡献左边边线",
+      "observable": "POST /strata/{layer}/seams：双方之一完全在窗口外仍能贡献左边边线",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "seams",
+      "workflow_ids": [
+        "seams"
+      ],
+      "source_anchors": [
+        "internal/spatial/seams.go",
+        "internal/plane/seam.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/seams.go",
+          "internal/plane/seam.go"
+        ],
+        "functions": [
+          "Seams",
+          "SharedBoundary"
+        ]
+      }
+    },
+    {
+      "id": "p9-02",
+      "task_type": "问题排查与诊断",
+      "capability_family": "重启与恢复",
+      "subject": "重启与恢复中的写者锁",
+      "state": "写者锁",
+      "invariant": "旧持有者退出后新实例才可打开",
+      "observable": "服务启动及 GET /status：旧持有者退出后新实例才可打开",
+      "primary_mechanism": "concurrency",
+      "extension_seam_id": "reopen",
+      "workflow_ids": [
+        "reopen"
+      ],
+      "source_anchors": [
+        "internal/db/database.go",
+        "internal/folio/store.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/database.go",
+          "internal/folio/store.go"
+        ],
+        "functions": [
+          "openStore",
+          "Open"
+        ]
+      }
+    },
+    {
+      "id": "p9-03",
+      "task_type": "问题排查与诊断",
+      "capability_family": "带书签空间窗口",
+      "subject": "带书签空间窗口中的书签层代数",
+      "state": "书签层代数",
+      "invariant": "相同图层写入使旧页失效",
+      "observable": "POST /strata/{layer}/window：相同图层写入使旧页失效",
+      "primary_mechanism": "snapshot_consistency",
+      "extension_seam_id": "window",
+      "workflow_ids": [
+        "window"
+      ],
+      "source_anchors": [
+        "internal/db/query.go",
+        "internal/bookmark/token.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/query.go",
+          "internal/bookmark/token.go"
+        ],
+        "functions": [
+          "Window",
+          "Open"
+        ]
+      }
+    },
+    {
+      "id": "p9-04",
+      "task_type": "问题排查与诊断",
+      "capability_family": "有向几何关系",
+      "subject": "有向几何关系中的有向包含",
+      "state": "有向包含",
+      "invariant": "换向不改变距离但交换包含方向",
+      "observable": "POST /relation：换向不改变距离但交换包含方向",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "relation",
+      "workflow_ids": [
+        "relation"
+      ],
+      "source_anchors": [
+        "internal/db/relation.go",
+        "internal/plane/relation.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/relation.go",
+          "internal/plane/relation.go"
+        ],
+        "functions": [
+          "Relate",
+          "contains"
+        ]
+      }
+    },
+    {
+      "id": "p9-05",
+      "task_type": "问题排查与诊断",
+      "capability_family": "跨层窗口配对",
+      "subject": "跨层窗口配对中的窗口裁剪",
+      "state": "窗口裁剪",
+      "invariant": "全局相交但窗内不相交不出对",
+      "observable": "POST /join：全局相交但窗内不相交不出对",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "join",
+      "workflow_ids": [
+        "join"
+      ],
+      "source_anchors": [
+        "internal/spatial/join.go",
+        "internal/db/query.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/join.go",
+          "internal/db/query.go"
+        ],
+        "functions": [
+          "restrict",
+          "Join"
+        ]
+      }
+    },
+    {
+      "id": "p9-06",
+      "task_type": "问题排查与诊断",
+      "capability_family": "矩形覆盖面积",
+      "subject": "矩形覆盖面积中的至少一次",
+      "state": "至少一次",
+      "invariant": "并集面积忽略重复覆盖次数",
+      "observable": "POST /strata/{layer}/coverage：并集面积忽略重复覆盖次数",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "coverage",
+      "workflow_ids": [
+        "coverage"
+      ],
+      "source_anchors": [
+        "internal/spatial/coverage.go",
+        "internal/spatial/lengths.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/coverage.go",
+          "internal/spatial/lengths.go"
+        ],
+        "functions": [
+          "Coverage",
+          "update"
+        ]
+      }
+    },
+    {
+      "id": "p9-07",
+      "task_type": "问题排查与诊断",
+      "capability_family": "最近邻",
+      "subject": "最近邻中的闭包距离",
+      "state": "闭包距离",
+      "invariant": "开边上的点可能得到零距离",
+      "observable": "POST /strata/{layer}/nearest：开边上的点可能得到零距离",
+      "primary_mechanism": "ranking_reorder",
+      "extension_seam_id": "nearest",
+      "workflow_ids": [
+        "nearest"
+      ],
+      "source_anchors": [
+        "internal/packed/nearest.go",
+        "internal/plane/box.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/packed/nearest.go",
+          "internal/plane/box.go"
+        ],
+        "functions": [
+          "Nearest",
+          "DistanceSquared"
+        ]
+      }
+    },
+    {
+      "id": "p9-08",
+      "task_type": "问题排查与诊断",
+      "capability_family": "点定位",
+      "subject": "点定位中的半开归属",
+      "state": "半开归属",
+      "invariant": "上边界不匹配而下边界匹配",
+      "observable": "POST /strata/{layer}/locate：上边界不匹配而下边界匹配",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "locate",
+      "workflow_ids": [
+        "locate"
+      ],
+      "source_anchors": [
+        "internal/spatial/search.go",
+        "internal/plane/shape.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/search.go",
+          "internal/plane/shape.go"
+        ],
+        "functions": [
+          "Locate",
+          "At"
+        ]
+      }
+    },
+    {
+      "id": "p9-09",
+      "task_type": "问题排查与诊断",
+      "capability_family": "变更空间约束",
+      "subject": "变更空间约束中的边界收缩",
+      "state": "边界收缩",
+      "invariant": "已有地物不可越界",
+      "observable": "PUT /strata/{layer}/layout：已有地物不可越界",
+      "primary_mechanism": "versioning_audit",
+      "extension_seam_id": "reframe",
+      "workflow_ids": [
+        "reframe"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/db/state.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/db/state.go"
+        ],
+        "functions": [
+          "Reframe",
+          "buildLayer"
+        ]
+      }
+    },
+    {
+      "id": "p9-10",
+      "task_type": "问题排查与诊断",
+      "capability_family": "原子编辑",
+      "subject": "原子编辑中的末态排他",
+      "state": "末态排他",
+      "invariant": "允许交换中间态重叠的两个矩形",
+      "observable": "POST /edits：允许交换中间态重叠的两个矩形",
+      "primary_mechanism": "batch_transaction",
+      "extension_seam_id": "edit",
+      "workflow_ids": [
+        "edit"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/packed/exclusion.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/packed/exclusion.go"
+        ],
+        "functions": [
+          "applyEdit",
+          "Conflict"
+        ]
+      }
+    },
+    {
+      "id": "p9-11",
+      "task_type": "问题排查与诊断",
+      "capability_family": "创建图层",
+      "subject": "创建图层中的名称唯一",
+      "state": "名称唯一",
+      "invariant": "同名提交保留原定义",
+      "observable": "POST /strata：同名提交保留原定义",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "register",
+      "workflow_ids": [
+        "register"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/catalog/layer.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/catalog/layer.go"
+        ],
+        "functions": [
+          "Register",
+          "Validate"
+        ]
+      }
+    },
+    {
+      "id": "p9-12",
+      "task_type": "问题排查与诊断",
+      "capability_family": "读取树统计",
+      "subject": "读取树统计中的树结构",
+      "state": "树结构",
+      "invariant": "叶容量与条目总数同时可见",
+      "observable": "GET /strata/{layer}/index：叶容量与条目总数同时可见",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "inspect",
+      "workflow_ids": [
+        "inspect"
+      ],
+      "source_anchors": [
+        "internal/db/query.go",
+        "internal/packed/stats.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/query.go",
+          "internal/packed/stats.go"
+        ],
+        "functions": [
+          "Inspect",
+          "accumulate"
+        ]
+      }
+    },
+    {
+      "id": "p9-13",
+      "task_type": "问题排查与诊断",
+      "capability_family": "索引一致性核验",
+      "subject": "索引一致性核验中的树与目录",
+      "state": "树与目录",
+      "invariant": "相同计数仍需对照内容与包围盒",
+      "observable": "GET /strata/{layer}/index-audit：相同计数仍需对照内容与包围盒",
+      "primary_mechanism": "lineage",
+      "extension_seam_id": "audit",
+      "workflow_ids": [
+        "audit"
+      ],
+      "source_anchors": [
+        "internal/db/topology.go",
+        "internal/packed/audit.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/topology.go",
+          "internal/packed/audit.go"
+        ],
+        "functions": [
+          "Audit",
+          "auditNode"
+        ]
+      }
+    },
+    {
+      "id": "p9-14",
+      "task_type": "问题排查与诊断",
+      "capability_family": "固定提交导出",
+      "subject": "固定提交导出中的规范编码",
+      "state": "规范编码",
+      "invariant": "长度和摘要与图层内容对应",
+      "observable": "GET /image：长度和摘要与图层内容对应",
+      "primary_mechanism": "export_freeze",
+      "extension_seam_id": "export",
+      "workflow_ids": [
+        "export"
+      ],
+      "source_anchors": [
+        "internal/db/image.go",
+        "internal/folio/image.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/image.go",
+          "internal/folio/image.go"
+        ],
+        "functions": [
+          "Export",
+          "Encode"
+        ]
+      }
+    },
+    {
+      "id": "p9-15",
+      "task_type": "问题排查与诊断",
+      "capability_family": "条件恢复镜像",
+      "subject": "条件恢复镜像中的目标 CAS",
+      "state": "目标 CAS",
+      "invariant": "镜像新旧不替代目标库条件",
+      "observable": "PUT /image：镜像新旧不替代目标库条件",
+      "primary_mechanism": "recovery_rollback",
+      "extension_seam_id": "restore",
+      "workflow_ids": [
+        "restore"
+      ],
+      "source_anchors": [
+        "internal/db/image.go",
+        "internal/db/state.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/image.go",
+          "internal/db/state.go"
+        ],
+        "functions": [
+          "Restore",
+          "fromImage"
+        ]
+      }
+    },
+    {
+      "id": "p10-01",
+      "task_type": "部署运维",
+      "capability_family": "重启与恢复",
+      "subject": "重启与恢复中的写者锁",
+      "state": "写者锁",
+      "invariant": "旧持有者退出后新实例才可打开",
+      "observable": "服务启动及 GET /status：旧持有者退出后新实例才可打开",
+      "primary_mechanism": "concurrency",
+      "extension_seam_id": "reopen",
+      "workflow_ids": [
+        "reopen"
+      ],
+      "source_anchors": [
+        "internal/db/database.go",
+        "internal/folio/store.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/database.go",
+          "internal/folio/store.go"
+        ],
+        "functions": [
+          "openStore",
+          "Open"
+        ]
+      }
+    },
+    {
+      "id": "p10-02",
+      "task_type": "部署运维",
+      "capability_family": "条件恢复镜像",
+      "subject": "条件恢复镜像中的目标 CAS",
+      "state": "目标 CAS",
+      "invariant": "镜像新旧不替代目标库条件",
+      "observable": "PUT /image：镜像新旧不替代目标库条件",
+      "primary_mechanism": "recovery_rollback",
+      "extension_seam_id": "restore",
+      "workflow_ids": [
+        "restore"
+      ],
+      "source_anchors": [
+        "internal/db/image.go",
+        "internal/db/state.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/image.go",
+          "internal/db/state.go"
+        ],
+        "functions": [
+          "Restore",
+          "fromImage"
+        ]
+      }
+    },
+    {
+      "id": "p10-03",
+      "task_type": "部署运维",
+      "capability_family": "固定提交导出",
+      "subject": "固定提交导出中的规范编码",
+      "state": "规范编码",
+      "invariant": "长度和摘要与图层内容对应",
+      "observable": "GET /image：长度和摘要与图层内容对应",
+      "primary_mechanism": "export_freeze",
+      "extension_seam_id": "export",
+      "workflow_ids": [
+        "export"
+      ],
+      "source_anchors": [
+        "internal/db/image.go",
+        "internal/folio/image.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/image.go",
+          "internal/folio/image.go"
+        ],
+        "functions": [
+          "Export",
+          "Encode"
+        ]
+      }
+    },
+    {
+      "id": "p10-04",
+      "task_type": "部署运维",
+      "capability_family": "索引一致性核验",
+      "subject": "索引一致性核验中的树与目录",
+      "state": "树与目录",
+      "invariant": "相同计数仍需对照内容与包围盒",
+      "observable": "GET /strata/{layer}/index-audit：相同计数仍需对照内容与包围盒",
+      "primary_mechanism": "lineage",
+      "extension_seam_id": "audit",
+      "workflow_ids": [
+        "audit"
+      ],
+      "source_anchors": [
+        "internal/db/topology.go",
+        "internal/packed/audit.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/topology.go",
+          "internal/packed/audit.go"
+        ],
+        "functions": [
+          "Audit",
+          "auditNode"
+        ]
+      }
+    },
+    {
+      "id": "p10-05",
+      "task_type": "部署运维",
+      "capability_family": "带书签空间窗口",
+      "subject": "带书签空间窗口中的书签层代数",
+      "state": "书签层代数",
+      "invariant": "相同图层写入使旧页失效",
+      "observable": "POST /strata/{layer}/window：相同图层写入使旧页失效",
+      "primary_mechanism": "snapshot_consistency",
+      "extension_seam_id": "window",
+      "workflow_ids": [
+        "window"
+      ],
+      "source_anchors": [
+        "internal/db/query.go",
+        "internal/bookmark/token.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/query.go",
+          "internal/bookmark/token.go"
+        ],
+        "functions": [
+          "Window",
+          "Open"
+        ]
+      }
+    },
+    {
+      "id": "p10-06",
+      "task_type": "部署运维",
+      "capability_family": "读取树统计",
+      "subject": "读取树统计中的树结构",
+      "state": "树结构",
+      "invariant": "叶容量与条目总数同时可见",
+      "observable": "GET /strata/{layer}/index：叶容量与条目总数同时可见",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "inspect",
+      "workflow_ids": [
+        "inspect"
+      ],
+      "source_anchors": [
+        "internal/db/query.go",
+        "internal/packed/stats.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/query.go",
+          "internal/packed/stats.go"
+        ],
+        "functions": [
+          "Inspect",
+          "accumulate"
+        ]
+      }
+    },
+    {
+      "id": "p10-07",
+      "task_type": "部署运维",
+      "capability_family": "创建图层",
+      "subject": "创建图层中的名称唯一",
+      "state": "名称唯一",
+      "invariant": "同名提交保留原定义",
+      "observable": "POST /strata：同名提交保留原定义",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "register",
+      "workflow_ids": [
+        "register"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/catalog/layer.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/catalog/layer.go"
+        ],
+        "functions": [
+          "Register",
+          "Validate"
+        ]
+      }
+    },
+    {
+      "id": "p10-08",
+      "task_type": "部署运维",
+      "capability_family": "原子编辑",
+      "subject": "原子编辑中的末态排他",
+      "state": "末态排他",
+      "invariant": "允许交换中间态重叠的两个矩形",
+      "observable": "POST /edits：允许交换中间态重叠的两个矩形",
+      "primary_mechanism": "batch_transaction",
+      "extension_seam_id": "edit",
+      "workflow_ids": [
+        "edit"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/packed/exclusion.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/packed/exclusion.go"
+        ],
+        "functions": [
+          "applyEdit",
+          "Conflict"
+        ]
+      }
+    },
+    {
+      "id": "p10-09",
+      "task_type": "部署运维",
+      "capability_family": "变更空间约束",
+      "subject": "变更空间约束中的边界收缩",
+      "state": "边界收缩",
+      "invariant": "已有地物不可越界",
+      "observable": "PUT /strata/{layer}/layout：已有地物不可越界",
+      "primary_mechanism": "versioning_audit",
+      "extension_seam_id": "reframe",
+      "workflow_ids": [
+        "reframe"
+      ],
+      "source_anchors": [
+        "internal/db/mutation.go",
+        "internal/db/state.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/mutation.go",
+          "internal/db/state.go"
+        ],
+        "functions": [
+          "Reframe",
+          "buildLayer"
+        ]
+      }
+    },
+    {
+      "id": "p10-10",
+      "task_type": "部署运维",
+      "capability_family": "有向几何关系",
+      "subject": "有向几何关系中的有向包含",
+      "state": "有向包含",
+      "invariant": "换向不改变距离但交换包含方向",
+      "observable": "POST /relation：换向不改变距离但交换包含方向",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "relation",
+      "workflow_ids": [
+        "relation"
+      ],
+      "source_anchors": [
+        "internal/db/relation.go",
+        "internal/plane/relation.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/db/relation.go",
+          "internal/plane/relation.go"
+        ],
+        "functions": [
+          "Relate",
+          "contains"
+        ]
+      }
+    },
+    {
+      "id": "p10-11",
+      "task_type": "部署运维",
+      "capability_family": "最近邻",
+      "subject": "最近邻中的闭包距离",
+      "state": "闭包距离",
+      "invariant": "开边上的点可能得到零距离",
+      "observable": "POST /strata/{layer}/nearest：开边上的点可能得到零距离",
+      "primary_mechanism": "ranking_reorder",
+      "extension_seam_id": "nearest",
+      "workflow_ids": [
+        "nearest"
+      ],
+      "source_anchors": [
+        "internal/packed/nearest.go",
+        "internal/plane/box.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/packed/nearest.go",
+          "internal/plane/box.go"
+        ],
+        "functions": [
+          "Nearest",
+          "DistanceSquared"
+        ]
+      }
+    },
+    {
+      "id": "p10-12",
+      "task_type": "部署运维",
+      "capability_family": "点定位",
+      "subject": "点定位中的半开归属",
+      "state": "半开归属",
+      "invariant": "上边界不匹配而下边界匹配",
+      "observable": "POST /strata/{layer}/locate：上边界不匹配而下边界匹配",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "locate",
+      "workflow_ids": [
+        "locate"
+      ],
+      "source_anchors": [
+        "internal/spatial/search.go",
+        "internal/plane/shape.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/search.go",
+          "internal/plane/shape.go"
+        ],
+        "functions": [
+          "Locate",
+          "At"
+        ]
+      }
+    },
+    {
+      "id": "p10-13",
+      "task_type": "部署运维",
+      "capability_family": "跨层窗口配对",
+      "subject": "跨层窗口配对中的窗口裁剪",
+      "state": "窗口裁剪",
+      "invariant": "全局相交但窗内不相交不出对",
+      "observable": "POST /join：全局相交但窗内不相交不出对",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "join",
+      "workflow_ids": [
+        "join"
+      ],
+      "source_anchors": [
+        "internal/spatial/join.go",
+        "internal/db/query.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/join.go",
+          "internal/db/query.go"
+        ],
+        "functions": [
+          "restrict",
+          "Join"
+        ]
+      }
+    },
+    {
+      "id": "p10-14",
+      "task_type": "部署运维",
+      "capability_family": "矩形覆盖面积",
+      "subject": "矩形覆盖面积中的至少一次",
+      "state": "至少一次",
+      "invariant": "并集面积忽略重复覆盖次数",
+      "observable": "POST /strata/{layer}/coverage：并集面积忽略重复覆盖次数",
+      "primary_mechanism": "capacity",
+      "extension_seam_id": "coverage",
+      "workflow_ids": [
+        "coverage"
+      ],
+      "source_anchors": [
+        "internal/spatial/coverage.go",
+        "internal/spatial/lengths.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/coverage.go",
+          "internal/spatial/lengths.go"
+        ],
+        "functions": [
+          "Coverage",
+          "update"
+        ]
+      }
+    },
+    {
+      "id": "p10-15",
+      "task_type": "部署运维",
+      "capability_family": "正长度共享边",
+      "subject": "正长度共享边中的接边裁切",
+      "state": "接边裁切",
+      "invariant": "双方之一完全在窗口外仍能贡献左边边线",
+      "observable": "POST /strata/{layer}/seams：双方之一完全在窗口外仍能贡献左边边线",
+      "primary_mechanism": "policy_rules",
+      "extension_seam_id": "seams",
+      "workflow_ids": [
+        "seams"
+      ],
+      "source_anchors": [
+        "internal/spatial/seams.go",
+        "internal/plane/seam.go"
+      ],
+      "existing_touch_points": {
+        "files": [
+          "internal/spatial/seams.go",
+          "internal/plane/seam.go"
+        ],
+        "functions": [
+          "Seams",
+          "SharedBoundary"
+        ]
+      }
+    }
+  ]
+}

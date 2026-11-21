@@ -1,0 +1,365 @@
+{
+  "project_shape": "backend",
+  "modules": [
+    {
+      "id": "cmd",
+      "name": "监听和退出",
+      "path": "cmd/meridian"
+    },
+    {
+      "id": "httpapi",
+      "name": "HTTP 接口与协议边界",
+      "path": "internal/httpapi"
+    },
+    {
+      "id": "db",
+      "name": "不可变数据库与发布",
+      "path": "internal/db"
+    },
+    {
+      "id": "catalog",
+      "name": "目录定义和约束",
+      "path": "internal/catalog"
+    },
+    {
+      "id": "plane",
+      "name": "整数几何关系",
+      "path": "internal/plane"
+    },
+    {
+      "id": "packed",
+      "name": "空间索引和校验",
+      "path": "internal/packed"
+    },
+    {
+      "id": "spatial",
+      "name": "关系查询与测度",
+      "path": "internal/spatial"
+    },
+    {
+      "id": "bookmark",
+      "name": "签名续页",
+      "path": "internal/bookmark"
+    },
+    {
+      "id": "folio",
+      "name": "镜像和耐久替换",
+      "path": "internal/folio"
+    }
+  ],
+  "complexity": {
+    "mechanisms": [
+      "policy_rules",
+      "batch_transaction",
+      "versioning_audit",
+      "snapshot_consistency",
+      "ranking_reorder",
+      "capacity",
+      "lineage",
+      "export_freeze",
+      "recovery_rollback",
+      "concurrency",
+      "resource_lifecycle",
+      "error_propagation"
+    ]
+  },
+  "workflows": [
+    {
+      "id": "register",
+      "name": "创建图层",
+      "entry": "POST /strata",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "catalog",
+        "plane",
+        "folio"
+      ],
+      "steps": [
+        "定义校验",
+        "生成空目录条目",
+        "耐久发布"
+      ],
+      "success": "名称与修订、空图层进入目录",
+      "failure": "重复名称或边界倒置被拒绝",
+      "verification": "python3 examples/walkthrough.py --workflow register"
+    },
+    {
+      "id": "edit",
+      "name": "原子编辑",
+      "entry": "POST /edits",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "catalog",
+        "plane",
+        "packed",
+        "folio"
+      ],
+      "steps": [
+        "顺序阶段性应用",
+        "检查最终排他策略",
+        "同步发布"
+      ],
+      "success": "多层共享提交修订",
+      "failure": "异层冲突整包回滚，旧读仍成立",
+      "verification": "python3 examples/walkthrough.py --workflow edit"
+    },
+    {
+      "id": "reframe",
+      "name": "变更空间约束",
+      "entry": "PUT /strata/{layer}/layout",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "catalog",
+        "plane",
+        "packed",
+        "folio"
+      ],
+      "steps": [
+        "比较布局",
+        "查验所有既有地物",
+        "发布重建索引"
+      ],
+      "success": "新边界与新策略有共同修订",
+      "failure": "重叠或越界维持旧政策",
+      "verification": "python3 examples/walkthrough.py --workflow reframe"
+    },
+    {
+      "id": "window",
+      "name": "带书签空间窗口",
+      "entry": "POST /strata/{layer}/window",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "spatial",
+        "plane",
+        "packed",
+        "bookmark"
+      ],
+      "steps": [
+        "解析书签",
+        "索引候选转精确结果",
+        "按 ID 续页"
+      ],
+      "success": "其他图层变化仍可续原层",
+      "failure": "同层变化、篡改或换谓词拒绝",
+      "verification": "python3 examples/walkthrough.py --workflow window"
+    },
+    {
+      "id": "locate",
+      "name": "点定位",
+      "entry": "POST /strata/{layer}/locate",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "spatial",
+        "packed",
+        "plane"
+      ],
+      "steps": [
+        "捕获视图",
+        "搜索点包围盒",
+        "按精确归属过滤"
+      ],
+      "success": "共享边上的单侧归属可核验",
+      "failure": "越界坐标拒绝，未命中为空数组",
+      "verification": "python3 examples/walkthrough.py --workflow locate"
+    },
+    {
+      "id": "nearest",
+      "name": "最近邻",
+      "entry": "POST /strata/{layer}/nearest",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "packed",
+        "plane"
+      ],
+      "steps": [
+        "查询闭包距离",
+        "优先访问下界",
+        "排序截断"
+      ],
+      "success": "同距 ID 排序",
+      "failure": "非法 K 或坐标拒绝",
+      "verification": "python3 examples/walkthrough.py --workflow nearest"
+    },
+    {
+      "id": "join",
+      "name": "跨层窗口配对",
+      "entry": "POST /join",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "spatial",
+        "packed",
+        "plane"
+      ],
+      "steps": [
+        "从同一视图取双方",
+        "窗口裁切并配对",
+        "检查预算"
+      ],
+      "success": "经剪裁交集和稳定有序配对",
+      "failure": "预算耗尽时完全无配对输出",
+      "verification": "python3 examples/walkthrough.py --workflow join"
+    },
+    {
+      "id": "coverage",
+      "name": "矩形覆盖面积",
+      "entry": "POST /strata/{layer}/coverage",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "spatial",
+        "packed",
+        "plane"
+      ],
+      "steps": [
+        "裁切候选",
+        "x 扫描线更新 y 区间",
+        "累计面积"
+      ],
+      "success": "覆盖加未覆盖等于窗口面积",
+      "failure": "点层无可用面积语义，拒绝",
+      "verification": "python3 examples/walkthrough.py --workflow coverage"
+    },
+    {
+      "id": "inspect",
+      "name": "读取树统计",
+      "entry": "GET /strata/{layer}/index",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "packed",
+        "plane"
+      ],
+      "steps": [
+        "捕获目录修订",
+        "遍历树形",
+        "报告根边界和计数"
+      ],
+      "success": "24 条记录形成 3 个节点",
+      "failure": "缺层返回 404",
+      "verification": "python3 examples/walkthrough.py --workflow inspect"
+    },
+    {
+      "id": "seams",
+      "name": "正长度共享边",
+      "entry": "POST /strata/{layer}/seams",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "spatial",
+        "packed",
+        "plane"
+      ],
+      "steps": [
+        "闭包找候选",
+        "识别相对边",
+        "单次稳定输出"
+      ],
+      "success": "窗口左边界共享边保留且沿边剪裁",
+      "failure": "窗右边排除共享边或预算拒绝",
+      "verification": "python3 examples/walkthrough.py --workflow seams"
+    },
+    {
+      "id": "audit",
+      "name": "索引一致性核验",
+      "entry": "GET /strata/{layer}/index-audit",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "packed",
+        "catalog",
+        "plane"
+      ],
+      "steps": [
+        "拿到同一层目录和树",
+        "核对每条记录和节点边界"
+      ],
+      "success": "报告实际检查节点和目录条目",
+      "failure": "缺层或目录条目与树不一致时失败",
+      "verification": "python3 examples/walkthrough.py --workflow audit"
+    },
+    {
+      "id": "relation",
+      "name": "有向几何关系",
+      "entry": "POST /relation",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "catalog",
+        "plane"
+      ],
+      "steps": [
+        "同一视图解析两个键",
+        "用形状语义比较"
+      ],
+      "success": "零距可与不相交并存，包含有方向",
+      "failure": "任一键缺失返回 404",
+      "verification": "python3 examples/walkthrough.py --workflow relation"
+    },
+    {
+      "id": "export",
+      "name": "固定提交导出",
+      "entry": "GET /image",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "catalog",
+        "folio"
+      ],
+      "steps": [
+        "捕获内存头",
+        "固定顺序编码",
+        "随镜像返回修订"
+      ],
+      "success": "重复导出同一修订字节相同",
+      "failure": "超出镜像编码边界返回错误",
+      "verification": "python3 examples/walkthrough.py --workflow export"
+    },
+    {
+      "id": "restore",
+      "name": "条件恢复镜像",
+      "entry": "PUT /image",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "folio",
+        "catalog",
+        "packed"
+      ],
+      "steps": [
+        "验证镜像",
+        "重建有效索引",
+        "按目标修订提交"
+      ],
+      "success": "全部导入层重置到目标新修订",
+      "failure": "镜像无效或目标修订变化都保留旧库",
+      "verification": "python3 examples/walkthrough.py --workflow restore"
+    },
+    {
+      "id": "reopen",
+      "name": "重启与恢复",
+      "entry": "服务启动及 GET /status",
+      "module_ids": [
+        "cmd",
+        "db",
+        "folio",
+        "packed",
+        "catalog"
+      ],
+      "steps": [
+        "获取文件锁",
+        "核验文件",
+        "重建空间索引"
+      ],
+      "success": "带回原修订并提供正常查询",
+      "failure": "目录被另一进程占用或镜像损坏时拒绝",
+      "verification": "python3 examples/walkthrough.py --workflow reopen"
+    }
+  ]
+}
