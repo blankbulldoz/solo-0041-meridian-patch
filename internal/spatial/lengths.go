@@ -50,3 +50,35 @@ func (t lengthTree) update(index, left, right, lo, hi, delta int) {
 		n.once, n.twice = childOnce, childTwice
 	}
 }
+
+// depthCounter keeps an exact cover count per elementary interval between
+// sorted y coordinates. lengths totals the interval length at each exact
+// count, with the final slot gathering every count above tiers.
+type depthCounter struct {
+	y       []int64
+	tiers   int
+	count   []int
+	lengths []int64
+}
+
+func newDepthCounter(y []int64, tiers int) depthCounter {
+	lengths := make([]int64, tiers+2)
+	lengths[0] = y[len(y)-1] - y[0]
+	return depthCounter{y: y, tiers: tiers, count: make([]int, len(y)-1), lengths: lengths}
+}
+
+func (d *depthCounter) slot(count int) int {
+	if count > d.tiers {
+		return d.tiers + 1
+	}
+	return count
+}
+
+func (d *depthCounter) update(lo, hi, delta int) {
+	for i := lo; i < hi; i++ {
+		span := d.y[i+1] - d.y[i]
+		d.lengths[d.slot(d.count[i])] -= span
+		d.count[i] += delta
+		d.lengths[d.slot(d.count[i])] += span
+	}
+}

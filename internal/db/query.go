@@ -189,6 +189,7 @@ func (d *Database) Join(q JoinQuery) (JoinResponse, error) {
 type CoverageQuery struct {
 	Bounds plane.Box `json:"bounds"`
 	Class  string    `json:"class,omitempty"`
+	Depth  *int      `json:"depth,omitempty"`
 }
 
 type CoverageResponse struct {
@@ -200,6 +201,9 @@ func (d *Database) Coverage(name string, q CoverageQuery) (CoverageResponse, err
 	if err := validateWindow(q.Bounds, q.Class); err != nil {
 		return CoverageResponse{}, err
 	}
+	if q.Depth != nil && (*q.Depth < 0 || *q.Depth > catalog.MaxLayerRows) {
+		return CoverageResponse{}, invalid("coverage depth must be within 0..%d", catalog.MaxLayerRows)
+	}
 	s := d.head.Load()
 	l, err := s.getLayer(name)
 	if err != nil {
@@ -208,5 +212,5 @@ func (d *Database) Coverage(name string, q CoverageQuery) (CoverageResponse, err
 	if l.definition.Kind != plane.Extent {
 		return CoverageResponse{}, invalid("coverage requires an extent layer")
 	}
-	return CoverageResponse{ReadStamp: stamp(s, l), AreaResult: spatial.Coverage(l.tree, q.Bounds, q.Class)}, nil
+	return CoverageResponse{ReadStamp: stamp(s, l), AreaResult: spatial.Coverage(l.tree, q.Bounds, q.Class, q.Depth)}, nil
 }

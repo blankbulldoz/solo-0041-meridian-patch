@@ -210,10 +210,40 @@ def coverage(s):
     query = dict(bounds=WINDOW)
     result = s.query(FIELD, 'coverage', query)
     assert (result['covered'], result['repeated'], result['uncovered']) == (28, 8, 4)
+    assert 'depth' not in result
     empty = s.query(FIELD, 'coverage', dict(bounds=box(10, 10, 12, 12)))
     assert (empty['covered'], empty['uncovered']) == (0, 4)
     s.query(PINS, 'coverage', query, 400)
-    return result
+    exact = s.query(FIELD, 'coverage', dict(query, depth=2))
+    assert (exact['covered'], exact['repeated'], exact['uncovered']) == (28, 8, 4)
+    assert exact['depth'] == {'exact': [4, 20, 8], 'over': 0}
+    flat = s.query(FIELD, 'coverage', dict(query, depth=0))
+    assert flat['depth'] == {'exact': [4], 'over': 28}
+    vacant = s.query(FIELD, 'coverage', dict(bounds=box(10, 10, 12, 12), depth=2))
+    assert vacant['depth'] == {'exact': [4, 0, 0], 'over': 0}
+    s.edit(op(FIELD, 'gasket', box(3, 1, 5, 3), 'sleeve'))
+    triple = s.query(FIELD, 'coverage', dict(query, depth=3))
+    assert (triple['covered'], triple['repeated'], triple['uncovered']) == (28, 8, 4)
+    assert triple['rectangles'] == 4
+    assert triple['depth'] == {'exact': [4, 20, 4, 4], 'over': 0}
+    capped = s.query(FIELD, 'coverage', dict(query, depth=1))
+    assert capped['depth'] == {'exact': [4, 20], 'over': 8}
+    sleeves = s.query(FIELD, 'coverage', dict(query, depth=2, **{'class': 'sleeve'}))
+    assert sleeves['depth'] == {'exact': [20, 8, 4], 'over': 0}
+    limit = 10**9
+    s.post('/strata', dict(name='far-field', kind='extent',
+                           bounds=box(-limit, -limit, limit, limit), exclusive=False), 201)
+    s.edit(op('far-field', 'alpha', box(-limit, -limit, limit, 0)),
+           op('far-field', 'bravo', box(0, -limit, limit, limit)))
+    far = s.query('far-field', 'coverage', dict(bounds=box(-limit, -limit, limit, limit), depth=2))
+    assert (far['covered'], far['repeated'], far['uncovered']) == (3 * 10**18, 10**18, 10**18)
+    assert far['depth'] == {'exact': [10**18, 2 * 10**18, 10**18], 'over': 0}
+    s.query(FIELD, 'coverage', dict(query, depth=-1), 400)
+    s.query(FIELD, 'coverage', dict(query, depth=4097), 400)
+    full = s.query(FIELD, 'coverage', dict(query, depth=4096))
+    assert len(full['depth']['exact']) == 4097
+    assert sum(full['depth']['exact']) + full['depth']['over'] == 32
+    return triple
 
 
 def seams(s):

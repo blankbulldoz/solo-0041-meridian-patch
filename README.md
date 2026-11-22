@@ -28,7 +28,7 @@ python3 examples/walkthrough.py --workflow coverage
 | `POST /strata/{layer}/window` | `bounds`, `limit`, 可选 `class`, `bookmark`。按 ID 返回 `features`，有更多数据时返回 `next` |
 | `POST /strata/{layer}/locate` | `{ "x": 2, "y": 1 }`。返回拥有该点的 `features` |
 | `POST /strata/{layer}/nearest` | `point`, `limit`, 可选 `class`。返回带 `distance_squared` 的 `neighbors` |
-| `POST /strata/{layer}/coverage` | `bounds` 和可选 `class`。返回 `covered`, `repeated`, `uncovered` |
+| `POST /strata/{layer}/coverage` | `bounds` 和可选 `class`、`depth`。返回 `covered`, `repeated`, `uncovered`；提供 `depth` 时附 `depth.exact` 与 `depth.over` |
 | `POST /strata/{layer}/seams` | `bounds`, `limit`。按 ID 对返回正长度共享边 |
 | `POST /join` | `left`, `right`, `bounds`, `limit`。返回同一全库修订的相交对 |
 | `POST /relation` | `left` 与 `right` 分别含 `layer` 和 `id`。返回相交、双向包含和闭包距离 |
