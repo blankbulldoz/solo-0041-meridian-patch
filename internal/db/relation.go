@@ -32,13 +32,17 @@ type RelationQuery struct {
 
 type RelationResult struct {
 	Revision      uint64 `json:"revision"`
+	Branch        string `json:"branch,omitempty"`
 	LeftRevision  uint64 `json:"left_revision"`
 	RightRevision uint64 `json:"right_revision"`
 	plane.Relation
 }
 
-func (d *Database) Relate(q RelationQuery) (RelationResult, error) {
-	s := d.head.Load()
+func (d *Database) Relate(branchName string, q RelationQuery) (RelationResult, error) {
+	s, err := d.branchState(branchName)
+	if err != nil {
+		return RelationResult{}, err
+	}
 	left, leftRevision, err := s.resolve(q.Left)
 	if err != nil {
 		return RelationResult{}, err
@@ -48,7 +52,7 @@ func (d *Database) Relate(q RelationQuery) (RelationResult, error) {
 		return RelationResult{}, err
 	}
 	return RelationResult{
-		Revision: s.revision, LeftRevision: leftRevision, RightRevision: rightRevision,
+		Revision: s.revision, Branch: s.branch, LeftRevision: leftRevision, RightRevision: rightRevision,
 		Relation: plane.Relate(left.Shape, right.Shape),
 	}, nil
 }

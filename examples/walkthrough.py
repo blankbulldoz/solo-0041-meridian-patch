@@ -54,8 +54,21 @@ class Session:
     def post(self, path, value, status=200):
         return self.request('POST', path, value, status)[0]
 
-    def query(self, layer, rule, value, status=200):
-        return self.post(f'/strata/{layer}/{rule}', value, status)
+    def query(self, layer, rule, value, status=200, branch=None):
+        return self.post(self.scoped(f'/strata/{layer}/{rule}', branch), value, status)
+
+    @staticmethod
+    def scoped(path, branch=None):
+        return path if branch is None else f'{path}?branch={branch}'
+
+    def branch(self, name, method, path, value=None, status=200):
+        return self.request(method, f'/branches/{name}{path}', value, status)[0]
+
+    def branch_edit(self, name, *items, status=200, revision=None):
+        request = dict(edits=list(items))
+        if revision is not None:
+            request['if_revision'] = revision
+        return self.branch(name, 'POST', '/edits', request, status)
 
     def layer(self, name, kind='extent', exclusive=False, status=201):
         return self.post('/strata', dict(name=name, kind=kind, bounds=BOUNDS, exclusive=exclusive), status)
@@ -286,6 +299,99 @@ def restore(s):
     return restored
 
 
+def branch(s):
+    rev = seed(s)
+    formal_window = dict(bounds=WINDOW, limit=10)
+
+    # Both trial branches fork the same formal revision and start at revision 0.
+    first = s.post('/branches', dict(name='loam-a', if_revision=rev), 201)
+    second = s.post('/branches', dict(name='loam-b', if_revision=rev), 201)
+    assert (first['base_revision'], first['revision'], first['changed']) == (rev, 0, [])
+    assert (second['base_revision'], second['revision']) == (rev, 0)
+    assert s.post('/branches', dict(name='loam-a'), 409)['code'] == 'conflict'
+    assert s.post('/branches', dict(name='loam-b', if_revision=rev + 9), 409)['code'] == 'conflict'
+    assert s.post('/branches', dict(name='bad name'), 400)['code'] == 'invalid'
+    assert [row['name'] for row in s.get('/branches')['branches']] == ['loam-a', 'loam-b']
+    s.get('/branches/missing', 404)
+
+    # A branch pack applies insert/replace/remove in input order, exactly like a
+    # formal pack, and only moves the branch revision.
+    s.branch_edit('loam-a',
+                  op(FIELD, 'prong', box(0, 0, 2, 2), mode='replace'),
+                  op(FIELD, 'spur', box(2, 0, 4, 2)))
+    assert s.get('/status')['revision'] == rev
+    assert ids(s.query(FIELD, 'window', formal_window)) == ['dowel', 'ferrule', 'prong']
+    a_window = s.query(FIELD, 'window', formal_window, branch='loam-a')
+    assert ids(a_window) == ['dowel', 'ferrule', 'prong', 'spur'] and a_window['branch'] == 'loam-a'
+    assert a_window['revision'] == 1 and a_window['layer_revision'] == 1
+
+    # The second branch keeps its own independent ordering: remove then insert
+    # succeeds, insert then remove leaves the inserted feature gone.
+    s.branch_edit('loam-b',
+                  op(BED, 'shim', mode='remove'),
+                  op(BED, 'shim', box(6, 0, 8, 2)))
+    s.branch_edit('loam-b',
+                  op(FIELD, 'ghost', box(0, 0, 1, 1)),
+                  op(FIELD, 'ghost', mode='remove'))
+    assert ids(s.query(BED, 'locate', point(4, 0))) == ['shim']
+    assert ids(s.query(BED, 'locate', point(4, 0), branch='loam-b')) == []
+    assert ids(s.query(BED, 'locate', point(7, 1), branch='loam-b')) == ['shim']
+    a_again = s.query(FIELD, 'window', formal_window, branch='loam-a')
+    assert ids(a_again) == ids(a_window) and a_again['revision'] == a_window['revision']
+    assert [row['name'] for row in s.get('/strata?branch=loam-a')['layers']] == [BED, FIELD, PINS]
+    s.post('/edits?branch=loam-a', dict(edits=[op(BED, 'shim', mode='remove')]), 400)
+    s.get('/strata?branch=missing', 404)
+    b_window = s.query(FIELD, 'window', formal_window, branch='loam-b')
+    assert ids(b_window) == ['dowel', 'ferrule', 'prong'] and b_window['revision'] == 2
+    formal_agrees = s.query(FIELD, 'window', formal_window)
+    assert ids(formal_agrees) == ids(b_window) and formal_agrees['revision'] == rev
+
+    # Branch exclusivity is checked on the branch's own final state only.
+    s.branch('loam-b', 'POST', '/strata', dict(name='tight', kind='extent', bounds=BOUNDS, exclusive=True), 200)
+    rejected = s.branch_edit('loam-b', op('tight', 'one', box(0, 0, 2, 2)),
+                             op('tight', 'two', box(1, 1, 3, 3)), status=409)
+    assert rejected['code'] == 'conflict'
+    assert s.get('/branches/loam-b')['revision'] == 3
+    assert s.get('/strata')['layers'][0]['name'] == BED and len(s.get('/strata')['layers']) == 3
+
+    # Bookmarks stay inside the branch that issued them.
+    token = s.query(FIELD, 'window', dict(bounds=WINDOW, limit=1), branch='loam-a')['next']
+    continued = s.query(FIELD, 'window', dict(bounds=WINDOW, limit=2, bookmark=token), branch='loam-a')
+    assert ids(continued) == ['ferrule', 'prong']
+    s.query(FIELD, 'window', dict(bounds=WINDOW, limit=2, bookmark=token), 400)
+    formal_token = s.query(FIELD, 'window', dict(bounds=WINDOW, limit=1))['next']
+    s.query(FIELD, 'window', dict(bounds=WINDOW, limit=2, bookmark=formal_token), 400, branch='loam-a')
+
+    # Publishing installs every branch-changed layer at one new formal
+    # revision. Untouched layers keep their old revision.
+    published = s.post('/branches/loam-a/publish', dict(if_revision=rev), 201)
+    assert published['revision'] == rev + 1
+    assert [row['name'] for row in published['layers']] == [FIELD]
+    assert {row['name']: row['revision'] for row in s.get('/strata')['layers']} == {
+        BED: rev, FIELD: rev + 1, PINS: rev}
+    assert ids(s.query(FIELD, 'window', formal_window)) == ['dowel', 'ferrule', 'prong', 'spur']
+    s.get('/branches/loam-a', 404)
+    assert [row['name'] for row in s.get('/branches')['branches']] == ['loam-b']
+
+    # The formal database moves a layer loam-b also rebuilt. Publishing the
+    # stale branch must not overwrite it.
+    moved = s.edit(op(BED, 'shim', mode='remove'))['revision']
+    assert ids(s.query(BED, 'window', dict(bounds=WINDOW, limit=10))) == []
+    assert ids(s.query(BED, 'window', dict(bounds=WINDOW, limit=10), branch='loam-b')) == ['shim']
+    s.post('/branches/loam-b/publish', dict(if_revision=moved), 409)
+    assert s.get('/status')['revision'] == moved
+    assert ids(s.query(BED, 'window', dict(bounds=WINDOW, limit=10), branch='loam-b')) == ['shim']
+
+    # Discarding removes only the trial view; the formal revision counter does
+    # not advance and the duplicate publish is rejected.
+    assert s.post('/branches/loam-b/discard', {})['discarded'] is True
+    assert s.get('/status')['revision'] == moved
+    assert s.post('/branches/loam-b/discard', {}, 404)['code'] == 'missing'
+    s.post('/branches/loam-b/publish', {}, 404)
+    assert ids(s.query(FIELD, 'window', formal_window)) == ['dowel', 'ferrule', 'prong', 'spur']
+    return dict(branch_revision=continued['revision'], formal_revision=moved)
+
+
 def reopen(binary, data):
     with running(binary, data) as s:
         rev = seed(s)
@@ -304,7 +410,7 @@ def reopen(binary, data):
 
 
 WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
-                                     inspect, seams, relation, audit, export, restore, reopen)}
+                                     inspect, seams, relation, audit, branch, export, restore, reopen)}
 
 
 def main():

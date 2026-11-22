@@ -18,6 +18,12 @@ type Database struct {
 	write   sync.Mutex
 	blocked atomic.Bool
 	closed  bool
+
+	// Temporary branches are in-memory views forked from a formal revision.
+	// branchesMu guards only this map and the mutable head of each branch; the
+	// states it points at are immutable, so readers may keep them after unlock.
+	branchesMu sync.RWMutex
+	branches   map[string]*branch
 }
 
 func Open(dir string) (*Database, error) {
@@ -38,7 +44,7 @@ func openStore(store *folio.Store) (*Database, error) {
 	if err != nil {
 		return nil, err
 	}
-	d := &Database{store: store, signer: signer}
+	d := &Database{store: store, signer: signer, branches: make(map[string]*branch)}
 	s := &state{layers: make(map[string]*layer)}
 	raw, present, err := store.Read()
 	if err != nil {
@@ -77,6 +83,12 @@ func (d *Database) Status() Status {
 func (d *Database) commit(expected *uint64, prepare func(*state, uint64) (*state, error)) (*state, error) {
 	d.write.Lock()
 	defer d.write.Unlock()
+	return d.commitUnderLock(expected, prepare)
+}
+
+// commitUnderLock performs the durable publish step. Callers either hold the
+// write lock already or acquire it here; no caller takes branchesMu after it.
+func (d *Database) commitUnderLock(expected *uint64, prepare func(*state, uint64) (*state, error)) (*state, error) {
 	if d.blocked.Load() {
 		return nil, &Error{Code: "unavailable", Message: "database is fenced; reopen the data directory"}
 	}

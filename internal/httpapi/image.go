@@ -12,7 +12,10 @@ const imageType = "application/vnd.meridian.image"
 const revisionHeader = "Meridian-Revision"
 const expectedRevisionHeader = "If-Meridian-Revision"
 
-func (a *api) export(w http.ResponseWriter, _ *http.Request) {
+func (a *api) export(w http.ResponseWriter, r *http.Request) {
+	if !a.formalOnly(w, r) {
+		return
+	}
 	raw, revision, err := a.db.Export()
 	if err != nil {
 		a.respond(w, http.StatusOK, nil, err)
@@ -28,7 +31,7 @@ func (a *api) export(w http.ResponseWriter, _ *http.Request) {
 }
 
 func (a *api) restore(w http.ResponseWriter, r *http.Request) {
-	if !a.media(w, r, imageType) {
+	if !a.formalOnly(w, r) || !a.media(w, r, imageType) {
 		return
 	}
 	header := r.Header.Values(expectedRevisionHeader)

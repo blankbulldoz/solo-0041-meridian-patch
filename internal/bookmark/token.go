@@ -23,7 +23,11 @@ func New() (Signer, error) {
 	return signer, err
 }
 
+// Scope binds a continuation to one view. Branch is empty for the formal
+// database and holds the branch name for a temporary branch view, so tokens
+// issued by one view are never accepted by another.
 type Scope struct {
+	Branch   string    `json:"branch,omitempty"`
 	Layer    string    `json:"layer"`
 	Bounds   plane.Box `json:"bounds"`
 	Class    string    `json:"class"`

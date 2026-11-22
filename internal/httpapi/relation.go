@@ -8,8 +8,9 @@ import (
 
 func (a *api) relation(w http.ResponseWriter, r *http.Request) {
 	var query db.RelationQuery
-	if a.input(w, r, &query) {
-		result, err := a.db.Relate(query)
+	branch, ok := a.branchInput(w, r)
+	if ok && a.input(w, r, &query) {
+		result, err := a.db.Relate(branch, query)
 		a.respond(w, http.StatusOK, result, err)
 	}
 }

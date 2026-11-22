@@ -13,6 +13,7 @@ const (
 	MaxLayerRows = 4096
 	MaxRows      = 16384
 	MaxEdits     = 512
+	MaxBranches  = 16
 )
 
 var namePattern = regexp.MustCompile(`^[a-z][a-z0-9-]{0,47}$`)
@@ -74,4 +75,20 @@ func (f Feature) Validate(d Definition) error {
 func (f Feature) Copy() Feature {
 	f.Shape = f.Shape.Copy()
 	return f
+}
+
+// Equal reports whether two stored features have the same identity, class and
+// geometry. It is used to detect changes between two immutable views.
+func (f Feature) Equal(other Feature) bool {
+	if f.ID != other.ID || f.Class != other.Class {
+		return false
+	}
+	switch {
+	case f.Shape.Mark != nil || other.Shape.Mark != nil:
+		return f.Shape.Mark != nil && other.Shape.Mark != nil && *f.Shape.Mark == *other.Shape.Mark
+	case f.Shape.Extent != nil || other.Shape.Extent != nil:
+		return f.Shape.Extent != nil && other.Shape.Extent != nil && *f.Shape.Extent == *other.Shape.Extent
+	default:
+		return true
+	}
 }

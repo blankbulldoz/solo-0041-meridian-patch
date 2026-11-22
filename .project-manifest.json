@@ -360,6 +360,27 @@
       "success": "带回原修订并提供正常查询",
       "failure": "目录被另一进程占用或镜像损坏时拒绝",
       "verification": "python3 examples/walkthrough.py --workflow reopen"
+    },
+    {
+      "id": "branch",
+      "name": "临时方案分支",
+      "entry": "POST /branches 与 ?branch=",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "catalog",
+        "packed",
+        "folio",
+        "bookmark"
+      ],
+      "steps": [
+        "从正式修订分叉只读视图",
+        "分支内按顺序试改并各自读取",
+        "按层修订条件合并提交或放弃"
+      ],
+      "success": "两套试改互不干扰，发布只安装分支改过的图层",
+      "failure": "正式层已移动时发布冲突，放弃分支不消耗正式修订",
+      "verification": "python3 examples/walkthrough.py --workflow branch"
     }
   ]
 }

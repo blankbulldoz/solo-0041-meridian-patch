@@ -19,14 +19,17 @@ type SeamResponse struct {
 	spatial.SeamResult
 }
 
-func (d *Database) Seams(name string, q SeamQuery) (SeamResponse, error) {
+func (d *Database) Seams(branchName, name string, q SeamQuery) (SeamResponse, error) {
 	if err := validateWindow(q.Bounds, ""); err != nil {
 		return SeamResponse{}, err
 	}
 	if q.Limit < 1 || q.Limit > spatial.MaxPairs {
 		return SeamResponse{}, invalid("seam limit must be 1..%d", spatial.MaxPairs)
 	}
-	s := d.head.Load()
+	s, err := d.branchState(branchName)
+	if err != nil {
+		return SeamResponse{}, err
+	}
 	l, err := s.getLayer(name)
 	if err != nil {
 		return SeamResponse{}, err
@@ -49,8 +52,11 @@ type IndexAudit struct {
 	packed.Audit
 }
 
-func (d *Database) Audit(name string) (IndexAudit, error) {
-	s := d.head.Load()
+func (d *Database) Audit(branchName, name string) (IndexAudit, error) {
+	s, err := d.branchState(branchName)
+	if err != nil {
+		return IndexAudit{}, err
+	}
 	l, err := s.getLayer(name)
 	if err != nil {
 		return IndexAudit{}, err

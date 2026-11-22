@@ -20,6 +20,10 @@ type layer struct {
 type state struct {
 	revision uint64
 	layers   map[string]*layer
+	// branch is empty for the formal database and names the temporary branch
+	// for a forked view. It travels with the view so read stamps and bookmarks
+	// can never be mistaken for a formal revision.
+	branch string
 }
 
 func (l *layer) summary() catalog.Summary {

@@ -66,6 +66,10 @@
     {
       "workflow_id": "reopen",
       "command": "python3 examples/walkthrough.py --workflow reopen"
+    },
+    {
+      "workflow_id": "branch",
+      "command": "python3 examples/walkthrough.py --workflow branch"
     }
   ]
 }

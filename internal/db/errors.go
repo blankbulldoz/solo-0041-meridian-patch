@@ -24,3 +24,7 @@ func missing(format string, args ...any) *Error {
 func exhausted(format string, args ...any) *Error {
 	return &Error{Code: "capacity", Message: fmt.Sprintf(format, args...)}
 }
+
+func unavailable(format string, args ...any) *Error {
+	return &Error{Code: "unavailable", Message: fmt.Sprintf(format, args...)}
+}

@@ -10,9 +10,13 @@ import (
 	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/spatial"
 )
 
+// ReadStamp identifies the view a read captured. Branch is omitted for the
+// formal database; a branch stamp reports branch-local revisions that only
+// become formal revisions if the branch is published.
 type ReadStamp struct {
 	Revision      uint64 `json:"revision"`
 	LayerRevision uint64 `json:"layer_revision"`
+	Branch        string `json:"branch,omitempty"`
 }
 
 type WindowQuery struct {
@@ -28,23 +32,26 @@ type WindowPage struct {
 	Next string `json:"next,omitempty"`
 }
 
-func (d *Database) Window(name string, q WindowQuery) (WindowPage, error) {
+func (d *Database) Window(branchName, name string, q WindowQuery) (WindowPage, error) {
 	if err := validateWindow(q.Bounds, q.Class); err != nil {
 		return WindowPage{}, err
 	}
 	if q.Limit < 1 || q.Limit > 256 {
 		return WindowPage{}, invalid("window limit must be 1..256")
 	}
-	s := d.head.Load()
+	s, err := d.branchState(branchName)
+	if err != nil {
+		return WindowPage{}, err
+	}
 	l, err := s.getLayer(name)
 	if err != nil {
 		return WindowPage{}, err
 	}
-	scope := bookmark.Scope{Layer: name, Bounds: q.Bounds, Class: q.Class, Revision: l.revision}
+	scope := bookmark.Scope{Branch: s.branch, Layer: name, Bounds: q.Bounds, Class: q.Class, Revision: l.revision}
 	var after string
 	if q.Bookmark != "" {
 		previous, from, err := d.signer.Open(q.Bookmark)
-		if err != nil || previous.Layer != scope.Layer || previous.Bounds != scope.Bounds || previous.Class != scope.Class {
+		if err != nil || previous.Branch != scope.Branch || previous.Layer != scope.Layer || previous.Bounds != scope.Bounds || previous.Class != scope.Class {
 			return WindowPage{}, invalid("bookmark does not match the window predicate")
 		}
 		if previous.Revision != scope.Revision {
@@ -66,11 +73,14 @@ type LocateResult struct {
 	spatial.MatchSet
 }
 
-func (d *Database) Locate(name string, p plane.Point) (LocateResult, error) {
+func (d *Database) Locate(branchName, name string, p plane.Point) (LocateResult, error) {
 	if err := p.Validate(); err != nil {
 		return LocateResult{}, invalid("%v", err)
 	}
-	s := d.head.Load()
+	s, err := d.branchState(branchName)
+	if err != nil {
+		return LocateResult{}, err
+	}
 	l, err := s.getLayer(name)
 	if err != nil {
 		return LocateResult{}, err
@@ -92,14 +102,17 @@ type NearestResult struct {
 	Visit     packed.Visit      `json:"visit"`
 }
 
-func (d *Database) Nearest(name string, q NearestQuery) (NearestResult, error) {
+func (d *Database) Nearest(branchName, name string, q NearestQuery) (NearestResult, error) {
 	if err := q.Point.Validate(); err != nil {
 		return NearestResult{}, invalid("%v", err)
 	}
 	if q.Limit < 1 || q.Limit > 128 || (q.Class != "" && !catalog.ValidName(q.Class)) {
 		return NearestResult{}, invalid("invalid nearest limit or class")
 	}
-	s := d.head.Load()
+	s, err := d.branchState(branchName)
+	if err != nil {
+		return NearestResult{}, err
+	}
 	l, err := s.getLayer(name)
 	if err != nil {
 		return NearestResult{}, err
@@ -112,7 +125,7 @@ func (d *Database) Nearest(name string, q NearestQuery) (NearestResult, error) {
 }
 
 func stamp(s *state, l *layer) ReadStamp {
-	return ReadStamp{Revision: s.revision, LayerRevision: l.revision}
+	return ReadStamp{Revision: s.revision, LayerRevision: l.revision, Branch: s.branch}
 }
 
 func copyFeatures(rows []catalog.Feature) {
@@ -137,8 +150,11 @@ type Inspection struct {
 	Tree  packed.Stats    `json:"tree"`
 }
 
-func (d *Database) Inspect(name string) (Inspection, error) {
-	s := d.head.Load()
+func (d *Database) Inspect(branchName, name string) (Inspection, error) {
+	s, err := d.branchState(branchName)
+	if err != nil {
+		return Inspection{}, err
+	}
 	l, err := s.getLayer(name)
 	if err != nil {
 		return Inspection{}, err
@@ -155,19 +171,23 @@ type JoinQuery struct {
 
 type JoinResponse struct {
 	Revision      uint64 `json:"revision"`
+	Branch        string `json:"branch,omitempty"`
 	LeftRevision  uint64 `json:"left_revision"`
 	RightRevision uint64 `json:"right_revision"`
 	spatial.JoinResult
 }
 
-func (d *Database) Join(q JoinQuery) (JoinResponse, error) {
+func (d *Database) Join(branchName string, q JoinQuery) (JoinResponse, error) {
 	if q.Left == q.Right || q.Limit < 1 || q.Limit > spatial.MaxPairs {
 		return JoinResponse{}, invalid("join requires distinct layers and a limit of 1..%d", spatial.MaxPairs)
 	}
 	if err := validateWindow(q.Bounds, ""); err != nil {
 		return JoinResponse{}, err
 	}
-	s := d.head.Load()
+	s, err := d.branchState(branchName)
+	if err != nil {
+		return JoinResponse{}, err
+	}
 	left, err := s.getLayer(q.Left)
 	if err != nil {
 		return JoinResponse{}, err
@@ -183,7 +203,7 @@ func (d *Database) Join(q JoinQuery) (JoinResponse, error) {
 	if err != nil {
 		return JoinResponse{}, fmt.Errorf("join: %w", err)
 	}
-	return JoinResponse{Revision: s.revision, LeftRevision: left.revision, RightRevision: right.revision, JoinResult: result}, nil
+	return JoinResponse{Revision: s.revision, Branch: s.branch, LeftRevision: left.revision, RightRevision: right.revision, JoinResult: result}, nil
 }
 
 type CoverageQuery struct {
@@ -196,11 +216,14 @@ type CoverageResponse struct {
 	spatial.AreaResult
 }
 
-func (d *Database) Coverage(name string, q CoverageQuery) (CoverageResponse, error) {
+func (d *Database) Coverage(branchName, name string, q CoverageQuery) (CoverageResponse, error) {
 	if err := validateWindow(q.Bounds, q.Class); err != nil {
 		return CoverageResponse{}, err
 	}
-	s := d.head.Load()
+	s, err := d.branchState(branchName)
+	if err != nil {
+		return CoverageResponse{}, err
+	}
 	l, err := s.getLayer(name)
 	if err != nil {
 		return CoverageResponse{}, err
