@@ -147,10 +147,12 @@ func (d *Database) Inspect(name string) (Inspection, error) {
 }
 
 type JoinQuery struct {
-	Left   string    `json:"left"`
-	Right  string    `json:"right"`
-	Bounds plane.Box `json:"bounds"`
-	Limit  int       `json:"limit"`
+	Left     string    `json:"left"`
+	Right    string    `json:"right"`
+	Bounds   plane.Box `json:"bounds"`
+	Limit    int       `json:"limit"`
+	Paged    bool      `json:"paged,omitempty"`
+	Bookmark string    `json:"bookmark,omitempty"`
 }
 
 type JoinResponse struct {
@@ -158,6 +160,7 @@ type JoinResponse struct {
 	LeftRevision  uint64 `json:"left_revision"`
 	RightRevision uint64 `json:"right_revision"`
 	spatial.JoinResult
+	Next string `json:"next,omitempty"`
 }
 
 func (d *Database) Join(q JoinQuery) (JoinResponse, error) {
@@ -166,6 +169,9 @@ func (d *Database) Join(q JoinQuery) (JoinResponse, error) {
 	}
 	if err := validateWindow(q.Bounds, ""); err != nil {
 		return JoinResponse{}, err
+	}
+	if q.Bookmark != "" && !q.Paged {
+		return JoinResponse{}, invalid("join bookmark requires paged mode")
 	}
 	s := d.head.Load()
 	left, err := s.getLayer(q.Left)
@@ -176,14 +182,46 @@ func (d *Database) Join(q JoinQuery) (JoinResponse, error) {
 	if err != nil {
 		return JoinResponse{}, err
 	}
-	result, err := spatial.Join(left.tree, right.tree, q.Bounds, q.Limit)
+	stamp := JoinResponse{Revision: s.revision, LeftRevision: left.revision, RightRevision: right.revision}
+	if !q.Paged {
+		result, err := spatial.Join(left.tree, right.tree, q.Bounds, q.Limit)
+		if err == spatial.ErrJoinBudget {
+			return JoinResponse{}, exhausted("%v", err)
+		}
+		if err != nil {
+			return JoinResponse{}, fmt.Errorf("join: %w", err)
+		}
+		stamp.JoinResult = result
+		return stamp, nil
+	}
+	scope := bookmark.JoinScope{
+		Left: q.Left, Right: q.Right, Bounds: q.Bounds,
+		LeftRevision: left.revision, RightRevision: right.revision,
+	}
+	var afterLeft, afterRight string
+	if q.Bookmark != "" {
+		previous, lastLeft, lastRight, err := d.signer.OpenJoin(q.Bookmark)
+		if err != nil || previous.Left != scope.Left || previous.Right != scope.Right || previous.Bounds != scope.Bounds {
+			return JoinResponse{}, invalid("bookmark does not match the join predicate")
+		}
+		if previous.LeftRevision != scope.LeftRevision || previous.RightRevision != scope.RightRevision {
+			return JoinResponse{}, conflict("bookmark revision has expired")
+		}
+		afterLeft, afterRight = lastLeft, lastRight
+	}
+	result, more, err := spatial.JoinPage(left.tree, right.tree, q.Bounds, q.Limit, afterLeft, afterRight)
 	if err == spatial.ErrJoinBudget {
 		return JoinResponse{}, exhausted("%v", err)
 	}
 	if err != nil {
 		return JoinResponse{}, fmt.Errorf("join: %w", err)
 	}
-	return JoinResponse{Revision: s.revision, LeftRevision: left.revision, RightRevision: right.revision, JoinResult: result}, nil
+	stamp.JoinResult = result
+	if more {
+		last := result.Pairs[len(result.Pairs)-1]
+		stamp.Next = d.signer.SealJoin(scope, last.Left, last.Right)
+	}
+	return stamp, nil
 }
 
 type CoverageQuery struct {

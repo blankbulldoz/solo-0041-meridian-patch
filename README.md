@@ -30,7 +30,7 @@ python3 examples/walkthrough.py --workflow coverage
 | `POST /strata/{layer}/nearest` | `point`, `limit`, 可选 `class`。返回带 `distance_squared` 的 `neighbors` |
 | `POST /strata/{layer}/coverage` | `bounds` 和可选 `class`。返回 `covered`, `repeated`, `uncovered` |
 | `POST /strata/{layer}/seams` | `bounds`, `limit`。按 ID 对返回正长度共享边 |
-| `POST /join` | `left`, `right`, `bounds`, `limit`。返回同一全库修订的相交对 |
+| `POST /join` | `left`, `right`, `bounds`, `limit`，可选 `paged`、`bookmark`。返回同一全库修订的相交对；`paged` 时按左、右 ID 顺序分页，有更多对时返回 `next` |
 | `POST /relation` | `left` 与 `right` 分别含 `layer` 和 `id`。返回相交、双向包含和闭包距离 |
 | `GET /strata/{layer}/index` | 返回 `tree` 结构统计 |
 | `GET /strata/{layer}/index-audit` | 核对索引和目录，返回 `records` 与 `checked_nodes` |
@@ -47,6 +47,8 @@ python3 examples/walkthrough.py --workflow coverage
 {"edits":[{"layer":"ochre-field","id":"prong","mode":"insert","value":{"id":"prong","class":"fixture","shape":{"extent":{"min_x":0,"min_y":0,"max_x":4,"max_y":3}}}}]}
 ```
 
-`409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
+`409 conflict` 表示修订条件失效、重名、末态违反排他策略或配对书签因任一侧图层修订变化而失效。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
+
+配对默认在超过结果上限时整次拒绝。请求带 `paged` 时改为分页：每页最多 `limit` 对，按左 ID 再右 ID 排序，返回的 `next` 书签绑定两个图层、窗口与双方图层修订，续页时原样回传 `paged` 与 `bookmark`，页大小可变。工作量上限区分两个预算：输出量预算是单次响应的结果对数（最多 2,000），扫描量预算是单次请求检查的索引候选数（200,000）。分页只把输出量分摊到各页；扫描量按每次请求单独计算，过密窗口中续页仍可能因扫描量超限得到 `422 capacity`，应缩小页或窗口重试。
 
 边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。

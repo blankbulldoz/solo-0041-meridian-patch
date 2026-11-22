@@ -202,7 +202,56 @@ def join(s):
                                dict(left='ferrule', right='shim', intersection=box(4, 1, 5, 2))]
     s.post('/join', dict(query, limit=1), 422)
     assert s.post('/join', dict(query, right=PINS))['pairs'][0] == dict(left='dowel', right='brad')
-    return result
+
+    # A dense window with eight pairs, sorted by left ID then right ID.
+    s.edit(op(BED, 'wedge', box(1, 1, 3, 2)), op(BED, 'slab', box(0, 2, 8, 3)))
+    dense = dict(left=FIELD, right=BED, bounds=box(0, 0, 8, 4))
+    full = s.post('/join', dict(dense, limit=2000))
+    names = [(pair['left'], pair['right']) for pair in full['pairs']]
+    assert names == [('dowel', 'shim'), ('dowel', 'slab'),
+                     ('ferrule', 'shim'), ('ferrule', 'slab'), ('ferrule', 'wedge'),
+                     ('prong', 'shim'), ('prong', 'slab'), ('prong', 'wedge')]
+    s.post('/join', dict(dense, limit=7), 422)
+    s.post('/join', dict(dense, limit=3, bookmark='abc'), 400)
+    s.post('/join', dict(dense, limit=3, paged=True, bookmark='abc'), 400)
+    empty = s.post('/join', dict(dense, bounds=box(10, 10, 12, 12), limit=3, paged=True))
+    assert empty['pairs'] == [] and 'next' not in empty
+
+    # Paged walks keep the stable order and never repeat a pair across pages.
+    first = s.post('/join', dict(dense, limit=3, paged=True))
+    assert [(pair['left'], pair['right']) for pair in first['pairs']] == names[:3] and first['next']
+    second = s.post('/join', dict(dense, limit=3, paged=True, bookmark=first['next']))
+    assert [(pair['left'], pair['right']) for pair in second['pairs']] == names[3:6] and second['next']
+    third = s.post('/join', dict(dense, limit=5, paged=True, bookmark=second['next']))
+    assert [(pair['left'], pair['right']) for pair in third['pairs']] == names[6:] and 'next' not in third
+    assert third['left_revision'] == first['left_revision'] == full['left_revision']
+    assert 'next' not in s.post('/join', dict(dense, limit=8, paged=True))
+
+    # Bookmarks bind the predicate and both layer revisions.
+    s.post('/join', dict(dense, limit=3, paged=True, bounds=box(0, 0, 9, 4), bookmark=first['next']), 400)
+    s.post('/join', dict(dense, limit=3, paged=True, left=BED, right=FIELD, bookmark=first['next']), 400)
+    token = s.query(FIELD, 'window', dict(bounds=WINDOW, limit=1))['next']
+    s.post('/join', dict(dense, limit=3, paged=True, bookmark=token), 400)
+    s.query(FIELD, 'window', dict(bounds=WINDOW, limit=1, bookmark=first['next']), 400)
+    s.edit(op(PINS, 'tack', point(1, 1)))
+    still = s.post('/join', dict(dense, limit=3, paged=True, bookmark=first['next']))
+    assert [(pair['left'], pair['right']) for pair in still['pairs']] == names[3:6]
+    s.edit(op(BED, 'shim', mode='remove'))
+    s.post('/join', dict(dense, limit=3, paged=True, bookmark=first['next']), 409)
+    fresh = s.post('/join', dict(dense, limit=3, paged=True))
+    s.edit(op(FIELD, 'prong', mode='remove'))
+    s.post('/join', dict(dense, limit=3, paged=True, bookmark=fresh['next']), 409)
+
+    # The scan budget rejects one request inspecting too many candidates,
+    # even in paged mode with room left in the pair budget.
+    s.post('/strata', dict(name='wide-left', kind='extent', bounds=box(-1, -1, 21, 21), exclusive=False), 201)
+    s.post('/strata', dict(name='edge-right', kind='mark', bounds=box(-1, -1, 21, 21), exclusive=False), 201)
+    s.edit(*(op('wide-left', f'cell-{i:03}', box(0, 0, 20, 20)) for i in range(450)))
+    s.edit(*(op('edge-right', f'peg-{i:03}', point(5, 20)) for i in range(450)))
+    crowded = dict(left='wide-left', right='edge-right', bounds=box(0, 0, 20, 20), limit=2000)
+    assert s.post('/join', crowded, 422)['code'] == 'capacity'
+    assert s.post('/join', dict(crowded, paged=True), 422)['code'] == 'capacity'
+    return full
 
 
 def coverage(s):

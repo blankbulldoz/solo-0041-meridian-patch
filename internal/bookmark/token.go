@@ -1,4 +1,5 @@
-// Package bookmark binds window continuation to one predicate and layer revision.
+// Package bookmark binds window and join continuations to their predicate
+// and the revisions of the layers they read.
 package bookmark
 
 import (
@@ -30,37 +31,84 @@ type Scope struct {
 	Revision uint64    `json:"revision"`
 }
 
+// JoinScope binds a join continuation to both layers, the shared window and
+// the revision of each side, so a change on either side expires the token.
+type JoinScope struct {
+	Left          string    `json:"left"`
+	Right         string    `json:"right"`
+	Bounds        plane.Box `json:"bounds"`
+	LeftRevision  uint64    `json:"left_revision"`
+	RightRevision uint64    `json:"right_revision"`
+}
+
 type payload struct {
 	Scope Scope  `json:"scope"`
 	After string `json:"after"`
 }
 
+type joinPayload struct {
+	Scope JoinScope `json:"scope"`
+	Left  string    `json:"left"`
+	Right string    `json:"right"`
+}
+
 func (s Signer) Seal(scope Scope, after string) string {
 	raw, _ := json.Marshal(payload{Scope: scope, After: after})
-	return base64.RawURLEncoding.EncodeToString(raw) + "." + base64.RawURLEncoding.EncodeToString(s.mac(raw))
+	return s.seal(raw)
 }
 
 func (s Signer) Open(token string) (Scope, string, error) {
-	if len(token) > 1024 {
-		return Scope{}, "", ErrInvalid
-	}
-	body, tag, ok := strings.Cut(token, ".")
-	if !ok {
-		return Scope{}, "", ErrInvalid
-	}
-	raw, err := base64.RawURLEncoding.Strict().DecodeString(body)
+	raw, err := s.open(token)
 	if err != nil {
-		return Scope{}, "", ErrInvalid
-	}
-	given, err := base64.RawURLEncoding.Strict().DecodeString(tag)
-	if err != nil || !hmac.Equal(given, s.mac(raw)) {
-		return Scope{}, "", ErrInvalid
+		return Scope{}, "", err
 	}
 	var p payload
 	if err := json.Unmarshal(raw, &p); err != nil {
 		return Scope{}, "", ErrInvalid
 	}
 	return p.Scope, p.After, nil
+}
+
+// SealJoin records the last pair of a join page as the resume position.
+func (s Signer) SealJoin(scope JoinScope, left, right string) string {
+	raw, _ := json.Marshal(joinPayload{Scope: scope, Left: left, Right: right})
+	return s.seal(raw)
+}
+
+// OpenJoin returns the join scope and the (left, right) resume position.
+func (s Signer) OpenJoin(token string) (JoinScope, string, string, error) {
+	raw, err := s.open(token)
+	if err != nil {
+		return JoinScope{}, "", "", err
+	}
+	var p joinPayload
+	if err := json.Unmarshal(raw, &p); err != nil {
+		return JoinScope{}, "", "", ErrInvalid
+	}
+	return p.Scope, p.Left, p.Right, nil
+}
+
+func (s Signer) seal(raw []byte) string {
+	return base64.RawURLEncoding.EncodeToString(raw) + "." + base64.RawURLEncoding.EncodeToString(s.mac(raw))
+}
+
+func (s Signer) open(token string) ([]byte, error) {
+	if len(token) > 1024 {
+		return nil, ErrInvalid
+	}
+	body, tag, ok := strings.Cut(token, ".")
+	if !ok {
+		return nil, ErrInvalid
+	}
+	raw, err := base64.RawURLEncoding.Strict().DecodeString(body)
+	if err != nil {
+		return nil, ErrInvalid
+	}
+	given, err := base64.RawURLEncoding.Strict().DecodeString(tag)
+	if err != nil || !hmac.Equal(given, s.mac(raw)) {
+		return nil, ErrInvalid
+	}
+	return raw, nil
 }
 
 func (s Signer) mac(raw []byte) []byte {
