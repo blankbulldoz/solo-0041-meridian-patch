@@ -34,6 +34,18 @@ func (s Shape) Copy() Shape {
 	return Shape{Extent: &b}
 }
 
+// Equal compares shapes as stored. Callers that scope work to a window must
+// still use Equal on the stored shape, never on a window-clipped form.
+func (s Shape) Equal(other Shape) bool {
+	if s.Mark != nil || other.Mark != nil {
+		return s.Mark != nil && other.Mark != nil && *s.Mark == *other.Mark
+	}
+	if s.Extent != nil || other.Extent != nil {
+		return s.Extent != nil && other.Extent != nil && *s.Extent == *other.Extent
+	}
+	return true
+}
+
 func (s Shape) Envelope() Box {
 	if s.Mark != nil {
 		return s.Mark.Envelope()

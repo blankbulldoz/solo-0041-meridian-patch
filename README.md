@@ -36,6 +36,7 @@ python3 examples/walkthrough.py --workflow coverage
 | `GET /strata/{layer}/index-audit` | 核对索引和目录，返回 `records` 与 `checked_nodes` |
 | `GET /image` | 返回 MPB v1 镜像及 `Meridian-Revision` |
 | `PUT /image` | 二进制 `application/vnd.meridian.image` 与必需的 `If-Meridian-Revision` |
+| `POST /image-diff` | `bounds` 与 base64 编码的 `before`、`after` 镜像。返回窗口内按图层与 ID 排序的 `changes` |
 
 例如，创建矩形图层并写入一个地物使用下面的 JSON 对象。
 
@@ -48,5 +49,7 @@ python3 examples/walkthrough.py --workflow coverage
 ```
 
 `409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
+
+比较两个已保存的镜像使用 `POST /image-diff`：`bounds` 为查询窗口，`before` 与 `after` 为 base64 编码的 MPB 镜像，请求体上限可容纳两个全尺寸镜像。响应的 `changes` 按图层名与地物 ID 稳定排序，`change` 取 `entered`、`exited`、`reshaped`、`reclassed`；形状与类别同时变化时同一地物给出相邻两条。条目携带图层中存储的完整形状，从不按窗口剪裁，因此跨边界移动但剪裁后形状相同的地物仍会报告 `reshaped`。镜像按恢复同样的规则解码校验，但比较不恢复也不改动当前数据库，围栏状态下仍可使用。
 
 边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。

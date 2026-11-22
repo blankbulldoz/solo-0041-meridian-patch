@@ -25,10 +25,14 @@ func (a *api) json(w http.ResponseWriter, code int, value any) {
 }
 
 func (a *api) input(w http.ResponseWriter, r *http.Request, target any) bool {
+	return a.inputLimit(w, r, target, maxJSON)
+}
+
+func (a *api) inputLimit(w http.ResponseWriter, r *http.Request, target any, limit int64) bool {
 	if !a.media(w, r, "application/json") {
 		return false
 	}
-	reader := http.MaxBytesReader(w, r.Body, maxJSON)
+	reader := http.MaxBytesReader(w, r.Body, limit)
 	decoder := json.NewDecoder(reader)
 	decoder.DisallowUnknownFields()
 	var raw json.RawMessage

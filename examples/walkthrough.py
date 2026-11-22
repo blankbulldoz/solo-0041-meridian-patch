@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Exercise the normal HTTP surface in a clean temporary database."""
 import argparse
+import base64
 from contextlib import contextmanager
 import json
 from pathlib import Path
@@ -286,6 +287,93 @@ def restore(s):
     return restored
 
 
+def b64(raw):
+    return base64.b64encode(raw).decode('ascii')
+
+
+def feat(category, shape):
+    kind = 'mark' if 'x' in shape else 'extent'
+    return dict(**{'class': category}, shape={kind: shape})
+
+
+def diff(s):
+    s.layer(FIELD)
+    s.layer(PINS, 'mark')
+    first = s.edit(
+        op(FIELD, 'stay', box(1, 1, 2, 2)),
+        op(FIELD, 'cross', box(6, 0, 12, 4)),
+        op(FIELD, 'reclass', box(2, 2, 3, 3)),
+        op(FIELD, 'both', box(3, 1, 4, 2)),
+        op(FIELD, 'gone', box(4, 1, 5, 2)),
+        op(FIELD, 'out', box(5, 1, 6, 2)),
+        op(FIELD, 'into', box(12, 12, 13, 13)),
+        op(FIELD, 'far', box(10, 10, 12, 12)),
+        op(FIELD, 'edge', box(8, 0, 10, 4)),
+        op(PINS, 'pin-move', point(1, 1)),
+        op(PINS, 'pin-out', point(2, 2)),
+        op(PINS, 'pin-class', point(3, 3)),
+    )['revision']
+    before = s.get('/image')
+    revision = s.edit(
+        # cross keeps an identical window-clipped silhouette [6,0,8,4) but its
+        # stored shape truly changes, so the diff must still report reshaped.
+        op(FIELD, 'cross', box(6, 0, 10, 4), mode='replace'),
+        op(FIELD, 'reclass', box(2, 2, 3, 3), 'sleeve', 'replace'),
+        op(FIELD, 'both', box(3, 1, 5, 3), 'sleeve', 'replace'),
+        op(FIELD, 'gone', mode='remove'),
+        op(FIELD, 'out', box(10, 1, 11, 2), mode='replace'),
+        op(FIELD, 'into', box(1, 0, 2, 1), mode='replace'),
+        op(FIELD, 'far', box(12, 12, 14, 14), mode='replace'),
+        op(FIELD, 'edge', box(9, 0, 11, 4), mode='replace'),
+        op(FIELD, 'fresh', box(1, 2, 2, 3)),
+        op(PINS, 'pin-move', point(5, 1), mode='replace'),
+        op(PINS, 'pin-out', point(12, 2), mode='replace'),
+        op(PINS, 'pin-class', point(3, 3), 'sleeve', 'replace'),
+    )['revision']
+    after = s.get('/image')
+    post = lambda a, b, status=200: s.post('/image-diff', dict(bounds=WINDOW, before=b64(a), after=b64(b)), status)
+    result = post(before, after)
+    assert (result['before_revision'], result['after_revision']) == (first, revision)
+    expected = [
+        dict(layer=FIELD, id='both', change='reshaped',
+             before=feat('fixture', box(3, 1, 4, 2)), after=feat('sleeve', box(3, 1, 5, 3))),
+        dict(layer=FIELD, id='both', change='reclassed',
+             before=feat('fixture', box(3, 1, 4, 2)), after=feat('sleeve', box(3, 1, 5, 3))),
+        dict(layer=FIELD, id='cross', change='reshaped',
+             before=feat('fixture', box(6, 0, 12, 4)), after=feat('fixture', box(6, 0, 10, 4))),
+        dict(layer=FIELD, id='fresh', change='entered', after=feat('fixture', box(1, 2, 2, 3))),
+        dict(layer=FIELD, id='gone', change='exited', before=feat('fixture', box(4, 1, 5, 2))),
+        dict(layer=FIELD, id='into', change='entered', after=feat('fixture', box(1, 0, 2, 1))),
+        dict(layer=FIELD, id='out', change='exited', before=feat('fixture', box(5, 1, 6, 2))),
+        dict(layer=FIELD, id='reclass', change='reclassed',
+             before=feat('fixture', box(2, 2, 3, 3)), after=feat('sleeve', box(2, 2, 3, 3))),
+        dict(layer=PINS, id='pin-class', change='reclassed',
+             before=feat('fixture', point(3, 3)), after=feat('sleeve', point(3, 3))),
+        dict(layer=PINS, id='pin-move', change='reshaped',
+             before=feat('fixture', point(1, 1)), after=feat('fixture', point(5, 1))),
+        dict(layer=PINS, id='pin-out', change='exited', before=feat('fixture', point(2, 2))),
+    ]
+    assert result['changes'] == expected, result['changes']
+    # stay is unchanged; far and edge never intersect the window.
+    assert post(before, before)['changes'] == []
+    kinds = [row['change'] for row in post(after, before)['changes']]
+    assert kinds == ['reshaped', 'reclassed', 'reshaped', 'exited', 'entered',
+                     'exited', 'entered', 'reclassed', 'reclassed', 'reshaped', 'entered'], kinds
+    # Comparing is read-only: no restore, no revision movement, same live view.
+    assert s.get('/status')['revision'] == revision
+    post(before, after)
+    assert s.get('/status')['revision'] == revision
+    assert ids(s.query(FIELD, 'window', dict(bounds=WINDOW, limit=256))) == [
+        'both', 'cross', 'fresh', 'into', 'reclass', 'stay']
+    tampered = after[:-1] + bytes([after[-1] ^ 1])
+    assert post(before, tampered, 400)['code'] == 'invalid'
+    assert post(tampered, after, 400)['code'] == 'invalid'
+    s.post('/image-diff', dict(bounds=WINDOW, before=b64(before)), 400)
+    s.post('/image-diff', dict(bounds=box(2, 0, 1, 6), before=b64(before), after=b64(after)), 400)
+    s.request('POST', '/image-diff', b64(before).encode(), 415, {'Content-Type': IMAGE})
+    return result
+
+
 def reopen(binary, data):
     with running(binary, data) as s:
         rev = seed(s)
@@ -304,7 +392,7 @@ def reopen(binary, data):
 
 
 WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
-                                     inspect, seams, relation, audit, export, restore, reopen)}
+                                     inspect, seams, relation, audit, export, restore, diff, reopen)}
 
 
 def main():
