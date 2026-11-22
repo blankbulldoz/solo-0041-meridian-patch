@@ -1,0 +1,3289 @@
+{
+  "coordinates": [
+    {
+      "class_signature": [
+        "echo",
+        "fixture",
+        "gasket",
+        "sleeve"
+      ],
+      "coordinate": {
+        "x": 4,
+        "y": 4
+      },
+      "labels": [
+        "tie"
+      ],
+      "layer_revision": 2,
+      "locate": {
+        "features": [
+          {
+            "class": "sleeve",
+            "id": "s01",
+            "shape": {
+              "extent": {
+                "max_x": 12,
+                "max_y": 8,
+                "min_x": 4,
+                "min_y": 4
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 4,
+          "nodes": 1
+        }
+      },
+      "nearest": {
+        "neighbors": [
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "fixture",
+              "id": "e01",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 4,
+                  "min_x": 0,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "echo",
+              "id": "e02",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 8,
+                  "min_x": 0,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "gasket",
+              "id": "g01",
+              "shape": {
+                "extent": {
+                  "max_x": 8,
+                  "max_y": 4,
+                  "min_x": 4,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "sleeve",
+              "id": "s01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 8,
+                  "min_x": 4,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 16,
+            "feature": {
+              "class": "sleeve",
+              "id": "s02",
+              "shape": {
+                "extent": {
+                  "max_x": 10,
+                  "max_y": 12,
+                  "min_x": 2,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 36,
+            "feature": {
+              "class": "beacon",
+              "id": "b01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 4,
+                  "min_x": 10,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 64,
+            "feature": {
+              "class": "gasket",
+              "id": "g02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 8,
+                  "min_x": 12,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 80,
+            "feature": {
+              "class": "beacon",
+              "id": "b02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 14,
+                  "min_x": 12,
+                  "min_y": 8
+                }
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 8,
+          "nodes": 1
+        }
+      },
+      "nearest_distance_squared": 0,
+      "primary_group": "tie",
+      "probe_id": "p01",
+      "revision": 2,
+      "tied_nearest_ids": [
+        "e01",
+        "e02",
+        "g01",
+        "s01"
+      ]
+    },
+    {
+      "class_signature": [
+        "beacon",
+        "gasket",
+        "sleeve"
+      ],
+      "coordinate": {
+        "x": 12,
+        "y": 4
+      },
+      "labels": [
+        "tie"
+      ],
+      "layer_revision": 2,
+      "locate": {
+        "features": [
+          {
+            "class": "gasket",
+            "id": "g02",
+            "shape": {
+              "extent": {
+                "max_x": 16,
+                "max_y": 8,
+                "min_x": 12,
+                "min_y": 4
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 3,
+          "nodes": 1
+        }
+      },
+      "nearest": {
+        "neighbors": [
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "beacon",
+              "id": "b01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 4,
+                  "min_x": 10,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "gasket",
+              "id": "g02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 8,
+                  "min_x": 12,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "sleeve",
+              "id": "s01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 8,
+                  "min_x": 4,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 16,
+            "feature": {
+              "class": "beacon",
+              "id": "b02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 14,
+                  "min_x": 12,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 16,
+            "feature": {
+              "class": "gasket",
+              "id": "g01",
+              "shape": {
+                "extent": {
+                  "max_x": 8,
+                  "max_y": 4,
+                  "min_x": 4,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 20,
+            "feature": {
+              "class": "sleeve",
+              "id": "s02",
+              "shape": {
+                "extent": {
+                  "max_x": 10,
+                  "max_y": 12,
+                  "min_x": 2,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 64,
+            "feature": {
+              "class": "fixture",
+              "id": "e01",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 4,
+                  "min_x": 0,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 64,
+            "feature": {
+              "class": "echo",
+              "id": "e02",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 8,
+                  "min_x": 0,
+                  "min_y": 4
+                }
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 8,
+          "nodes": 1
+        }
+      },
+      "nearest_distance_squared": 0,
+      "primary_group": "tie",
+      "probe_id": "p02",
+      "revision": 2,
+      "tied_nearest_ids": [
+        "b01",
+        "g02",
+        "s01"
+      ]
+    },
+    {
+      "class_signature": [
+        "sleeve"
+      ],
+      "coordinate": {
+        "x": 8,
+        "y": 8
+      },
+      "labels": [
+        "tie"
+      ],
+      "layer_revision": 2,
+      "locate": {
+        "features": [
+          {
+            "class": "sleeve",
+            "id": "s02",
+            "shape": {
+              "extent": {
+                "max_x": 10,
+                "max_y": 12,
+                "min_x": 2,
+                "min_y": 8
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 2,
+          "nodes": 1
+        }
+      },
+      "nearest": {
+        "neighbors": [
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "sleeve",
+              "id": "s01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 8,
+                  "min_x": 4,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "sleeve",
+              "id": "s02",
+              "shape": {
+                "extent": {
+                  "max_x": 10,
+                  "max_y": 12,
+                  "min_x": 2,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 16,
+            "feature": {
+              "class": "beacon",
+              "id": "b02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 14,
+                  "min_x": 12,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 16,
+            "feature": {
+              "class": "echo",
+              "id": "e02",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 8,
+                  "min_x": 0,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 16,
+            "feature": {
+              "class": "gasket",
+              "id": "g01",
+              "shape": {
+                "extent": {
+                  "max_x": 8,
+                  "max_y": 4,
+                  "min_x": 4,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 16,
+            "feature": {
+              "class": "gasket",
+              "id": "g02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 8,
+                  "min_x": 12,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 20,
+            "feature": {
+              "class": "beacon",
+              "id": "b01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 4,
+                  "min_x": 10,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 32,
+            "feature": {
+              "class": "fixture",
+              "id": "e01",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 4,
+                  "min_x": 0,
+                  "min_y": 0
+                }
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 8,
+          "nodes": 1
+        }
+      },
+      "nearest_distance_squared": 0,
+      "primary_group": "tie",
+      "probe_id": "p03",
+      "revision": 2,
+      "tied_nearest_ids": [
+        "s01",
+        "s02"
+      ]
+    },
+    {
+      "class_signature": [
+        "beacon",
+        "gasket"
+      ],
+      "coordinate": {
+        "x": 16,
+        "y": 8
+      },
+      "labels": [
+        "edge_zero_unowned",
+        "tie"
+      ],
+      "layer_revision": 2,
+      "locate": {
+        "features": [],
+        "visit": {
+          "candidates": 2,
+          "nodes": 1
+        }
+      },
+      "nearest": {
+        "neighbors": [
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "beacon",
+              "id": "b02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 14,
+                  "min_x": 12,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "gasket",
+              "id": "g02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 8,
+                  "min_x": 12,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 16,
+            "feature": {
+              "class": "sleeve",
+              "id": "s01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 8,
+                  "min_x": 4,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 32,
+            "feature": {
+              "class": "beacon",
+              "id": "b01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 4,
+                  "min_x": 10,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 36,
+            "feature": {
+              "class": "sleeve",
+              "id": "s02",
+              "shape": {
+                "extent": {
+                  "max_x": 10,
+                  "max_y": 12,
+                  "min_x": 2,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 80,
+            "feature": {
+              "class": "gasket",
+              "id": "g01",
+              "shape": {
+                "extent": {
+                  "max_x": 8,
+                  "max_y": 4,
+                  "min_x": 4,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 144,
+            "feature": {
+              "class": "echo",
+              "id": "e02",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 8,
+                  "min_x": 0,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 160,
+            "feature": {
+              "class": "fixture",
+              "id": "e01",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 4,
+                  "min_x": 0,
+                  "min_y": 0
+                }
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 8,
+          "nodes": 1
+        }
+      },
+      "nearest_distance_squared": 0,
+      "primary_group": "edge_zero_unowned",
+      "probe_id": "p04",
+      "revision": 2,
+      "tied_nearest_ids": [
+        "b02",
+        "g02"
+      ]
+    },
+    {
+      "class_signature": [
+        "beacon"
+      ],
+      "coordinate": {
+        "x": 10,
+        "y": 2
+      },
+      "labels": [
+        "unique"
+      ],
+      "layer_revision": 2,
+      "locate": {
+        "features": [
+          {
+            "class": "beacon",
+            "id": "b01",
+            "shape": {
+              "extent": {
+                "max_x": 12,
+                "max_y": 4,
+                "min_x": 10,
+                "min_y": 0
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 1,
+          "nodes": 1
+        }
+      },
+      "nearest": {
+        "neighbors": [
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "beacon",
+              "id": "b01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 4,
+                  "min_x": 10,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 4,
+            "feature": {
+              "class": "gasket",
+              "id": "g01",
+              "shape": {
+                "extent": {
+                  "max_x": 8,
+                  "max_y": 4,
+                  "min_x": 4,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 4,
+            "feature": {
+              "class": "sleeve",
+              "id": "s01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 8,
+                  "min_x": 4,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 8,
+            "feature": {
+              "class": "gasket",
+              "id": "g02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 8,
+                  "min_x": 12,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 36,
+            "feature": {
+              "class": "fixture",
+              "id": "e01",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 4,
+                  "min_x": 0,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 36,
+            "feature": {
+              "class": "sleeve",
+              "id": "s02",
+              "shape": {
+                "extent": {
+                  "max_x": 10,
+                  "max_y": 12,
+                  "min_x": 2,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 40,
+            "feature": {
+              "class": "beacon",
+              "id": "b02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 14,
+                  "min_x": 12,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 40,
+            "feature": {
+              "class": "echo",
+              "id": "e02",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 8,
+                  "min_x": 0,
+                  "min_y": 4
+                }
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 8,
+          "nodes": 1
+        }
+      },
+      "nearest_distance_squared": 0,
+      "primary_group": "unique",
+      "probe_id": "p05",
+      "revision": 2,
+      "tied_nearest_ids": [
+        "b01"
+      ]
+    },
+    {
+      "class_signature": [
+        "beacon"
+      ],
+      "coordinate": {
+        "x": 12,
+        "y": 0
+      },
+      "labels": [
+        "edge_zero_unowned",
+        "unique"
+      ],
+      "layer_revision": 2,
+      "locate": {
+        "features": [],
+        "visit": {
+          "candidates": 1,
+          "nodes": 1
+        }
+      },
+      "nearest": {
+        "neighbors": [
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "beacon",
+              "id": "b01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 4,
+                  "min_x": 10,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 16,
+            "feature": {
+              "class": "gasket",
+              "id": "g01",
+              "shape": {
+                "extent": {
+                  "max_x": 8,
+                  "max_y": 4,
+                  "min_x": 4,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 16,
+            "feature": {
+              "class": "gasket",
+              "id": "g02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 8,
+                  "min_x": 12,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 16,
+            "feature": {
+              "class": "sleeve",
+              "id": "s01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 8,
+                  "min_x": 4,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 64,
+            "feature": {
+              "class": "beacon",
+              "id": "b02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 14,
+                  "min_x": 12,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 64,
+            "feature": {
+              "class": "fixture",
+              "id": "e01",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 4,
+                  "min_x": 0,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 68,
+            "feature": {
+              "class": "sleeve",
+              "id": "s02",
+              "shape": {
+                "extent": {
+                  "max_x": 10,
+                  "max_y": 12,
+                  "min_x": 2,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 80,
+            "feature": {
+              "class": "echo",
+              "id": "e02",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 8,
+                  "min_x": 0,
+                  "min_y": 4
+                }
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 8,
+          "nodes": 1
+        }
+      },
+      "nearest_distance_squared": 0,
+      "primary_group": "edge_zero_unowned",
+      "probe_id": "p06",
+      "revision": 2,
+      "tied_nearest_ids": [
+        "b01"
+      ]
+    },
+    {
+      "class_signature": [
+        "beacon"
+      ],
+      "coordinate": {
+        "x": 12,
+        "y": 14
+      },
+      "labels": [
+        "edge_zero_unowned",
+        "unique"
+      ],
+      "layer_revision": 2,
+      "locate": {
+        "features": [],
+        "visit": {
+          "candidates": 1,
+          "nodes": 1
+        }
+      },
+      "nearest": {
+        "neighbors": [
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "beacon",
+              "id": "b02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 14,
+                  "min_x": 12,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 8,
+            "feature": {
+              "class": "sleeve",
+              "id": "s02",
+              "shape": {
+                "extent": {
+                  "max_x": 10,
+                  "max_y": 12,
+                  "min_x": 2,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 36,
+            "feature": {
+              "class": "gasket",
+              "id": "g02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 8,
+                  "min_x": 12,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 36,
+            "feature": {
+              "class": "sleeve",
+              "id": "s01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 8,
+                  "min_x": 4,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 100,
+            "feature": {
+              "class": "beacon",
+              "id": "b01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 4,
+                  "min_x": 10,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 100,
+            "feature": {
+              "class": "echo",
+              "id": "e02",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 8,
+                  "min_x": 0,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 116,
+            "feature": {
+              "class": "gasket",
+              "id": "g01",
+              "shape": {
+                "extent": {
+                  "max_x": 8,
+                  "max_y": 4,
+                  "min_x": 4,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 164,
+            "feature": {
+              "class": "fixture",
+              "id": "e01",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 4,
+                  "min_x": 0,
+                  "min_y": 0
+                }
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 8,
+          "nodes": 1
+        }
+      },
+      "nearest_distance_squared": 0,
+      "primary_group": "edge_zero_unowned",
+      "probe_id": "p07",
+      "revision": 2,
+      "tied_nearest_ids": [
+        "b02"
+      ]
+    },
+    {
+      "class_signature": [
+        "sleeve"
+      ],
+      "coordinate": {
+        "x": 2,
+        "y": 10
+      },
+      "labels": [
+        "unique"
+      ],
+      "layer_revision": 2,
+      "locate": {
+        "features": [
+          {
+            "class": "sleeve",
+            "id": "s02",
+            "shape": {
+              "extent": {
+                "max_x": 10,
+                "max_y": 12,
+                "min_x": 2,
+                "min_y": 8
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 1,
+          "nodes": 1
+        }
+      },
+      "nearest": {
+        "neighbors": [
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "sleeve",
+              "id": "s02",
+              "shape": {
+                "extent": {
+                  "max_x": 10,
+                  "max_y": 12,
+                  "min_x": 2,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 4,
+            "feature": {
+              "class": "echo",
+              "id": "e02",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 8,
+                  "min_x": 0,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 8,
+            "feature": {
+              "class": "sleeve",
+              "id": "s01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 8,
+                  "min_x": 4,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 36,
+            "feature": {
+              "class": "fixture",
+              "id": "e01",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 4,
+                  "min_x": 0,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 40,
+            "feature": {
+              "class": "gasket",
+              "id": "g01",
+              "shape": {
+                "extent": {
+                  "max_x": 8,
+                  "max_y": 4,
+                  "min_x": 4,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 100,
+            "feature": {
+              "class": "beacon",
+              "id": "b01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 4,
+                  "min_x": 10,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 100,
+            "feature": {
+              "class": "beacon",
+              "id": "b02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 14,
+                  "min_x": 12,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 104,
+            "feature": {
+              "class": "gasket",
+              "id": "g02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 8,
+                  "min_x": 12,
+                  "min_y": 4
+                }
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 8,
+          "nodes": 1
+        }
+      },
+      "nearest_distance_squared": 0,
+      "primary_group": "unique",
+      "probe_id": "p08",
+      "revision": 2,
+      "tied_nearest_ids": [
+        "s02"
+      ]
+    },
+    {
+      "class_signature": [
+        "sleeve"
+      ],
+      "coordinate": {
+        "x": 6,
+        "y": 6
+      },
+      "labels": [
+        "unique"
+      ],
+      "layer_revision": 2,
+      "locate": {
+        "features": [
+          {
+            "class": "sleeve",
+            "id": "s01",
+            "shape": {
+              "extent": {
+                "max_x": 12,
+                "max_y": 8,
+                "min_x": 4,
+                "min_y": 4
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 1,
+          "nodes": 1
+        }
+      },
+      "nearest": {
+        "neighbors": [
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "sleeve",
+              "id": "s01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 8,
+                  "min_x": 4,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 4,
+            "feature": {
+              "class": "echo",
+              "id": "e02",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 8,
+                  "min_x": 0,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 4,
+            "feature": {
+              "class": "gasket",
+              "id": "g01",
+              "shape": {
+                "extent": {
+                  "max_x": 8,
+                  "max_y": 4,
+                  "min_x": 4,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 4,
+            "feature": {
+              "class": "sleeve",
+              "id": "s02",
+              "shape": {
+                "extent": {
+                  "max_x": 10,
+                  "max_y": 12,
+                  "min_x": 2,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 8,
+            "feature": {
+              "class": "fixture",
+              "id": "e01",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 4,
+                  "min_x": 0,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 20,
+            "feature": {
+              "class": "beacon",
+              "id": "b01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 4,
+                  "min_x": 10,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 36,
+            "feature": {
+              "class": "gasket",
+              "id": "g02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 8,
+                  "min_x": 12,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 40,
+            "feature": {
+              "class": "beacon",
+              "id": "b02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 14,
+                  "min_x": 12,
+                  "min_y": 8
+                }
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 8,
+          "nodes": 1
+        }
+      },
+      "nearest_distance_squared": 0,
+      "primary_group": "unique",
+      "probe_id": "p09",
+      "revision": 2,
+      "tied_nearest_ids": [
+        "s01"
+      ]
+    },
+    {
+      "class_signature": [
+        "beacon"
+      ],
+      "coordinate": {
+        "x": 14,
+        "y": 12
+      },
+      "labels": [
+        "unique"
+      ],
+      "layer_revision": 2,
+      "locate": {
+        "features": [
+          {
+            "class": "beacon",
+            "id": "b02",
+            "shape": {
+              "extent": {
+                "max_x": 16,
+                "max_y": 14,
+                "min_x": 12,
+                "min_y": 8
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 1,
+          "nodes": 1
+        }
+      },
+      "nearest": {
+        "neighbors": [
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "beacon",
+              "id": "b02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 14,
+                  "min_x": 12,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 16,
+            "feature": {
+              "class": "gasket",
+              "id": "g02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 8,
+                  "min_x": 12,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 16,
+            "feature": {
+              "class": "sleeve",
+              "id": "s02",
+              "shape": {
+                "extent": {
+                  "max_x": 10,
+                  "max_y": 12,
+                  "min_x": 2,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 20,
+            "feature": {
+              "class": "sleeve",
+              "id": "s01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 8,
+                  "min_x": 4,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 68,
+            "feature": {
+              "class": "beacon",
+              "id": "b01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 4,
+                  "min_x": 10,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 100,
+            "feature": {
+              "class": "gasket",
+              "id": "g01",
+              "shape": {
+                "extent": {
+                  "max_x": 8,
+                  "max_y": 4,
+                  "min_x": 4,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 116,
+            "feature": {
+              "class": "echo",
+              "id": "e02",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 8,
+                  "min_x": 0,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 164,
+            "feature": {
+              "class": "fixture",
+              "id": "e01",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 4,
+                  "min_x": 0,
+                  "min_y": 0
+                }
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 8,
+          "nodes": 1
+        }
+      },
+      "nearest_distance_squared": 0,
+      "primary_group": "unique",
+      "probe_id": "p10",
+      "revision": 2,
+      "tied_nearest_ids": [
+        "b02"
+      ]
+    },
+    {
+      "class_signature": [
+        "gasket"
+      ],
+      "coordinate": {
+        "x": 18,
+        "y": 6
+      },
+      "labels": [
+        "unique"
+      ],
+      "layer_revision": 2,
+      "locate": {
+        "features": [],
+        "visit": {
+          "candidates": 0,
+          "nodes": 1
+        }
+      },
+      "nearest": {
+        "neighbors": [
+          {
+            "distance_squared": 4,
+            "feature": {
+              "class": "gasket",
+              "id": "g02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 8,
+                  "min_x": 12,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 8,
+            "feature": {
+              "class": "beacon",
+              "id": "b02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 14,
+                  "min_x": 12,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 36,
+            "feature": {
+              "class": "sleeve",
+              "id": "s01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 8,
+                  "min_x": 4,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 40,
+            "feature": {
+              "class": "beacon",
+              "id": "b01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 4,
+                  "min_x": 10,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 68,
+            "feature": {
+              "class": "sleeve",
+              "id": "s02",
+              "shape": {
+                "extent": {
+                  "max_x": 10,
+                  "max_y": 12,
+                  "min_x": 2,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 104,
+            "feature": {
+              "class": "gasket",
+              "id": "g01",
+              "shape": {
+                "extent": {
+                  "max_x": 8,
+                  "max_y": 4,
+                  "min_x": 4,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 196,
+            "feature": {
+              "class": "echo",
+              "id": "e02",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 8,
+                  "min_x": 0,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 200,
+            "feature": {
+              "class": "fixture",
+              "id": "e01",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 4,
+                  "min_x": 0,
+                  "min_y": 0
+                }
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 8,
+          "nodes": 1
+        }
+      },
+      "nearest_distance_squared": 4,
+      "primary_group": "unique",
+      "probe_id": "p11",
+      "revision": 2,
+      "tied_nearest_ids": [
+        "g02"
+      ]
+    },
+    {
+      "class_signature": [
+        "fixture"
+      ],
+      "coordinate": {
+        "x": 3,
+        "y": 3
+      },
+      "labels": [
+        "unique"
+      ],
+      "layer_revision": 2,
+      "locate": {
+        "features": [
+          {
+            "class": "fixture",
+            "id": "e01",
+            "shape": {
+              "extent": {
+                "max_x": 4,
+                "max_y": 4,
+                "min_x": 0,
+                "min_y": 0
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 1,
+          "nodes": 1
+        }
+      },
+      "nearest": {
+        "neighbors": [
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "fixture",
+              "id": "e01",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 4,
+                  "min_x": 0,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 1,
+            "feature": {
+              "class": "echo",
+              "id": "e02",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 8,
+                  "min_x": 0,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 1,
+            "feature": {
+              "class": "gasket",
+              "id": "g01",
+              "shape": {
+                "extent": {
+                  "max_x": 8,
+                  "max_y": 4,
+                  "min_x": 4,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 2,
+            "feature": {
+              "class": "sleeve",
+              "id": "s01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 8,
+                  "min_x": 4,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 25,
+            "feature": {
+              "class": "sleeve",
+              "id": "s02",
+              "shape": {
+                "extent": {
+                  "max_x": 10,
+                  "max_y": 12,
+                  "min_x": 2,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 49,
+            "feature": {
+              "class": "beacon",
+              "id": "b01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 4,
+                  "min_x": 10,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 82,
+            "feature": {
+              "class": "gasket",
+              "id": "g02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 8,
+                  "min_x": 12,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 106,
+            "feature": {
+              "class": "beacon",
+              "id": "b02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 14,
+                  "min_x": 12,
+                  "min_y": 8
+                }
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 8,
+          "nodes": 1
+        }
+      },
+      "nearest_distance_squared": 0,
+      "primary_group": "unique",
+      "probe_id": "p12",
+      "revision": 2,
+      "tied_nearest_ids": [
+        "e01"
+      ]
+    },
+    {
+      "class_signature": [
+        "beacon"
+      ],
+      "coordinate": {
+        "x": 17,
+        "y": 10
+      },
+      "labels": [
+        "unique"
+      ],
+      "layer_revision": 2,
+      "locate": {
+        "features": [],
+        "visit": {
+          "candidates": 0,
+          "nodes": 1
+        }
+      },
+      "nearest": {
+        "neighbors": [
+          {
+            "distance_squared": 1,
+            "feature": {
+              "class": "beacon",
+              "id": "b02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 14,
+                  "min_x": 12,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 5,
+            "feature": {
+              "class": "gasket",
+              "id": "g02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 8,
+                  "min_x": 12,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 29,
+            "feature": {
+              "class": "sleeve",
+              "id": "s01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 8,
+                  "min_x": 4,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 49,
+            "feature": {
+              "class": "sleeve",
+              "id": "s02",
+              "shape": {
+                "extent": {
+                  "max_x": 10,
+                  "max_y": 12,
+                  "min_x": 2,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 61,
+            "feature": {
+              "class": "beacon",
+              "id": "b01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 4,
+                  "min_x": 10,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 117,
+            "feature": {
+              "class": "gasket",
+              "id": "g01",
+              "shape": {
+                "extent": {
+                  "max_x": 8,
+                  "max_y": 4,
+                  "min_x": 4,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 173,
+            "feature": {
+              "class": "echo",
+              "id": "e02",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 8,
+                  "min_x": 0,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 205,
+            "feature": {
+              "class": "fixture",
+              "id": "e01",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 4,
+                  "min_x": 0,
+                  "min_y": 0
+                }
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 8,
+          "nodes": 1
+        }
+      },
+      "nearest_distance_squared": 1,
+      "primary_group": "unique",
+      "probe_id": "p13",
+      "revision": 2,
+      "tied_nearest_ids": [
+        "b02"
+      ]
+    },
+    {
+      "class_signature": [
+        "sleeve"
+      ],
+      "coordinate": {
+        "x": 10,
+        "y": 5
+      },
+      "labels": [
+        "unique"
+      ],
+      "layer_revision": 2,
+      "locate": {
+        "features": [
+          {
+            "class": "sleeve",
+            "id": "s01",
+            "shape": {
+              "extent": {
+                "max_x": 12,
+                "max_y": 8,
+                "min_x": 4,
+                "min_y": 4
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 1,
+          "nodes": 1
+        }
+      },
+      "nearest": {
+        "neighbors": [
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "sleeve",
+              "id": "s01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 8,
+                  "min_x": 4,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 1,
+            "feature": {
+              "class": "beacon",
+              "id": "b01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 4,
+                  "min_x": 10,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 4,
+            "feature": {
+              "class": "gasket",
+              "id": "g02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 8,
+                  "min_x": 12,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 5,
+            "feature": {
+              "class": "gasket",
+              "id": "g01",
+              "shape": {
+                "extent": {
+                  "max_x": 8,
+                  "max_y": 4,
+                  "min_x": 4,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 9,
+            "feature": {
+              "class": "sleeve",
+              "id": "s02",
+              "shape": {
+                "extent": {
+                  "max_x": 10,
+                  "max_y": 12,
+                  "min_x": 2,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 13,
+            "feature": {
+              "class": "beacon",
+              "id": "b02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 14,
+                  "min_x": 12,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 36,
+            "feature": {
+              "class": "echo",
+              "id": "e02",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 8,
+                  "min_x": 0,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 37,
+            "feature": {
+              "class": "fixture",
+              "id": "e01",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 4,
+                  "min_x": 0,
+                  "min_y": 0
+                }
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 8,
+          "nodes": 1
+        }
+      },
+      "nearest_distance_squared": 0,
+      "primary_group": "unique",
+      "probe_id": "p14",
+      "revision": 2,
+      "tied_nearest_ids": [
+        "s01"
+      ]
+    },
+    {
+      "class_signature": [
+        "echo",
+        "sleeve"
+      ],
+      "coordinate": {
+        "x": 4,
+        "y": 8
+      },
+      "labels": [
+        "tie"
+      ],
+      "layer_revision": 2,
+      "locate": {
+        "features": [
+          {
+            "class": "sleeve",
+            "id": "s02",
+            "shape": {
+              "extent": {
+                "max_x": 10,
+                "max_y": 12,
+                "min_x": 2,
+                "min_y": 8
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 3,
+          "nodes": 1
+        }
+      },
+      "nearest": {
+        "neighbors": [
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "echo",
+              "id": "e02",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 8,
+                  "min_x": 0,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "sleeve",
+              "id": "s01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 8,
+                  "min_x": 4,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "sleeve",
+              "id": "s02",
+              "shape": {
+                "extent": {
+                  "max_x": 10,
+                  "max_y": 12,
+                  "min_x": 2,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 16,
+            "feature": {
+              "class": "fixture",
+              "id": "e01",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 4,
+                  "min_x": 0,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 16,
+            "feature": {
+              "class": "gasket",
+              "id": "g01",
+              "shape": {
+                "extent": {
+                  "max_x": 8,
+                  "max_y": 4,
+                  "min_x": 4,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 52,
+            "feature": {
+              "class": "beacon",
+              "id": "b01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 4,
+                  "min_x": 10,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 64,
+            "feature": {
+              "class": "beacon",
+              "id": "b02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 14,
+                  "min_x": 12,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 64,
+            "feature": {
+              "class": "gasket",
+              "id": "g02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 8,
+                  "min_x": 12,
+                  "min_y": 4
+                }
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 8,
+          "nodes": 1
+        }
+      },
+      "nearest_distance_squared": 0,
+      "primary_group": "tie",
+      "probe_id": "p20",
+      "revision": 2,
+      "tied_nearest_ids": [
+        "e02",
+        "s01",
+        "s02"
+      ]
+    },
+    {
+      "class_signature": [
+        "beacon"
+      ],
+      "coordinate": {
+        "x": 10,
+        "y": 0
+      },
+      "labels": [
+        "unique"
+      ],
+      "layer_revision": 2,
+      "locate": {
+        "features": [
+          {
+            "class": "beacon",
+            "id": "b01",
+            "shape": {
+              "extent": {
+                "max_x": 12,
+                "max_y": 4,
+                "min_x": 10,
+                "min_y": 0
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 1,
+          "nodes": 1
+        }
+      },
+      "nearest": {
+        "neighbors": [
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "beacon",
+              "id": "b01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 4,
+                  "min_x": 10,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 4,
+            "feature": {
+              "class": "gasket",
+              "id": "g01",
+              "shape": {
+                "extent": {
+                  "max_x": 8,
+                  "max_y": 4,
+                  "min_x": 4,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 16,
+            "feature": {
+              "class": "sleeve",
+              "id": "s01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 8,
+                  "min_x": 4,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 20,
+            "feature": {
+              "class": "gasket",
+              "id": "g02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 8,
+                  "min_x": 12,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 36,
+            "feature": {
+              "class": "fixture",
+              "id": "e01",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 4,
+                  "min_x": 0,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 52,
+            "feature": {
+              "class": "echo",
+              "id": "e02",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 8,
+                  "min_x": 0,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 64,
+            "feature": {
+              "class": "sleeve",
+              "id": "s02",
+              "shape": {
+                "extent": {
+                  "max_x": 10,
+                  "max_y": 12,
+                  "min_x": 2,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 68,
+            "feature": {
+              "class": "beacon",
+              "id": "b02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 14,
+                  "min_x": 12,
+                  "min_y": 8
+                }
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 8,
+          "nodes": 1
+        }
+      },
+      "nearest_distance_squared": 0,
+      "primary_group": "unique",
+      "probe_id": "p21",
+      "revision": 2,
+      "tied_nearest_ids": [
+        "b01"
+      ]
+    },
+    {
+      "class_signature": [
+        "sleeve"
+      ],
+      "coordinate": {
+        "x": 10,
+        "y": 8
+      },
+      "labels": [
+        "edge_zero_unowned",
+        "tie"
+      ],
+      "layer_revision": 2,
+      "locate": {
+        "features": [],
+        "visit": {
+          "candidates": 2,
+          "nodes": 1
+        }
+      },
+      "nearest": {
+        "neighbors": [
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "sleeve",
+              "id": "s01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 8,
+                  "min_x": 4,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "sleeve",
+              "id": "s02",
+              "shape": {
+                "extent": {
+                  "max_x": 10,
+                  "max_y": 12,
+                  "min_x": 2,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 4,
+            "feature": {
+              "class": "beacon",
+              "id": "b02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 14,
+                  "min_x": 12,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 4,
+            "feature": {
+              "class": "gasket",
+              "id": "g02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 8,
+                  "min_x": 12,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 16,
+            "feature": {
+              "class": "beacon",
+              "id": "b01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 4,
+                  "min_x": 10,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 20,
+            "feature": {
+              "class": "gasket",
+              "id": "g01",
+              "shape": {
+                "extent": {
+                  "max_x": 8,
+                  "max_y": 4,
+                  "min_x": 4,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 36,
+            "feature": {
+              "class": "echo",
+              "id": "e02",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 8,
+                  "min_x": 0,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 52,
+            "feature": {
+              "class": "fixture",
+              "id": "e01",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 4,
+                  "min_x": 0,
+                  "min_y": 0
+                }
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 8,
+          "nodes": 1
+        }
+      },
+      "nearest_distance_squared": 0,
+      "primary_group": "edge_zero_unowned",
+      "probe_id": "p22",
+      "revision": 2,
+      "tied_nearest_ids": [
+        "s01",
+        "s02"
+      ]
+    },
+    {
+      "class_signature": [
+        "sleeve"
+      ],
+      "coordinate": {
+        "x": 6,
+        "y": 8
+      },
+      "labels": [
+        "tie"
+      ],
+      "layer_revision": 2,
+      "locate": {
+        "features": [
+          {
+            "class": "sleeve",
+            "id": "s02",
+            "shape": {
+              "extent": {
+                "max_x": 10,
+                "max_y": 12,
+                "min_x": 2,
+                "min_y": 8
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 2,
+          "nodes": 1
+        }
+      },
+      "nearest": {
+        "neighbors": [
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "sleeve",
+              "id": "s01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 8,
+                  "min_x": 4,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "sleeve",
+              "id": "s02",
+              "shape": {
+                "extent": {
+                  "max_x": 10,
+                  "max_y": 12,
+                  "min_x": 2,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 4,
+            "feature": {
+              "class": "echo",
+              "id": "e02",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 8,
+                  "min_x": 0,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 16,
+            "feature": {
+              "class": "gasket",
+              "id": "g01",
+              "shape": {
+                "extent": {
+                  "max_x": 8,
+                  "max_y": 4,
+                  "min_x": 4,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 20,
+            "feature": {
+              "class": "fixture",
+              "id": "e01",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 4,
+                  "min_x": 0,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 32,
+            "feature": {
+              "class": "beacon",
+              "id": "b01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 4,
+                  "min_x": 10,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 36,
+            "feature": {
+              "class": "beacon",
+              "id": "b02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 14,
+                  "min_x": 12,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 36,
+            "feature": {
+              "class": "gasket",
+              "id": "g02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 8,
+                  "min_x": 12,
+                  "min_y": 4
+                }
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 8,
+          "nodes": 1
+        }
+      },
+      "nearest_distance_squared": 0,
+      "primary_group": "tie",
+      "probe_id": "p23",
+      "revision": 2,
+      "tied_nearest_ids": [
+        "s01",
+        "s02"
+      ]
+    },
+    {
+      "class_signature": [
+        "sleeve"
+      ],
+      "coordinate": {
+        "x": 10,
+        "y": 10
+      },
+      "labels": [
+        "edge_zero_unowned",
+        "unique"
+      ],
+      "layer_revision": 2,
+      "locate": {
+        "features": [],
+        "visit": {
+          "candidates": 1,
+          "nodes": 1
+        }
+      },
+      "nearest": {
+        "neighbors": [
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "sleeve",
+              "id": "s02",
+              "shape": {
+                "extent": {
+                  "max_x": 10,
+                  "max_y": 12,
+                  "min_x": 2,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 4,
+            "feature": {
+              "class": "beacon",
+              "id": "b02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 14,
+                  "min_x": 12,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 4,
+            "feature": {
+              "class": "sleeve",
+              "id": "s01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 8,
+                  "min_x": 4,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 8,
+            "feature": {
+              "class": "gasket",
+              "id": "g02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 8,
+                  "min_x": 12,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 36,
+            "feature": {
+              "class": "beacon",
+              "id": "b01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 4,
+                  "min_x": 10,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 40,
+            "feature": {
+              "class": "echo",
+              "id": "e02",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 8,
+                  "min_x": 0,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 40,
+            "feature": {
+              "class": "gasket",
+              "id": "g01",
+              "shape": {
+                "extent": {
+                  "max_x": 8,
+                  "max_y": 4,
+                  "min_x": 4,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 72,
+            "feature": {
+              "class": "fixture",
+              "id": "e01",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 4,
+                  "min_x": 0,
+                  "min_y": 0
+                }
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 8,
+          "nodes": 1
+        }
+      },
+      "nearest_distance_squared": 0,
+      "primary_group": "edge_zero_unowned",
+      "probe_id": "p24",
+      "revision": 2,
+      "tied_nearest_ids": [
+        "s02"
+      ]
+    },
+    {
+      "class_signature": [
+        "gasket"
+      ],
+      "coordinate": {
+        "x": 16,
+        "y": 6
+      },
+      "labels": [
+        "edge_zero_unowned",
+        "unique"
+      ],
+      "layer_revision": 2,
+      "locate": {
+        "features": [],
+        "visit": {
+          "candidates": 1,
+          "nodes": 1
+        }
+      },
+      "nearest": {
+        "neighbors": [
+          {
+            "distance_squared": 0,
+            "feature": {
+              "class": "gasket",
+              "id": "g02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 8,
+                  "min_x": 12,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 4,
+            "feature": {
+              "class": "beacon",
+              "id": "b02",
+              "shape": {
+                "extent": {
+                  "max_x": 16,
+                  "max_y": 14,
+                  "min_x": 12,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 16,
+            "feature": {
+              "class": "sleeve",
+              "id": "s01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 8,
+                  "min_x": 4,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 20,
+            "feature": {
+              "class": "beacon",
+              "id": "b01",
+              "shape": {
+                "extent": {
+                  "max_x": 12,
+                  "max_y": 4,
+                  "min_x": 10,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 40,
+            "feature": {
+              "class": "sleeve",
+              "id": "s02",
+              "shape": {
+                "extent": {
+                  "max_x": 10,
+                  "max_y": 12,
+                  "min_x": 2,
+                  "min_y": 8
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 68,
+            "feature": {
+              "class": "gasket",
+              "id": "g01",
+              "shape": {
+                "extent": {
+                  "max_x": 8,
+                  "max_y": 4,
+                  "min_x": 4,
+                  "min_y": 0
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 144,
+            "feature": {
+              "class": "echo",
+              "id": "e02",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 8,
+                  "min_x": 0,
+                  "min_y": 4
+                }
+              }
+            }
+          },
+          {
+            "distance_squared": 148,
+            "feature": {
+              "class": "fixture",
+              "id": "e01",
+              "shape": {
+                "extent": {
+                  "max_x": 4,
+                  "max_y": 4,
+                  "min_x": 0,
+                  "min_y": 0
+                }
+              }
+            }
+          }
+        ],
+        "visit": {
+          "candidates": 8,
+          "nodes": 1
+        }
+      },
+      "nearest_distance_squared": 0,
+      "primary_group": "edge_zero_unowned",
+      "probe_id": "p25",
+      "revision": 2,
+      "tied_nearest_ids": [
+        "g02"
+      ]
+    }
+  ],
+  "layer": "patrol-grid",
+  "layer_revision": 2,
+  "nearest_limit": 128,
+  "revision": 2,
+  "rule_version": "patrol-pack-r1"
+}

@@ -1,0 +1,57 @@
+{
+  "duplicate_coordinates": [
+    {
+      "coordinate": {
+        "x": 10,
+        "y": 5
+      },
+      "duplicate_probe_id": "p15",
+      "kept_probe_id": "p14"
+    },
+    {
+      "coordinate": {
+        "x": 12,
+        "y": 14
+      },
+      "duplicate_probe_id": "p16",
+      "kept_probe_id": "p07"
+    },
+    {
+      "coordinate": {
+        "x": 12,
+        "y": 14
+      },
+      "duplicate_probe_id": "p17",
+      "kept_probe_id": "p07"
+    },
+    {
+      "coordinate": {
+        "x": 12,
+        "y": 14
+      },
+      "duplicate_probe_id": "p18",
+      "kept_probe_id": "p07"
+    },
+    {
+      "coordinate": {
+        "x": 16,
+        "y": 6
+      },
+      "duplicate_probe_id": "p26",
+      "kept_probe_id": "p25"
+    }
+  ],
+  "group_shortfalls": [],
+  "invalid_candidates": [
+    {
+      "probe_id": "p19",
+      "reason": "coordinates must be within [-1000000000,1000000000]",
+      "x": 1000000001,
+      "y": 0
+    }
+  ],
+  "overall_shortfall": 0,
+  "total_requested": 9,
+  "total_selected": 9,
+  "unbounded_probes": []
+}

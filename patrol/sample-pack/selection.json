@@ -1,0 +1,74 @@
+{
+  "group_quotas": {
+    "edge_zero_unowned": 3,
+    "tie": 3,
+    "unique": 3
+  },
+  "groups": [
+    {
+      "covered_classes": [
+        "beacon",
+        "gasket",
+        "sleeve"
+      ],
+      "group": "edge_zero_unowned",
+      "picked_probe_ids": [
+        "p04",
+        "p22",
+        "p06"
+      ],
+      "pool_size": 6,
+      "quota": 3,
+      "shortfall": 0
+    },
+    {
+      "covered_classes": [
+        "beacon",
+        "echo",
+        "fixture",
+        "gasket",
+        "sleeve"
+      ],
+      "group": "tie",
+      "picked_probe_ids": [
+        "p01",
+        "p02",
+        "p03"
+      ],
+      "pool_size": 5,
+      "quota": 3,
+      "shortfall": 0
+    },
+    {
+      "covered_classes": [
+        "beacon",
+        "gasket",
+        "sleeve"
+      ],
+      "group": "unique",
+      "picked_probe_ids": [
+        "p05",
+        "p08",
+        "p11"
+      ],
+      "pool_size": 9,
+      "quota": 3,
+      "shortfall": 0
+    }
+  ],
+  "layer": "patrol-grid",
+  "rule_version": "patrol-pack-r1",
+  "selected_probe_ids": [
+    "p04",
+    "p22",
+    "p06",
+    "p01",
+    "p02",
+    "p03",
+    "p05",
+    "p08",
+    "p11"
+  ],
+  "selection_rule": "per group: maximize newly covered feature classes, tie-break by probe_id; remaining quota filled in global probe_id order",
+  "total_requested": 9
+}

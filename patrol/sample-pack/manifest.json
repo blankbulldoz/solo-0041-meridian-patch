@@ -1,0 +1,38 @@
+{
+  "candidate_source_sha256": "e59f809f8372ab2aff36800aa2cd0e31ff159d985ec599f44013768ee2d728c8",
+  "counts": {
+    "candidate_records": 26,
+    "duplicate_records": 5,
+    "invalid_records": 1,
+    "requested": 9,
+    "selected": 9,
+    "valid_unique_coordinates": 20
+  },
+  "layer": "patrol-grid",
+  "layer_revision": 2,
+  "layer_summary": {
+    "bounds": {
+      "max_x": 20,
+      "max_y": 20,
+      "min_x": -20,
+      "min_y": -20
+    },
+    "count": 8,
+    "exclusive": false,
+    "kind": "extent",
+    "name": "patrol-grid",
+    "revision": 2
+  },
+  "output_sha256": {
+    "evidence.json": "1b21084df27474e284ebc25162e6bc0da0a1382336432de540d3d46ee1b18bb0",
+    "raw-probes.json": "54925274a813e75f756e0319f65a5172da9ebfe8b215b66c7fe24e9380bbde74",
+    "selection.json": "14b69f56671188165921c55b8f0d70e1edd97d52d6c2b47c86fe9a135349eeee",
+    "shortfalls.json": "2fa06413cf4f55e26957948878d9809324a0d5dacd6f5c841b5756fad29ce3ba"
+  },
+  "revision": 2,
+  "rule_version": "patrol-pack-r1",
+  "service_status": {
+    "revision": 2,
+    "writable": true
+  }
+}

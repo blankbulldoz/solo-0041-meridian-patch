@@ -1,0 +1,21 @@
+{
+  "comment": "Deterministic patrol-grid scenario for Meridian Patch. Extent layer, non-exclusive so overlapping rectangles and zero-distance ties are legal. Bounds use the half-open rule [min,max); top/right edges are owned by nobody.",
+  "bounds": { "min_x": -20, "min_y": -20, "max_x": 20, "max_y": 20 },
+  "layers": [
+    {
+      "name": "patrol-grid",
+      "kind": "extent",
+      "exclusive": false,
+      "features": [
+        { "id": "e01", "class": "fixture", "extent": { "min_x": 0, "min_y": 0, "max_x": 4, "max_y": 4 } },
+        { "id": "e02", "class": "echo", "extent": { "min_x": 0, "min_y": 4, "max_x": 4, "max_y": 8 } },
+        { "id": "g01", "class": "gasket", "extent": { "min_x": 4, "min_y": 0, "max_x": 8, "max_y": 4 } },
+        { "id": "g02", "class": "gasket", "extent": { "min_x": 12, "min_y": 4, "max_x": 16, "max_y": 8 } },
+        { "id": "s01", "class": "sleeve", "extent": { "min_x": 4, "min_y": 4, "max_x": 12, "max_y": 8 } },
+        { "id": "s02", "class": "sleeve", "extent": { "min_x": 2, "min_y": 8, "max_x": 10, "max_y": 12 } },
+        { "id": "b01", "class": "beacon", "extent": { "min_x": 10, "min_y": 0, "max_x": 12, "max_y": 4 } },
+        { "id": "b02", "class": "beacon", "extent": { "min_x": 12, "min_y": 8, "max_x": 16, "max_y": 14 } }
+      ]
+    }
+  ]
+}

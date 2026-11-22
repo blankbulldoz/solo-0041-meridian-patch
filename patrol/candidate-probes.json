@@ -1,0 +1,32 @@
+{
+  "layer": "patrol-grid",
+  "comment": "Candidate probes for the Meridian Patch spatial patrol. Duplicate coordinates and clustered hotspots are allowed; selection deduplicates by coordinate.",
+  "probes": [
+    { "probe_id": "p01", "x": 4, "y": 4 },
+    { "probe_id": "p02", "x": 12, "y": 4 },
+    { "probe_id": "p03", "x": 8, "y": 8 },
+    { "probe_id": "p04", "x": 16, "y": 8 },
+    { "probe_id": "p05", "x": 10, "y": 2 },
+    { "probe_id": "p06", "x": 12, "y": 0 },
+    { "probe_id": "p07", "x": 12, "y": 14 },
+    { "probe_id": "p08", "x": 2, "y": 10 },
+    { "probe_id": "p09", "x": 6, "y": 6 },
+    { "probe_id": "p10", "x": 14, "y": 12 },
+    { "probe_id": "p11", "x": 18, "y": 6 },
+    { "probe_id": "p12", "x": 3, "y": 3 },
+    { "probe_id": "p13", "x": 17, "y": 10 },
+    { "probe_id": "p14", "x": 10, "y": 5 },
+    { "probe_id": "p15", "x": 10, "y": 5, "note": "duplicate coordinate of p14" },
+    { "probe_id": "p16", "x": 12, "y": 14, "note": "hotspot repeat of p07" },
+    { "probe_id": "p17", "x": 12, "y": 14, "note": "hotspot repeat of p17" },
+    { "probe_id": "p18", "x": 12, "y": 14, "note": "hotspot repeat of p18" },
+    { "probe_id": "p20", "x": 4, "y": 8, "note": "open top/right corner, zero distance tie e02/s01, no owner" },
+    { "probe_id": "p21", "x": 10, "y": 0, "note": "bottom edge is owned by b01, unique nearest" },
+    { "probe_id": "p22", "x": 10, "y": 8, "note": "open top edge, zero distance tie s01/s02, no owner" },
+    { "probe_id": "p23", "x": 6, "y": 8, "note": "open edge of s01 but s02 owns the point, zero distance tie" },
+    { "probe_id": "p24", "x": 10, "y": 10, "note": "open right edge of s02, zero distance unique sleeve" },
+    { "probe_id": "p25", "x": 16, "y": 6, "note": "open right edge of g02, zero distance unique gasket" },
+    { "probe_id": "p26", "x": 16, "y": 6, "note": "duplicate coordinate of p25" },
+    { "probe_id": "p19", "x": 1000000001, "y": 0, "note": "outside coordinate limit, must be rejected as invalid" }
+  ]
+}
