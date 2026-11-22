@@ -1,0 +1,273 @@
+{
+  "data_dir": "/tmp/meridian-seam-repro/data",
+  "final-status": {
+    "revision": 4,
+    "writable": true
+  },
+  "scene-a-half-open": {
+    "interior": {
+      "seams": [
+        {
+          "first": "east",
+          "seam": {
+            "axis": "vertical",
+            "fixed": 4,
+            "from": 0,
+            "to": 8
+          },
+          "second": "west"
+        }
+      ],
+      "visit": {
+        "candidates": 6,
+        "nodes": 3
+      },
+      "window": {
+        "max_x": 12,
+        "max_y": 8,
+        "min_x": 0,
+        "min_y": 0
+      }
+    },
+    "left-edge": {
+      "seams": [
+        {
+          "first": "east",
+          "seam": {
+            "axis": "vertical",
+            "fixed": 4,
+            "from": 0,
+            "to": 8
+          },
+          "second": "west"
+        }
+      ],
+      "visit": {
+        "candidates": 6,
+        "nodes": 3
+      },
+      "window": {
+        "max_x": 12,
+        "max_y": 8,
+        "min_x": 4,
+        "min_y": 0
+      }
+    },
+    "right-edge": {
+      "seams": [],
+      "visit": {
+        "candidates": 6,
+        "nodes": 3
+      },
+      "window": {
+        "max_x": 4,
+        "max_y": 8,
+        "min_x": -4,
+        "min_y": 0
+      }
+    },
+    "right-edge-window-features": [
+      "west"
+    ]
+  },
+  "scene-b-candidate-exhaustion": {
+    "independent": {
+      "candidate_budget": 200000,
+      "envelope_pair_candidates": 211712,
+      "features": 480,
+      "seam_count": 28,
+      "seam_pairs": [
+        [
+          "seam-e-0",
+          "seam-e-1"
+        ],
+        [
+          "seam-e-0",
+          "seam-w-0"
+        ],
+        [
+          "seam-e-1",
+          "seam-e-2"
+        ],
+        [
+          "seam-e-1",
+          "seam-w-1"
+        ],
+        [
+          "seam-e-2",
+          "seam-e-3"
+        ],
+        [
+          "seam-e-2",
+          "seam-w-2"
+        ],
+        [
+          "seam-e-3",
+          "seam-e-4"
+        ],
+        [
+          "seam-e-3",
+          "seam-w-3"
+        ],
+        [
+          "seam-e-4",
+          "seam-e-5"
+        ],
+        [
+          "seam-e-4",
+          "seam-w-4"
+        ],
+        [
+          "seam-e-5",
+          "seam-e-6"
+        ],
+        [
+          "seam-e-5",
+          "seam-w-5"
+        ],
+        [
+          "seam-e-6",
+          "seam-e-7"
+        ],
+        [
+          "seam-e-6",
+          "seam-w-6"
+        ],
+        [
+          "seam-e-7",
+          "seam-e-8"
+        ],
+        [
+          "seam-e-7",
+          "seam-w-7"
+        ],
+        [
+          "seam-e-8",
+          "seam-e-9"
+        ],
+        [
+          "seam-e-8",
+          "seam-w-8"
+        ],
+        [
+          "seam-e-9",
+          "seam-w-9"
+        ],
+        [
+          "seam-w-0",
+          "seam-w-1"
+        ],
+        [
+          "seam-w-1",
+          "seam-w-2"
+        ],
+        [
+          "seam-w-2",
+          "seam-w-3"
+        ],
+        [
+          "seam-w-3",
+          "seam-w-4"
+        ],
+        [
+          "seam-w-4",
+          "seam-w-5"
+        ],
+        [
+          "seam-w-5",
+          "seam-w-6"
+        ],
+        [
+          "seam-w-6",
+          "seam-w-7"
+        ],
+        [
+          "seam-w-7",
+          "seam-w-8"
+        ],
+        [
+          "seam-w-8",
+          "seam-w-9"
+        ]
+      ],
+      "seam_result_cap": 2000,
+      "total_candidate_work": 212192,
+      "window_candidates": 480
+    },
+    "join-dense-left": {
+      "pairs": 20,
+      "visit": {
+        "candidates": 500,
+        "nodes": 515
+      }
+    },
+    "join-probe-left": {
+      "pairs": 20,
+      "visit": {
+        "candidates": 21,
+        "nodes": 16
+      }
+    },
+    "seams-limit-1": {
+      "code": "capacity",
+      "message": "seam query exceeds seam or candidate budget"
+    },
+    "seams-limit-2000": {
+      "code": "capacity",
+      "message": "seam query exceeds seam or candidate budget"
+    },
+    "seams-limit-2001": {
+      "code": "invalid",
+      "message": "seam limit must be 1..2000"
+    }
+  },
+  "seed": "seeded fresh into ./data",
+  "startup": {
+    "address": "127.0.0.1:33901",
+    "level": "INFO",
+    "msg": "meridian ready",
+    "revision": 0,
+    "time": "2026-11-22T23:32:47.491890057Z"
+  },
+  "strata": [
+    {
+      "bounds": {
+        "max_x": 900,
+        "max_y": 900,
+        "min_x": 0,
+        "min_y": 0
+      },
+      "count": 480,
+      "exclusive": false,
+      "kind": "extent",
+      "name": "dense-thicket",
+      "revision": 4
+    },
+    {
+      "bounds": {
+        "max_x": 900,
+        "max_y": 900,
+        "min_x": 0,
+        "min_y": 0
+      },
+      "count": 1,
+      "exclusive": false,
+      "kind": "extent",
+      "name": "probe-slab",
+      "revision": 4
+    },
+    {
+      "bounds": {
+        "max_x": 20,
+        "max_y": 20,
+        "min_x": -20,
+        "min_y": -20
+      },
+      "count": 2,
+      "exclusive": false,
+      "kind": "extent",
+      "name": "sparse-verge",
+      "revision": 4
+    }
+  ]
+}
