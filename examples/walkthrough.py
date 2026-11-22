@@ -2,6 +2,7 @@
 """Exercise the normal HTTP surface in a clean temporary database."""
 import argparse
 from contextlib import contextmanager
+import hashlib
 import json
 from pathlib import Path
 import select
@@ -225,6 +226,103 @@ def seams(s):
     return result
 
 
+def distribution(s):
+    seed(s)
+    query = dict(bounds=WINDOW, origin=point(0, 0), cell=4)
+    result = s.query(FIELD, 'distribution', query)
+    assert result['empty_digest'] == hashlib.sha256(b'').hexdigest()
+    cells = {(cell['column'], cell['row']): cell for cell in result['cells']}
+    assert sorted(cells) == [(0, 0), (1, 0)]
+    assert cells[(0, 0)]['bounds'] == box(0, 0, 4, 4) and cells[(0, 0)]['count'] == 2
+    assert cells[(1, 0)]['count'] == 2 and cells[(1, 0)]['digest'] != cells[(0, 0)]['digest']
+    # Digests cover only class plus clipped geometry: the fixture values below
+    # pin the canonical encoding so independent processes encode identically.
+    assert cells[(0, 0)]['digest'] == 'bbf85a47a7beeead0cd44d250dc21a73281b9edfc774a97ef3501703014814a1'
+    assert cells[(1, 0)]['digest'] == 'cbc0d0d9a13e33dba8656b7348af03314695346abf8508d897db9e6acd88d605'
+    assert s.query(FIELD, 'distribution', query) == result
+
+    # Another layer's write advances the whole-database revision while the
+    # layer revision and every per-cell digest stay identical.
+    s.edit(op(BED, 'shim', mode='remove'))
+    later = s.query(FIELD, 'distribution', query)
+    assert later['revision'] > result['revision']
+    assert [cell['digest'] for cell in later['cells']] == [cell['digest'] for cell in result['cells']]
+
+    # Removing and re-inserting identical geometry changes the layer revision
+    # but not the spatial content, so the cells remain comparable.
+    s.edit(op(FIELD, 'prong', mode='remove'))
+    s.edit(op(FIELD, 'prong', box(0, 0, 4, 3)))
+    again = s.query(FIELD, 'distribution', query)
+    assert again['layer_revision'] > result['layer_revision']
+    assert again['cells'] == result['cells'] and again['digest'] == result['digest']
+
+    # A duplicate geometry under another ID changes count and digest.
+    s.edit(op(FIELD, 'quinion', box(0, 0, 4, 3)))
+    duplicated = s.query(FIELD, 'distribution', query)
+    assert duplicated['cells'][0]['count'] == 3
+    assert duplicated['cells'][0]['digest'] != result['cells'][0]['digest']
+    s.edit(op(FIELD, 'quinion', mode='remove'))
+
+    # A category change alone must change the digest of the touched cell.
+    s.edit(op(FIELD, 'dowel', box(4, 0, 8, 3), 'sleeve', mode='replace'))
+    recoloured = s.query(FIELD, 'distribution', query)
+    assert recoloured['cells'][1]['digest'] != result['cells'][1]['digest']
+    assert recoloured['cells'][1]['count'] == result['cells'][1]['count']
+
+    # Marks use half-open single-cell ownership; empty cells are explicit.
+    marks = s.query(PINS, 'distribution', dict(bounds=WINDOW, origin=point(0, 0), cell=2))
+    mark_cells = {(cell['column'], cell['row']): cell for cell in marks['cells']}
+    assert len(mark_cells) == 8
+    assert (mark_cells[(2, 0)]['count'], mark_cells[(3, 0)]['count']) == (1, 1)
+    assert mark_cells[(0, 0)]['count'] == 0
+    assert mark_cells[(0, 0)]['digest'] == marks['empty_digest']
+
+    # An empty window has a fixed expression: every cell equals empty_digest.
+    empty = s.query(FIELD, 'distribution', dict(bounds=box(10, 10, 12, 12), origin=point(0, 0), cell=1))
+    assert len(empty['cells']) == 4
+    assert {cell['digest'] for cell in empty['cells']} == {empty['empty_digest']}
+    assert [cell['count'] for cell in empty['cells']] == [0, 0, 0, 0]
+
+    # A rectangle crossing a cell edge is clipped separately in each cell, and
+    # cells below the origin use the same half-open lattice (negative columns).
+    crossing = s.query(FIELD, 'distribution', dict(bounds=WINDOW, origin=point(1, 0), cell=4))
+    assert [cell['column'] for cell in crossing['cells']] == [-1, 0, 1]
+    assert [cell['count'] for cell in crossing['cells']] == [1, 3, 2]
+
+    s.query(FIELD, 'distribution', dict(bounds=WINDOW, origin=point(0, 0), cell=-1), 400)
+    s.query(FIELD, 'distribution', dict(bounds=box(0, 0, 1000, 1000), origin=point(0, 0), cell=1), 422)
+    s.query(FIELD, 'distribution', dict(bounds=WINDOW, origin=point(0, 0), cell=4, **{'class': 'sleeve'}))
+    s.query(FIELD, 'distribution', dict(bounds=box(0, 0, 200, 100), origin=point(0, 0)), 422)
+    unit = s.query(FIELD, 'distribution', dict(bounds=box(0, 0, 3, 3), origin=point(0, 0)))
+    assert unit['grid']['cell'] == 1 and len(unit['cells']) == 9
+    s.query('missing', 'distribution', query, 404)
+    return result
+
+
+def crossprocess(binary, data):
+    query = dict(bounds=WINDOW, origin=point(0, 0), cell=4)
+    with running(binary, data/'origin') as first:
+        seed(first)
+        backup = first.get('/image')
+        expected = first.query(FIELD, 'distribution', query)
+        first.edit(op(BED, 'shim', mode='remove'))
+        advanced = first.query(FIELD, 'distribution', query)
+        assert advanced['revision'] > expected['revision']
+        assert [cell['digest'] for cell in advanced['cells']] == [cell['digest'] for cell in expected['cells']]
+    # A separate process at a different revision, restoring the same image,
+    # reproduces every cell digest byte-for-byte.
+    with running(binary, data/'replica') as second:
+        assert second.restore(backup, 0)['revision'] == 1
+        replica = second.query(FIELD, 'distribution', query)
+        assert replica['revision'] != expected['revision']
+        assert replica['revision'] != advanced['revision']
+        assert replica['cells'] == expected['cells']
+        assert replica['empty_digest'] == expected['empty_digest']
+        return dict(origin_revision=expected['revision'], advanced_revision=advanced['revision'],
+                    replica_revision=replica['revision'], cells=len(replica['cells']),
+                    digest=replica['digest'])
+
+
 def relation(s):
     seed(s)
     pin = dict(layer=PINS, id='brad')
@@ -304,7 +402,8 @@ def reopen(binary, data):
 
 
 WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
-                                     inspect, seams, relation, audit, export, restore, reopen)}
+                                     distribution, inspect, seams, relation, audit, export, restore, reopen,
+                                     crossprocess)}
 
 
 def main():
@@ -315,8 +414,8 @@ def main():
         root = Path(temporary)
         binary, data = root/'meridian', root/'space'
         subprocess.run(['go', 'build', '-o', str(binary), './cmd/meridian'], check=True, cwd=ROOT, timeout=90)
-        if args.workflow == 'reopen':
-            result = reopen(binary, data)
+        if args.workflow in ('reopen', 'crossprocess'):
+            result = WORKFLOWS[args.workflow](binary, data)
         else:
             with running(binary, data) as session:
                 result = WORKFLOWS[args.workflow](session)

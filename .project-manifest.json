@@ -207,6 +207,27 @@
       "verification": "python3 examples/walkthrough.py --workflow join"
     },
     {
+      "id": "distribution",
+      "name": "空间分布摘要",
+      "entry": "POST /strata/{layer}/distribution",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "spatial",
+        "packed",
+        "plane",
+        "catalog"
+      ],
+      "steps": [
+        "按窗口裁切候选",
+        "按整数网格分组并二次裁切",
+        "逐格与整体摘要"
+      ],
+      "success": "跨格矩形逐格裁切，空格固定表达且摘要可跨进程比较",
+      "failure": "非法网格或超格数/片段上限整次拒绝",
+      "verification": "python3 examples/walkthrough.py --workflow distribution"
+    },
+    {
       "id": "coverage",
       "name": "矩形覆盖面积",
       "entry": "POST /strata/{layer}/coverage",

@@ -29,6 +29,7 @@ python3 examples/walkthrough.py --workflow coverage
 | `POST /strata/{layer}/locate` | `{ "x": 2, "y": 1 }`。返回拥有该点的 `features` |
 | `POST /strata/{layer}/nearest` | `point`, `limit`, 可选 `class`。返回带 `distance_squared` 的 `neighbors` |
 | `POST /strata/{layer}/coverage` | `bounds` 和可选 `class`。返回 `covered`, `repeated`, `uncovered` |
+| `POST /strata/{layer}/distribution` | `bounds`, `origin`, 可选 `cell` 和 `class`。返回按网格分组的 `cells`、`empty_digest` 与汇总 `digest` |
 | `POST /strata/{layer}/seams` | `bounds`, `limit`。按 ID 对返回正长度共享边 |
 | `POST /join` | `left`, `right`, `bounds`, `limit`。返回同一全库修订的相交对 |
 | `POST /relation` | `left` 与 `right` 分别含 `layer` 和 `id`。返回相交、双向包含和闭包距离 |
@@ -48,5 +49,17 @@ python3 examples/walkthrough.py --workflow coverage
 ```
 
 `409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
+
+### 空间分布摘要
+
+`POST /strata/{layer}/distribution` 按整数网格汇总匹配地物，用于跨进程校对。`origin` 是格原点，`cell` 是格边长（缺省为 1）。格 `(column,row)` 表示 `[origin.X+column*cell, origin.X+(column+1)*cell)` 与同样式的 y 区间，负坐标同样使用半开归属。
+
+- 窗口内每个格都会返回，含空格；`cells` 按 row、column 升序排列。
+- 矩形跨格时在每个触达格各出现一次，摘要使用该格裁切后的矩形；窗口裁切先于格裁切。
+- 点只在半开归属它的唯一格计数。
+- 每格 `digest` 覆盖 `class` 与该格裁切几何的规范编码，不包含 ID、图层名或修订，因此不同进程、不同图层修订甚至不同地物 ID 在空间内容相同时得到相同摘要；类别或几何变化即改变摘要。
+- `empty_digest` 固定为空格的摘要（空字节的 SHA-256），空格同时报告 `count: 0` 与该摘要。
+- 顶层 `digest` 覆盖 `grid`、`bounds`、按序排列的全部格与 `empty_digest`，只有网格、窗口和内容都一致时相同。
+- 超过 16,384 格或 200,000 个裁切片段时整次拒绝并返回 `422 capacity`。
 
 边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。
