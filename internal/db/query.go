@@ -210,3 +210,32 @@ func (d *Database) Coverage(name string, q CoverageQuery) (CoverageResponse, err
 	}
 	return CoverageResponse{ReadStamp: stamp(s, l), AreaResult: spatial.Coverage(l.tree, q.Bounds, q.Class)}, nil
 }
+
+type VacancyQuery struct {
+	Bounds plane.Box `json:"bounds"`
+	Width  int64     `json:"width"`
+	Height int64     `json:"height"`
+}
+
+type VacancyResult struct {
+	ReadStamp
+	spatial.Vacancy
+}
+
+func (d *Database) Vacancy(name string, q VacancyQuery) (VacancyResult, error) {
+	if err := validateWindow(q.Bounds, ""); err != nil {
+		return VacancyResult{}, err
+	}
+	if q.Width < 1 || q.Width > 2*plane.CoordinateLimit || q.Height < 1 || q.Height > 2*plane.CoordinateLimit {
+		return VacancyResult{}, invalid("width and height must be within 1..%d", 2*plane.CoordinateLimit)
+	}
+	s := d.head.Load()
+	l, err := s.getLayer(name)
+	if err != nil {
+		return VacancyResult{}, err
+	}
+	if l.definition.Kind != plane.Extent {
+		return VacancyResult{}, invalid("vacancy requires an extent layer")
+	}
+	return VacancyResult{ReadStamp: stamp(s, l), Vacancy: spatial.FindVacancy(l.tree, q.Bounds, q.Width, q.Height)}, nil
+}

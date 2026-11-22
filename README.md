@@ -29,6 +29,7 @@ python3 examples/walkthrough.py --workflow coverage
 | `POST /strata/{layer}/locate` | `{ "x": 2, "y": 1 }`。返回拥有该点的 `features` |
 | `POST /strata/{layer}/nearest` | `point`, `limit`, 可选 `class`。返回带 `distance_squared` 的 `neighbors` |
 | `POST /strata/{layer}/coverage` | `bounds` 和可选 `class`。返回 `covered`, `repeated`, `uncovered` |
+| `POST /strata/{layer}/vacancy` | `bounds`, `width`, `height`。返回能完整放入窗口且与地物无正面积交叠（允许贴边）的整数锚点，多个可放位置按先较小 y 再较小 x 取舍；无可放位置时 `found` 为 false 且无 `anchor` |
 | `POST /strata/{layer}/seams` | `bounds`, `limit`。按 ID 对返回正长度共享边 |
 | `POST /join` | `left`, `right`, `bounds`, `limit`。返回同一全库修订的相交对 |
 | `POST /relation` | `left` 与 `right` 分别含 `layer` 和 `id`。返回相交、双向包含和闭包距离 |

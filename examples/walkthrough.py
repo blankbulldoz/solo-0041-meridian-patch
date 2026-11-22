@@ -26,6 +26,7 @@ def point(x, y):
 
 BOUNDS = box(-20, -20, 20, 20)
 WINDOW = box(0, 0, 8, 4)
+LIMIT = 1_000_000_000
 
 
 class Session:
@@ -238,6 +239,36 @@ def relation(s):
     return right
 
 
+def vacancy(s):
+    s.layer(FIELD)
+    # A 10x10 window tiled edge-to-edge with 2x2 blocks, one cell left open.
+    tiles = [op(FIELD, f'tile-{i}-{j}', box(2*i, 2*j, 2*i+2, 2*j+2))
+             for i in range(5) for j in range(5) if (i, j) != (2, 1)]
+    s.edit(*tiles)
+    window = dict(bounds=box(0, 0, 10, 10), width=2, height=2)
+    dense = s.query(FIELD, 'vacancy', window)
+    assert dense['found'] and dense['anchor'] == point(4, 2)
+    assert dense['layer_revision'] == dense['revision']
+    tall = s.query(FIELD, 'vacancy', dict(window, width=3, height=3))
+    assert not tall['found'] and 'anchor' not in tall
+    s.edit(op(FIELD, 'tile-2-1', box(4, 2, 6, 4)))
+    assert not s.query(FIELD, 'vacancy', window)['found']
+    s.query(FIELD, 'vacancy', dict(window, width=0), 400)
+    s.query(FIELD, 'vacancy', dict(window, height=2*LIMIT+1), 400)
+    s.query(PINS, 'vacancy', window, 404)
+    s.layer(PINS, 'mark')
+    s.query(PINS, 'vacancy', window, 400)
+    # A window spanning nearly the whole coordinate range with two walls.
+    s.post('/strata', dict(name='zenith-range', kind='extent',
+                           bounds=box(-LIMIT, -LIMIT, LIMIT, LIMIT), exclusive=False), 201)
+    s.edit(op('zenith-range', 'wall-south', box(-LIMIT, -LIMIT, LIMIT, 10-LIMIT)),
+           op('zenith-range', 'wall-west', box(-LIMIT, -LIMIT, 10-LIMIT, LIMIT)))
+    far = s.query('zenith-range', 'vacancy',
+                  dict(bounds=box(-LIMIT, -LIMIT, LIMIT, LIMIT), width=4, height=3))
+    assert far['found'] and far['anchor'] == point(10-LIMIT, 10-LIMIT)
+    return far
+
+
 def load_index(s):
     s.layer(PINS, 'mark')
     s.edit(*(op(PINS, f'peg-{i}', point(i-12, i % 3)) for i in range(24)))
@@ -304,7 +335,7 @@ def reopen(binary, data):
 
 
 WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
-                                     inspect, seams, relation, audit, export, restore, reopen)}
+                                     inspect, seams, relation, vacancy, audit, export, restore, reopen)}
 
 
 def main():
