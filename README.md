@@ -36,6 +36,7 @@ python3 examples/walkthrough.py --workflow coverage
 | `GET /strata/{layer}/index-audit` | 核对索引和目录，返回 `records` 与 `checked_nodes` |
 | `GET /image` | 返回 MPB v1 镜像及 `Meridian-Revision` |
 | `PUT /image` | 二进制 `application/vnd.meridian.image` 与必需的 `If-Meridian-Revision` |
+| `PUT /image?mode=preflight` | 与上相同的请求体、媒体类型和 `If-Meridian-Revision`（预检时可省略），只读地返回镜像能否读取、目标与下一修订、新增/完全替换/消失/未变的图层名、逐层与全库的地物变化数以及镜像 SHA-256。不写磁盘、不推进修订 |
 
 例如，创建矩形图层并写入一个地物使用下面的 JSON 对象。
 
@@ -48,5 +49,7 @@ python3 examples/walkthrough.py --workflow coverage
 ```
 
 `409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
+
+预检响应中的 `target_revision` 是该报告对照的目标修订，`next_revision` 是成功恢复将得到的修订。报告可读性由 `readable` 表示；不可读镜像以 `readable: false` 加 `problem` 返回而不是 500。`layers.replaced` 是两侧都存在但定义或地物不同的图层名，恢复会整体替换这些层；`details` 逐层给出 `definition_changed` 与 `features` 的新增、删除、修改计数，`features.changed` 是三者之和。目标修订在预检后被任何写入推进时，以旧 `target_revision` 发出恢复会得到 `409 conflict`。
 
 边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。

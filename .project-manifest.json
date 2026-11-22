@@ -342,6 +342,26 @@
       "verification": "python3 examples/walkthrough.py --workflow restore"
     },
     {
+      "id": "preflight",
+      "name": "恢复预检与差异",
+      "entry": "PUT /image?mode=preflight",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "folio",
+        "catalog",
+        "plane"
+      ],
+      "steps": [
+        "按恢复相同规则校验镜像",
+        "对照同一目标视图计算逐层差异",
+        "报告目标修订且不写磁盘"
+      ],
+      "success": "新增/替换/消失图层名与地物变化数对应目标修订，磁盘镜像不变",
+      "failure": "不可读镜像报告 readable=false，目标修订被后续写入推进后旧报告不可确认恢复",
+      "verification": "python3 examples/walkthrough.py --workflow preflight"
+    },
+    {
       "id": "reopen",
       "name": "重启与恢复",
       "entry": "服务启动及 GET /status",

@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PREFIX = '/meridian/v1'
 IMAGE = 'application/vnd.meridian.image'
 FIELD, BED, PINS = 'ochre-field', 'mica-bed', 'plumb-marks'
+SLATE, EXTRA = 'slate-ridge', 'extra-berm'
 
 
 def box(x0, y0, x1, y1):
@@ -70,6 +71,12 @@ class Session:
         return self.request('PUT', '/image', raw, status, {
             'Content-Type': IMAGE, 'If-Meridian-Revision': str(revision),
         })[0]
+
+    def preflight(self, raw, revision=None, status=200):
+        headers = {'Content-Type': IMAGE}
+        if revision is not None:
+            headers['If-Meridian-Revision'] = str(revision)
+        return self.request('PUT', '/image?mode=preflight', raw, status, headers)[0]
 
 
 @contextmanager
@@ -286,6 +293,84 @@ def restore(s):
     return restored
 
 
+def fill(s, layer, count, moved=None):
+    items = []
+    for i in range(count):
+        x, y = i % 24 - 12, i // 24 - 2
+        if i == moved:
+            x, y = 18, 18
+        items.append(op(layer, f'node-{i:02d}', point(x, y)))
+    s.edit(*items)
+
+
+def preflight(binary, root):
+    """Compare a source image against a target database without installing it."""
+    with running(binary, root/'target') as target:
+        seed(target)
+        target.layer(EXTRA)
+        target.edit(op(EXTRA, 'berm', box(10, 10, 12, 12)))
+        target.layer('grid', 'mark')
+        fill(target, 'grid', 120)
+        target_rev = target.get('/status')['revision']
+        baseline = target.get('/image')
+        with running(binary, root/'source') as source:
+            seed(source)
+            source.layer(SLATE)
+            source.edit(op(SLATE, 'ledge', box(12, 0, 16, 4)))
+            source.layer('grid', 'mark')
+            fill(source, 'grid', 120, moved=7)
+            # Layout-only change: same feature, different layer definition.
+            source.request('PUT', f'/strata/{BED}/layout', dict(bounds=box(-20, -20, 20, 21)))
+            image = source.get('/image')
+
+            disk = root/'target'/'meridian-state.mpb'
+            before = (disk.stat().st_mtime_ns, disk.read_bytes())
+            report = target.preflight(image, target_rev)
+            assert report['mode'] == 'preflight' and report['readable'] is True
+            assert report['target_revision'] == target_rev == report['next_revision'] - 1
+            assert report['image_revision'] == source.get('/status')['revision']
+            assert report['layers'] == dict(added=[SLATE], replaced=['grid', BED],
+                                            removed=[EXTRA], unchanged=[FIELD, PINS])
+            by_name = {row['layer']: row for row in report['details']}
+            assert by_name['grid']['features'] == dict(added=0, removed=0, modified=1, changed=1)
+            assert by_name[BED]['definition_changed'] is True
+            assert by_name[BED]['features'] == dict(added=0, removed=0, modified=0, changed=0)
+            assert by_name[EXTRA]['features'] == dict(added=0, removed=1, modified=0, changed=1)
+            assert report['features'] == dict(added=1, removed=1, modified=1, changed=3)
+
+            # Preflight is read-only: untouched file bytes and same visible head.
+            assert (disk.stat().st_mtime_ns, disk.read_bytes()) == before
+            assert target.get('/image') == baseline
+            assert target.get('/status') == dict(revision=target_rev, writable=True)
+
+            # A corrupt image is reported, not installed, and not a server error.
+            corrupt = image[:-1] + bytes([image[-1] ^ 1])
+            broken = target.preflight(corrupt, target_rev)
+            assert broken['readable'] is False and broken['problem']
+            assert broken['target_revision'] == target_rev and broken['details'] == []
+            assert target.get('/status')['revision'] == target_rev
+            target.request('PUT', '/image?mode=bogus', image, 400,
+                           {'Content-Type': IMAGE, 'If-Meridian-Revision': str(target_rev)})
+
+            # Any write after the report makes the old target revision stale.
+            ahead = target.edit(op(BED, 'shim', box(3, 0, 5, 2), mode='replace'))['revision']
+            assert ahead == target_rev + 1
+            target.preflight(image, target_rev, 409)
+            target.restore(image, target_rev, 409)
+            assert target.get('/status')['revision'] == ahead
+            assert EXTRA in [row['name'] for row in target.get('/strata')['layers']]
+
+            fresh = target.preflight(image, ahead)
+            assert fresh['target_revision'] == ahead and fresh['next_revision'] == ahead + 1
+            installed = target.restore(image, ahead)
+            assert installed['revision'] == ahead + 1
+            assert [row['name'] for row in target.get('/strata')['layers']] == ['grid', BED, FIELD, PINS, SLATE]
+            assert ids(target.query('grid', 'locate', point(18, 18))) == ['node-07']
+            assert ids(target.query('grid', 'locate', point(-5, -2))) == []
+            return dict(target_revision=target_rev, image_bytes=len(image),
+                        layers=report['layers'], features=report['features'])
+
+
 def reopen(binary, data):
     with running(binary, data) as s:
         rev = seed(s)
@@ -307,19 +392,24 @@ WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, ne
                                      inspect, seams, relation, audit, export, restore, reopen)}
 
 
+def run_workflow(binary, root, name):
+    if name == 'reopen':
+        return reopen(binary, root/'space')
+    if name == 'preflight':
+        return preflight(binary, root)
+    with running(binary, root/'space') as session:
+        return WORKFLOWS[name](session)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--workflow', required=True, choices=WORKFLOWS)
+    parser.add_argument('--workflow', required=True, choices=sorted(WORKFLOWS) + ['preflight'])
     args = parser.parse_args()
     with tempfile.TemporaryDirectory(prefix='meridian-walk-') as temporary:
         root = Path(temporary)
-        binary, data = root/'meridian', root/'space'
+        binary = root/'meridian'
         subprocess.run(['go', 'build', '-o', str(binary), './cmd/meridian'], check=True, cwd=ROOT, timeout=90)
-        if args.workflow == 'reopen':
-            result = reopen(binary, data)
-        else:
-            with running(binary, data) as session:
-                result = WORKFLOWS[args.workflow](session)
+        result = run_workflow(binary, root, args.workflow)
         print(json.dumps(dict(workflow=args.workflow, observed=result), sort_keys=True))
 
 

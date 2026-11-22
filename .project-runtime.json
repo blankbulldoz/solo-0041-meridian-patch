@@ -64,6 +64,10 @@
       "command": "python3 examples/walkthrough.py --workflow restore"
     },
     {
+      "workflow_id": "preflight",
+      "command": "python3 examples/walkthrough.py --workflow preflight"
+    },
+    {
       "workflow_id": "reopen",
       "command": "python3 examples/walkthrough.py --workflow reopen"
     }

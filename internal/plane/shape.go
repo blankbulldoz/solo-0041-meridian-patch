@@ -25,6 +25,18 @@ func (s Shape) Validate(kind Kind) error {
 	}
 }
 
+// Equal compares stored geometry by value, never by pointer identity.
+func (s Shape) Equal(other Shape) bool {
+	switch {
+	case s.Mark != nil && other.Mark != nil:
+		return *s.Mark == *other.Mark
+	case s.Extent != nil && other.Extent != nil:
+		return *s.Extent == *other.Extent
+	default:
+		return false
+	}
+}
+
 func (s Shape) Copy() Shape {
 	if s.Mark != nil {
 		p := *s.Mark

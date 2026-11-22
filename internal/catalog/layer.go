@@ -71,6 +71,13 @@ func (f Feature) Validate(d Definition) error {
 	return nil
 }
 
+// Equal reports whether two features agree in identity, class and geometry.
+// It is value equality: two features at the same coordinates must compare
+// equal even when they come from independently decoded images.
+func (f Feature) Equal(other Feature) bool {
+	return f.ID == other.ID && f.Class == other.Class && f.Shape.Equal(other.Shape)
+}
+
 func (f Feature) Copy() Feature {
 	f.Shape = f.Shape.Copy()
 	return f
