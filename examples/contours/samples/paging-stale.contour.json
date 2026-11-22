@@ -1,0 +1,19 @@
+{
+  "aborted": true,
+  "contour_lines": [],
+  "http_status": 409,
+  "layer": "paging-stale",
+  "pages_completed": 1,
+  "reason": "bookmark rejected by server after same-layer edit",
+  "sample": "paging-stale",
+  "server_response": {
+    "code": "conflict",
+    "message": "bookmark revision has expired"
+  },
+  "window": {
+    "max_x": 10,
+    "max_y": 10,
+    "min_x": 0,
+    "min_y": 0
+  }
+}

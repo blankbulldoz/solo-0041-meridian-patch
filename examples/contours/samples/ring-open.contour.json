@@ -1,0 +1,229 @@
+{
+  "contour_lines": [
+    {
+      "axis": "horizontal",
+      "end": {
+        "x": 10,
+        "y": 10
+      },
+      "kind": "outer",
+      "length": 10,
+      "orientation": "left",
+      "source_feature_ids": [
+        "ring-east",
+        "ring-north",
+        "ring-west"
+      ],
+      "start": {
+        "x": 0,
+        "y": 10
+      }
+    },
+    {
+      "axis": "vertical",
+      "end": {
+        "x": 10,
+        "y": 10
+      },
+      "kind": "outer",
+      "length": 10,
+      "orientation": "up",
+      "source_feature_ids": [
+        "ring-east"
+      ],
+      "start": {
+        "x": 10,
+        "y": 0
+      }
+    },
+    {
+      "axis": "horizontal",
+      "end": {
+        "x": 8,
+        "y": 4
+      },
+      "kind": "hole",
+      "length": 4,
+      "orientation": "left",
+      "source_feature_ids": [
+        "ring-south"
+      ],
+      "start": {
+        "x": 4,
+        "y": 4
+      }
+    },
+    {
+      "axis": "horizontal",
+      "end": {
+        "x": 8,
+        "y": 8
+      },
+      "kind": "hole",
+      "length": 4,
+      "orientation": "right",
+      "source_feature_ids": [
+        "ring-north"
+      ],
+      "start": {
+        "x": 4,
+        "y": 8
+      }
+    },
+    {
+      "axis": "vertical",
+      "end": {
+        "x": 4,
+        "y": 8
+      },
+      "kind": "hole",
+      "length": 4,
+      "orientation": "up",
+      "source_feature_ids": [
+        "ring-west"
+      ],
+      "start": {
+        "x": 4,
+        "y": 4
+      }
+    },
+    {
+      "axis": "vertical",
+      "end": {
+        "x": 8,
+        "y": 8
+      },
+      "kind": "hole",
+      "length": 4,
+      "orientation": "down",
+      "source_feature_ids": [
+        "ring-east"
+      ],
+      "start": {
+        "x": 8,
+        "y": 4
+      }
+    },
+    {
+      "axis": "horizontal",
+      "end": {
+        "x": 10,
+        "y": 0
+      },
+      "kind": "window-cut",
+      "length": 10,
+      "orientation": "right",
+      "source_feature_ids": [
+        "ring-east",
+        "ring-south",
+        "ring-west"
+      ],
+      "start": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "axis": "vertical",
+      "end": {
+        "x": 0,
+        "y": 10
+      },
+      "kind": "window-cut",
+      "length": 10,
+      "orientation": "down",
+      "source_feature_ids": [
+        "ring-west"
+      ],
+      "start": {
+        "x": 0,
+        "y": 0
+      }
+    }
+  ],
+  "cross_checks": {
+    "contour_total_length": 56,
+    "counts_by_kind": {
+      "hole": 4,
+      "outer": 2,
+      "window-cut": 2
+    },
+    "coverage": {
+      "covered": 84,
+      "repeated": 0,
+      "uncovered": 60
+    },
+    "coverage_identity_holds": true,
+    "covered_on_left_holds": true,
+    "line_count": 8,
+    "orientation_offenders": [],
+    "seams_absent_from_contour": true,
+    "server_seam_count": 4,
+    "window_area": 144
+  },
+  "features_used": [
+    {
+      "extent": {
+        "max_x": 10,
+        "max_y": 10,
+        "min_x": 8,
+        "min_y": 0
+      },
+      "id": "ring-east"
+    },
+    {
+      "extent": {
+        "max_x": 8,
+        "max_y": 10,
+        "min_x": 4,
+        "min_y": 8
+      },
+      "id": "ring-north"
+    },
+    {
+      "extent": {
+        "max_x": 8,
+        "max_y": 4,
+        "min_x": 4,
+        "min_y": 0
+      },
+      "id": "ring-south"
+    },
+    {
+      "extent": {
+        "max_x": 4,
+        "max_y": 10,
+        "min_x": 0,
+        "min_y": 0
+      },
+      "id": "ring-west"
+    }
+  ],
+  "layer": "ring-open",
+  "line_kinds": {
+    "hole": "edge of an enclosed empty region",
+    "outer": "covered region vs window exterior",
+    "window-cut": "edge created by clipping a feature at a window side"
+  },
+  "orientation_rule": "each line keeps the covered region on its left",
+  "pagination": {
+    "layer_revision_per_page": [
+      2,
+      2
+    ],
+    "page_limit": 2,
+    "pages_read": 2,
+    "single_layer_revision": true
+  },
+  "sample": "ring-open",
+  "snapshot": {
+    "layer_revision": 2
+  },
+  "window": {
+    "max_x": 12,
+    "max_y": 12,
+    "min_x": 0,
+    "min_y": 0
+  },
+  "window_rule": "half-open [min_x,max_x) x [min_y,max_y); right/top sides excluded"
+}
