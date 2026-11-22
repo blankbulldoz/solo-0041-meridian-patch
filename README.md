@@ -25,7 +25,8 @@ python3 examples/walkthrough.py --workflow coverage
 | `POST /strata` | `name`, `kind`, `bounds`, `exclusive`, 可选 `if_revision` |
 | `PUT /strata/{layer}/layout` | 新 `bounds`、`exclusive` 及可选 `if_revision`。形状类型保持原样 |
 | `POST /edits` | `edits` 与可选 `if_revision`。每项有 `layer`, `id`, `mode`，写入时提供同 ID 的 `value` |
-| `POST /strata/{layer}/window` | `bounds`, `limit`, 可选 `class`, `bookmark`。按 ID 返回 `features`，有更多数据时返回 `next` |
+| `POST /strata/{layer}/window` | `bounds`, `limit`, 可选 `class`, `bookmark`, `stable`。按 ID 返回 `features`，有更多数据时返回 `next`。`stable` 首页钉住当前视图，会话内续页不受本层写入影响 |
+| `POST /strata/{layer}/window/abandon` | `bookmark`。主动弃用稳定窗口会话并释放其钉住的视图；会话内任一书签均可标识会话 |
 | `POST /strata/{layer}/locate` | `{ "x": 2, "y": 1 }`。返回拥有该点的 `features` |
 | `POST /strata/{layer}/nearest` | `point`, `limit`, 可选 `class`。返回带 `distance_squared` 的 `neighbors` |
 | `POST /strata/{layer}/coverage` | `bounds` 和可选 `class`。返回 `covered`, `repeated`, `uncovered` |
@@ -47,6 +48,6 @@ python3 examples/walkthrough.py --workflow coverage
 {"edits":[{"layer":"ochre-field","id":"prong","mode":"insert","value":{"id":"prong","class":"fixture","shape":{"extent":{"min_x":0,"min_y":0,"max_x":4,"max_y":3}}}}]}
 ```
 
-`409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
+`409 conflict` 表示修订条件失效、重名或末态违反排他策略。书签修订过期或稳定会话被逐出返回 `409 window_expired`，主动弃用后复用返回 `409 window_abandoned`，更换谓词（图层、窗口或类别）返回 `400 invalid`，三者借此区分。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
 
 边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。

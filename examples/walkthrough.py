@@ -167,10 +167,44 @@ def window(s):
     second = s.query(FIELD, 'window', dict(query, limit=2, bookmark=first['next']))
     assert ids(second) == ['ferrule', 'prong'] and 'next' not in second
     assert second['layer_revision'] == first['layer_revision'] and second['revision'] > first['revision']
-    s.query(FIELD, 'window', dict(query, bookmark=first['next'], **{'class': 'sleeve'}), 400)
+    changed = s.query(FIELD, 'window', dict(query, bookmark=first['next'], **{'class': 'sleeve'}), 400)
+    assert changed['code'] == 'invalid'
     s.edit(op(FIELD, 'prong', mode='remove'))
-    s.query(FIELD, 'window', dict(query, bookmark=first['next']), 409)
+    expired = s.query(FIELD, 'window', dict(query, bookmark=first['next']), 409)
+    assert expired['code'] == 'window_expired'
     return second
+
+
+def window_stable(s):
+    seed(s)
+    query = dict(bounds=WINDOW, limit=1, stable=True)
+    first = s.query(FIELD, 'window', query)
+    assert ids(first) == ['dowel'] and first['next']
+    # Same-layer writes after the first page: remove an unseen feature, insert a new one.
+    s.edit(op(FIELD, 'prong', mode='remove'), op(FIELD, 'gasket', box(1, 0, 2, 1)))
+    second = s.query(FIELD, 'window', dict(query, limit=2, bookmark=first['next']))
+    assert ids(second) == ['ferrule', 'prong'] and 'next' not in second
+    assert second['revision'] == first['revision'] and second['layer_revision'] == first['layer_revision']
+    # A fresh default read sees the new layout; the pinned session did not.
+    assert ids(s.query(FIELD, 'window', dict(bounds=WINDOW, limit=9))) == ['dowel', 'ferrule', 'gasket']
+    # Predicate change, expiry and abandonment are told apart.
+    changed = s.query(FIELD, 'window', dict(query, bookmark=first['next'], **{'class': 'sleeve'}), 400)
+    assert changed['code'] == 'invalid'
+    s.post(f'/strata/{BED}/window/abandon', dict(bookmark=first['next']), 400)
+    assert s.post(f'/strata/{FIELD}/window/abandon', dict(bookmark=first['next']))['abandoned']
+    reused = s.query(FIELD, 'window', dict(query, bookmark=first['next']), 409)
+    assert reused['code'] == 'window_abandoned'
+    again = s.post(f'/strata/{FIELD}/window/abandon', dict(bookmark=first['next']), 409)
+    assert again['code'] == 'window_abandoned'
+    # Default bookmarks carry no session and cannot be abandoned.
+    plain = s.query(FIELD, 'window', dict(bounds=WINDOW, limit=1))['next']
+    assert s.post(f'/strata/{FIELD}/window/abandon', dict(bookmark=plain), 400)['code'] == 'invalid'
+    # Live sessions are bounded; the least recently used one is evicted and reports expired.
+    tokens = [s.query(FIELD, 'window', dict(bounds=WINDOW, limit=1, stable=True))['next'] for _ in range(33)]
+    evicted = s.query(FIELD, 'window', dict(bounds=WINDOW, limit=1, bookmark=tokens[0]), 409)
+    assert evicted['code'] == 'window_expired'
+    assert ids(s.query(FIELD, 'window', dict(bounds=WINDOW, limit=1, bookmark=tokens[1]))) == ['ferrule']
+    return dict(paged=ids(second), abandoned=reused['code'], expired=evicted['code'])
 
 
 def locate(s):
@@ -303,7 +337,7 @@ def reopen(binary, data):
     return result
 
 
-WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
+WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, window_stable, locate, nearest, join, coverage,
                                      inspect, seams, relation, audit, export, restore, reopen)}
 
 

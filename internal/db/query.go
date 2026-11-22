@@ -20,6 +20,7 @@ type WindowQuery struct {
 	Class    string    `json:"class,omitempty"`
 	Limit    int       `json:"limit"`
 	Bookmark string    `json:"bookmark,omitempty"`
+	Stable   bool      `json:"stable,omitempty"`
 }
 
 type WindowPage struct {
@@ -28,6 +29,15 @@ type WindowPage struct {
 	Next string `json:"next,omitempty"`
 }
 
+// Window returns one page of features inside the query bounds ordered by id.
+// Without a bookmark the first page reads the current view; with Stable set,
+// that view is pinned in a bounded session as soon as the page emits its
+// continuation bookmark, so later pages keep reading the result the first
+// page determined, even if the layer changes meanwhile. Bookmarks continue
+// either mode: default bookmarks expire with the layer revision, session
+// bookmarks outlive same-layer writes until the session is evicted or
+// abandoned. The stable flag only applies to the first page; a bookmark alone
+// decides how a continuation is served.
 func (d *Database) Window(name string, q WindowQuery) (WindowPage, error) {
 	if err := validateWindow(q.Bounds, q.Class); err != nil {
 		return WindowPage{}, err
@@ -35,30 +45,89 @@ func (d *Database) Window(name string, q WindowQuery) (WindowPage, error) {
 	if q.Limit < 1 || q.Limit > 256 {
 		return WindowPage{}, invalid("window limit must be 1..256")
 	}
+	if q.Bookmark != "" {
+		return d.windowNext(name, q)
+	}
 	s := d.head.Load()
 	l, err := s.getLayer(name)
 	if err != nil {
 		return WindowPage{}, err
 	}
 	scope := bookmark.Scope{Layer: name, Bounds: q.Bounds, Class: q.Class, Revision: l.revision}
-	var after string
-	if q.Bookmark != "" {
-		previous, from, err := d.signer.Open(q.Bookmark)
-		if err != nil || previous.Layer != scope.Layer || previous.Bounds != scope.Bounds || previous.Class != scope.Class {
-			return WindowPage{}, invalid("bookmark does not match the window predicate")
+	return d.windowPage(s, l, scope, "", q, func() uint64 {
+		if q.Stable {
+			return d.sessions.open(s)
 		}
-		if previous.Revision != scope.Revision {
-			return WindowPage{}, conflict("bookmark revision has expired")
-		}
-		after = from
+		return 0
+	}), nil
+}
+
+func (d *Database) windowNext(name string, q WindowQuery) (WindowPage, error) {
+	token, err := d.signer.Open(q.Bookmark)
+	if err != nil || token.Scope.Layer != name || token.Scope.Bounds != q.Bounds || token.Scope.Class != q.Class {
+		return WindowPage{}, invalid("bookmark does not match the window predicate")
 	}
+	if token.Session != 0 {
+		view, err := d.sessions.view(token.Session)
+		if err != nil {
+			return WindowPage{}, err
+		}
+		l, err := view.getLayer(name)
+		if err != nil {
+			return WindowPage{}, err
+		}
+		return d.windowPage(view, l, token.Scope, token.After, q, func() uint64 { return token.Session }), nil
+	}
+	s := d.head.Load()
+	l, err := s.getLayer(name)
+	if err != nil {
+		return WindowPage{}, err
+	}
+	if l.revision != token.Scope.Revision {
+		return WindowPage{}, windowExpired("bookmark revision has expired")
+	}
+	return d.windowPage(s, l, token.Scope, token.After, q, func() uint64 { return 0 }), nil
+}
+
+// windowPage serves one page from view s. session is consulted only when the
+// page emits a continuation bookmark, and yields the stable session id to
+// seal into it, or zero for a default bookmark.
+func (d *Database) windowPage(s *state, l *layer, scope bookmark.Scope, after string, q WindowQuery, session func() uint64) WindowPage {
 	page := WindowPage{ReadStamp: stamp(s, l), MatchSet: spatial.Window(l.tree, q.Bounds, q.Class, after)}
 	if len(page.Features) > q.Limit {
-		page.Next = d.signer.Seal(scope, page.Features[q.Limit-1].ID)
+		page.Next = d.signer.Seal(scope, page.Features[q.Limit-1].ID, session())
 		page.Features = page.Features[:q.Limit]
 	}
 	copyFeatures(page.Features)
-	return page, nil
+	return page
+}
+
+type AbandonQuery struct {
+	Bookmark string `json:"bookmark"`
+}
+
+type AbandonResult struct {
+	Abandoned bool `json:"abandoned"`
+}
+
+// AbandonWindow releases the view pinned by a stable window session. Any
+// bookmark sealed for the session identifies it; once abandoned, reuse of the
+// session reports window_abandoned rather than window_expired.
+func (d *Database) AbandonWindow(name string, q AbandonQuery) (AbandonResult, error) {
+	if q.Bookmark == "" {
+		return AbandonResult{}, invalid("abandon requires a bookmark")
+	}
+	token, err := d.signer.Open(q.Bookmark)
+	if err != nil || token.Scope.Layer != name {
+		return AbandonResult{}, invalid("bookmark does not match the window predicate")
+	}
+	if token.Session == 0 {
+		return AbandonResult{}, invalid("bookmark is not a stable window session")
+	}
+	if err := d.sessions.abandon(token.Session); err != nil {
+		return AbandonResult{}, err
+	}
+	return AbandonResult{Abandoned: true}, nil
 }
 
 type LocateResult struct {

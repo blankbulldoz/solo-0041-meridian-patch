@@ -24,3 +24,11 @@ func missing(format string, args ...any) *Error {
 func exhausted(format string, args ...any) *Error {
 	return &Error{Code: "capacity", Message: fmt.Sprintf(format, args...)}
 }
+
+func windowExpired(format string, args ...any) *Error {
+	return &Error{Code: "window_expired", Message: fmt.Sprintf(format, args...)}
+}
+
+func windowAbandoned(format string, args ...any) *Error {
+	return &Error{Code: "window_abandoned", Message: fmt.Sprintf(format, args...)}
+}

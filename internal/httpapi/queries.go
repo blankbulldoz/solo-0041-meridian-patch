@@ -15,6 +15,14 @@ func (a *api) window(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (a *api) abandonWindow(w http.ResponseWriter, r *http.Request) {
+	var request db.AbandonQuery
+	if a.input(w, r, &request) {
+		result, err := a.db.AbandonWindow(r.PathValue("layer"), request)
+		a.respond(w, http.StatusOK, result, err)
+	}
+}
+
 func (a *api) locate(w http.ResponseWriter, r *http.Request) {
 	var request plane.Point
 	if a.input(w, r, &request) {

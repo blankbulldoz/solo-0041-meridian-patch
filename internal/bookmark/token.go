@@ -1,4 +1,5 @@
-// Package bookmark binds window continuation to one predicate and layer revision.
+// Package bookmark binds window continuation to one predicate, a layer
+// revision, and optionally a stable window session.
 package bookmark
 
 import (
@@ -31,36 +32,45 @@ type Scope struct {
 }
 
 type payload struct {
-	Scope Scope  `json:"scope"`
-	After string `json:"after"`
+	Scope   Scope  `json:"scope"`
+	After   string `json:"after"`
+	Session uint64 `json:"session,omitempty"`
 }
 
-func (s Signer) Seal(scope Scope, after string) string {
-	raw, _ := json.Marshal(payload{Scope: scope, After: after})
+// Token is an opened bookmark. Session is zero for a default bookmark that
+// expires with the layer revision, and nonzero for a stable window session.
+type Token struct {
+	Scope   Scope
+	After   string
+	Session uint64
+}
+
+func (s Signer) Seal(scope Scope, after string, session uint64) string {
+	raw, _ := json.Marshal(payload{Scope: scope, After: after, Session: session})
 	return base64.RawURLEncoding.EncodeToString(raw) + "." + base64.RawURLEncoding.EncodeToString(s.mac(raw))
 }
 
-func (s Signer) Open(token string) (Scope, string, error) {
+func (s Signer) Open(token string) (Token, error) {
 	if len(token) > 1024 {
-		return Scope{}, "", ErrInvalid
+		return Token{}, ErrInvalid
 	}
 	body, tag, ok := strings.Cut(token, ".")
 	if !ok {
-		return Scope{}, "", ErrInvalid
+		return Token{}, ErrInvalid
 	}
 	raw, err := base64.RawURLEncoding.Strict().DecodeString(body)
 	if err != nil {
-		return Scope{}, "", ErrInvalid
+		return Token{}, ErrInvalid
 	}
 	given, err := base64.RawURLEncoding.Strict().DecodeString(tag)
 	if err != nil || !hmac.Equal(given, s.mac(raw)) {
-		return Scope{}, "", ErrInvalid
+		return Token{}, ErrInvalid
 	}
 	var p payload
 	if err := json.Unmarshal(raw, &p); err != nil {
-		return Scope{}, "", ErrInvalid
+		return Token{}, ErrInvalid
 	}
-	return p.Scope, p.After, nil
+	return Token{Scope: p.Scope, After: p.After, Session: p.Session}, nil
 }
 
 func (s Signer) mac(raw []byte) []byte {

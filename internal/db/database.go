@@ -12,12 +12,13 @@ import (
 )
 
 type Database struct {
-	store   *folio.Store
-	signer  bookmark.Signer
-	head    atomic.Pointer[state]
-	write   sync.Mutex
-	blocked atomic.Bool
-	closed  bool
+	store    *folio.Store
+	signer   bookmark.Signer
+	sessions *windowSessions
+	head     atomic.Pointer[state]
+	write    sync.Mutex
+	blocked  atomic.Bool
+	closed   bool
 }
 
 func Open(dir string) (*Database, error) {
@@ -38,7 +39,7 @@ func openStore(store *folio.Store) (*Database, error) {
 	if err != nil {
 		return nil, err
 	}
-	d := &Database{store: store, signer: signer}
+	d := &Database{store: store, signer: signer, sessions: newWindowSessions()}
 	s := &state{layers: make(map[string]*layer)}
 	raw, present, err := store.Read()
 	if err != nil {

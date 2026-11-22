@@ -23,6 +23,8 @@ func (a *api) respond(w http.ResponseWriter, status int, value any, err error) {
 		"missing":          http.StatusNotFound,
 		"conflict":         http.StatusConflict,
 		"capacity":         http.StatusUnprocessableEntity,
+		"window_expired":   http.StatusConflict,
+		"window_abandoned": http.StatusConflict,
 		"unavailable":      http.StatusServiceUnavailable,
 		"commit_uncertain": http.StatusServiceUnavailable,
 	}
