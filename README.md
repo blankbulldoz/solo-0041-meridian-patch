@@ -50,3 +50,20 @@ python3 examples/walkthrough.py --workflow coverage
 `409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
 
 边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。
+
+## 归档
+
+`mpbarchive` 把 MPB v1 镜像转成可发给归档方的普通数据文件档案,不需要数据库进程即可核对。
+
+```sh
+go build -o mpbarchive ./cmd/mpbarchive
+./mpbarchive unpack meridian-state.mpb archive/   # 解码、校验并写出档案
+./mpbarchive verify archive/                      # 复核档案内部一致性
+./mpbarchive compare archive-a archive-b          # 分类两份档案的差异
+```
+
+每份档案包含 `layers.csv`(图层表)、`features.csv`(地物表)、`classes.csv`(按形状类别的核对摘要)和 `manifest.json`(绑定各文件摘要)。每行带有基于内容的 `row_digest`,行的身份与修订无关,跨档案可核对。修订和面积、到原点距离平方等坐标派生量以十进制字符串输出,超出 JavaScript 安全整数范围(2⁵³−1)的值不会丢失精度。类别摘要的 `total_area` 使用任意精度十进制。
+
+`compare` 接受档案目录或 MPB 文件,给出四种结论:`identical`(完全相同)、`revision-only`(只换过提交号)、`relayout`(重新布局:图层边界或排他策略变化而地物行不变)、`content-changed`(内容改变),并列出布局变化和逐行的地物增删改。读取档案时会重算所有行摘要与类别摘要,篡改过的行会被拒绝。
+
+`python3 examples/archive_demo.py` 用两份真实导出(其中一份经恢复仅提交号前移)、一次真实布局调整和一份合法但地物内容变动的镜像端到端证明上述核对。
