@@ -227,6 +227,27 @@
       "verification": "python3 examples/walkthrough.py --workflow coverage"
     },
     {
+      "id": "grid",
+      "name": "窗口占用格网",
+      "entry": "POST /strata/{layer}/grid",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "spatial",
+        "packed",
+        "plane"
+      ],
+      "steps": [
+        "以原点生成格线并向下取整定位列行",
+        "按窗口裁剪首末列行",
+        "逐格并集求覆盖面积",
+        "检查格数与入射预算"
+      ],
+      "success": "格网覆盖与整窗口覆盖一致，空置格可辨认",
+      "failure": "点层或非法尺寸拒绝，超预算整次 422",
+      "verification": "python3 examples/walkthrough.py --workflow grid"
+    },
+    {
       "id": "inspect",
       "name": "读取树统计",
       "entry": "GET /strata/{layer}/index",

@@ -1,6 +1,7 @@
 package db
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/bookmark"
@@ -209,4 +210,45 @@ func (d *Database) Coverage(name string, q CoverageQuery) (CoverageResponse, err
 		return CoverageResponse{}, invalid("coverage requires an extent layer")
 	}
 	return CoverageResponse{ReadStamp: stamp(s, l), AreaResult: spatial.Coverage(l.tree, q.Bounds, q.Class)}, nil
+}
+
+type GridQuery struct {
+	Origin     plane.Point `json:"origin"`
+	CellWidth  int64       `json:"cell_width"`
+	CellHeight int64       `json:"cell_height"`
+	Bounds     plane.Box   `json:"bounds"`
+	Class      string      `json:"class,omitempty"`
+}
+
+type GridResponse struct {
+	ReadStamp
+	spatial.GridResult
+}
+
+func (d *Database) Grid(name string, q GridQuery) (GridResponse, error) {
+	if err := validateWindow(q.Bounds, q.Class); err != nil {
+		return GridResponse{}, err
+	}
+	if err := q.Origin.Validate(); err != nil {
+		return GridResponse{}, invalid("%v", err)
+	}
+	if q.CellWidth < 1 || q.CellHeight < 1 || q.CellWidth > plane.CoordinateLimit || q.CellHeight > plane.CoordinateLimit {
+		return GridResponse{}, invalid("cell dimensions must be 1..%d", plane.CoordinateLimit)
+	}
+	s := d.head.Load()
+	l, err := s.getLayer(name)
+	if err != nil {
+		return GridResponse{}, err
+	}
+	if l.definition.Kind != plane.Extent {
+		return GridResponse{}, invalid("grid requires an extent layer")
+	}
+	result, err := spatial.Grid(l.tree, q.Origin, q.CellWidth, q.CellHeight, q.Bounds, q.Class)
+	if errors.Is(err, spatial.ErrGridBudget) {
+		return GridResponse{}, exhausted("%v", err)
+	}
+	if err != nil {
+		return GridResponse{}, err
+	}
+	return GridResponse{ReadStamp: stamp(s, l), GridResult: result}, nil
 }

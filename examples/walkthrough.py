@@ -216,6 +216,39 @@ def coverage(s):
     return result
 
 
+def cells(result):
+    return {(cell['column'], cell['row']): cell for cell in result['cells']}
+
+
+def grid(s):
+    seed(s)
+    s.edit(op(FIELD, 'gasket', box(-5, -3, -1, 0)))
+    # Complete 2x2 grid: each cell carries its own clipped area and occupancy.
+    result = s.query(FIELD, 'grid', dict(origin=point(0, 0), cell_width=4, cell_height=2, bounds=WINDOW))
+    assert (result['columns'], result['rows']) == (2, 2)
+    found = cells(result)
+    assert [(cell['column'], cell['row']) for cell in result['cells']] == [(0, 0), (1, 0), (0, 1), (1, 1)]
+    assert [found[key]['covered'] for key in ((0, 0), (1, 0), (0, 1), (1, 1))] == [8, 8, 6, 6]
+    assert result['totals']['covered'] == s.query(FIELD, 'coverage', dict(bounds=WINDOW))['covered']
+    # The last column is clipped to the window, so it is narrower than cell_width.
+    partial = s.query(FIELD, 'grid', dict(origin=point(0, 0), cell_width=4, cell_height=4, bounds=box(0, 0, 7, 4)))
+    narrow = cells(partial)[(1, 0)]
+    assert narrow['bounds'] == box(4, 0, 7, 4) and (narrow['area'], narrow['covered']) == (12, 11)
+    # Negative cells floor toward -infinity: x=-1 belongs to column -1, not column 0.
+    negative = s.query(FIELD, 'grid', dict(origin=point(0, 0), cell_width=2, cell_height=2, bounds=box(-5, -3, 1, 1)))
+    assert (negative['columns'], negative['rows']) == (4, 3)
+    shifted = cells(negative)
+    assert (shifted[(-1, -1)]['covered'], shifted[(-2, -1)]['covered'], shifted[(-3, -2)]['covered']) == (2, 4, 1)
+    assert shifted[(0, -1)]['vacant'] and shifted[(-1, 0)]['vacant']
+    covered = sum(cell['covered'] for cell in negative['cells'])
+    assert covered == s.query(FIELD, 'coverage', dict(bounds=box(-5, -3, 1, 1)))['covered']
+    # Whole-response limits reject rather than truncate.
+    s.query(FIELD, 'grid', dict(origin=point(0, 0), cell_width=1, cell_height=1, bounds=box(0, 0, 100, 100)), 422)
+    s.query(FIELD, 'grid', dict(origin=point(0, 0), cell_width=0, cell_height=1, bounds=WINDOW), 400)
+    s.query(PINS, 'grid', dict(origin=point(0, 0), cell_width=4, cell_height=2, bounds=WINDOW), 400)
+    return result
+
+
 def seams(s):
     seed(s)
     result = s.query(FIELD, 'seams', dict(bounds=box(4, 1, 8, 4), limit=2))
@@ -303,7 +336,7 @@ def reopen(binary, data):
     return result
 
 
-WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
+WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage, grid,
                                      inspect, seams, relation, audit, export, restore, reopen)}
 
 

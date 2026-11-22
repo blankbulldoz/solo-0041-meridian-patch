@@ -22,6 +22,17 @@ func bounded(n int64) bool {
 	return n >= -CoordinateLimit && n <= CoordinateLimit
 }
 
+// FloorDiv returns floor(a/b). Go's "/" truncates toward zero, which would map
+// coordinates immediately below a cell edge into the cell above it when either
+// operand is negative. Grid indices must use this function instead.
+func FloorDiv(a, b int64) int64 {
+	quotient := a / b
+	if a%b != 0 && (a < 0) != (b < 0) {
+		quotient--
+	}
+	return quotient
+}
+
 // Box denotes [MinX,MaxX) × [MinY,MaxY) when used as a rectangle. An
 // index envelope can also have zero width or height, for a stored point.
 type Box struct {

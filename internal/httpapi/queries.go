@@ -39,6 +39,14 @@ func (a *api) coverage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (a *api) grid(w http.ResponseWriter, r *http.Request) {
+	var request db.GridQuery
+	if a.input(w, r, &request) {
+		result, err := a.db.Grid(r.PathValue("layer"), request)
+		a.respond(w, http.StatusOK, result, err)
+	}
+}
+
 func (a *api) inspect(w http.ResponseWriter, r *http.Request) {
 	result, err := a.db.Inspect(r.PathValue("layer"))
 	a.respond(w, http.StatusOK, result, err)

@@ -40,6 +40,10 @@
       "command": "python3 examples/walkthrough.py --workflow coverage"
     },
     {
+      "workflow_id": "grid",
+      "command": "python3 examples/walkthrough.py --workflow grid"
+    },
+    {
       "workflow_id": "inspect",
       "command": "python3 examples/walkthrough.py --workflow inspect"
     },

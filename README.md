@@ -9,7 +9,7 @@ Meridian Patch 是一个带持久化和几何索引的 Go HTTP 数据库。它�
 ```sh
 go build -o meridian ./cmd/meridian
 ./meridian -listen 127.0.0.1:8741 -data ./data
-python3 examples/walkthrough.py --workflow coverage
+python3 examples/walkthrough.py --workflow grid
 ```
 
 演练脚本启动独立进程并使用临时状态目录和系统分配的端口。它不会修改运行中的数据库。数据文件为 `meridian-state.mpb`。`meridian.writer` 由操作系统锁定，不要手动删除后尝试接管。服务默认绑定回环地址，供受信任调用者使用。
@@ -29,6 +29,7 @@ python3 examples/walkthrough.py --workflow coverage
 | `POST /strata/{layer}/locate` | `{ "x": 2, "y": 1 }`。返回拥有该点的 `features` |
 | `POST /strata/{layer}/nearest` | `point`, `limit`, 可选 `class`。返回带 `distance_squared` 的 `neighbors` |
 | `POST /strata/{layer}/coverage` | `bounds` 和可选 `class`。返回 `covered`, `repeated`, `uncovered` |
+| `POST /strata/{layer}/grid` | `origin`, `cell_width`, `cell_height`, `bounds` 和可选 `class`。返回按行优先排列的 `cells` 及 `totals` |
 | `POST /strata/{layer}/seams` | `bounds`, `limit`。按 ID 对返回正长度共享边 |
 | `POST /join` | `left`, `right`, `bounds`, `limit`。返回同一全库修订的相交对 |
 | `POST /relation` | `left` 与 `right` 分别含 `layer` 和 `id`。返回相交、双向包含和闭包距离 |
@@ -48,5 +49,7 @@ python3 examples/walkthrough.py --workflow coverage
 ```
 
 `409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
+
+占用格网以 `origin` 为锚、按 `cell_width`×`cell_height` 生成格线，列行号用向下取整计算，负坐标按 `min_x <= x < max_x` 的半开规则落在正确的格子里。首末列行被窗口裁剪，所以最后一个列可以不完整。每格给出 `area`、`covered`、`uncovered`、`occupancy_permille`（向下取整的千分比）与 `vacant`；`totals` 汇总整次结果，`covered` 与同窗口 `/coverage` 一致。整次响应超过 4,096 格或 200,000 个地物-格子入射时返回 `422 capacity`，不会截断成部分格网。
 
 边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。
