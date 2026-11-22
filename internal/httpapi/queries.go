@@ -60,6 +60,14 @@ func (a *api) seams(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (a *api) traverse(w http.ResponseWriter, r *http.Request) {
+	var request db.TraverseQuery
+	if a.input(w, r, &request) {
+		result, err := a.db.Traverse(r.PathValue("layer"), request)
+		a.respond(w, http.StatusOK, result, err)
+	}
+}
+
 func (a *api) audit(w http.ResponseWriter, r *http.Request) {
 	result, err := a.db.Audit(r.PathValue("layer"))
 	a.respond(w, http.StatusOK, result, err)

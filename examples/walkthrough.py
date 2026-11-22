@@ -225,6 +225,53 @@ def seams(s):
     return result
 
 
+def traverse(s):
+    seed(s)
+    # prong is [0,4)x[0,3), dowel is [4,8)x[0,3).
+    # Walk in, leave through the shared (excluded-for-prong) side, then return:
+    # prong must produce two separate runs and dowel one.
+    polyline = [point(-2, 1), point(2, 1), point(6, 1), point(2, 1), point(-2, 1)]
+    result = s.query(FIELD, 'traverse', dict(points=polyline))
+    runs = [(row['id'], row['enter'], row['leave']) for row in result['crossings']]
+    assert [row[0] for row in runs] == ['prong', 'dowel', 'prong']
+    assert runs[0][1] == dict(x=dict(num=0, den=1), y=dict(num=1, den=1))
+    assert runs[0][2] == dict(x=dict(num=4, den=1), y=dict(num=1, den=1))
+    assert runs[2][1] == dict(x=dict(num=4, den=1), y=dict(num=1, den=1))
+    assert result['layer_revision'] > 0
+    # A long slanted line reports fractional entry and leave positions exactly.
+    slant = s.query(FIELD, 'traverse', dict(points=[point(0, -3), point(4, 5)]))
+    crossing = next(row for row in slant['crossings'] if row['id'] == 'prong')
+    assert crossing['enter'] == dict(x=dict(num=3, den=2), y=dict(num=0, den=1))
+    assert crossing['leave'] == dict(x=dict(num=3, den=1), y=dict(num=3, den=1))
+    # Traveling exactly along prong's and dowel's excluded top edge (y=3) can
+    # never report them; ferrule reaches up to y=4, so the line still crosses
+    # its open interior and must not be suppressed.
+    edge = s.query(FIELD, 'traverse', dict(points=[point(0, 3), point(8, 3)]))
+    assert [row['id'] for row in edge['crossings']] == ['ferrule']
+    # A line riding every boundary of a feature reports nothing for it at all.
+    only_edge = s.query(FIELD, 'traverse', dict(points=[point(0, 0), point(0, 3)]))
+    assert 'prong' not in [row['id'] for row in only_edge['crossings']]
+    # Touching an outside corner and bouncing away produces no crossing.
+    # (8,3) is dowel's top-right corner; both legs stay outside every box.
+    corner = s.query(FIELD, 'traverse', dict(points=[point(4, 7), point(8, 3), point(12, 7)]))
+    assert [row['id'] for row in corner['crossings']] == []
+    # A corner that is actually crossed on the way in is still reported.
+    through = s.query(FIELD, 'traverse', dict(points=[point(0, 7), point(4, 3), point(8, 7)]))
+    assert 'ferrule' in [row['id'] for row in through['crossings']]
+    # One immutable view answers the query; another layer changing does not
+    # move the queried layer's revision.
+    before = s.query(FIELD, 'traverse', dict(points=polyline))
+    s.edit(op(BED, 'shim', mode='remove'))
+    after = s.query(FIELD, 'traverse', dict(points=polyline))
+    assert before['layer_revision'] == after['layer_revision']
+    # Input validation: at least two points, distinct neighbours, extent layer.
+    s.query(FIELD, 'traverse', dict(points=[point(0, 0)]), 400)
+    s.query(FIELD, 'traverse', dict(points=[point(0, 0), point(0, 0)]), 400)
+    s.query(PINS, 'traverse', dict(points=polyline), 400)
+    s.query('missing-layer', 'traverse', dict(points=polyline), 404)
+    return result
+
+
 def relation(s):
     seed(s)
     pin = dict(layer=PINS, id='brad')
@@ -304,7 +351,7 @@ def reopen(binary, data):
 
 
 WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
-                                     inspect, seams, relation, audit, export, restore, reopen)}
+                                     inspect, seams, traverse, relation, audit, export, restore, reopen)}
 
 
 def main():

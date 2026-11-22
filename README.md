@@ -30,6 +30,7 @@ python3 examples/walkthrough.py --workflow coverage
 | `POST /strata/{layer}/nearest` | `point`, `limit`, 可选 `class`。返回带 `distance_squared` 的 `neighbors` |
 | `POST /strata/{layer}/coverage` | `bounds` 和可选 `class`。返回 `covered`, `repeated`, `uncovered` |
 | `POST /strata/{layer}/seams` | `bounds`, `limit`。按 ID 对返回正长度共享边 |
+| `POST /strata/{layer}/traverse` | `points`（按行进顺序的整数点，至少两个）与可选 `class`。返回折线穿过矩形开内部的每一段，进入与离开位置为精确分数；同一地物的折返产生多段，仅沿边界行走不计 |
 | `POST /join` | `left`, `right`, `bounds`, `limit`。返回同一全库修订的相交对 |
 | `POST /relation` | `left` 与 `right` 分别含 `layer` 和 `id`。返回相交、双向包含和闭包距离 |
 | `GET /strata/{layer}/index` | 返回 `tree` 结构统计 |
