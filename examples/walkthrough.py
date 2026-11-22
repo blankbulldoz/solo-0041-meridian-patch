@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PREFIX = '/meridian/v1'
 IMAGE = 'application/vnd.meridian.image'
 FIELD, BED, PINS = 'ochre-field', 'mica-bed', 'plumb-marks'
+GRID_PINS, GRID_BOX, MIRROR_BOX = 'quartz-pins', 'quartz-fields', 'mirror-fields'
 
 
 def box(x0, y0, x1, y1):
@@ -102,6 +103,85 @@ def op(layer, feature, shape=None, category='fixture', mode='insert'):
         kind = 'mark' if 'x' in shape else 'extent'
         item['value'] = dict(id=feature, **{'class': category}, shape={kind: shape})
     return item
+
+
+def imp(layer, feature, shape, category='fixture'):
+    kind = 'mark' if 'x' in shape else 'extent'
+    return dict(layer=layer, value=dict(id=feature, **{'class': category}, shape={kind: shape}))
+
+
+# Boundary points kept for manual cross-checking of the written rules.
+# Each row pairs a source grid point with its image under the transform and
+# whether the target half-open rectangle owns it.
+TURN90 = dict(swap=True, sign_x=-1, sign_y=1, translate_x=0, translate_y=0)
+REFLECT_44 = dict(swap=False, sign_x=-1, sign_y=-1, translate_x=8, translate_y=8)
+TURN90_BOX = box(1, 2, 4, 5)
+TURN90_IMAGE = box(-4, 1, -1, 4)
+MIRROR_SOURCE = box(1, 0, 3, 2)
+MIRROR_IMAGE = box(6, 7, 8, 9)
+BOUNDARY_POINTS = [
+    # Quarter turn (x,y) -> (-y,x); included lower/left edges stay included.
+    dict(rule='rotate90', source=point(1, 2), image=point(-2, 1), owned=True),
+    dict(rule='rotate90', source=point(3, 4), image=point(-4, 3), owned=True),
+    dict(rule='rotate90', source=point(4, 2), image=point(-2, 4), owned=False),  # open upper edge
+    dict(rule='rotate90', source=point(1, 5), image=point(-5, 1), owned=False),  # open lower edge after reversal
+    # Point reflection about (4,4): (x,y) -> (8-x,8-y); the center is fixed.
+    dict(rule='reflect44', source=point(4, 4), image=point(4, 4), owned=None),
+    dict(rule='reflect44', source=point(2, 1), image=point(6, 7), owned=True),
+    dict(rule='reflect44', source=point(3, 0), image=point(5, 8), owned=False),  # open edge stays open
+    dict(rule='reflect44', source=point(1, 2), image=point(7, 6), owned=False),
+]
+
+
+def imports(s):
+    s.layer(GRID_PINS, 'mark')
+    s.layer(GRID_BOX)
+    s.layer(MIRROR_BOX)
+    # One commit carries both point and rectangle layers from the rotated grid.
+    commit = s.post('/imports', dict(transform=TURN90, items=[
+        imp(GRID_PINS, 'brad', point(2, 5)),
+        imp(GRID_PINS, 'stud', point(0, 0)),
+        imp(GRID_BOX, 'prong', TURN90_BOX),
+    ]))
+    assert commit['revision'] == 4
+    assert [row['name'] for row in commit['layers']] == [GRID_BOX, GRID_PINS]
+    assert ids(s.query(GRID_PINS, 'locate', point(-5, 2))) == ['brad']
+    assert ids(s.query(GRID_PINS, 'locate', point(0, 0))) == ['stud']
+    assert ids(s.query(GRID_BOX, 'locate', point(-4, 1))) == ['prong']   # lower-left included
+    assert ids(s.query(GRID_BOX, 'locate', point(-1, 4))) == []          # upper-right excluded
+    assert ids(s.query(GRID_BOX, 'locate', point(-4, 4))) == []          # open upper edge
+    assert ids(s.query(GRID_BOX, 'locate', point(-1, 1))) == []          # open right edge
+
+    # Point reflection keeps half-open ownership and fixes the reflection center.
+    mirrored = s.post('/imports', dict(transform=REFLECT_44, items=[
+        imp(MIRROR_BOX, 'glass', MIRROR_SOURCE),
+    ]))
+    assert mirrored['revision'] == 5
+    assert ids(s.query(MIRROR_BOX, 'locate', point(7, 8))) == ['glass']  # mapped interior point
+    assert ids(s.query(MIRROR_BOX, 'locate', point(5, 8))) == []         # reflected open edge
+    assert ids(s.query(MIRROR_BOX, 'locate', point(7, 6))) == []
+
+    # Every preserved boundary example must agree with the live database.
+    for example in BOUNDARY_POINTS:
+        if example['owned'] is None:
+            continue
+        layer = GRID_BOX if example['rule'] == 'rotate90' else MIRROR_BOX
+        owners = ids(s.query(layer, 'locate', example['image']))
+        assert bool(owners) == example['owned'], example
+
+    # A transformed point past +/-1e9 is rejected without moving the revision.
+    beyond = dict(swap=False, sign_x=1, sign_y=1, translate_x=1_000_000_000, translate_y=0)
+    s.post('/imports', dict(transform=beyond, items=[
+        imp(GRID_PINS, 'wide', point(1, 0)),
+    ]), 400)
+    # One bad item in a multi-layer batch rolls the whole submission back.
+    s.post('/imports', dict(transform=TURN90, items=[
+        imp(GRID_PINS, 'kept', point(1, 1)),
+        imp('ghost-layer', 'lost', point(1, 1)),
+    ]), 404)
+    assert s.get('/status')['revision'] == 5
+    assert ids(s.query(GRID_PINS, 'locate', point(-1, 1))) == []
+    return dict(boundary_points=BOUNDARY_POINTS, turn90_image=TURN90_IMAGE, mirror_image=MIRROR_IMAGE)
 
 
 def seed(s):
@@ -304,7 +384,7 @@ def reopen(binary, data):
 
 
 WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
-                                     inspect, seams, relation, audit, export, restore, reopen)}
+                                     inspect, seams, relation, audit, export, restore, imports, reopen)}
 
 
 def main():
