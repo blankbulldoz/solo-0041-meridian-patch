@@ -303,6 +303,26 @@
       "verification": "python3 examples/walkthrough.py --workflow relation"
     },
     {
+      "id": "ownership",
+      "name": "归属审计",
+      "entry": "POST /ownership-audit",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "spatial",
+        "packed",
+        "plane"
+      ],
+      "steps": [
+        "同一视图解析点层与矩形层",
+        "索引候选并按半开规则区分归属与开边接触",
+        "按类别优先规则给出唯一推荐或原样列出同级冲突"
+      ],
+      "success": "零/一/多归属可区分，边线交换归属有逐轴解释",
+      "failure": "图层缺失、类型不符或候选预算超限时拒绝",
+      "verification": "python3 examples/walkthrough.py --workflow ownership"
+    },
+    {
       "id": "export",
       "name": "固定提交导出",
       "entry": "GET /image",

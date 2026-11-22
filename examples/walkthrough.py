@@ -303,8 +303,65 @@ def reopen(binary, data):
     return result
 
 
+def ownership(s):
+    blocks, pins = 'quilt-blocks', 'quilt-pins'
+    s.layer(blocks, 'extent')
+    s.layer(pins, 'mark', True)
+    s.edit(
+        # west and east meet on the open vertical edge x=4; north overlaps east.
+        op(blocks, 'west', box(0, 0, 4, 4), 'cotton'),
+        op(blocks, 'east', box(4, 0, 8, 4), 'linen'),
+        op(blocks, 'north', box(4, 2, 8, 6), 'linen'),
+        op(pins, 'on-seam', point(4, 1)),
+        op(pins, 'overlap', point(5, 3)),
+        op(pins, 'alone', point(9, 9)),
+    )
+    query = dict(marks=pins, blocks=blocks, bounds=BOUNDS)
+    result = s.post('/ownership-audit', query)
+    by_id = {entry['mark']['id']: entry for entry in result['marks']}
+    seam = by_id['on-seam']
+    assert seam['state'] == 'unique' and seam['owner_count'] == 1
+    assert seam['recommendation'] == 'east'
+    owner = seam['owners'][0]
+    assert owner['block']['id'] == 'east' and owner['membership'] == {
+        'x': 'inside', 'y': 'inside', 'owned': True, 'on_edge': False,
+        'distance_squared': 0,
+    }
+    contact = seam['contacts'][0]
+    assert contact['block']['id'] == 'west'
+    assert contact['membership']['x'] == 'open_max' and not contact['membership']['owned']
+    assert contact['membership']['on_edge'] and contact['membership']['distance_squared'] == 0
+
+    shared = by_id['overlap']
+    assert shared['state'] == 'shared' and shared['owner_count'] == 2
+    assert 'recommendation' not in shared
+    assert [row['block']['id'] for row in shared['conflicts']] == ['east', 'north']
+    ranked = s.post('/ownership-audit', dict(query, class_priority=['cotton', 'linen']))
+    ranked_shared = {entry['mark']['id']: entry for entry in ranked['marks']}['overlap']
+    # Both owners are linen, so the same-priority tie is still listed verbatim.
+    assert 'recommendation' not in ranked_shared
+    assert [row['block']['id'] for row in ranked_shared['conflicts']] == ['east', 'north']
+
+    linen_first = s.post('/ownership-audit', dict(query, class_priority=['linen', 'cotton']))
+    linen_shared = {entry['mark']['id']: entry for entry in linen_first['marks']}['overlap']
+    assert 'recommendation' not in linen_shared
+    assert [row['block']['id'] for row in linen_shared['conflicts']] == ['east', 'north']
+
+    s.edit(op(blocks, 'north', box(4, 2, 8, 6), 'cotton', mode='replace'))
+    winner = s.post('/ownership-audit', dict(query, class_priority=['cotton', 'linen']))
+    won = {entry['mark']['id']: entry for entry in winner['marks']}['overlap']
+    assert won['recommendation'] == 'north' and 'conflicts' not in won
+
+    unowned = by_id['alone']
+    assert unowned['state'] == 'unowned' and unowned['owner_count'] == 0
+    assert unowned['owners'] == [] and unowned['contacts'] == []
+    s.post('/ownership-audit', dict(query, marks=blocks), 400)
+    s.post('/ownership-audit', dict(query, class_priority=['linen', 'linen']), 400)
+    return result
+
+
 WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
-                                     inspect, seams, relation, audit, export, restore, reopen)}
+                                     inspect, seams, relation, audit, ownership, export, restore, reopen)}
 
 
 def main():
