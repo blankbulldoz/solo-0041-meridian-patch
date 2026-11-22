@@ -253,12 +253,58 @@ def inspect(s):
 
 def audit(s):
     s.layer(PINS, 'mark')
-    assert s.get(f'/strata/{PINS}/index-audit')['checked_nodes'] == 0
+    plain = s.get(f'/strata/{PINS}/index-audit')
+    assert plain['checked_nodes'] == 0 and 'window' not in plain
     s.edit(*(op(PINS, f'peg-{i}', point(i-12, i % 3)) for i in range(25)))
     result = s.get(f'/strata/{PINS}/index-audit')
     assert (result['records'], result['checked_nodes']) == (25, 5)
     s.get('/strata/missing/index-audit', 404)
+    window_audit(s)
     return result
+
+
+def window_audit(s):
+    def audit_window(layer, *edges):
+        query = '&'.join(f'{key}={value}' for key, value in zip(('min_x', 'min_y', 'max_x', 'max_y'), edges))
+        return s.get(f'/strata/{layer}/index-audit?{query}')
+
+    # The whole-layer check still runs alongside the windowed identity check.
+    matched = audit_window(PINS, -12, 0, -10, 2)
+    assert (matched['records'], matched['checked_nodes']) == (25, 5)
+    window = matched['window']
+    assert window['agrees'] is True and window['outcome'] == 'matched'
+    assert window['index_hits'] == ['peg-0', 'peg-1']
+    assert window['catalog_hits'] == ['peg-0', 'peg-1']
+    # peg-2 sits on the open top/right edges: closure candidate, never a hit.
+    assert window['candidates'] == ['peg-0', 'peg-1', 'peg-2']
+    assert window['visit']['candidates'] == 3 and window['checked_nodes'] == window['visit']['nodes']
+
+    # A window touching only an open edge produces closure candidates, but no
+    # exact feature on either side of the comparison.
+    edge = audit_window(PINS, -14, 0, -12, 2)['window']
+    assert edge['outcome'] == 'closure_only' and edge['agrees'] is True
+    assert edge['candidates'] == ['peg-0'] and edge['index_hits'] == [] and edge['catalog_hits'] == []
+
+    # A window whose closure meets nothing at all is reported as empty, not as
+    # closure-only.
+    empty = audit_window(PINS, 100, 100, 102, 102)['window']
+    assert empty['outcome'] == 'empty' and empty['agrees'] is True
+    assert empty['candidates'] == [] and empty['index_hits'] == [] and empty['catalog_hits'] == []
+
+    # Extent layers use the same half-open rule: edge contact stays a candidate
+    # without becoming a real intersection.
+    s.layer(FIELD)
+    s.edit(op(FIELD, 'prong', box(0, 0, 4, 3)))
+    extent_edge = audit_window(FIELD, 4, 0, 8, 3)['window']
+    assert extent_edge['outcome'] == 'closure_only' and extent_edge['candidates'] == ['prong']
+    assert extent_edge['index_hits'] == [] and extent_edge['catalog_hits'] == []
+    extent_hit = audit_window(FIELD, 0, 0, 4, 3)['window']
+    assert extent_hit['outcome'] == 'matched' and extent_hit['index_hits'] == ['prong']
+    assert extent_hit['catalog_hits'] == ['prong']
+
+    s.get(f'/strata/{PINS}/index-audit?min_x=0&min_y=0&max_x=4', 400)
+    s.get(f'/strata/{PINS}/index-audit?min_x=4&min_y=0&max_x=4&max_y=3', 400)
+    s.get('/strata/missing/index-audit?min_x=0&min_y=0&max_x=4&max_y=3', 404)
 
 
 def export(s):

@@ -61,3 +61,31 @@ func (d *Database) Audit(name string) (IndexAudit, error) {
 	}
 	return IndexAudit{ReadStamp: stamp(s, l), Audit: result}, nil
 }
+
+// IndexWindowAudit keeps the whole-layer field check (records and checked
+// nodes) and adds an independent identity comparison inside one small window.
+type IndexWindowAudit struct {
+	ReadStamp
+	packed.Audit
+	Window *packed.WindowAudit `json:"window,omitempty"`
+}
+
+func (d *Database) AuditWindow(name string, bounds plane.Box) (IndexWindowAudit, error) {
+	if err := bounds.Validate(); err != nil {
+		return IndexWindowAudit{}, invalid("%v", err)
+	}
+	s := d.head.Load()
+	l, err := s.getLayer(name)
+	if err != nil {
+		return IndexWindowAudit{}, err
+	}
+	full, err := l.tree.Audit(l.rows)
+	if err != nil {
+		return IndexWindowAudit{}, fmt.Errorf("index audit for layer %q at revision %d: %w", name, l.revision, err)
+	}
+	window, err := l.tree.AuditWindow(bounds, l.rows)
+	if err != nil {
+		return IndexWindowAudit{}, fmt.Errorf("index window audit for layer %q at revision %d: %w", name, l.revision, err)
+	}
+	return IndexWindowAudit{ReadStamp: stamp(s, l), Audit: full, Window: &window}, nil
+}

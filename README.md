@@ -33,7 +33,7 @@ python3 examples/walkthrough.py --workflow coverage
 | `POST /join` | `left`, `right`, `bounds`, `limit`。返回同一全库修订的相交对 |
 | `POST /relation` | `left` 与 `right` 分别含 `layer` 和 `id`。返回相交、双向包含和闭包距离 |
 | `GET /strata/{layer}/index` | 返回 `tree` 结构统计 |
-| `GET /strata/{layer}/index-audit` | 核对索引和目录，返回 `records` 与 `checked_nodes` |
+| `GET /strata/{layer}/index-audit` | 核对索引和目录，返回 `records` 与 `checked_nodes`。可选同时提供 `min_x`、`min_y`、`max_x`、`max_y` 四个查询参数，追加该窗口的两侧身份核验 |
 | `GET /image` | 返回 MPB v1 镜像及 `Meridian-Revision` |
 | `PUT /image` | 二进制 `application/vnd.meridian.image` 与必需的 `If-Meridian-Revision` |
 
@@ -48,5 +48,7 @@ python3 examples/walkthrough.py --workflow coverage
 ```
 
 `409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
+
+带窗口参数的 `index-audit` 保持整层核验字段不变，并在 `window` 中给出同一视图下可对照的两侧地物身份摘要：`candidates` 是索引闭包遍历（节点与包围盒 `MayMeet`）碰到的候选，`index_hits` 是候选经精确半开关系后保留的地物，`catalog_hits` 是不经过索引、直接扫描目录并用同一精确关系得到的地物；三组 ID 均按 ID 排序。`agrees` 表示两侧精确命中集合一致，`outcome` 区分三种情形：`empty` 表示闭包未碰到任何地物，`closure_only` 表示闭包碰到候选但精确判定全部落空（例如点或边落在窗口开边上），`matched` 表示存在真实命中且两侧一致；两侧不一致时为 `mismatched`。窗口参数必须四个一起提供，部分提供或非正面积窗口返回 `400 invalid`。
 
 边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。
