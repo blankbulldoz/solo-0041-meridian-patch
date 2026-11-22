@@ -191,6 +191,59 @@ def nearest(s):
     near = s.query(PINS, 'nearest', dict(point=point(5, 1), limit=2))
     assert [(row['feature']['id'], row['distance_squared']) for row in near['neighbors']] == [('brad', 1), ('stud', 1)]
     s.query(FIELD, 'nearest', dict(point=point(4, 0), limit=129), 400)
+    tie_retention(s)
+    return result
+
+
+def pairs(result):
+    return [(row['feature']['id'], row['distance_squared']) for row in result['neighbors']]
+
+
+def tie_retention(s):
+    # Default K-row behavior: the K-th tie group is still cut by ID.
+    plain = s.query(FIELD, 'nearest', dict(point=point(4, 0), limit=1))
+    assert pairs(plain) == [('dowel', 0)] and 'tie' not in plain
+    # Boundary tie retention returns the whole zero-distance group, so K=1
+    # yields both coincident rectangles ordered by ID.
+    result = s.query(FIELD, 'nearest', dict(point=point(4, 0), limit=1, retain_ties=True))
+    assert pairs(result) == [('dowel', 0), ('prong', 0)]
+    assert result['tie'] == dict(boundary_distance_squared=0, group_size=2)
+    # A K that still lands on the tie boundary returns the whole group rather
+    # than an ID-cut prefix.
+    same = s.query(FIELD, 'nearest', dict(point=point(4, 0), limit=2, retain_ties=True))
+    assert pairs(same) == pairs(result) and same['tie'] == result['tie']
+    # A K beyond the tie group moves the boundary to the next distance; there
+    # the K-th row is the unique class-matching ferrule at distance 1.
+    beyond = s.query(FIELD, 'nearest', dict(point=point(4, 0), limit=3, retain_ties=True))
+    assert pairs(beyond) == [('dowel', 0), ('prong', 0), ('ferrule', 1)]
+    assert beyond['tie'] == dict(boundary_distance_squared=1, group_size=1)
+    # A K above the row count underfills: no K-th row exists, so no boundary.
+    sparse = s.query(FIELD, 'nearest', dict(point=point(4, 0), limit=128, retain_ties=True))
+    assert len(sparse['neighbors']) == 3 and 'tie' not in sparse
+    # Class filtering still applies: the only sleeve row is the single
+    # zero-closure-distance ferrule, so it is not enlarged by fixtures.
+    sleeve = s.query(FIELD, 'nearest', dict(point=point(4, 0), limit=1, **{'class': 'sleeve'}))
+    assert pairs(sleeve) == [('ferrule', 1)] and 'tie' not in sleeve
+    sleeve_ties = s.query(FIELD, 'nearest', dict(point=point(4, 0), limit=1, retain_ties=True, **{'class': 'sleeve'}))
+    assert pairs(sleeve_ties) == [('ferrule', 1)]
+    assert sleeve_ties['tie'] == dict(boundary_distance_squared=1, group_size=1)
+    missing = s.query(FIELD, 'nearest', dict(point=point(4, 0), limit=1, retain_ties=True, **{'class': 'nope'}))
+    assert pairs(missing) == [] and 'tie' not in missing
+    s.query(FIELD, 'nearest', dict(point=point(4, 0), limit=1, retain_ties=True, **{'class': 'Nope'}), 400)
+    s.query(FIELD, 'nearest', dict(point=point(4, 0), limit=1, retain_ties='yes'), 400)
+    # Stable order inside a tie group: distance, then ID.
+    marks = s.query(PINS, 'nearest', dict(point=point(5, 1), limit=1, retain_ties=True))
+    assert pairs(marks) == [('brad', 1), ('stud', 1)]
+    assert marks['tie'] == dict(boundary_distance_squared=1, group_size=2)
+    # Dense coincident layer: an independent hard cap and a whole-group refusal.
+    s.layer('dense-pins', 'mark')
+    dense = [op('dense-pins', f'pin-{i:04d}', point(0, 0)) for i in range(1300)]
+    for start in range(0, len(dense), 500):
+        s.edit(*dense[start:start+500])
+    s.query('dense-pins', 'nearest', dict(point=point(0, 0), limit=1, retain_ties=True), 422)
+    # The default K-row path is unaffected by the dense tie group.
+    capped = s.query('dense-pins', 'nearest', dict(point=point(0, 0), limit=2))
+    assert [row['feature']['id'] for row in capped['neighbors']] == ['pin-0000', 'pin-0001']
     return result
 
 

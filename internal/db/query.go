@@ -1,6 +1,7 @@
 package db
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/bookmark"
@@ -84,12 +85,17 @@ type NearestQuery struct {
 	Point plane.Point `json:"point"`
 	Class string      `json:"class,omitempty"`
 	Limit int         `json:"limit"`
+	// RetainTies enables boundary tie retention: the group whose distance
+	// equals the K-th distance is returned whole instead of being cut by ID.
+	// When false or absent the ordinary K-row behavior is unchanged.
+	RetainTies bool `json:"retain_ties,omitempty"`
 }
 
 type NearestResult struct {
 	ReadStamp
-	Neighbors []packed.Neighbor `json:"neighbors"`
-	Visit     packed.Visit      `json:"visit"`
+	Neighbors []packed.Neighbor    `json:"neighbors"`
+	Tie       *packed.TieRetention `json:"tie,omitempty"`
+	Visit     packed.Visit         `json:"visit"`
 }
 
 func (d *Database) Nearest(name string, q NearestQuery) (NearestResult, error) {
@@ -104,11 +110,25 @@ func (d *Database) Nearest(name string, q NearestQuery) (NearestResult, error) {
 	if err != nil {
 		return NearestResult{}, err
 	}
-	neighbors, visit := l.tree.Nearest(q.Point, q.Limit, q.Class)
+	var neighbors []packed.Neighbor
+	var tie *packed.TieRetention
+	var visit packed.Visit
+	if q.RetainTies {
+		neighbors, tie, visit, err = l.tree.NearestWithTies(q.Point, q.Limit, q.Class)
+		if err != nil {
+			var tooLarge *packed.TieGroupTooLargeError
+			if errors.As(err, &tooLarge) {
+				return NearestResult{}, exhausted("%v", tooLarge)
+			}
+			return NearestResult{}, fmt.Errorf("nearest: %w", err)
+		}
+	} else {
+		neighbors, visit = l.tree.Nearest(q.Point, q.Limit, q.Class)
+	}
 	for i := range neighbors {
 		neighbors[i].Feature = neighbors[i].Feature.Copy()
 	}
-	return NearestResult{ReadStamp: stamp(s, l), Neighbors: neighbors, Visit: visit}, nil
+	return NearestResult{ReadStamp: stamp(s, l), Neighbors: neighbors, Tie: tie, Visit: visit}, nil
 }
 
 func stamp(s *state, l *layer) ReadStamp {

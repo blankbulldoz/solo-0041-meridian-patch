@@ -27,7 +27,7 @@ python3 examples/walkthrough.py --workflow coverage
 | `POST /edits` | `edits` 与可选 `if_revision`。每项有 `layer`, `id`, `mode`，写入时提供同 ID 的 `value` |
 | `POST /strata/{layer}/window` | `bounds`, `limit`, 可选 `class`, `bookmark`。按 ID 返回 `features`，有更多数据时返回 `next` |
 | `POST /strata/{layer}/locate` | `{ "x": 2, "y": 1 }`。返回拥有该点的 `features` |
-| `POST /strata/{layer}/nearest` | `point`, `limit`, 可选 `class`。返回带 `distance_squared` 的 `neighbors` |
+| `POST /strata/{layer}/nearest` | `point`, `limit`, 可选 `class`, 可选 `retain_ties`。返回带 `distance_squared` 的 `neighbors`；启用同距保留时附带 `tie` |
 | `POST /strata/{layer}/coverage` | `bounds` 和可选 `class`。返回 `covered`, `repeated`, `uncovered` |
 | `POST /strata/{layer}/seams` | `bounds`, `limit`。按 ID 对返回正长度共享边 |
 | `POST /join` | `left`, `right`, `bounds`, `limit`。返回同一全库修订的相交对 |
@@ -48,5 +48,23 @@ python3 examples/walkthrough.py --workflow coverage
 ```
 
 `409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
+
+### 边界同距保留
+
+最近邻默认按 K 行截断：距离相同按 ID 排序，第 K 行之后的同距行被丢弃。请求体加 `"retain_ties": true` 启用边界同距保留模式：
+
+- 第 K 行的距离成为边界距离，边界距离上的同距组整组返回，即使超过 `limit`。响应按距离、再按 ID 稳定排序，同距组连续且内部顺序确定。
+- `class` 筛选照旧生效：不匹配的类别不进入候选，也不扩大同距组。
+- 同距组有独立硬上限 1,024。组不超过上限时完整返回；超过上限时整次查询以 `422 capacity` 拒绝并说明组大小，绝不按 ID 截断。
+- 省略 `retain_ties` 或设为 `false` 时，K 行行为与之前完全一致。
+- 启用时响应附带 `tie`：`boundary_distance_squared` 为边界距离，`group_size` 为边界同距组大小。命中数不足 K 时没有边界，省略 `tie`。
+
+```json
+{"point":{"x":4,"y":0},"limit":1,"retain_ties":true}
+```
+
+```json
+{"revision":4,"layer_revision":4,"neighbors":[{"distance_squared":0,"feature":{"id":"dowel",...}},{"distance_squared":0,"feature":{"id":"prong",...}}],"tie":{"boundary_distance_squared":0,"group_size":2},"visit":{"nodes":1,"candidates":3}}
+```
 
 边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。
