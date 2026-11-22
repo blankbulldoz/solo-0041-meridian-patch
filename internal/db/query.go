@@ -20,12 +20,18 @@ type WindowQuery struct {
 	Class    string    `json:"class,omitempty"`
 	Limit    int       `json:"limit"`
 	Bookmark string    `json:"bookmark,omitempty"`
+	// Index selects the traversal path: "global" (default) walks the
+	// whole-layer tree, "local" walks the hotspot grid built from the
+	// layer's cut lines. Both paths return the same features.
+	Index string `json:"index,omitempty"`
 }
 
 type WindowPage struct {
 	ReadStamp
 	spatial.MatchSet
-	Next string `json:"next,omitempty"`
+	Index string `json:"index"`
+	Cells int    `json:"cells,omitempty"`
+	Next  string `json:"next,omitempty"`
 }
 
 func (d *Database) Window(name string, q WindowQuery) (WindowPage, error) {
@@ -34,6 +40,9 @@ func (d *Database) Window(name string, q WindowQuery) (WindowPage, error) {
 	}
 	if q.Limit < 1 || q.Limit > 256 {
 		return WindowPage{}, invalid("window limit must be 1..256")
+	}
+	if q.Index != "" && q.Index != "global" && q.Index != "local" {
+		return WindowPage{}, invalid("unknown index mode %q", q.Index)
 	}
 	s := d.head.Load()
 	l, err := s.getLayer(name)
@@ -52,7 +61,18 @@ func (d *Database) Window(name string, q WindowQuery) (WindowPage, error) {
 		}
 		after = from
 	}
-	page := WindowPage{ReadStamp: stamp(s, l), MatchSet: spatial.Window(l.tree, q.Bounds, q.Class, after)}
+	page := WindowPage{ReadStamp: stamp(s, l), Index: "global"}
+	if q.Index == "local" {
+		if l.grid == nil {
+			return WindowPage{}, invalid("layer %q has no hotspot cuts", name)
+		}
+		local, cells := spatial.WindowLocal(l.grid, q.Bounds, q.Class, after)
+		page.MatchSet = local
+		page.Index = "local"
+		page.Cells = cells
+	} else {
+		page.MatchSet = spatial.Window(l.tree, q.Bounds, q.Class, after)
+	}
 	if len(page.Features) > q.Limit {
 		page.Next = d.signer.Seal(scope, page.Features[q.Limit-1].ID)
 		page.Features = page.Features[:q.Limit]
@@ -133,8 +153,9 @@ func validateWindow(bounds plane.Box, class string) error {
 
 type Inspection struct {
 	ReadStamp
-	Layer catalog.Summary `json:"layer"`
-	Tree  packed.Stats    `json:"tree"`
+	Layer catalog.Summary   `json:"layer"`
+	Tree  packed.Stats      `json:"tree"`
+	Grid  *packed.GridStats `json:"grid,omitempty"`
 }
 
 func (d *Database) Inspect(name string) (Inspection, error) {
@@ -143,7 +164,12 @@ func (d *Database) Inspect(name string) (Inspection, error) {
 	if err != nil {
 		return Inspection{}, err
 	}
-	return Inspection{ReadStamp: stamp(s, l), Layer: l.summary(), Tree: l.tree.Stats()}, nil
+	inspection := Inspection{ReadStamp: stamp(s, l), Layer: l.summary(), Tree: l.tree.Stats()}
+	if l.grid != nil {
+		grid := l.grid.Stats()
+		inspection.Grid = &grid
+	}
+	return inspection, nil
 }
 
 type JoinQuery struct {

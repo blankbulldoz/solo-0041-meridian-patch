@@ -47,6 +47,7 @@ func (d *Database) Seams(name string, q SeamQuery) (SeamResponse, error) {
 type IndexAudit struct {
 	ReadStamp
 	packed.Audit
+	Grid *packed.GridAudit `json:"grid,omitempty"`
 }
 
 func (d *Database) Audit(name string) (IndexAudit, error) {
@@ -59,5 +60,13 @@ func (d *Database) Audit(name string) (IndexAudit, error) {
 	if err != nil {
 		return IndexAudit{}, fmt.Errorf("index audit for layer %q at revision %d: %w", name, l.revision, err)
 	}
-	return IndexAudit{ReadStamp: stamp(s, l), Audit: result}, nil
+	audit := IndexAudit{ReadStamp: stamp(s, l), Audit: result}
+	if l.grid != nil {
+		grid, err := l.grid.Audit(l.rows)
+		if err != nil {
+			return IndexAudit{}, fmt.Errorf("hotspot audit for layer %q at revision %d: %w", name, l.revision, err)
+		}
+		audit.Grid = &grid
+	}
+	return audit, nil
 }

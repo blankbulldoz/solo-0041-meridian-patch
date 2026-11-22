@@ -53,7 +53,7 @@ func (d *Database) Reframe(name string, layout catalog.Layout, expected *uint64)
 		if err != nil {
 			return nil, err
 		}
-		if old.definition.Layout == layout {
+		if old.definition.Layout.Equal(layout) {
 			return current, nil
 		}
 		def := old.definition

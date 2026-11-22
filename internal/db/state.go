@@ -15,6 +15,7 @@ type layer struct {
 	revision   uint64
 	rows       map[string]catalog.Feature
 	tree       packed.Tree
+	grid       *packed.Grid
 }
 
 type state struct {
@@ -41,6 +42,10 @@ func buildLayer(def catalog.Definition, revision uint64, rows map[string]catalog
 		}
 	}
 	l.tree = packed.Build(ordered)
+	if def.Cuts != nil {
+		grid := packed.BuildGrid(ordered, def.Bounds, def.Cuts.X, def.Cuts.Y)
+		l.grid = &grid
+	}
 	if def.Exclusive {
 		left, right, overlap := l.tree.Conflict(ordered)
 		if overlap {

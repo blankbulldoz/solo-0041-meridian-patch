@@ -303,8 +303,94 @@ def reopen(binary, data):
     return result
 
 
+def hotspot(s):
+    cuts = dict(x=[4], y=[2])
+    s.post('/strata', dict(name=FIELD, kind='extent', bounds=BOUNDS, exclusive=False, cuts=cuts), 201)
+    s.layer(BED)
+    s.edit(
+        op(FIELD, 'alpha', box(0, 0, 2, 1)),    # inside the lower-left cell
+        op(FIELD, 'bravo', box(5, 3, 7, 4)),    # inside the upper-right cell
+        op(FIELD, 'cross', box(2, 0, 6, 1)),    # crosses x=4, spills
+        op(FIELD, 'edge', box(2, 1, 4, 2)),     # touches x=4 and y=2, still owned
+        op(FIELD, 'stride', box(1, 1, 3, 5)),   # crosses y=2, spills
+    )
+    stats = s.get(f'/strata/{FIELD}/index')['grid']
+    assert (stats['cells'], stats['occupied'], stats['spill_items'], stats['items']) == (4, 2, 2, 5)
+    audit = s.get(f'/strata/{FIELD}/index-audit')
+    assert (audit['records'], audit['grid']['records'], audit['grid']['spill_items']) == (5, 5, 2)
+    # A window inside one cell must not miss spill features crossing into it.
+    window = dict(bounds=box(0, 0, 4, 2), limit=10)
+    local = s.query(FIELD, 'window', dict(window, index='local'))
+    assert local['index'] == 'local' and local['cells'] == 4
+    assert ids(local) == ['alpha', 'cross', 'edge', 'stride']
+    assert ids(s.query(FIELD, 'window', window)) == ids(local)
+    # A thin window straddling the cut line reads two cells plus the spill
+    # tree; no feature id may appear twice.
+    straddle = s.query(FIELD, 'window', dict(bounds=box(3, 0, 5, 1), limit=10, index='local'))
+    assert straddle['cells'] == 2 and ids(straddle) == ['cross']
+    # A layer-wide window merges every cell exactly once.
+    everything = s.query(FIELD, 'window', dict(bounds=BOUNDS, limit=10, index='local'))
+    assert ids(everything) == ['alpha', 'bravo', 'cross', 'edge', 'stride']
+    assert len(ids(everything)) == len(set(ids(everything)))
+    # Class filters and bookmarks behave the same on both paths.
+    paged = s.query(FIELD, 'window', dict(bounds=BOUNDS, limit=2, index='local'))
+    rest = s.query(FIELD, 'window', dict(bounds=BOUNDS, limit=3, bookmark=paged['next']))
+    assert ids(paged) + ids(rest) == ids(everything)
+    # A mark on a cut line belongs to the upper-right cell only, matching the
+    # half-open window rule on both sides of the line.
+    s.post('/strata', dict(name=PINS, kind='mark', bounds=BOUNDS, exclusive=False, cuts=dict(x=[0])), 201)
+    s.edit(op(PINS, 'on-line', point(0, 5)), op(PINS, 'left-of', point(-1, 5)))
+    left = s.query(PINS, 'window', dict(bounds=box(-20, 0, 0, 10), limit=10, index='local'))
+    right = s.query(PINS, 'window', dict(bounds=box(0, 0, 20, 10), limit=10, index='local'))
+    assert ids(left) == ['left-of'] and ids(right) == ['on-line']
+    both = s.query(PINS, 'window', dict(bounds=box(-20, 0, 20, 10), limit=10, index='local'))
+    assert ids(both) == ['left-of', 'on-line']
+    # A window outside the layer bounds touches no cell and stays empty.
+    away = s.query(PINS, 'window', dict(bounds=box(100, 100, 200, 200), limit=10, index='local'))
+    assert ids(away) == [] and away.get('cells', 0) == 0
+    # Layers without cuts reject the local path.
+    s.query(BED, 'window', dict(bounds=BOUNDS, limit=10, index='local'), 400)
+    s.query(FIELD, 'window', dict(bounds=BOUNDS, limit=10, index='sideways'), 400)
+    # Invalid cut layouts are refused at registration and reframe time.
+    s.post('/strata', dict(name='bad-cuts', kind='extent', bounds=BOUNDS, exclusive=False,
+                           cuts=dict(x=[4, 4])), 400)
+    s.post('/strata', dict(name='bad-cuts', kind='extent', bounds=BOUNDS, exclusive=False,
+                           cuts=dict(x=[30])), 400)
+    s.post('/strata', dict(name='bad-cuts', kind='extent', bounds=BOUNDS, exclusive=False,
+                           cuts={}), 400)
+    # Switching the cut layout commits a new index generation; reads after
+    # the switch see the new grid consistently with the same data.
+    rev = s.get('/status')['revision']
+    moved, _ = s.request('PUT', f'/strata/{FIELD}/layout',
+                         dict(bounds=BOUNDS, exclusive=False, cuts=dict(x=[4]), if_revision=rev))
+    assert moved['revision'] == rev + 1
+    stats = s.get(f'/strata/{FIELD}/index')['grid']
+    assert (stats['cells'], stats['spill_items']) == (2, 1)
+    assert ids(s.query(FIELD, 'window', dict(window, index='local'))) == ['alpha', 'cross', 'edge', 'stride']
+    # Repeating the same layout is a no-op that keeps the revision.
+    same, _ = s.request('PUT', f'/strata/{FIELD}/layout',
+                        dict(bounds=BOUNDS, exclusive=False, cuts=dict(x=[4])))
+    assert same['revision'] == rev + 1
+    return dict(grid=stats, straddle=ids(straddle))
+
+
+def hotspot_reopen(binary, data):
+    with running(binary, data) as s:
+        s.post('/strata', dict(name=FIELD, kind='extent', bounds=BOUNDS, exclusive=False,
+                               cuts=dict(x=[4], y=[2])), 201)
+        s.edit(op(FIELD, 'alpha', box(0, 0, 2, 1)), op(FIELD, 'cross', box(2, 0, 6, 1)))
+    with running(binary, data) as s:
+        # The grid is rebuilt from the persisted cuts and feature data.
+        result = s.query(FIELD, 'window', dict(bounds=box(0, 0, 4, 2), limit=10, index='local'))
+        assert result['index'] == 'local' and ids(result) == ['alpha', 'cross']
+        audit = s.get(f'/strata/{FIELD}/index-audit')
+        assert audit['grid']['records'] == 2 and audit['grid']['spill_items'] == 1
+    return result
+
+
 WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
-                                     inspect, seams, relation, audit, export, restore, reopen)}
+                                     inspect, seams, relation, audit, export, restore, reopen,
+                                     hotspot, hotspot_reopen)}
 
 
 def main():
@@ -317,6 +403,8 @@ def main():
         subprocess.run(['go', 'build', '-o', str(binary), './cmd/meridian'], check=True, cwd=ROOT, timeout=90)
         if args.workflow == 'reopen':
             result = reopen(binary, data)
+        elif args.workflow == 'hotspot_reopen':
+            result = hotspot_reopen(binary, data)
         else:
             with running(binary, data) as session:
                 result = WORKFLOWS[args.workflow](session)
