@@ -1,0 +1,40 @@
+{
+  "scenario": "a limit larger than the feature count returns every feature once (no padding or duplicated rows), and a filtered query with zero surviving candidates returns an empty list",
+  "case": {
+    "name": "limit-and-empty",
+    "features": [
+      {"id": "item-a", "class": "kept", "shape": {"mark": {"x": 0, "y": 0}}},
+      {"id": "item-b", "class": "kept", "shape": {"mark": {"x": 3, "y": 4}}},
+      {"id": "item-c", "class": "idle", "shape": {"mark": {"x": 10, "y": 0}}}
+    ],
+    "point": {"x": 0, "y": 0},
+    "limit": 128,
+    "class": ""
+  },
+  "checks": [
+    {
+      "point": {"x": 0, "y": 0},
+      "limit": 128,
+      "class": "",
+      "want": [
+        {"id": "item-a", "class": "kept", "distance_squared": 0},
+        {"id": "item-b", "class": "kept", "distance_squared": 25},
+        {"id": "item-c", "class": "idle", "distance_squared": 100}
+      ]
+    },
+    {
+      "point": {"x": 0, "y": 0},
+      "limit": 128,
+      "class": "ghost",
+      "want": []
+    },
+    {
+      "point": {"x": 0, "y": 0},
+      "limit": 1,
+      "class": "",
+      "want": [
+        {"id": "item-a", "class": "kept", "distance_squared": 0}
+      ]
+    }
+  ]
+}

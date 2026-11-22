@@ -1,0 +1,39 @@
+{
+  "scenario": "a point on an open edge of a rectangle gets closure distance zero even though Owns (half-open) rejects it; the fixture mixes marks and extents so the oracle must handle both envelopes",
+  "case": {
+    "name": "open-edge-zero",
+    "features": [
+      {"id": "ext-hold", "class": "pad", "shape": {"extent": {"min_x": 2, "min_y": 2, "max_x": 8, "max_y": 8}}},
+      {"id": "ext-side", "class": "pad", "shape": {"extent": {"min_x": 8, "min_y": 4, "max_x": 12, "max_y": 10}}},
+      {"id": "ext-corner", "class": "rim", "shape": {"extent": {"min_x": 0, "min_y": 0, "max_x": 2, "max_y": 2}}},
+      {"id": "mk-on-edge", "class": "pin", "shape": {"mark": {"x": 8, "y": 5}}},
+      {"id": "mk-outside", "class": "pin", "shape": {"mark": {"x": 13, "y": 5}}}
+    ],
+    "point": {"x": 8, "y": 5},
+    "limit": 5,
+    "class": ""
+  },
+  "checks": [
+    {
+      "point": {"x": 8, "y": 5},
+      "limit": 5,
+      "class": "",
+      "want": [
+        {"id": "ext-hold", "class": "pad", "distance_squared": 0},
+        {"id": "ext-side", "class": "pad", "distance_squared": 0},
+        {"id": "mk-on-edge", "class": "pin", "distance_squared": 0},
+        {"id": "mk-outside", "class": "pin", "distance_squared": 25},
+        {"id": "ext-corner", "class": "rim", "distance_squared": 45}
+      ]
+    },
+    {
+      "point": {"x": 8, "y": 5},
+      "limit": 5,
+      "class": "pad",
+      "want": [
+        {"id": "ext-hold", "class": "pad", "distance_squared": 0},
+        {"id": "ext-side", "class": "pad", "distance_squared": 0}
+      ]
+    }
+  ]
+}

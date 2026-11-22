@@ -50,3 +50,19 @@ python3 examples/walkthrough.py --workflow coverage
 `409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
 
 边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。
+
+## 最近邻差分验证
+
+`internal/packed` 下的测试用独立暴力 oracle（手写闭包距离公式 + 标准库排序，不经过索引树、生产堆或二分插入路径）核对 `Tree.Nearest` 的完整有序答案：
+
+```sh
+go test ./internal/packed/ -run TestNearest -v
+```
+
+- 冻结夹具在 `internal/packed/testdata/nearest_diff/`，覆盖同距候选跨索引节点（点与矩形各一组）、±10⁹ 极值坐标（最大平方距离 8×10¹⁸）、类过滤丢弃全部近候选、开边零距离、ID 字典序决胜、y 轴分裂、空树与 limit 边界。夹具同时钉住树形，保证“跨叶子”的场景描述不会随构建器调参而失效。
+- `TestNearestDifferentialRandom` 用固定种子生成 580 个随机用例（单叶/双叶/深树、点/矩形、极值坐标、类过滤含零命中），跨机器和多次运行结果一致。
+- 失败时测试把自包含小输入、oracle 期望顺序、实际顺序和树统计写入系统临时目录的 `meridian-nearest-diff/`，消息中给出可直接执行的重放命令。夹具（含多 check）和失败产物都可独立重放：
+
+```sh
+MERIDIAN_NEAREST_REPLAY=/abs/path/case.json go test ./internal/packed/ -run TestNearestReplay -v
+```

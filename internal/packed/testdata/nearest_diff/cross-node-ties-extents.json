@@ -1,0 +1,84 @@
+{
+  "scenario": "four rectangles whose closed envelope contains the query point (closure distance zero, some only along open edges) are split across both index leaves; the tree splits on the wide x axis after 12 items, so pruning on one leaf cannot satisfy the query",
+  "case": {
+    "name": "cross-node-ties-extents",
+    "features": [
+      {"id": "box-lc", "class": "plate", "shape": {"extent": {"min_x": -8, "min_y": 0, "max_x": -2, "max_y": 4}}},
+      {"id": "box-ld", "class": "plate", "shape": {"extent": {"min_x": -7, "min_y": 2, "max_x": -3, "max_y": 6}}},
+      {"id": "box-le", "class": "plate", "shape": {"extent": {"min_x": -6, "min_y": 4, "max_x": -1, "max_y": 8}}},
+      {"id": "box-lf", "class": "plate", "shape": {"extent": {"min_x": -5, "min_y": -3, "max_x": -1, "max_y": 0}}},
+      {"id": "box-la", "class": "plate", "shape": {"extent": {"min_x": -4, "min_y": 0, "max_x": 0, "max_y": 5}}},
+      {"id": "box-lb", "class": "plate", "shape": {"extent": {"min_x": -3, "min_y": -3, "max_x": 1, "max_y": 0}}},
+      {"id": "box-top", "class": "rim", "shape": {"extent": {"min_x": -2, "min_y": 9, "max_x": 2, "max_y": 12}}},
+      {"id": "box-ra", "class": "plate", "shape": {"extent": {"min_x": 0, "min_y": 0, "max_x": 4, "max_y": 4}}},
+      {"id": "box-rb", "class": "plate", "shape": {"extent": {"min_x": 0, "min_y": -4, "max_x": 5, "max_y": 0}}},
+      {"id": "box-rd", "class": "plate", "shape": {"extent": {"min_x": 1, "min_y": 2, "max_x": 5, "max_y": 6}}},
+      {"id": "box-rc", "class": "plate", "shape": {"extent": {"min_x": 2, "min_y": 4, "max_x": 7, "max_y": 8}}},
+      {"id": "box-re", "class": "plate", "shape": {"extent": {"min_x": 3, "min_y": -3, "max_x": 8, "max_y": -1}}},
+      {"id": "box-rf", "class": "plate", "shape": {"extent": {"min_x": 4, "min_y": 6, "max_x": 9, "max_y": 9}}}
+    ],
+    "point": {"x": 0, "y": 0},
+    "limit": 13,
+    "class": ""
+  },
+  "checks": [
+    {
+      "point": {"x": 0, "y": 0},
+      "limit": 13,
+      "class": "",
+      "want": [
+        {"id": "box-la", "class": "plate", "distance_squared": 0},
+        {"id": "box-lb", "class": "plate", "distance_squared": 0},
+        {"id": "box-ra", "class": "plate", "distance_squared": 0},
+        {"id": "box-rb", "class": "plate", "distance_squared": 0},
+        {"id": "box-lf", "class": "plate", "distance_squared": 1},
+        {"id": "box-lc", "class": "plate", "distance_squared": 4},
+        {"id": "box-rd", "class": "plate", "distance_squared": 5},
+        {"id": "box-re", "class": "plate", "distance_squared": 10},
+        {"id": "box-ld", "class": "plate", "distance_squared": 13},
+        {"id": "box-le", "class": "plate", "distance_squared": 17},
+        {"id": "box-rc", "class": "plate", "distance_squared": 20},
+        {"id": "box-rf", "class": "plate", "distance_squared": 52},
+        {"id": "box-top", "class": "rim", "distance_squared": 81}
+      ]
+    },
+    {
+      "point": {"x": 0, "y": 0},
+      "limit": 4,
+      "class": "",
+      "want": [
+        {"id": "box-la", "class": "plate", "distance_squared": 0},
+        {"id": "box-lb", "class": "plate", "distance_squared": 0},
+        {"id": "box-ra", "class": "plate", "distance_squared": 0},
+        {"id": "box-rb", "class": "plate", "distance_squared": 0}
+      ]
+    },
+    {
+      "point": {"x": 0, "y": 0},
+      "limit": 13,
+      "class": "plate",
+      "want": [
+        {"id": "box-la", "class": "plate", "distance_squared": 0},
+        {"id": "box-lb", "class": "plate", "distance_squared": 0},
+        {"id": "box-ra", "class": "plate", "distance_squared": 0},
+        {"id": "box-rb", "class": "plate", "distance_squared": 0},
+        {"id": "box-lf", "class": "plate", "distance_squared": 1},
+        {"id": "box-lc", "class": "plate", "distance_squared": 4},
+        {"id": "box-rd", "class": "plate", "distance_squared": 5},
+        {"id": "box-re", "class": "plate", "distance_squared": 10},
+        {"id": "box-ld", "class": "plate", "distance_squared": 13},
+        {"id": "box-le", "class": "plate", "distance_squared": 17},
+        {"id": "box-rc", "class": "plate", "distance_squared": 20},
+        {"id": "box-rf", "class": "plate", "distance_squared": 52}
+      ]
+    },
+    {
+      "point": {"x": 0, "y": 0},
+      "limit": 13,
+      "class": "rim",
+      "want": [
+        {"id": "box-top", "class": "rim", "distance_squared": 81}
+      ]
+    }
+  ]
+}

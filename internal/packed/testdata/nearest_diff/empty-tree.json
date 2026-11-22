@@ -1,0 +1,24 @@
+{
+  "scenario": "an empty tree has no root and must return an empty neighbor list without visiting nodes",
+  "case": {
+    "name": "empty-tree",
+    "features": [],
+    "point": {"x": 12, "y": -9},
+    "limit": 8,
+    "class": ""
+  },
+  "checks": [
+    {
+      "point": {"x": 12, "y": -9},
+      "limit": 8,
+      "class": "",
+      "want": []
+    },
+    {
+      "point": {"x": 12, "y": -9},
+      "limit": 8,
+      "class": "anything",
+      "want": []
+    }
+  ]
+}

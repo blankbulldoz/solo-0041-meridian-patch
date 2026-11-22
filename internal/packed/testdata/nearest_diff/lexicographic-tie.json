@@ -1,0 +1,43 @@
+{
+  "scenario": "six marks share one coordinate, so every distance is identical and the ID comparator is the only thing that can order them; checks that lexicographic IDs (not insertion order) decide the ranking",
+  "case": {
+    "name": "lexicographic-tie",
+    "features": [
+      {"id": "tie-zeta", "class": "same", "shape": {"mark": {"x": 7, "y": -2}}},
+      {"id": "tie-alpha", "class": "same", "shape": {"mark": {"x": 7, "y": -2}}},
+      {"id": "tie-delta", "class": "same", "shape": {"mark": {"x": 7, "y": -2}}},
+      {"id": "tie-omega", "class": "same", "shape": {"mark": {"x": 7, "y": -2}}},
+      {"id": "tie-bravo", "class": "same", "shape": {"mark": {"x": 7, "y": -2}}},
+      {"id": "tie-gamma", "class": "same", "shape": {"mark": {"x": 7, "y": -2}}}
+    ],
+    "point": {"x": 0, "y": 0},
+    "limit": 6,
+    "class": ""
+  },
+  "checks": [
+    {
+      "point": {"x": 0, "y": 0},
+      "limit": 6,
+      "class": "",
+      "want": [
+        {"id": "tie-alpha", "class": "same", "distance_squared": 53},
+        {"id": "tie-bravo", "class": "same", "distance_squared": 53},
+        {"id": "tie-delta", "class": "same", "distance_squared": 53},
+        {"id": "tie-gamma", "class": "same", "distance_squared": 53},
+        {"id": "tie-omega", "class": "same", "distance_squared": 53},
+        {"id": "tie-zeta", "class": "same", "distance_squared": 53}
+      ]
+    },
+    {
+      "point": {"x": 0, "y": 0},
+      "limit": 4,
+      "class": "",
+      "want": [
+        {"id": "tie-alpha", "class": "same", "distance_squared": 53},
+        {"id": "tie-bravo", "class": "same", "distance_squared": 53},
+        {"id": "tie-delta", "class": "same", "distance_squared": 53},
+        {"id": "tie-gamma", "class": "same", "distance_squared": 53}
+      ]
+    }
+  ]
+}

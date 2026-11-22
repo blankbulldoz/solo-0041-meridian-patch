@@ -1,0 +1,57 @@
+{
+  "scenario": "coordinates at the +/-1e9 limit produce the largest representable squared point distance 8e18 and a box whose distance is 4e18; checks int64 arithmetic, tie ordering at the corners and class filtering that drops every near candidate",
+  "case": {
+    "name": "extreme-corners",
+    "features": [
+      {"id": "c-ne", "class": "far", "shape": {"mark": {"x": 1000000000, "y": 1000000000}}},
+      {"id": "c-nw", "class": "far", "shape": {"mark": {"x": -1000000000, "y": 1000000000}}},
+      {"id": "c-se", "class": "near", "shape": {"mark": {"x": 1000000000, "y": -1000000000}}},
+      {"id": "c-sw", "class": "far", "shape": {"mark": {"x": -1000000000, "y": -1000000000}}},
+      {"id": "e-wide", "class": "near", "shape": {"extent": {"min_x": 999999999, "min_y": -1000000000, "max_x": 1000000000, "max_y": 1000000000}}}
+    ],
+    "point": {"x": -1000000000, "y": -1000000000},
+    "limit": 6,
+    "class": ""
+  },
+  "checks": [
+    {
+      "point": {"x": -1000000000, "y": -1000000000},
+      "limit": 6,
+      "class": "",
+      "want": [
+        {"id": "c-sw", "class": "far", "distance_squared": 0},
+        {"id": "e-wide", "class": "near", "distance_squared": 3999999996000000001},
+        {"id": "c-nw", "class": "far", "distance_squared": 4000000000000000000},
+        {"id": "c-se", "class": "near", "distance_squared": 4000000000000000000},
+        {"id": "c-ne", "class": "far", "distance_squared": 8000000000000000000}
+      ]
+    },
+    {
+      "point": {"x": -1000000000, "y": -1000000000},
+      "limit": 5,
+      "class": "near",
+      "want": [
+        {"id": "e-wide", "class": "near", "distance_squared": 3999999996000000001},
+        {"id": "c-se", "class": "near", "distance_squared": 4000000000000000000}
+      ]
+    },
+    {
+      "point": {"x": 1000000000, "y": 1000000000},
+      "limit": 5,
+      "class": "",
+      "want": [
+        {"id": "c-ne", "class": "far", "distance_squared": 0},
+        {"id": "e-wide", "class": "near", "distance_squared": 0},
+        {"id": "c-nw", "class": "far", "distance_squared": 4000000000000000000},
+        {"id": "c-se", "class": "near", "distance_squared": 4000000000000000000},
+        {"id": "c-sw", "class": "far", "distance_squared": 8000000000000000000}
+      ]
+    },
+    {
+      "point": {"x": 1000000000, "y": 1000000000},
+      "limit": 5,
+      "class": "absent",
+      "want": []
+    }
+  ]
+}

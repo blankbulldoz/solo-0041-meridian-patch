@@ -1,0 +1,58 @@
+{
+  "scenario": "thirteen tall, narrow boxes have a taller y span than x span, so the deterministic builder must choose the y axis; distances and tie order must still match the oracle across the y-driven split",
+  "case": {
+    "name": "y-axis-split",
+    "features": [
+      {"id": "col-a01", "class": "slot", "shape": {"extent": {"min_x": 0, "min_y": -18, "max_x": 1, "max_y": -15}}},
+      {"id": "col-a02", "class": "slot", "shape": {"extent": {"min_x": 0, "min_y": -12, "max_x": 1, "max_y": -9}}},
+      {"id": "col-a03", "class": "slot", "shape": {"extent": {"min_x": 0, "min_y": -6, "max_x": 1, "max_y": -3}}},
+      {"id": "col-a04", "class": "slot", "shape": {"extent": {"min_x": 0, "min_y": 0, "max_x": 1, "max_y": 3}}},
+      {"id": "col-a05", "class": "slot", "shape": {"extent": {"min_x": 0, "min_y": 6, "max_x": 1, "max_y": 9}}},
+      {"id": "col-a06", "class": "slot", "shape": {"extent": {"min_x": 0, "min_y": 12, "max_x": 1, "max_y": 15}}},
+      {"id": "col-a07", "class": "slot", "shape": {"extent": {"min_x": 0, "min_y": 18, "max_x": 1, "max_y": 21}}},
+      {"id": "col-b01", "class": "slot", "shape": {"extent": {"min_x": 2, "min_y": -18, "max_x": 3, "max_y": -15}}},
+      {"id": "col-b02", "class": "slot", "shape": {"extent": {"min_x": 2, "min_y": -12, "max_x": 3, "max_y": -9}}},
+      {"id": "col-b03", "class": "slot", "shape": {"extent": {"min_x": 2, "min_y": -6, "max_x": 3, "max_y": -3}}},
+      {"id": "col-b04", "class": "slot", "shape": {"extent": {"min_x": 2, "min_y": 0, "max_x": 3, "max_y": 3}}},
+      {"id": "col-b05", "class": "slot", "shape": {"extent": {"min_x": 2, "min_y": 6, "max_x": 3, "max_y": 9}}},
+      {"id": "col-b06", "class": "slot", "shape": {"extent": {"min_x": 2, "min_y": 12, "max_x": 3, "max_y": 15}}}
+    ],
+    "point": {"x": 1, "y": 0},
+    "limit": 13,
+    "class": ""
+  },
+  "checks": [
+    {
+      "point": {"x": 1, "y": 0},
+      "limit": 13,
+      "class": "",
+      "want": [
+        {"id": "col-a04", "class": "slot", "distance_squared": 0},
+        {"id": "col-b04", "class": "slot", "distance_squared": 1},
+        {"id": "col-a03", "class": "slot", "distance_squared": 9},
+        {"id": "col-b03", "class": "slot", "distance_squared": 10},
+        {"id": "col-a05", "class": "slot", "distance_squared": 36},
+        {"id": "col-b05", "class": "slot", "distance_squared": 37},
+        {"id": "col-a02", "class": "slot", "distance_squared": 81},
+        {"id": "col-b02", "class": "slot", "distance_squared": 82},
+        {"id": "col-a06", "class": "slot", "distance_squared": 144},
+        {"id": "col-b06", "class": "slot", "distance_squared": 145},
+        {"id": "col-a01", "class": "slot", "distance_squared": 225},
+        {"id": "col-b01", "class": "slot", "distance_squared": 226},
+        {"id": "col-a07", "class": "slot", "distance_squared": 324}
+      ]
+    },
+    {
+      "point": {"x": 1, "y": 0},
+      "limit": 5,
+      "class": "",
+      "want": [
+        {"id": "col-a04", "class": "slot", "distance_squared": 0},
+        {"id": "col-b04", "class": "slot", "distance_squared": 1},
+        {"id": "col-a03", "class": "slot", "distance_squared": 9},
+        {"id": "col-b03", "class": "slot", "distance_squared": 10},
+        {"id": "col-a05", "class": "slot", "distance_squared": 36}
+      ]
+    }
+  ]
+}

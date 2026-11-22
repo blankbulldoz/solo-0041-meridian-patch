@@ -1,0 +1,60 @@
+{
+  "scenario": "equidistant marks fall into different index leaves: 15 marks force a 3-node tree and the three marks at squared distance 4 from the origin are split across the two leaves, so the heap traversal cannot return early and must preserve the ID tie-break",
+  "case": {
+    "name": "cross-node-ties-marks",
+    "features": [
+      {"id": "mark-al", "class": "alpha", "shape": {"mark": {"x": 2, "y": 2}}},
+      {"id": "mark-ap", "class": "alpha", "shape": {"mark": {"x": 2, "y": 1}}},
+      {"id": "mark-bj", "class": "beta", "shape": {"mark": {"x": -4, "y": 1}}},
+      {"id": "mark-bq", "class": "alpha", "shape": {"mark": {"x": 0, "y": 1}}},
+      {"id": "mark-cy", "class": "beta", "shape": {"mark": {"x": -2, "y": 2}}},
+      {"id": "mark-cz", "class": "alpha", "shape": {"mark": {"x": -2, "y": 1}}},
+      {"id": "mark-df", "class": "beta", "shape": {"mark": {"x": -2, "y": 0}}},
+      {"id": "mark-dg", "class": "alpha", "shape": {"mark": {"x": 0, "y": 2}}},
+      {"id": "mark-dh", "class": "beta", "shape": {"mark": {"x": 2, "y": 0}}},
+      {"id": "mark-ez", "class": "alpha", "shape": {"mark": {"x": 0, "y": 0}}},
+      {"id": "mark-ia", "class": "beta", "shape": {"mark": {"x": -4, "y": 2}}},
+      {"id": "mark-jr", "class": "alpha", "shape": {"mark": {"x": 4, "y": 1}}},
+      {"id": "mark-kn", "class": "beta", "shape": {"mark": {"x": 4, "y": 0}}},
+      {"id": "mark-mo", "class": "alpha", "shape": {"mark": {"x": -4, "y": 0}}},
+      {"id": "mark-px", "class": "beta", "shape": {"mark": {"x": 4, "y": 2}}}
+    ],
+    "point": {"x": 0, "y": 0},
+    "limit": 15,
+    "class": ""
+  },
+  "checks": [
+    {
+      "point": {"x": 0, "y": 0},
+      "limit": 15,
+      "class": "",
+      "want": [
+        {"id": "mark-ez", "class": "alpha", "distance_squared": 0},
+        {"id": "mark-bq", "class": "alpha", "distance_squared": 1},
+        {"id": "mark-df", "class": "beta", "distance_squared": 4},
+        {"id": "mark-dg", "class": "alpha", "distance_squared": 4},
+        {"id": "mark-dh", "class": "beta", "distance_squared": 4},
+        {"id": "mark-ap", "class": "alpha", "distance_squared": 5},
+        {"id": "mark-cz", "class": "alpha", "distance_squared": 5},
+        {"id": "mark-al", "class": "alpha", "distance_squared": 8},
+        {"id": "mark-cy", "class": "beta", "distance_squared": 8},
+        {"id": "mark-kn", "class": "beta", "distance_squared": 16},
+        {"id": "mark-mo", "class": "alpha", "distance_squared": 16},
+        {"id": "mark-bj", "class": "beta", "distance_squared": 17},
+        {"id": "mark-jr", "class": "alpha", "distance_squared": 17},
+        {"id": "mark-ia", "class": "beta", "distance_squared": 20},
+        {"id": "mark-px", "class": "beta", "distance_squared": 20}
+      ]
+    },
+    {
+      "point": {"x": 0, "y": 0},
+      "limit": 3,
+      "class": "",
+      "want": [
+        {"id": "mark-ez", "class": "alpha", "distance_squared": 0},
+        {"id": "mark-bq", "class": "alpha", "distance_squared": 1},
+        {"id": "mark-df", "class": "beta", "distance_squared": 4}
+      ]
+    }
+  ]
+}

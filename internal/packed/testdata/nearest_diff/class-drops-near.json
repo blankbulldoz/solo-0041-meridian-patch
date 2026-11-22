@@ -1,0 +1,112 @@
+{
+  "scenario": "all twenty closest marks belong to class near and five far-class marks sit beyond radius 4; filtering by far must discard every near candidate after the traversal already loaded them, while an absent class returns nothing",
+  "case": {
+    "name": "class-drops-near",
+    "features": [
+      {"id": "near-a01", "class": "near", "shape": {"mark": {"x": 1, "y": 0}}},
+      {"id": "near-a02", "class": "near", "shape": {"mark": {"x": -1, "y": 0}}},
+      {"id": "near-a03", "class": "near", "shape": {"mark": {"x": 0, "y": 1}}},
+      {"id": "near-a04", "class": "near", "shape": {"mark": {"x": 0, "y": -1}}},
+      {"id": "near-b01", "class": "near", "shape": {"mark": {"x": 1, "y": 1}}},
+      {"id": "near-b02", "class": "near", "shape": {"mark": {"x": -1, "y": 1}}},
+      {"id": "near-b03", "class": "near", "shape": {"mark": {"x": 1, "y": -1}}},
+      {"id": "near-b04", "class": "near", "shape": {"mark": {"x": -1, "y": -1}}},
+      {"id": "near-c01", "class": "near", "shape": {"mark": {"x": 2, "y": 0}}},
+      {"id": "near-c02", "class": "near", "shape": {"mark": {"x": -2, "y": 0}}},
+      {"id": "near-c03", "class": "near", "shape": {"mark": {"x": 0, "y": 2}}},
+      {"id": "near-c04", "class": "near", "shape": {"mark": {"x": 0, "y": -2}}},
+      {"id": "near-d01", "class": "near", "shape": {"mark": {"x": 2, "y": 2}}},
+      {"id": "near-d02", "class": "near", "shape": {"mark": {"x": -2, "y": 2}}},
+      {"id": "near-d03", "class": "near", "shape": {"mark": {"x": 2, "y": -2}}},
+      {"id": "near-d04", "class": "near", "shape": {"mark": {"x": -2, "y": -2}}},
+      {"id": "near-e01", "class": "near", "shape": {"mark": {"x": 3, "y": 0}}},
+      {"id": "near-e02", "class": "near", "shape": {"mark": {"x": -3, "y": 0}}},
+      {"id": "near-e03", "class": "near", "shape": {"mark": {"x": 0, "y": 3}}},
+      {"id": "near-e04", "class": "near", "shape": {"mark": {"x": 0, "y": -3}}},
+      {"id": "far-f01", "class": "far", "shape": {"mark": {"x": 5, "y": 0}}},
+      {"id": "far-f02", "class": "far", "shape": {"mark": {"x": -5, "y": 0}}},
+      {"id": "far-f03", "class": "far", "shape": {"mark": {"x": 0, "y": 5}}},
+      {"id": "far-f04", "class": "far", "shape": {"mark": {"x": 0, "y": -5}}},
+      {"id": "far-f05", "class": "far", "shape": {"mark": {"x": 6, "y": 6}}}
+    ],
+    "point": {"x": 0, "y": 0},
+    "limit": 12,
+    "class": ""
+  },
+  "checks": [
+    {
+      "point": {"x": 0, "y": 0},
+      "limit": 12,
+      "class": "",
+      "want": [
+        {"id": "near-a01", "class": "near", "distance_squared": 1},
+        {"id": "near-a02", "class": "near", "distance_squared": 1},
+        {"id": "near-a03", "class": "near", "distance_squared": 1},
+        {"id": "near-a04", "class": "near", "distance_squared": 1},
+        {"id": "near-b01", "class": "near", "distance_squared": 2},
+        {"id": "near-b02", "class": "near", "distance_squared": 2},
+        {"id": "near-b03", "class": "near", "distance_squared": 2},
+        {"id": "near-b04", "class": "near", "distance_squared": 2},
+        {"id": "near-c01", "class": "near", "distance_squared": 4},
+        {"id": "near-c02", "class": "near", "distance_squared": 4},
+        {"id": "near-c03", "class": "near", "distance_squared": 4},
+        {"id": "near-c04", "class": "near", "distance_squared": 4}
+      ]
+    },
+    {
+      "point": {"x": 0, "y": 0},
+      "limit": 25,
+      "class": "near",
+      "want": [
+        {"id": "near-a01", "class": "near", "distance_squared": 1},
+        {"id": "near-a02", "class": "near", "distance_squared": 1},
+        {"id": "near-a03", "class": "near", "distance_squared": 1},
+        {"id": "near-a04", "class": "near", "distance_squared": 1},
+        {"id": "near-b01", "class": "near", "distance_squared": 2},
+        {"id": "near-b02", "class": "near", "distance_squared": 2},
+        {"id": "near-b03", "class": "near", "distance_squared": 2},
+        {"id": "near-b04", "class": "near", "distance_squared": 2},
+        {"id": "near-c01", "class": "near", "distance_squared": 4},
+        {"id": "near-c02", "class": "near", "distance_squared": 4},
+        {"id": "near-c03", "class": "near", "distance_squared": 4},
+        {"id": "near-c04", "class": "near", "distance_squared": 4},
+        {"id": "near-d01", "class": "near", "distance_squared": 8},
+        {"id": "near-d02", "class": "near", "distance_squared": 8},
+        {"id": "near-d03", "class": "near", "distance_squared": 8},
+        {"id": "near-d04", "class": "near", "distance_squared": 8},
+        {"id": "near-e01", "class": "near", "distance_squared": 9},
+        {"id": "near-e02", "class": "near", "distance_squared": 9},
+        {"id": "near-e03", "class": "near", "distance_squared": 9},
+        {"id": "near-e04", "class": "near", "distance_squared": 9}
+      ]
+    },
+    {
+      "point": {"x": 0, "y": 0},
+      "limit": 25,
+      "class": "far",
+      "want": [
+        {"id": "far-f01", "class": "far", "distance_squared": 25},
+        {"id": "far-f02", "class": "far", "distance_squared": 25},
+        {"id": "far-f03", "class": "far", "distance_squared": 25},
+        {"id": "far-f04", "class": "far", "distance_squared": 25},
+        {"id": "far-f05", "class": "far", "distance_squared": 72}
+      ]
+    },
+    {
+      "point": {"x": 0, "y": 0},
+      "limit": 25,
+      "class": "absent",
+      "want": []
+    },
+    {
+      "point": {"x": 4, "y": 4},
+      "limit": 3,
+      "class": "far",
+      "want": [
+        {"id": "far-f05", "class": "far", "distance_squared": 8},
+        {"id": "far-f01", "class": "far", "distance_squared": 17},
+        {"id": "far-f03", "class": "far", "distance_squared": 17}
+      ]
+    }
+  ]
+}
