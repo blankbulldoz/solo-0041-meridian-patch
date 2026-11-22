@@ -272,6 +272,120 @@ def export(s):
     return dict(revision=rev, bytes=len(first))
 
 
+def decode_image(raw):
+    assert raw[:8] == b'MRDNMPB\x01'
+    import hashlib
+    length = int.from_bytes(raw[8:12], 'big')
+    payload = raw[44:]
+    assert length == len(payload)
+    assert hashlib.sha256(payload).digest() == raw[12:44]
+    return json.loads(payload)
+
+
+def image_layers(image):
+    return {layer['definition']['name']: layer for layer in image['layers']}
+
+
+def feature_ids(layer):
+    return [feature['id'] for feature in layer['features']]
+
+
+def export_scope(s):
+    rev = seed(s)
+    full, headers = s.request('GET', '/image')
+    full_image = decode_image(full)
+    assert int(headers['Meridian-Revision']) == full_image['revision'] == rev
+
+    # Partial layer selection keeps sorted order, snapshot revisions and
+    # deterministic bytes; absent parameters stay a full, identical export.
+    partial, _ = s.request('GET', '/image?layers=plumb-marks&layers=ochre-field')
+    partial_image = decode_image(partial)
+    assert [layer['definition']['name'] for layer in partial_image['layers']] == [FIELD, PINS]
+    assert partial_image['revision'] == rev
+    for layer in partial_image['layers']:
+        assert layer['revision'] <= rev
+    assert s.request('GET', '/image?layers=ochre-field&layers=plumb-marks')[0] == partial
+    assert s.request('GET', '/image?layers=plumb-marks')[0] != full
+
+    # Extra geometry probes the half-open edges of the window.
+    s.edit(
+        op(FIELD, 'grazed', box(8, 0, 10, 2)),
+        op(PINS, 'edge', point(8, 0)),
+        op(PINS, 'top', point(5, 3)),
+    )
+    s.layer('void', 'mark', False)
+    s.post('/strata', dict(name='nook', kind='extent', bounds=box(-20, -20, -16, -12), exclusive=False), 201)
+
+    # Window [4,8) x [0,3): lower/left edges own, upper/right edges exclude;
+    # rectangles are clipped to the positive-area intersection.
+    scoped, headers = s.request('GET', '/image?min_x=4&min_y=0&max_x=8&max_y=3')
+    scoped_image = decode_image(scoped)
+    assert int(headers['Meridian-Revision']) == scoped_image['revision']
+    layers = image_layers(scoped_image)
+    for name in (FIELD, BED, PINS, 'void'):
+        assert layers[name]['definition']['bounds'] == box(4, 0, 8, 3)
+    assert layers['nook']['definition']['bounds'] == box(-20, -20, -16, -12)
+    assert layers['nook']['features'] == []
+    field = layers[FIELD]
+    assert feature_ids(field) == ['dowel', 'ferrule']
+    shapes = {feature['id']: feature['shape']['extent'] for feature in field['features']}
+    assert shapes['dowel'] == box(4, 0, 8, 3)
+    assert shapes['ferrule'] == box(4, 1, 6, 3)
+    assert feature_ids(layers[BED]) == ['shim']
+    assert layers[BED]['features'][0]['shape']['extent'] == box(4, 0, 5, 2)
+    assert feature_ids(layers[PINS]) == ['brad', 'stud']
+    pin_points = {feature['id']: feature['shape']['mark'] for feature in layers[PINS]['features']}
+    assert pin_points == {'brad': point(4, 1), 'stud': point(6, 1)}
+    assert s.request('GET', '/image?min_x=4&min_y=0&max_x=8&max_y=3')[0] == scoped
+
+    # Layer subset and window combine; empty selected layers are still emitted.
+    pins_only, _ = s.request('GET', '/image?layers=plumb-marks&min_x=4&min_y=0&max_x=8&max_y=3')
+    pins_image = decode_image(pins_only)
+    assert [layer['definition']['name'] for layer in pins_image['layers']] == [PINS]
+    void_only, _ = s.request('GET', '/image?layers=void&min_x=4&min_y=0&max_x=8&max_y=3')
+    void_layer = decode_image(void_only)['layers'][0]
+    assert void_layer['definition']['name'] == 'void' and void_layer['features'] == []
+
+    # Source bounds disjoint from the window keep the source bounds and emit
+    # no rows; intersecting layers are reframed to the clipped bounds.
+    disjoint, _ = s.request('GET', '/image?layers=nook&layers=ochre-field&min_x=12&min_y=12&max_x=16&max_y=16')
+    disjoint_layers = image_layers(decode_image(disjoint))
+    assert disjoint_layers['nook']['definition']['bounds'] == box(-20, -20, -16, -12)
+    assert disjoint_layers['nook']['features'] == []
+    assert disjoint_layers[FIELD]['definition']['bounds'] == box(12, 12, 16, 16)
+    assert disjoint_layers[FIELD]['features'] == []
+
+    # The scoped image goes through the existing recovery path unchanged.
+    current = s.get('/status')['revision']
+    restored = s.restore(scoped, current)
+    assert restored['revision'] == current + 1
+    names = [layer['name'] for layer in restored['layers']]
+    assert names == sorted(layers)
+    assert {row['revision'] for row in restored['layers']} == {current + 1}
+    audit = s.get(f'/strata/{FIELD}/index-audit')
+    assert audit['records'] == 2
+    assert ids(s.query(FIELD, 'locate', point(4, 0))) == ['dowel']
+    assert ids(s.query(PINS, 'locate', point(8, 0))) == []
+
+    # A writer commit after export cannot be mixed into the frozen image: a
+    # stale CAS is rejected and the old view survives, then the image restores.
+    s.edit(op(PINS, 'brad', point(4, 2), mode='replace'))
+    s.restore(scoped, current, 409)
+    assert ids(s.query(PINS, 'locate', point(4, 2))) == ['brad']
+    again = s.restore(scoped, s.get('/status')['revision'])
+    assert ids(s.query(PINS, 'locate', point(4, 1))) == ['brad']
+    assert s.get('/strata')['layers'] and len(again['layers']) == len(layers)
+
+    # Malformed selection requests are rejected before any image is produced.
+    s.request('GET', '/image?layers=missing-one', status=404)
+    s.request('GET', '/image?layers=Bad-Name', status=400)
+    s.request('GET', '/image?layers=ochre-field&layers=ochre-field', status=400)
+    s.request('GET', '/image?min_x=4', status=400)
+    s.request('GET', '/image?min_x=4&min_y=0&max_x=4&max_y=3', status=400)
+    s.request('GET', '/image?min_x=4&min_y=0&max_x=x&max_y=3', status=400)
+    return dict(revision=rev, layers=len(scoped_image['layers']))
+
+
 def restore(s):
     rev = seed(s)
     backup = s.get('/image')
@@ -304,7 +418,7 @@ def reopen(binary, data):
 
 
 WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
-                                     inspect, seams, relation, audit, export, restore, reopen)}
+                                     inspect, seams, relation, audit, export, export_scope, restore, reopen)}
 
 
 def main():

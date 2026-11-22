@@ -60,6 +60,10 @@
       "command": "python3 examples/walkthrough.py --workflow export"
     },
     {
+      "workflow_id": "export_scope",
+      "command": "python3 examples/walkthrough.py --workflow export_scope"
+    },
+    {
       "workflow_id": "restore",
       "command": "python3 examples/walkthrough.py --workflow restore"
     },

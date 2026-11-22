@@ -34,7 +34,7 @@ python3 examples/walkthrough.py --workflow coverage
 | `POST /relation` | `left` 与 `right` 分别含 `layer` 和 `id`。返回相交、双向包含和闭包距离 |
 | `GET /strata/{layer}/index` | 返回 `tree` 结构统计 |
 | `GET /strata/{layer}/index-audit` | 核对索引和目录，返回 `records` 与 `checked_nodes` |
-| `GET /image` | 返回 MPB v1 镜像及 `Meridian-Revision` |
+| `GET /image` | 返回 MPB v1 镜像及 `Meridian-Revision`。可选重复查询参数 `layers` 选择部分图层，可选 `min_x`、`min_y`、`max_x`、`max_y` 同时给出以选择一个半开窗口：点按左下包含、右上排除选择，矩形按窗口剪裁，图层边界取与窗口的正面积交集，不相交时保留源边界并输出空层 |
 | `PUT /image` | 二进制 `application/vnd.meridian.image` 与必需的 `If-Meridian-Revision` |
 
 例如，创建矩形图层并写入一个地物使用下面的 JSON 对象。

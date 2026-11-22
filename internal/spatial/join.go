@@ -75,9 +75,5 @@ func Join(left, right packed.Tree, bounds plane.Box, pairLimit int) (JoinResult,
 }
 
 func restrict(shape plane.Shape, bounds plane.Box) (plane.Shape, bool) {
-	if shape.Mark != nil {
-		return shape, bounds.Owns(*shape.Mark)
-	}
-	clipped, visible := shape.Extent.Clip(bounds)
-	return plane.Shape{Extent: &clipped}, visible
+	return shape.Clip(bounds)
 }

@@ -56,6 +56,23 @@ func (s Shape) InWindow(b Box) bool {
 	return meets
 }
 
+// Clip restricts a shape to the half-open window b. A mark is returned
+// unchanged when b owns it; an extent is returned as its positive-area
+// intersection with b. Shapes that only touch an open edge are not visible.
+func (s Shape) Clip(b Box) (Shape, bool) {
+	if s.Mark != nil {
+		if !b.Owns(*s.Mark) {
+			return Shape{}, false
+		}
+		return s, true
+	}
+	clipped, visible := s.Extent.Clip(b)
+	if !visible {
+		return Shape{}, false
+	}
+	return Shape{Extent: &clipped}, true
+}
+
 func (s Shape) At(p Point) bool {
 	if s.Mark != nil {
 		return *s.Mark == p
