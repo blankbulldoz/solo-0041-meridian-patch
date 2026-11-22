@@ -196,13 +196,34 @@ def nearest(s):
 
 def join(s):
     seed(s)
+    s.edit(op(PINS, 'caps', point(8, 1)), op(PINS, 'rim', point(10, 1)))
     query = dict(left=FIELD, right=BED, bounds=box(4, 0, 8, 4), limit=10)
     result = s.post('/join', query)
     assert result['pairs'] == [dict(left='dowel', right='shim', intersection=box(4, 0, 5, 2)),
                                dict(left='ferrule', right='shim', intersection=box(4, 1, 5, 2))]
     s.post('/join', dict(query, limit=1), 422)
     assert s.post('/join', dict(query, right=PINS))['pairs'][0] == dict(left='dowel', right='brad')
-    return result
+    kept = s.post('/join', dict(query, keep_left=True))
+    assert kept['pairs'] == result['pairs']
+    marks = s.post('/join', dict(left=PINS, right=FIELD, bounds=box(4, 0, 10, 4), limit=10, keep_left=True))
+    assert marks['pairs'] == [dict(left='brad', right='dowel'), dict(left='brad', right='ferrule'),
+                              dict(left='caps'), dict(left='stud', right='dowel')]
+    s.post('/join', dict(left=PINS, right=FIELD, bounds=box(4, 0, 10, 4), limit=2, keep_left=True), 422)
+    # caps at x=8 lies on dowel's excluded max_x edge and rim at x=10 on the
+    # window's excluded right edge: neither is an in-window hit. A wider window
+    # makes rim a visible left mark with no right, which still yields one row.
+    wider = dict(left=PINS, right=FIELD, bounds=box(4, 0, 11, 4), limit=10, keep_left=True)
+    assert s.post('/join', wider)['pairs'] == [dict(left='brad', right='dowel'),
+                                               dict(left='brad', right='ferrule'),
+                                               dict(left='caps'), dict(left='rim'),
+                                               dict(left='stud', right='dowel')]
+    assert dict(left='rim') not in marks['pairs']
+    outside = dict(left=FIELD, right=BED, bounds=box(5, 0, 8, 4), limit=10)
+    assert s.post('/join', outside)['pairs'] == []
+    assert s.post('/join', dict(outside, keep_left=True))['pairs'] == [dict(left='dowel'),
+                                                                       dict(left='ferrule')]
+    s.post('/join', dict(outside, limit=1, keep_left=True), 422)
+    return kept
 
 
 def coverage(s):

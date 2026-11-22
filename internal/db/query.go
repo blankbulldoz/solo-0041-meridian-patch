@@ -147,10 +147,11 @@ func (d *Database) Inspect(name string) (Inspection, error) {
 }
 
 type JoinQuery struct {
-	Left   string    `json:"left"`
-	Right  string    `json:"right"`
-	Bounds plane.Box `json:"bounds"`
-	Limit  int       `json:"limit"`
+	Left     string    `json:"left"`
+	Right    string    `json:"right"`
+	Bounds   plane.Box `json:"bounds"`
+	Limit    int       `json:"limit"`
+	KeepLeft bool      `json:"keep_left,omitempty"`
 }
 
 type JoinResponse struct {
@@ -176,7 +177,7 @@ func (d *Database) Join(q JoinQuery) (JoinResponse, error) {
 	if err != nil {
 		return JoinResponse{}, err
 	}
-	result, err := spatial.Join(left.tree, right.tree, q.Bounds, q.Limit)
+	result, err := spatial.Join(left.tree, right.tree, q.Bounds, q.Limit, q.KeepLeft)
 	if err == spatial.ErrJoinBudget {
 		return JoinResponse{}, exhausted("%v", err)
 	}
