@@ -1,0 +1,202 @@
+{
+  "order": "minimal-pair",
+  "description": "两组最小对照：一处交换只有整组发才成立；另一组存在两种合法排序且最终形状不同。",
+  "baseline_digest": "sha256:6bbdfcc52410633c39c371ac871f9b102aed4e3e626dc241d577e126b516d336",
+  "revision_contract": "Run against a target whose current revision is captured first; pass that value as if_revision on the first edit batch so a concurrent writer aborts the replay instead of silently interleaving. Do not reuse the revision of the source database.",
+  "steps": [
+    {
+      "sequence": 1,
+      "action": "create-layer",
+      "method": "POST",
+      "path": "/meridian/v1/strata",
+      "body": {
+        "name": "yard",
+        "kind": "extent",
+        "bounds": {
+          "min_x": 0,
+          "min_y": 0,
+          "max_x": 30,
+          "max_y": 10
+        },
+        "exclusive": true
+      },
+      "note": "baseline prelude; skip if the layer already exists with this definition"
+    },
+    {
+      "sequence": 2,
+      "action": "seed-baseline",
+      "method": "POST",
+      "path": "/meridian/v1/edits",
+      "body": {
+        "edits": [
+          {
+            "layer": "yard",
+            "id": "alpha",
+            "mode": "insert",
+            "value": {
+              "id": "alpha",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 0,
+                  "min_y": 0,
+                  "max_x": 4,
+                  "max_y": 4
+                }
+              }
+            }
+          },
+          {
+            "layer": "yard",
+            "id": "beta",
+            "mode": "insert",
+            "value": {
+              "id": "beta",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 6,
+                  "min_y": 0,
+                  "max_x": 10,
+                  "max_y": 4
+                }
+              }
+            }
+          },
+          {
+            "layer": "yard",
+            "id": "gamma",
+            "mode": "insert",
+            "value": {
+              "id": "gamma",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 12,
+                  "min_y": 0,
+                  "max_x": 16,
+                  "max_y": 4
+                }
+              }
+            }
+          },
+          {
+            "layer": "yard",
+            "id": "delta",
+            "mode": "insert",
+            "value": {
+              "id": "delta",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 18,
+                  "min_y": 0,
+                  "max_x": 22,
+                  "max_y": 4
+                }
+              }
+            }
+          }
+        ]
+      },
+      "note": "baseline content; resulting shape digest should be sha256:6bbdfcc52410633c39c371ac871f9b102aed4e3e626dc241d577e126b516d336"
+    },
+    {
+      "sequence": 3,
+      "action": "replay-group",
+      "method": "POST",
+      "path": "/meridian/v1/edits",
+      "body": {
+        "edits": [
+          {
+            "layer": "yard",
+            "id": "alpha",
+            "mode": "replace",
+            "value": {
+              "id": "alpha",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 6,
+                  "min_y": 0,
+                  "max_x": 10,
+                  "max_y": 4
+                }
+              }
+            }
+          },
+          {
+            "layer": "yard",
+            "id": "gamma",
+            "mode": "replace",
+            "value": {
+              "id": "gamma",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 0,
+                  "min_y": 0,
+                  "max_x": 4,
+                  "max_y": 4
+                }
+              }
+            }
+          },
+          {
+            "layer": "yard",
+            "id": "beta",
+            "mode": "replace",
+            "value": {
+              "id": "beta",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 12,
+                  "min_y": 0,
+                  "max_x": 16,
+                  "max_y": 4
+                }
+              }
+            }
+          }
+        ]
+      },
+      "group": "swap",
+      "source_lines": [
+        1,
+        2,
+        3
+      ],
+      "note": "send as one batch; source_lines[i] is the provenance of edits[i]; no legal ordering of this group can be split into several commits"
+    }
+  ],
+  "skipped_groups": [
+    {
+      "group": "choice",
+      "classification": "ambiguous",
+      "reason": "多解，不可无歧义恢复",
+      "source_lines": [
+        11,
+        12
+      ]
+    }
+  ],
+  "unresolved_lines": [
+    {
+      "line": 11,
+      "group": "choice",
+      "layer": "yard",
+      "id": "delta",
+      "mode": "replace",
+      "classification": "ambiguous"
+    },
+    {
+      "line": 12,
+      "group": "choice",
+      "layer": "yard",
+      "id": "delta",
+      "mode": "replace",
+      "classification": "ambiguous"
+    }
+  ]
+}

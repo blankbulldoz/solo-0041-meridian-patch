@@ -1,0 +1,192 @@
+{
+  "order": "fully-recoverable",
+  "description": "所有组都可判定的小账本，用于检查终态摘要路径。",
+  "baseline_digest": "sha256:ffa03815fd6e7f62d9550b51e090292b0a5adef40fd8e4952cd67afca8cee8c8",
+  "revision_contract": "Run against a target whose current revision is captured first; pass that value as if_revision on the first edit batch so a concurrent writer aborts the replay instead of silently interleaving. Do not reuse the revision of the source database.",
+  "steps": [
+    {
+      "sequence": 1,
+      "action": "create-layer",
+      "method": "POST",
+      "path": "/meridian/v1/strata",
+      "body": {
+        "name": "yard",
+        "kind": "extent",
+        "bounds": {
+          "min_x": 0,
+          "min_y": 0,
+          "max_x": 30,
+          "max_y": 10
+        },
+        "exclusive": true
+      },
+      "note": "baseline prelude; skip if the layer already exists with this definition"
+    },
+    {
+      "sequence": 2,
+      "action": "create-layer",
+      "method": "POST",
+      "path": "/meridian/v1/strata",
+      "body": {
+        "name": "marks",
+        "kind": "mark",
+        "bounds": {
+          "min_x": 0,
+          "min_y": 0,
+          "max_x": 30,
+          "max_y": 10
+        },
+        "exclusive": true
+      },
+      "note": "baseline prelude; skip if the layer already exists with this definition"
+    },
+    {
+      "sequence": 3,
+      "action": "seed-baseline",
+      "method": "POST",
+      "path": "/meridian/v1/edits",
+      "body": {
+        "edits": [
+          {
+            "layer": "yard",
+            "id": "alpha",
+            "mode": "insert",
+            "value": {
+              "id": "alpha",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 0,
+                  "min_y": 0,
+                  "max_x": 4,
+                  "max_y": 4
+                }
+              }
+            }
+          },
+          {
+            "layer": "yard",
+            "id": "beta",
+            "mode": "insert",
+            "value": {
+              "id": "beta",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 6,
+                  "min_y": 0,
+                  "max_x": 10,
+                  "max_y": 4
+                }
+              }
+            }
+          },
+          {
+            "layer": "marks",
+            "id": "pin",
+            "mode": "insert",
+            "value": {
+              "id": "pin",
+              "class": "fixture",
+              "shape": {
+                "mark": {
+                  "x": 3,
+                  "y": 7
+                }
+              }
+            }
+          }
+        ]
+      },
+      "note": "baseline content; resulting shape digest should be sha256:ffa03815fd6e7f62d9550b51e090292b0a5adef40fd8e4952cd67afca8cee8c8"
+    },
+    {
+      "sequence": 4,
+      "action": "replay-group",
+      "method": "POST",
+      "path": "/meridian/v1/edits",
+      "body": {
+        "edits": [
+          {
+            "layer": "yard",
+            "id": "alpha",
+            "mode": "replace",
+            "value": {
+              "id": "alpha",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 6,
+                  "min_y": 0,
+                  "max_x": 10,
+                  "max_y": 4
+                }
+              }
+            }
+          },
+          {
+            "layer": "yard",
+            "id": "beta",
+            "mode": "replace",
+            "value": {
+              "id": "beta",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 0,
+                  "min_y": 0,
+                  "max_x": 4,
+                  "max_y": 4
+                }
+              }
+            }
+          }
+        ]
+      },
+      "group": "rotate",
+      "source_lines": [
+        1,
+        2
+      ],
+      "note": "send as one batch; source_lines[i] is the provenance of edits[i]; no legal ordering of this group can be split into several commits"
+    },
+    {
+      "sequence": 5,
+      "action": "replay-group",
+      "method": "POST",
+      "path": "/meridian/v1/edits",
+      "body": {
+        "edits": [
+          {
+            "layer": "marks",
+            "id": "pin",
+            "mode": "remove"
+          },
+          {
+            "layer": "marks",
+            "id": "pin",
+            "mode": "insert",
+            "value": {
+              "id": "pin",
+              "class": "fixture",
+              "shape": {
+                "mark": {
+                  "x": 20,
+                  "y": 5
+                }
+              }
+            }
+          }
+        ]
+      },
+      "group": "refill",
+      "source_lines": [
+        12,
+        11
+      ],
+      "note": "send as one batch; source_lines[i] is the provenance of edits[i]"
+    }
+  ],
+  "skipped_groups": [],
+  "unresolved_lines": []
+}

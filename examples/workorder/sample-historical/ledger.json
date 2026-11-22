@@ -1,0 +1,592 @@
+{
+  "name": "sample-historical",
+  "description": "重建的历史账本。可信的只有：组归属、提交顺序、源行号。组内行顺序被打散，每行都保留原始源行号；每组以一次 POST /edits 交付。",
+  "commit_order": [
+    "g1-swap",
+    "g2-recycle",
+    "g3-multilayer",
+    "g4-shape-choice",
+    "g4b-after-choice",
+    "g5-noop",
+    "g6-splittable",
+    "g6b-order-locked",
+    "g6c-last-writer",
+    "g7-lost"
+  ],
+  "expect": {
+    "g1-swap": "unique",
+    "g2-recycle": "unique",
+    "g3-multilayer": "unique",
+    "g4-shape-choice": "ambiguous",
+    "g4b-after-choice": "blocked",
+    "g5-noop": "unique",
+    "g6-splittable": "unique",
+    "g6b-order-locked": "unique",
+    "g6c-last-writer": "ambiguous",
+    "g7-lost": "unrecoverable"
+  },
+  "layers": [
+    {
+      "name": "swap-yard",
+      "kind": "extent",
+      "bounds": {
+        "min_x": 0,
+        "min_y": 0,
+        "max_x": 40,
+        "max_y": 20
+      },
+      "exclusive": true
+    },
+    {
+      "name": "chain-yard",
+      "kind": "extent",
+      "bounds": {
+        "min_x": 0,
+        "min_y": 0,
+        "max_x": 40,
+        "max_y": 20
+      },
+      "exclusive": true
+    },
+    {
+      "name": "ledger",
+      "kind": "extent",
+      "bounds": {
+        "min_x": 0,
+        "min_y": 0,
+        "max_x": 40,
+        "max_y": 20
+      },
+      "exclusive": false
+    },
+    {
+      "name": "shape-yard",
+      "kind": "extent",
+      "bounds": {
+        "min_x": 0,
+        "min_y": 0,
+        "max_x": 40,
+        "max_y": 20
+      },
+      "exclusive": true
+    },
+    {
+      "name": "clean-yard",
+      "kind": "extent",
+      "bounds": {
+        "min_x": 0,
+        "min_y": 0,
+        "max_x": 40,
+        "max_y": 20
+      },
+      "exclusive": true
+    },
+    {
+      "name": "pin-field",
+      "kind": "mark",
+      "bounds": {
+        "min_x": 0,
+        "min_y": 0,
+        "max_x": 40,
+        "max_y": 20
+      },
+      "exclusive": true
+    },
+    {
+      "name": "vote-yard",
+      "kind": "extent",
+      "bounds": {
+        "min_x": 0,
+        "min_y": 0,
+        "max_x": 40,
+        "max_y": 20
+      },
+      "exclusive": true
+    }
+  ],
+  "features": [
+    {
+      "layer": "swap-yard",
+      "id": "alpha",
+      "class": "fixture",
+      "shape": {
+        "extent": {
+          "min_x": 0,
+          "min_y": 0,
+          "max_x": 4,
+          "max_y": 4
+        }
+      }
+    },
+    {
+      "layer": "swap-yard",
+      "id": "beta",
+      "class": "fixture",
+      "shape": {
+        "extent": {
+          "min_x": 8,
+          "min_y": 0,
+          "max_x": 12,
+          "max_y": 4
+        }
+      }
+    },
+    {
+      "layer": "swap-yard",
+      "id": "gamma",
+      "class": "fixture",
+      "shape": {
+        "extent": {
+          "min_x": 16,
+          "min_y": 0,
+          "max_x": 20,
+          "max_y": 4
+        }
+      }
+    },
+    {
+      "layer": "chain-yard",
+      "id": "link",
+      "class": "fixture",
+      "shape": {
+        "extent": {
+          "min_x": 0,
+          "min_y": 6,
+          "max_x": 4,
+          "max_y": 10
+        }
+      }
+    },
+    {
+      "layer": "ledger",
+      "id": "row-a",
+      "class": "fixture",
+      "shape": {
+        "extent": {
+          "min_x": 0,
+          "min_y": 12,
+          "max_x": 2,
+          "max_y": 14
+        }
+      }
+    },
+    {
+      "layer": "ledger",
+      "id": "row-b",
+      "class": "fixture",
+      "shape": {
+        "extent": {
+          "min_x": 4,
+          "min_y": 12,
+          "max_x": 6,
+          "max_y": 14
+        }
+      }
+    },
+    {
+      "layer": "pin-field",
+      "id": "pin",
+      "class": "fixture",
+      "shape": {
+        "mark": {
+          "x": 30,
+          "y": 15
+        }
+      }
+    },
+    {
+      "layer": "shape-yard",
+      "id": "tile",
+      "class": "fixture",
+      "shape": {
+        "extent": {
+          "min_x": 22,
+          "min_y": 0,
+          "max_x": 24,
+          "max_y": 4
+        }
+      }
+    },
+    {
+      "layer": "clean-yard",
+      "id": "plank",
+      "class": "fixture",
+      "shape": {
+        "extent": {
+          "min_x": 30,
+          "min_y": 6,
+          "max_x": 34,
+          "max_y": 10
+        }
+      }
+    },
+    {
+      "layer": "vote-yard",
+      "id": "stone",
+      "class": "fixture",
+      "shape": {
+        "extent": {
+          "min_x": 0,
+          "min_y": 0,
+          "max_x": 6,
+          "max_y": 6
+        }
+      }
+    },
+    {
+      "layer": "vote-yard",
+      "id": "slate",
+      "class": "fixture",
+      "shape": {
+        "extent": {
+          "min_x": 30,
+          "min_y": 0,
+          "max_x": 34,
+          "max_y": 6
+        }
+      }
+    }
+  ],
+  "rows": [
+    {
+      "line": 11,
+      "group": "g2-recycle",
+      "layer": "chain-yard",
+      "id": "link",
+      "mode": "insert",
+      "value": {
+        "id": "link",
+        "class": "fixture",
+        "shape": {
+          "extent": {
+            "min_x": 8,
+            "min_y": 6,
+            "max_x": 12,
+            "max_y": 10
+          }
+        }
+      }
+    },
+    {
+      "line": 4,
+      "group": "g1-swap",
+      "layer": "swap-yard",
+      "id": "beta",
+      "mode": "replace",
+      "value": {
+        "id": "beta",
+        "class": "fixture",
+        "shape": {
+          "extent": {
+            "min_x": 16,
+            "min_y": 0,
+            "max_x": 20,
+            "max_y": 4
+          }
+        }
+      }
+    },
+    {
+      "line": 21,
+      "group": "g3-multilayer",
+      "layer": "ledger",
+      "id": "row-a",
+      "mode": "remove"
+    },
+    {
+      "line": 3,
+      "group": "g1-swap",
+      "layer": "swap-yard",
+      "id": "alpha",
+      "mode": "replace",
+      "value": {
+        "id": "alpha",
+        "class": "fixture",
+        "shape": {
+          "extent": {
+            "min_x": 8,
+            "min_y": 0,
+            "max_x": 12,
+            "max_y": 4
+          }
+        }
+      }
+    },
+    {
+      "line": 12,
+      "group": "g2-recycle",
+      "layer": "chain-yard",
+      "id": "link",
+      "mode": "remove"
+    },
+    {
+      "line": 5,
+      "group": "g1-swap",
+      "layer": "swap-yard",
+      "id": "gamma",
+      "mode": "replace",
+      "value": {
+        "id": "gamma",
+        "class": "fixture",
+        "shape": {
+          "extent": {
+            "min_x": 0,
+            "min_y": 0,
+            "max_x": 4,
+            "max_y": 4
+          }
+        }
+      }
+    },
+    {
+      "line": 22,
+      "group": "g3-multilayer",
+      "layer": "pin-field",
+      "id": "pin",
+      "mode": "replace",
+      "value": {
+        "id": "pin",
+        "class": "fixture",
+        "shape": {
+          "mark": {
+            "x": 31,
+            "y": 15
+          }
+        }
+      }
+    },
+    {
+      "line": 42,
+      "group": "g4-shape-choice",
+      "layer": "shape-yard",
+      "id": "tile",
+      "mode": "replace",
+      "value": {
+        "id": "tile",
+        "class": "fixture",
+        "shape": {
+          "extent": {
+            "min_x": 30,
+            "min_y": 0,
+            "max_x": 34,
+            "max_y": 4
+          }
+        }
+      }
+    },
+    {
+      "line": 23,
+      "group": "g3-multilayer",
+      "layer": "ledger",
+      "id": "row-b",
+      "mode": "replace",
+      "value": {
+        "id": "row-b",
+        "class": "fixture",
+        "shape": {
+          "extent": {
+            "min_x": 4,
+            "min_y": 12,
+            "max_x": 6,
+            "max_y": 16
+          }
+        }
+      }
+    },
+    {
+      "line": 41,
+      "group": "g4-shape-choice",
+      "layer": "shape-yard",
+      "id": "tile",
+      "mode": "replace",
+      "value": {
+        "id": "tile",
+        "class": "fixture",
+        "shape": {
+          "extent": {
+            "min_x": 26,
+            "min_y": 0,
+            "max_x": 30,
+            "max_y": 4
+          }
+        }
+      }
+    },
+    {
+      "line": 51,
+      "group": "g4b-after-choice",
+      "layer": "shape-yard",
+      "id": "chamfer",
+      "mode": "insert",
+      "value": {
+        "id": "chamfer",
+        "class": "fixture",
+        "shape": {
+          "extent": {
+            "min_x": 24,
+            "min_y": 0,
+            "max_x": 28,
+            "max_y": 4
+          }
+        }
+      }
+    },
+    {
+      "line": 61,
+      "group": "g5-noop",
+      "layer": "clean-yard",
+      "id": "plank",
+      "mode": "replace",
+      "value": {
+        "id": "plank",
+        "class": "fixture",
+        "shape": {
+          "extent": {
+            "min_x": 30,
+            "min_y": 6,
+            "max_x": 34,
+            "max_y": 10
+          }
+        }
+      }
+    },
+    {
+      "line": 72,
+      "group": "g6-splittable",
+      "layer": "ledger",
+      "id": "row-b",
+      "mode": "replace",
+      "value": {
+        "id": "row-b",
+        "class": "fixture",
+        "shape": {
+          "extent": {
+            "min_x": 10,
+            "min_y": 12,
+            "max_x": 12,
+            "max_y": 16
+          }
+        }
+      }
+    },
+    {
+      "line": 71,
+      "group": "g6-splittable",
+      "layer": "ledger",
+      "id": "row-c",
+      "mode": "insert",
+      "value": {
+        "id": "row-c",
+        "class": "fixture",
+        "shape": {
+          "extent": {
+            "min_x": 8,
+            "min_y": 12,
+            "max_x": 10,
+            "max_y": 16
+          }
+        }
+      }
+    },
+    {
+      "line": 76,
+      "group": "g6b-order-locked",
+      "layer": "clean-yard",
+      "id": "plank",
+      "mode": "remove"
+    },
+    {
+      "line": 75,
+      "group": "g6b-order-locked",
+      "layer": "clean-yard",
+      "id": "spare",
+      "mode": "insert",
+      "value": {
+        "id": "spare",
+        "class": "fixture",
+        "shape": {
+          "extent": {
+            "min_x": 30,
+            "min_y": 6,
+            "max_x": 34,
+            "max_y": 10
+          }
+        }
+      }
+    },
+    {
+      "line": 65,
+      "group": "g6c-last-writer",
+      "layer": "vote-yard",
+      "id": "stone",
+      "mode": "replace",
+      "value": {
+        "id": "stone",
+        "class": "fixture",
+        "shape": {
+          "extent": {
+            "min_x": 10,
+            "min_y": 0,
+            "max_x": 16,
+            "max_y": 6
+          }
+        }
+      }
+    },
+    {
+      "line": 67,
+      "group": "g6c-last-writer",
+      "layer": "vote-yard",
+      "id": "slate",
+      "mode": "replace",
+      "value": {
+        "id": "slate",
+        "class": "fixture",
+        "shape": {
+          "extent": {
+            "min_x": 22,
+            "min_y": 0,
+            "max_x": 26,
+            "max_y": 6
+          }
+        }
+      }
+    },
+    {
+      "line": 66,
+      "group": "g6c-last-writer",
+      "layer": "vote-yard",
+      "id": "stone",
+      "mode": "replace",
+      "value": {
+        "id": "stone",
+        "class": "fixture",
+        "shape": {
+          "extent": {
+            "min_x": 16,
+            "min_y": 0,
+            "max_x": 22,
+            "max_y": 6
+          }
+        }
+      }
+    },
+    {
+      "line": 81,
+      "group": "g7-lost",
+      "layer": "pin-field",
+      "id": "pin",
+      "mode": "insert",
+      "value": {
+        "id": "pin",
+        "class": "fixture",
+        "shape": {
+          "mark": {
+            "x": 5,
+            "y": 5
+          }
+        }
+      }
+    }
+  ]
+}

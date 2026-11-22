@@ -1,0 +1,974 @@
+{
+  "order": "sample-historical",
+  "description": "重建的历史账本。可信的只有：组归属、提交顺序、源行号。组内行顺序被打散，每行都保留原始源行号；每组以一次 POST /edits 交付。",
+  "commit_order": [
+    "g1-swap",
+    "g2-recycle",
+    "g3-multilayer",
+    "g4-shape-choice",
+    "g4b-after-choice",
+    "g5-noop",
+    "g6-splittable",
+    "g6b-order-locked",
+    "g6c-last-writer",
+    "g7-lost"
+  ],
+  "baseline_digest": "sha256:8237adae2aa1dfaa0213e50879ecd340b00f26d0234d5bd8487d1a5d8bf10a38",
+  "groups": [
+    {
+      "group": "g1-swap",
+      "rows": [
+        {
+          "line": 4,
+          "group": "g1-swap",
+          "layer": "swap-yard",
+          "id": "beta",
+          "mode": "replace",
+          "value": {
+            "id": "beta",
+            "class": "fixture",
+            "shape": {
+              "extent": {
+                "min_x": 16,
+                "min_y": 0,
+                "max_x": 20,
+                "max_y": 4
+              }
+            }
+          }
+        },
+        {
+          "line": 3,
+          "group": "g1-swap",
+          "layer": "swap-yard",
+          "id": "alpha",
+          "mode": "replace",
+          "value": {
+            "id": "alpha",
+            "class": "fixture",
+            "shape": {
+              "extent": {
+                "min_x": 8,
+                "min_y": 0,
+                "max_x": 12,
+                "max_y": 4
+              }
+            }
+          }
+        },
+        {
+          "line": 5,
+          "group": "g1-swap",
+          "layer": "swap-yard",
+          "id": "gamma",
+          "mode": "replace",
+          "value": {
+            "id": "gamma",
+            "class": "fixture",
+            "shape": {
+              "extent": {
+                "min_x": 0,
+                "min_y": 0,
+                "max_x": 4,
+                "max_y": 4
+              }
+            }
+          }
+        }
+      ],
+      "layers": [
+        "swap-yard"
+      ],
+      "classification": "unique",
+      "atomic_required": true,
+      "replay_needs_whole_group": true,
+      "replay": {
+        "request": {
+          "edits": [
+            {
+              "layer": "swap-yard",
+              "id": "alpha",
+              "mode": "replace",
+              "value": {
+                "id": "alpha",
+                "class": "fixture",
+                "shape": {
+                  "extent": {
+                    "min_x": 8,
+                    "min_y": 0,
+                    "max_x": 12,
+                    "max_y": 4
+                  }
+                }
+              }
+            },
+            {
+              "layer": "swap-yard",
+              "id": "beta",
+              "mode": "replace",
+              "value": {
+                "id": "beta",
+                "class": "fixture",
+                "shape": {
+                  "extent": {
+                    "min_x": 16,
+                    "min_y": 0,
+                    "max_x": 20,
+                    "max_y": 4
+                  }
+                }
+              }
+            },
+            {
+              "layer": "swap-yard",
+              "id": "gamma",
+              "mode": "replace",
+              "value": {
+                "id": "gamma",
+                "class": "fixture",
+                "shape": {
+                  "extent": {
+                    "min_x": 0,
+                    "min_y": 0,
+                    "max_x": 4,
+                    "max_y": 4
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "source_lines": [
+          3,
+          4,
+          5
+        ]
+      },
+      "shapes": [
+        {
+          "digest": "sha256:2f6e62b100b1b13893cb0059fb24c4f1912acde1105b58744a04b92901431abc",
+          "count": 6,
+          "examples": [
+            [
+              4,
+              3,
+              5
+            ],
+            [
+              4,
+              5,
+              3
+            ],
+            [
+              3,
+              4,
+              5
+            ],
+            [
+              3,
+              5,
+              4
+            ]
+          ]
+        }
+      ],
+      "split_failures": [
+        {
+          "after_line": 3,
+          "lines": [
+            4,
+            5
+          ],
+          "code": "conflict",
+          "message": "exclusive layer swap-yard: alpha intersects beta"
+        },
+        {
+          "after_line": 4,
+          "lines": [
+            5
+          ],
+          "code": "conflict",
+          "message": "exclusive layer swap-yard: beta intersects gamma"
+        }
+      ],
+      "final_digest": "sha256:2f6e62b100b1b13893cb0059fb24c4f1912acde1105b58744a04b92901431abc",
+      "notes": [
+        "共 6 种排序合法，但全部收敛到同一最终形状，因此重放无歧义",
+        "本组每一种合法排序都存在被单独拒绝的提交边界，因此无论顺序如何都只能整组一次发送"
+      ]
+    },
+    {
+      "group": "g2-recycle",
+      "rows": [
+        {
+          "line": 11,
+          "group": "g2-recycle",
+          "layer": "chain-yard",
+          "id": "link",
+          "mode": "insert",
+          "value": {
+            "id": "link",
+            "class": "fixture",
+            "shape": {
+              "extent": {
+                "min_x": 8,
+                "min_y": 6,
+                "max_x": 12,
+                "max_y": 10
+              }
+            }
+          }
+        },
+        {
+          "line": 12,
+          "group": "g2-recycle",
+          "layer": "chain-yard",
+          "id": "link",
+          "mode": "remove"
+        }
+      ],
+      "layers": [
+        "chain-yard"
+      ],
+      "classification": "unique",
+      "atomic_required": false,
+      "replay_needs_whole_group": false,
+      "replay": {
+        "request": {
+          "edits": [
+            {
+              "layer": "chain-yard",
+              "id": "link",
+              "mode": "remove"
+            },
+            {
+              "layer": "chain-yard",
+              "id": "link",
+              "mode": "insert",
+              "value": {
+                "id": "link",
+                "class": "fixture",
+                "shape": {
+                  "extent": {
+                    "min_x": 8,
+                    "min_y": 6,
+                    "max_x": 12,
+                    "max_y": 10
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "source_lines": [
+          12,
+          11
+        ]
+      },
+      "shapes": [
+        {
+          "digest": "sha256:c59941f03e09215ad48ca62a91a91eb2aa30d36d45160f9f9ebac21a502b8124",
+          "count": 1,
+          "examples": [
+            [
+              12,
+              11
+            ]
+          ]
+        }
+      ],
+      "final_digest": "sha256:c59941f03e09215ad48ca62a91a91eb2aa30d36d45160f9f9ebac21a502b8124",
+      "notes": [
+        "本批次顺序的每个切分点都单独合法，该组原本也可以拆成多次提交"
+      ]
+    },
+    {
+      "group": "g3-multilayer",
+      "rows": [
+        {
+          "line": 21,
+          "group": "g3-multilayer",
+          "layer": "ledger",
+          "id": "row-a",
+          "mode": "remove"
+        },
+        {
+          "line": 22,
+          "group": "g3-multilayer",
+          "layer": "pin-field",
+          "id": "pin",
+          "mode": "replace",
+          "value": {
+            "id": "pin",
+            "class": "fixture",
+            "shape": {
+              "mark": {
+                "x": 31,
+                "y": 15
+              }
+            }
+          }
+        },
+        {
+          "line": 23,
+          "group": "g3-multilayer",
+          "layer": "ledger",
+          "id": "row-b",
+          "mode": "replace",
+          "value": {
+            "id": "row-b",
+            "class": "fixture",
+            "shape": {
+              "extent": {
+                "min_x": 4,
+                "min_y": 12,
+                "max_x": 6,
+                "max_y": 16
+              }
+            }
+          }
+        }
+      ],
+      "layers": [
+        "ledger",
+        "pin-field"
+      ],
+      "classification": "unique",
+      "atomic_required": false,
+      "replay_needs_whole_group": false,
+      "replay": {
+        "request": {
+          "edits": [
+            {
+              "layer": "ledger",
+              "id": "row-a",
+              "mode": "remove"
+            },
+            {
+              "layer": "pin-field",
+              "id": "pin",
+              "mode": "replace",
+              "value": {
+                "id": "pin",
+                "class": "fixture",
+                "shape": {
+                  "mark": {
+                    "x": 31,
+                    "y": 15
+                  }
+                }
+              }
+            },
+            {
+              "layer": "ledger",
+              "id": "row-b",
+              "mode": "replace",
+              "value": {
+                "id": "row-b",
+                "class": "fixture",
+                "shape": {
+                  "extent": {
+                    "min_x": 4,
+                    "min_y": 12,
+                    "max_x": 6,
+                    "max_y": 16
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "source_lines": [
+          21,
+          22,
+          23
+        ]
+      },
+      "shapes": [
+        {
+          "digest": "sha256:e166d9104fc6e6fd17b3387113479e8dc0ef3deb7a003dca3d2dd7362557724e",
+          "count": 6,
+          "examples": [
+            [
+              21,
+              22,
+              23
+            ],
+            [
+              21,
+              23,
+              22
+            ],
+            [
+              22,
+              21,
+              23
+            ],
+            [
+              22,
+              23,
+              21
+            ]
+          ]
+        }
+      ],
+      "final_digest": "sha256:e166d9104fc6e6fd17b3387113479e8dc0ef3deb7a003dca3d2dd7362557724e",
+      "notes": [
+        "共 6 种排序合法，但全部收敛到同一最终形状，因此重放无歧义",
+        "本批次顺序的每个切分点都单独合法，该组原本也可以拆成多次提交"
+      ]
+    },
+    {
+      "group": "g4-shape-choice",
+      "rows": [
+        {
+          "line": 42,
+          "group": "g4-shape-choice",
+          "layer": "shape-yard",
+          "id": "tile",
+          "mode": "replace",
+          "value": {
+            "id": "tile",
+            "class": "fixture",
+            "shape": {
+              "extent": {
+                "min_x": 30,
+                "min_y": 0,
+                "max_x": 34,
+                "max_y": 4
+              }
+            }
+          }
+        },
+        {
+          "line": 41,
+          "group": "g4-shape-choice",
+          "layer": "shape-yard",
+          "id": "tile",
+          "mode": "replace",
+          "value": {
+            "id": "tile",
+            "class": "fixture",
+            "shape": {
+              "extent": {
+                "min_x": 26,
+                "min_y": 0,
+                "max_x": 30,
+                "max_y": 4
+              }
+            }
+          }
+        }
+      ],
+      "layers": [
+        "shape-yard"
+      ],
+      "classification": "ambiguous",
+      "atomic_required": false,
+      "replay_needs_whole_group": false,
+      "shapes": [
+        {
+          "digest": "sha256:31aaa5d03a0fe40732ac077a09bc20bf3ae02d44c857f7dfe3db589770576bc5",
+          "count": 1,
+          "examples": [
+            [
+              42,
+              41
+            ]
+          ]
+        },
+        {
+          "digest": "sha256:4fab683d13e29fa088b75de68e45ac32f7dfe75491a4c8b23eadf91b3a0c1e45",
+          "count": 1,
+          "examples": [
+            [
+              41,
+              42
+            ]
+          ]
+        }
+      ],
+      "notes": [
+        "存在 2 种可达的最终形状；账本没有记录原提交落在哪一种"
+      ]
+    },
+    {
+      "group": "g4b-after-choice",
+      "rows": [
+        {
+          "line": 51,
+          "group": "g4b-after-choice",
+          "layer": "shape-yard",
+          "id": "chamfer",
+          "mode": "insert",
+          "value": {
+            "id": "chamfer",
+            "class": "fixture",
+            "shape": {
+              "extent": {
+                "min_x": 24,
+                "min_y": 0,
+                "max_x": 28,
+                "max_y": 4
+              }
+            }
+          }
+        }
+      ],
+      "layers": [
+        "shape-yard"
+      ],
+      "classification": "blocked",
+      "atomic_required": false,
+      "replay_needs_whole_group": false,
+      "blocked": true,
+      "shapes": [],
+      "notes": [
+        "前序组把图层 shape-yard 留在未定状态；不先选定该结果就无法判定本组"
+      ]
+    },
+    {
+      "group": "g5-noop",
+      "rows": [
+        {
+          "line": 61,
+          "group": "g5-noop",
+          "layer": "clean-yard",
+          "id": "plank",
+          "mode": "replace",
+          "value": {
+            "id": "plank",
+            "class": "fixture",
+            "shape": {
+              "extent": {
+                "min_x": 30,
+                "min_y": 6,
+                "max_x": 34,
+                "max_y": 10
+              }
+            }
+          }
+        }
+      ],
+      "layers": [
+        "clean-yard"
+      ],
+      "classification": "unique",
+      "atomic_required": false,
+      "replay_needs_whole_group": false,
+      "replay": {
+        "request": {
+          "edits": [
+            {
+              "layer": "clean-yard",
+              "id": "plank",
+              "mode": "replace",
+              "value": {
+                "id": "plank",
+                "class": "fixture",
+                "shape": {
+                  "extent": {
+                    "min_x": 30,
+                    "min_y": 6,
+                    "max_x": 34,
+                    "max_y": 10
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "source_lines": [
+          61
+        ]
+      },
+      "shapes": [
+        {
+          "digest": "sha256:e0959f2e1bcba76e1fbd5568e1910737aed2d6dc0ec976104d7184aa5bff0dad",
+          "count": 1,
+          "examples": [
+            [
+              61
+            ]
+          ]
+        }
+      ],
+      "final_digest": "sha256:e0959f2e1bcba76e1fbd5568e1910737aed2d6dc0ec976104d7184aa5bff0dad"
+    },
+    {
+      "group": "g6-splittable",
+      "rows": [
+        {
+          "line": 72,
+          "group": "g6-splittable",
+          "layer": "ledger",
+          "id": "row-b",
+          "mode": "replace",
+          "value": {
+            "id": "row-b",
+            "class": "fixture",
+            "shape": {
+              "extent": {
+                "min_x": 10,
+                "min_y": 12,
+                "max_x": 12,
+                "max_y": 16
+              }
+            }
+          }
+        },
+        {
+          "line": 71,
+          "group": "g6-splittable",
+          "layer": "ledger",
+          "id": "row-c",
+          "mode": "insert",
+          "value": {
+            "id": "row-c",
+            "class": "fixture",
+            "shape": {
+              "extent": {
+                "min_x": 8,
+                "min_y": 12,
+                "max_x": 10,
+                "max_y": 16
+              }
+            }
+          }
+        }
+      ],
+      "layers": [
+        "ledger"
+      ],
+      "classification": "unique",
+      "atomic_required": false,
+      "replay_needs_whole_group": false,
+      "replay": {
+        "request": {
+          "edits": [
+            {
+              "layer": "ledger",
+              "id": "row-c",
+              "mode": "insert",
+              "value": {
+                "id": "row-c",
+                "class": "fixture",
+                "shape": {
+                  "extent": {
+                    "min_x": 8,
+                    "min_y": 12,
+                    "max_x": 10,
+                    "max_y": 16
+                  }
+                }
+              }
+            },
+            {
+              "layer": "ledger",
+              "id": "row-b",
+              "mode": "replace",
+              "value": {
+                "id": "row-b",
+                "class": "fixture",
+                "shape": {
+                  "extent": {
+                    "min_x": 10,
+                    "min_y": 12,
+                    "max_x": 12,
+                    "max_y": 16
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "source_lines": [
+          71,
+          72
+        ]
+      },
+      "shapes": [
+        {
+          "digest": "sha256:555b336044e5d7fc91cbdfe0ce9428ea775b171334a308e1b480b1dc9659ee90",
+          "count": 2,
+          "examples": [
+            [
+              72,
+              71
+            ],
+            [
+              71,
+              72
+            ]
+          ]
+        }
+      ],
+      "final_digest": "sha256:555b336044e5d7fc91cbdfe0ce9428ea775b171334a308e1b480b1dc9659ee90",
+      "notes": [
+        "共 2 种排序合法，但全部收敛到同一最终形状，因此重放无歧义",
+        "本批次顺序的每个切分点都单独合法，该组原本也可以拆成多次提交"
+      ]
+    },
+    {
+      "group": "g6b-order-locked",
+      "rows": [
+        {
+          "line": 76,
+          "group": "g6b-order-locked",
+          "layer": "clean-yard",
+          "id": "plank",
+          "mode": "remove"
+        },
+        {
+          "line": 75,
+          "group": "g6b-order-locked",
+          "layer": "clean-yard",
+          "id": "spare",
+          "mode": "insert",
+          "value": {
+            "id": "spare",
+            "class": "fixture",
+            "shape": {
+              "extent": {
+                "min_x": 30,
+                "min_y": 6,
+                "max_x": 34,
+                "max_y": 10
+              }
+            }
+          }
+        }
+      ],
+      "layers": [
+        "clean-yard"
+      ],
+      "classification": "unique",
+      "atomic_required": false,
+      "replay_needs_whole_group": true,
+      "replay": {
+        "request": {
+          "edits": [
+            {
+              "layer": "clean-yard",
+              "id": "spare",
+              "mode": "insert",
+              "value": {
+                "id": "spare",
+                "class": "fixture",
+                "shape": {
+                  "extent": {
+                    "min_x": 30,
+                    "min_y": 6,
+                    "max_x": 34,
+                    "max_y": 10
+                  }
+                }
+              }
+            },
+            {
+              "layer": "clean-yard",
+              "id": "plank",
+              "mode": "remove"
+            }
+          ]
+        },
+        "source_lines": [
+          75,
+          76
+        ]
+      },
+      "shapes": [
+        {
+          "digest": "sha256:a70623dc27cf1de919c21d5bb050782b1e4f07d5804e31864ce5c57fd4d8c29b",
+          "count": 2,
+          "examples": [
+            [
+              76,
+              75
+            ],
+            [
+              75,
+              76
+            ]
+          ]
+        }
+      ],
+      "split_failures": [
+        {
+          "after_line": 75,
+          "lines": [
+            76
+          ],
+          "code": "conflict",
+          "message": "exclusive layer clean-yard: plank intersects spare"
+        }
+      ],
+      "final_digest": "sha256:a70623dc27cf1de919c21d5bb050782b1e4f07d5804e31864ce5c57fd4d8c29b",
+      "notes": [
+        "共 2 种排序合法，但全部收敛到同一最终形状，因此重放无歧义",
+        "本批次选定的顺序必须整组发送，但另一种合法排序可以拆批；仅凭分组不能证明该组原子"
+      ]
+    },
+    {
+      "group": "g6c-last-writer",
+      "rows": [
+        {
+          "line": 65,
+          "group": "g6c-last-writer",
+          "layer": "vote-yard",
+          "id": "stone",
+          "mode": "replace",
+          "value": {
+            "id": "stone",
+            "class": "fixture",
+            "shape": {
+              "extent": {
+                "min_x": 10,
+                "min_y": 0,
+                "max_x": 16,
+                "max_y": 6
+              }
+            }
+          }
+        },
+        {
+          "line": 67,
+          "group": "g6c-last-writer",
+          "layer": "vote-yard",
+          "id": "slate",
+          "mode": "replace",
+          "value": {
+            "id": "slate",
+            "class": "fixture",
+            "shape": {
+              "extent": {
+                "min_x": 22,
+                "min_y": 0,
+                "max_x": 26,
+                "max_y": 6
+              }
+            }
+          }
+        },
+        {
+          "line": 66,
+          "group": "g6c-last-writer",
+          "layer": "vote-yard",
+          "id": "stone",
+          "mode": "replace",
+          "value": {
+            "id": "stone",
+            "class": "fixture",
+            "shape": {
+              "extent": {
+                "min_x": 16,
+                "min_y": 0,
+                "max_x": 22,
+                "max_y": 6
+              }
+            }
+          }
+        }
+      ],
+      "layers": [
+        "vote-yard"
+      ],
+      "classification": "ambiguous",
+      "atomic_required": false,
+      "replay_needs_whole_group": false,
+      "shapes": [
+        {
+          "digest": "sha256:d158c4fc27c8de4013fe38b595daa27000c636198be145df183a4feeb682a2a7",
+          "count": 3,
+          "examples": [
+            [
+              65,
+              67,
+              66
+            ],
+            [
+              65,
+              66,
+              67
+            ],
+            [
+              67,
+              65,
+              66
+            ]
+          ]
+        },
+        {
+          "digest": "sha256:a908c4329dc950e3b592e7ecc9ec24b23a861d0e48a5ce4f0b49220434b7916d",
+          "count": 3,
+          "examples": [
+            [
+              67,
+              66,
+              65
+            ],
+            [
+              66,
+              65,
+              67
+            ],
+            [
+              66,
+              67,
+              65
+            ]
+          ]
+        }
+      ],
+      "notes": [
+        "存在 2 种可达的最终形状；账本没有记录原提交落在哪一种"
+      ]
+    },
+    {
+      "group": "g7-lost",
+      "rows": [
+        {
+          "line": 81,
+          "group": "g7-lost",
+          "layer": "pin-field",
+          "id": "pin",
+          "mode": "insert",
+          "value": {
+            "id": "pin",
+            "class": "fixture",
+            "shape": {
+              "mark": {
+                "x": 5,
+                "y": 5
+              }
+            }
+          }
+        }
+      ],
+      "layers": [
+        "pin-field"
+      ],
+      "classification": "unrecoverable",
+      "atomic_required": false,
+      "replay_needs_whole_group": false,
+      "shapes": [],
+      "notes": [
+        "本组没有任何排序能对基线成立；除非猜测缺失、损坏或错分组的行，否则无法回放",
+        "按接收顺序提交会被拒绝（conflict）：edit 0: feature \"pin\" already exists"
+      ]
+    }
+  ],
+  "ambiguous_groups": [
+    "g4-shape-choice",
+    "g6c-last-writer"
+  ],
+  "unrecoverable_groups": [
+    "g7-lost"
+  ],
+  "whole_group_only_groups": [
+    "g1-swap"
+  ],
+  "blocked_groups": [
+    "g4b-after-choice"
+  ]
+}

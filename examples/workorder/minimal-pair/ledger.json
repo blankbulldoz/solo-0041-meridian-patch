@@ -1,0 +1,176 @@
+{
+  "name": "minimal-pair",
+  "description": "两组最小对照：一处交换只有整组发才成立；另一组存在两种合法排序且最终形状不同。",
+  "commit_order": [
+    "swap",
+    "choice"
+  ],
+  "expect": {
+    "swap": "unique",
+    "choice": "ambiguous"
+  },
+  "layers": [
+    {
+      "name": "yard",
+      "kind": "extent",
+      "bounds": {
+        "min_x": 0,
+        "min_y": 0,
+        "max_x": 30,
+        "max_y": 10
+      },
+      "exclusive": true
+    }
+  ],
+  "features": [
+    {
+      "layer": "yard",
+      "id": "alpha",
+      "class": "fixture",
+      "shape": {
+        "extent": {
+          "min_x": 0,
+          "min_y": 0,
+          "max_x": 4,
+          "max_y": 4
+        }
+      }
+    },
+    {
+      "layer": "yard",
+      "id": "beta",
+      "class": "fixture",
+      "shape": {
+        "extent": {
+          "min_x": 6,
+          "min_y": 0,
+          "max_x": 10,
+          "max_y": 4
+        }
+      }
+    },
+    {
+      "layer": "yard",
+      "id": "gamma",
+      "class": "fixture",
+      "shape": {
+        "extent": {
+          "min_x": 12,
+          "min_y": 0,
+          "max_x": 16,
+          "max_y": 4
+        }
+      }
+    },
+    {
+      "layer": "yard",
+      "id": "delta",
+      "class": "fixture",
+      "shape": {
+        "extent": {
+          "min_x": 18,
+          "min_y": 0,
+          "max_x": 22,
+          "max_y": 4
+        }
+      }
+    }
+  ],
+  "rows": [
+    {
+      "line": 3,
+      "group": "swap",
+      "layer": "yard",
+      "id": "beta",
+      "mode": "replace",
+      "value": {
+        "id": "beta",
+        "class": "fixture",
+        "shape": {
+          "extent": {
+            "min_x": 12,
+            "min_y": 0,
+            "max_x": 16,
+            "max_y": 4
+          }
+        }
+      }
+    },
+    {
+      "line": 1,
+      "group": "swap",
+      "layer": "yard",
+      "id": "alpha",
+      "mode": "replace",
+      "value": {
+        "id": "alpha",
+        "class": "fixture",
+        "shape": {
+          "extent": {
+            "min_x": 6,
+            "min_y": 0,
+            "max_x": 10,
+            "max_y": 4
+          }
+        }
+      }
+    },
+    {
+      "line": 2,
+      "group": "swap",
+      "layer": "yard",
+      "id": "gamma",
+      "mode": "replace",
+      "value": {
+        "id": "gamma",
+        "class": "fixture",
+        "shape": {
+          "extent": {
+            "min_x": 0,
+            "min_y": 0,
+            "max_x": 4,
+            "max_y": 4
+          }
+        }
+      }
+    },
+    {
+      "line": 11,
+      "group": "choice",
+      "layer": "yard",
+      "id": "delta",
+      "mode": "replace",
+      "value": {
+        "id": "delta",
+        "class": "fixture",
+        "shape": {
+          "extent": {
+            "min_x": 22,
+            "min_y": 0,
+            "max_x": 26,
+            "max_y": 4
+          }
+        }
+      }
+    },
+    {
+      "line": 12,
+      "group": "choice",
+      "layer": "yard",
+      "id": "delta",
+      "mode": "replace",
+      "value": {
+        "id": "delta",
+        "class": "fixture",
+        "shape": {
+          "extent": {
+            "min_x": 26,
+            "min_y": 0,
+            "max_x": 30,
+            "max_y": 4
+          }
+        }
+      }
+    }
+  ]
+}

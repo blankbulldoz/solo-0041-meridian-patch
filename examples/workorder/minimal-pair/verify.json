@@ -1,0 +1,60 @@
+{
+  "order": "minimal-pair",
+  "data_dir": "/tmp/meridian-workorder-3301670295/space",
+  "baseline_digest": "sha256:6bbdfcc52410633c39c371ac871f9b102aed4e3e626dc241d577e126b516d336",
+  "baseline_live_digest": "sha256:6bbdfcc52410633c39c371ac871f9b102aed4e3e626dc241d577e126b516d336",
+  "groups": [
+    {
+      "group": "swap",
+      "classification": "unique",
+      "planned_digest": "sha256:e8bf63b6f4acea16e5a07c020eb3dd83d0c1b986bffa73ff8ddcbe2febc075c8",
+      "observed_digest": "sha256:e8bf63b6f4acea16e5a07c020eb3dd83d0c1b986bffa73ff8ddcbe2febc075c8",
+      "matches": true,
+      "replay_lines": [
+        1,
+        2,
+        3
+      ],
+      "server_revision": 3,
+      "split_confirmations": [
+        {
+          "after_line": 1,
+          "code": "conflict",
+          "message": "exclusive layer yard: alpha intersects beta"
+        },
+        {
+          "after_line": 2,
+          "code": "conflict",
+          "message": "exclusive layer yard: alpha intersects beta"
+        }
+      ]
+    },
+    {
+      "group": "choice",
+      "classification": "ambiguous",
+      "matches": false,
+      "shape_observations": [
+        {
+          "lines": [
+            11,
+            12
+          ],
+          "digest": "sha256:bcd16e866b1d6111e9b890643daf7d0840d49c38b4cf167693630d354507972c"
+        },
+        {
+          "lines": [
+            12,
+            11
+          ],
+          "digest": "sha256:5e366d9f713abaa5b28613aa7bc1ae9a479da983c35d9d8abed259c546ded7e3"
+        }
+      ],
+      "notes": [
+        "服务端复现了全部可达形状；本组不提交任何单一结果"
+      ]
+    }
+  ],
+  "final_digest": "sha256:e8bf63b6f4acea16e5a07c020eb3dd83d0c1b986bffa73ff8ddcbe2febc075c8",
+  "fully_replayed": false,
+  "all_matches": true
+}

@@ -50,3 +50,13 @@ python3 examples/walkthrough.py --workflow coverage
 `409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
 
 边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。
+
+## 历史施工单重放
+
+`cmd/meridian-workorder` 把被打散的历史编辑账本整理成可执行的重放资料，并显式列出无法
+无歧义恢复的事务组；它只读 JSON，不改动现有数据库，`-verify` 会在临时目录里用真实
+`POST /edits` 逐组验证。详见 [examples/workorder/README.md](examples/workorder/README.md)。
+
+```sh
+go run ./cmd/meridian-workorder -order examples/workorder/sample-historical/ledger.json -verify
+```

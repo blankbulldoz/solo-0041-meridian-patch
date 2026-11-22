@@ -1,0 +1,223 @@
+{
+  "order": "fully-recoverable",
+  "description": "所有组都可判定的小账本，用于检查终态摘要路径。",
+  "commit_order": [
+    "rotate",
+    "refill"
+  ],
+  "baseline_digest": "sha256:ffa03815fd6e7f62d9550b51e090292b0a5adef40fd8e4952cd67afca8cee8c8",
+  "final_digest": "sha256:3d524d8a641cf57184b22c09a0f4b053f085f732ef0cfef13c9e2ff0483d9fe5",
+  "groups": [
+    {
+      "group": "rotate",
+      "rows": [
+        {
+          "line": 2,
+          "group": "rotate",
+          "layer": "yard",
+          "id": "beta",
+          "mode": "replace",
+          "value": {
+            "id": "beta",
+            "class": "fixture",
+            "shape": {
+              "extent": {
+                "min_x": 0,
+                "min_y": 0,
+                "max_x": 4,
+                "max_y": 4
+              }
+            }
+          }
+        },
+        {
+          "line": 1,
+          "group": "rotate",
+          "layer": "yard",
+          "id": "alpha",
+          "mode": "replace",
+          "value": {
+            "id": "alpha",
+            "class": "fixture",
+            "shape": {
+              "extent": {
+                "min_x": 6,
+                "min_y": 0,
+                "max_x": 10,
+                "max_y": 4
+              }
+            }
+          }
+        }
+      ],
+      "layers": [
+        "yard"
+      ],
+      "classification": "unique",
+      "atomic_required": true,
+      "replay_needs_whole_group": true,
+      "replay": {
+        "request": {
+          "edits": [
+            {
+              "layer": "yard",
+              "id": "alpha",
+              "mode": "replace",
+              "value": {
+                "id": "alpha",
+                "class": "fixture",
+                "shape": {
+                  "extent": {
+                    "min_x": 6,
+                    "min_y": 0,
+                    "max_x": 10,
+                    "max_y": 4
+                  }
+                }
+              }
+            },
+            {
+              "layer": "yard",
+              "id": "beta",
+              "mode": "replace",
+              "value": {
+                "id": "beta",
+                "class": "fixture",
+                "shape": {
+                  "extent": {
+                    "min_x": 0,
+                    "min_y": 0,
+                    "max_x": 4,
+                    "max_y": 4
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "source_lines": [
+          1,
+          2
+        ]
+      },
+      "shapes": [
+        {
+          "digest": "sha256:4ad3a7ff14cda1c56a9b4fc11bf6a6248820108800b01c54845038b3a051d3de",
+          "count": 2,
+          "examples": [
+            [
+              2,
+              1
+            ],
+            [
+              1,
+              2
+            ]
+          ]
+        }
+      ],
+      "split_failures": [
+        {
+          "after_line": 1,
+          "lines": [
+            2
+          ],
+          "code": "conflict",
+          "message": "exclusive layer yard: alpha intersects beta"
+        }
+      ],
+      "final_digest": "sha256:4ad3a7ff14cda1c56a9b4fc11bf6a6248820108800b01c54845038b3a051d3de",
+      "notes": [
+        "共 2 种排序合法，但全部收敛到同一最终形状，因此重放无歧义",
+        "本组每一种合法排序都存在被单独拒绝的提交边界，因此无论顺序如何都只能整组一次发送"
+      ]
+    },
+    {
+      "group": "refill",
+      "rows": [
+        {
+          "line": 12,
+          "group": "refill",
+          "layer": "marks",
+          "id": "pin",
+          "mode": "remove"
+        },
+        {
+          "line": 11,
+          "group": "refill",
+          "layer": "marks",
+          "id": "pin",
+          "mode": "insert",
+          "value": {
+            "id": "pin",
+            "class": "fixture",
+            "shape": {
+              "mark": {
+                "x": 20,
+                "y": 5
+              }
+            }
+          }
+        }
+      ],
+      "layers": [
+        "marks"
+      ],
+      "classification": "unique",
+      "atomic_required": false,
+      "replay_needs_whole_group": false,
+      "replay": {
+        "request": {
+          "edits": [
+            {
+              "layer": "marks",
+              "id": "pin",
+              "mode": "remove"
+            },
+            {
+              "layer": "marks",
+              "id": "pin",
+              "mode": "insert",
+              "value": {
+                "id": "pin",
+                "class": "fixture",
+                "shape": {
+                  "mark": {
+                    "x": 20,
+                    "y": 5
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "source_lines": [
+          12,
+          11
+        ]
+      },
+      "shapes": [
+        {
+          "digest": "sha256:905701c5f543cbaff3c092ca6a74762b3f41c5ef91c584cfb17fb5cf782437fd",
+          "count": 1,
+          "examples": [
+            [
+              12,
+              11
+            ]
+          ]
+        }
+      ],
+      "final_digest": "sha256:905701c5f543cbaff3c092ca6a74762b3f41c5ef91c584cfb17fb5cf782437fd",
+      "notes": [
+        "本批次顺序的每个切分点都单独合法，该组原本也可以拆成多次提交"
+      ]
+    }
+  ],
+  "ambiguous_groups": [],
+  "unrecoverable_groups": [],
+  "whole_group_only_groups": [
+    "rotate"
+  ],
+  "blocked_groups": []
+}

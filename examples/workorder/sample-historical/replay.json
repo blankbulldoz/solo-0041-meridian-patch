@@ -1,0 +1,705 @@
+{
+  "order": "sample-historical",
+  "description": "重建的历史账本。可信的只有：组归属、提交顺序、源行号。组内行顺序被打散，每行都保留原始源行号；每组以一次 POST /edits 交付。",
+  "baseline_digest": "sha256:8237adae2aa1dfaa0213e50879ecd340b00f26d0234d5bd8487d1a5d8bf10a38",
+  "revision_contract": "Run against a target whose current revision is captured first; pass that value as if_revision on the first edit batch so a concurrent writer aborts the replay instead of silently interleaving. Do not reuse the revision of the source database.",
+  "steps": [
+    {
+      "sequence": 1,
+      "action": "create-layer",
+      "method": "POST",
+      "path": "/meridian/v1/strata",
+      "body": {
+        "name": "swap-yard",
+        "kind": "extent",
+        "bounds": {
+          "min_x": 0,
+          "min_y": 0,
+          "max_x": 40,
+          "max_y": 20
+        },
+        "exclusive": true
+      },
+      "note": "baseline prelude; skip if the layer already exists with this definition"
+    },
+    {
+      "sequence": 2,
+      "action": "create-layer",
+      "method": "POST",
+      "path": "/meridian/v1/strata",
+      "body": {
+        "name": "chain-yard",
+        "kind": "extent",
+        "bounds": {
+          "min_x": 0,
+          "min_y": 0,
+          "max_x": 40,
+          "max_y": 20
+        },
+        "exclusive": true
+      },
+      "note": "baseline prelude; skip if the layer already exists with this definition"
+    },
+    {
+      "sequence": 3,
+      "action": "create-layer",
+      "method": "POST",
+      "path": "/meridian/v1/strata",
+      "body": {
+        "name": "ledger",
+        "kind": "extent",
+        "bounds": {
+          "min_x": 0,
+          "min_y": 0,
+          "max_x": 40,
+          "max_y": 20
+        },
+        "exclusive": false
+      },
+      "note": "baseline prelude; skip if the layer already exists with this definition"
+    },
+    {
+      "sequence": 4,
+      "action": "create-layer",
+      "method": "POST",
+      "path": "/meridian/v1/strata",
+      "body": {
+        "name": "shape-yard",
+        "kind": "extent",
+        "bounds": {
+          "min_x": 0,
+          "min_y": 0,
+          "max_x": 40,
+          "max_y": 20
+        },
+        "exclusive": true
+      },
+      "note": "baseline prelude; skip if the layer already exists with this definition"
+    },
+    {
+      "sequence": 5,
+      "action": "create-layer",
+      "method": "POST",
+      "path": "/meridian/v1/strata",
+      "body": {
+        "name": "clean-yard",
+        "kind": "extent",
+        "bounds": {
+          "min_x": 0,
+          "min_y": 0,
+          "max_x": 40,
+          "max_y": 20
+        },
+        "exclusive": true
+      },
+      "note": "baseline prelude; skip if the layer already exists with this definition"
+    },
+    {
+      "sequence": 6,
+      "action": "create-layer",
+      "method": "POST",
+      "path": "/meridian/v1/strata",
+      "body": {
+        "name": "pin-field",
+        "kind": "mark",
+        "bounds": {
+          "min_x": 0,
+          "min_y": 0,
+          "max_x": 40,
+          "max_y": 20
+        },
+        "exclusive": true
+      },
+      "note": "baseline prelude; skip if the layer already exists with this definition"
+    },
+    {
+      "sequence": 7,
+      "action": "create-layer",
+      "method": "POST",
+      "path": "/meridian/v1/strata",
+      "body": {
+        "name": "vote-yard",
+        "kind": "extent",
+        "bounds": {
+          "min_x": 0,
+          "min_y": 0,
+          "max_x": 40,
+          "max_y": 20
+        },
+        "exclusive": true
+      },
+      "note": "baseline prelude; skip if the layer already exists with this definition"
+    },
+    {
+      "sequence": 8,
+      "action": "seed-baseline",
+      "method": "POST",
+      "path": "/meridian/v1/edits",
+      "body": {
+        "edits": [
+          {
+            "layer": "swap-yard",
+            "id": "alpha",
+            "mode": "insert",
+            "value": {
+              "id": "alpha",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 0,
+                  "min_y": 0,
+                  "max_x": 4,
+                  "max_y": 4
+                }
+              }
+            }
+          },
+          {
+            "layer": "swap-yard",
+            "id": "beta",
+            "mode": "insert",
+            "value": {
+              "id": "beta",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 8,
+                  "min_y": 0,
+                  "max_x": 12,
+                  "max_y": 4
+                }
+              }
+            }
+          },
+          {
+            "layer": "swap-yard",
+            "id": "gamma",
+            "mode": "insert",
+            "value": {
+              "id": "gamma",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 16,
+                  "min_y": 0,
+                  "max_x": 20,
+                  "max_y": 4
+                }
+              }
+            }
+          },
+          {
+            "layer": "chain-yard",
+            "id": "link",
+            "mode": "insert",
+            "value": {
+              "id": "link",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 0,
+                  "min_y": 6,
+                  "max_x": 4,
+                  "max_y": 10
+                }
+              }
+            }
+          },
+          {
+            "layer": "ledger",
+            "id": "row-a",
+            "mode": "insert",
+            "value": {
+              "id": "row-a",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 0,
+                  "min_y": 12,
+                  "max_x": 2,
+                  "max_y": 14
+                }
+              }
+            }
+          },
+          {
+            "layer": "ledger",
+            "id": "row-b",
+            "mode": "insert",
+            "value": {
+              "id": "row-b",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 4,
+                  "min_y": 12,
+                  "max_x": 6,
+                  "max_y": 14
+                }
+              }
+            }
+          },
+          {
+            "layer": "pin-field",
+            "id": "pin",
+            "mode": "insert",
+            "value": {
+              "id": "pin",
+              "class": "fixture",
+              "shape": {
+                "mark": {
+                  "x": 30,
+                  "y": 15
+                }
+              }
+            }
+          },
+          {
+            "layer": "shape-yard",
+            "id": "tile",
+            "mode": "insert",
+            "value": {
+              "id": "tile",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 22,
+                  "min_y": 0,
+                  "max_x": 24,
+                  "max_y": 4
+                }
+              }
+            }
+          },
+          {
+            "layer": "clean-yard",
+            "id": "plank",
+            "mode": "insert",
+            "value": {
+              "id": "plank",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 30,
+                  "min_y": 6,
+                  "max_x": 34,
+                  "max_y": 10
+                }
+              }
+            }
+          },
+          {
+            "layer": "vote-yard",
+            "id": "stone",
+            "mode": "insert",
+            "value": {
+              "id": "stone",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 0,
+                  "min_y": 0,
+                  "max_x": 6,
+                  "max_y": 6
+                }
+              }
+            }
+          },
+          {
+            "layer": "vote-yard",
+            "id": "slate",
+            "mode": "insert",
+            "value": {
+              "id": "slate",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 30,
+                  "min_y": 0,
+                  "max_x": 34,
+                  "max_y": 6
+                }
+              }
+            }
+          }
+        ]
+      },
+      "note": "baseline content; resulting shape digest should be sha256:8237adae2aa1dfaa0213e50879ecd340b00f26d0234d5bd8487d1a5d8bf10a38"
+    },
+    {
+      "sequence": 9,
+      "action": "replay-group",
+      "method": "POST",
+      "path": "/meridian/v1/edits",
+      "body": {
+        "edits": [
+          {
+            "layer": "swap-yard",
+            "id": "alpha",
+            "mode": "replace",
+            "value": {
+              "id": "alpha",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 8,
+                  "min_y": 0,
+                  "max_x": 12,
+                  "max_y": 4
+                }
+              }
+            }
+          },
+          {
+            "layer": "swap-yard",
+            "id": "beta",
+            "mode": "replace",
+            "value": {
+              "id": "beta",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 16,
+                  "min_y": 0,
+                  "max_x": 20,
+                  "max_y": 4
+                }
+              }
+            }
+          },
+          {
+            "layer": "swap-yard",
+            "id": "gamma",
+            "mode": "replace",
+            "value": {
+              "id": "gamma",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 0,
+                  "min_y": 0,
+                  "max_x": 4,
+                  "max_y": 4
+                }
+              }
+            }
+          }
+        ]
+      },
+      "group": "g1-swap",
+      "source_lines": [
+        3,
+        4,
+        5
+      ],
+      "note": "send as one batch; source_lines[i] is the provenance of edits[i]; no legal ordering of this group can be split into several commits"
+    },
+    {
+      "sequence": 10,
+      "action": "replay-group",
+      "method": "POST",
+      "path": "/meridian/v1/edits",
+      "body": {
+        "edits": [
+          {
+            "layer": "chain-yard",
+            "id": "link",
+            "mode": "remove"
+          },
+          {
+            "layer": "chain-yard",
+            "id": "link",
+            "mode": "insert",
+            "value": {
+              "id": "link",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 8,
+                  "min_y": 6,
+                  "max_x": 12,
+                  "max_y": 10
+                }
+              }
+            }
+          }
+        ]
+      },
+      "group": "g2-recycle",
+      "source_lines": [
+        12,
+        11
+      ],
+      "note": "send as one batch; source_lines[i] is the provenance of edits[i]"
+    },
+    {
+      "sequence": 11,
+      "action": "replay-group",
+      "method": "POST",
+      "path": "/meridian/v1/edits",
+      "body": {
+        "edits": [
+          {
+            "layer": "ledger",
+            "id": "row-a",
+            "mode": "remove"
+          },
+          {
+            "layer": "pin-field",
+            "id": "pin",
+            "mode": "replace",
+            "value": {
+              "id": "pin",
+              "class": "fixture",
+              "shape": {
+                "mark": {
+                  "x": 31,
+                  "y": 15
+                }
+              }
+            }
+          },
+          {
+            "layer": "ledger",
+            "id": "row-b",
+            "mode": "replace",
+            "value": {
+              "id": "row-b",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 4,
+                  "min_y": 12,
+                  "max_x": 6,
+                  "max_y": 16
+                }
+              }
+            }
+          }
+        ]
+      },
+      "group": "g3-multilayer",
+      "source_lines": [
+        21,
+        22,
+        23
+      ],
+      "note": "send as one batch; source_lines[i] is the provenance of edits[i]"
+    },
+    {
+      "sequence": 12,
+      "action": "replay-group",
+      "method": "POST",
+      "path": "/meridian/v1/edits",
+      "body": {
+        "edits": [
+          {
+            "layer": "clean-yard",
+            "id": "plank",
+            "mode": "replace",
+            "value": {
+              "id": "plank",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 30,
+                  "min_y": 6,
+                  "max_x": 34,
+                  "max_y": 10
+                }
+              }
+            }
+          }
+        ]
+      },
+      "group": "g5-noop",
+      "source_lines": [
+        61
+      ],
+      "note": "send as one batch; source_lines[i] is the provenance of edits[i]"
+    },
+    {
+      "sequence": 13,
+      "action": "replay-group",
+      "method": "POST",
+      "path": "/meridian/v1/edits",
+      "body": {
+        "edits": [
+          {
+            "layer": "ledger",
+            "id": "row-c",
+            "mode": "insert",
+            "value": {
+              "id": "row-c",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 8,
+                  "min_y": 12,
+                  "max_x": 10,
+                  "max_y": 16
+                }
+              }
+            }
+          },
+          {
+            "layer": "ledger",
+            "id": "row-b",
+            "mode": "replace",
+            "value": {
+              "id": "row-b",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 10,
+                  "min_y": 12,
+                  "max_x": 12,
+                  "max_y": 16
+                }
+              }
+            }
+          }
+        ]
+      },
+      "group": "g6-splittable",
+      "source_lines": [
+        71,
+        72
+      ],
+      "note": "send as one batch; source_lines[i] is the provenance of edits[i]"
+    },
+    {
+      "sequence": 14,
+      "action": "replay-group",
+      "method": "POST",
+      "path": "/meridian/v1/edits",
+      "body": {
+        "edits": [
+          {
+            "layer": "clean-yard",
+            "id": "spare",
+            "mode": "insert",
+            "value": {
+              "id": "spare",
+              "class": "fixture",
+              "shape": {
+                "extent": {
+                  "min_x": 30,
+                  "min_y": 6,
+                  "max_x": 34,
+                  "max_y": 10
+                }
+              }
+            }
+          },
+          {
+            "layer": "clean-yard",
+            "id": "plank",
+            "mode": "remove"
+          }
+        ]
+      },
+      "group": "g6b-order-locked",
+      "source_lines": [
+        75,
+        76
+      ],
+      "note": "send as one batch; source_lines[i] is the provenance of edits[i]; this ordering must be sent as one batch even though another ordering could be split"
+    }
+  ],
+  "skipped_groups": [
+    {
+      "group": "g4-shape-choice",
+      "classification": "ambiguous",
+      "reason": "多解，不可无歧义恢复",
+      "source_lines": [
+        42,
+        41
+      ]
+    },
+    {
+      "group": "g4b-after-choice",
+      "classification": "blocked",
+      "reason": "受阻，无法判定",
+      "source_lines": [
+        51
+      ]
+    },
+    {
+      "group": "g6c-last-writer",
+      "classification": "ambiguous",
+      "reason": "多解，不可无歧义恢复",
+      "source_lines": [
+        65,
+        67,
+        66
+      ]
+    },
+    {
+      "group": "g7-lost",
+      "classification": "unrecoverable",
+      "reason": "无法恢复",
+      "source_lines": [
+        81
+      ]
+    }
+  ],
+  "unresolved_lines": [
+    {
+      "line": 42,
+      "group": "g4-shape-choice",
+      "layer": "shape-yard",
+      "id": "tile",
+      "mode": "replace",
+      "classification": "ambiguous"
+    },
+    {
+      "line": 41,
+      "group": "g4-shape-choice",
+      "layer": "shape-yard",
+      "id": "tile",
+      "mode": "replace",
+      "classification": "ambiguous"
+    },
+    {
+      "line": 51,
+      "group": "g4b-after-choice",
+      "layer": "shape-yard",
+      "id": "chamfer",
+      "mode": "insert",
+      "classification": "blocked"
+    },
+    {
+      "line": 65,
+      "group": "g6c-last-writer",
+      "layer": "vote-yard",
+      "id": "stone",
+      "mode": "replace",
+      "classification": "ambiguous"
+    },
+    {
+      "line": 67,
+      "group": "g6c-last-writer",
+      "layer": "vote-yard",
+      "id": "slate",
+      "mode": "replace",
+      "classification": "ambiguous"
+    },
+    {
+      "line": 66,
+      "group": "g6c-last-writer",
+      "layer": "vote-yard",
+      "id": "stone",
+      "mode": "replace",
+      "classification": "ambiguous"
+    },
+    {
+      "line": 81,
+      "group": "g7-lost",
+      "layer": "pin-field",
+      "id": "pin",
+      "mode": "insert",
+      "classification": "unrecoverable"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "order": "fully-recoverable",
+  "data_dir": "/tmp/meridian-workorder-2594072493/space",
+  "baseline_digest": "sha256:ffa03815fd6e7f62d9550b51e090292b0a5adef40fd8e4952cd67afca8cee8c8",
+  "baseline_live_digest": "sha256:ffa03815fd6e7f62d9550b51e090292b0a5adef40fd8e4952cd67afca8cee8c8",
+  "groups": [
+    {
+      "group": "rotate",
+      "classification": "unique",
+      "planned_digest": "sha256:4ad3a7ff14cda1c56a9b4fc11bf6a6248820108800b01c54845038b3a051d3de",
+      "observed_digest": "sha256:4ad3a7ff14cda1c56a9b4fc11bf6a6248820108800b01c54845038b3a051d3de",
+      "matches": true,
+      "replay_lines": [
+        1,
+        2
+      ],
+      "server_revision": 4,
+      "split_confirmations": [
+        {
+          "after_line": 1,
+          "code": "conflict",
+          "message": "exclusive layer yard: alpha intersects beta"
+        }
+      ]
+    },
+    {
+      "group": "refill",
+      "classification": "unique",
+      "planned_digest": "sha256:905701c5f543cbaff3c092ca6a74762b3f41c5ef91c584cfb17fb5cf782437fd",
+      "observed_digest": "sha256:905701c5f543cbaff3c092ca6a74762b3f41c5ef91c584cfb17fb5cf782437fd",
+      "matches": true,
+      "replay_lines": [
+        12,
+        11
+      ],
+      "server_revision": 8
+    }
+  ],
+  "final_digest": "sha256:3d524d8a641cf57184b22c09a0f4b053f085f732ef0cfef13c9e2ff0483d9fe5",
+  "final_planned_digest": "sha256:3d524d8a641cf57184b22c09a0f4b053f085f732ef0cfef13c9e2ff0483d9fe5",
+  "fully_replayed": true,
+  "all_matches": true
+}

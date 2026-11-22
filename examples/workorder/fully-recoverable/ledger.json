@@ -1,0 +1,139 @@
+{
+  "name": "fully-recoverable",
+  "description": "所有组都可判定的小账本，用于检查终态摘要路径。",
+  "commit_order": [
+    "rotate",
+    "refill"
+  ],
+  "expect": {
+    "rotate": "unique",
+    "refill": "unique"
+  },
+  "layers": [
+    {
+      "name": "yard",
+      "kind": "extent",
+      "bounds": {
+        "min_x": 0,
+        "min_y": 0,
+        "max_x": 30,
+        "max_y": 10
+      },
+      "exclusive": true
+    },
+    {
+      "name": "marks",
+      "kind": "mark",
+      "bounds": {
+        "min_x": 0,
+        "min_y": 0,
+        "max_x": 30,
+        "max_y": 10
+      },
+      "exclusive": true
+    }
+  ],
+  "features": [
+    {
+      "layer": "yard",
+      "id": "alpha",
+      "class": "fixture",
+      "shape": {
+        "extent": {
+          "min_x": 0,
+          "min_y": 0,
+          "max_x": 4,
+          "max_y": 4
+        }
+      }
+    },
+    {
+      "layer": "yard",
+      "id": "beta",
+      "class": "fixture",
+      "shape": {
+        "extent": {
+          "min_x": 6,
+          "min_y": 0,
+          "max_x": 10,
+          "max_y": 4
+        }
+      }
+    },
+    {
+      "layer": "marks",
+      "id": "pin",
+      "class": "fixture",
+      "shape": {
+        "mark": {
+          "x": 3,
+          "y": 7
+        }
+      }
+    }
+  ],
+  "rows": [
+    {
+      "line": 2,
+      "group": "rotate",
+      "layer": "yard",
+      "id": "beta",
+      "mode": "replace",
+      "value": {
+        "id": "beta",
+        "class": "fixture",
+        "shape": {
+          "extent": {
+            "min_x": 0,
+            "min_y": 0,
+            "max_x": 4,
+            "max_y": 4
+          }
+        }
+      }
+    },
+    {
+      "line": 1,
+      "group": "rotate",
+      "layer": "yard",
+      "id": "alpha",
+      "mode": "replace",
+      "value": {
+        "id": "alpha",
+        "class": "fixture",
+        "shape": {
+          "extent": {
+            "min_x": 6,
+            "min_y": 0,
+            "max_x": 10,
+            "max_y": 4
+          }
+        }
+      }
+    },
+    {
+      "line": 12,
+      "group": "refill",
+      "layer": "marks",
+      "id": "pin",
+      "mode": "remove"
+    },
+    {
+      "line": 11,
+      "group": "refill",
+      "layer": "marks",
+      "id": "pin",
+      "mode": "insert",
+      "value": {
+        "id": "pin",
+        "class": "fixture",
+        "shape": {
+          "mark": {
+            "x": 20,
+            "y": 5
+          }
+        }
+      }
+    }
+  ]
+}
