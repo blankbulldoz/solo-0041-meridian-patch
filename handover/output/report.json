@@ -1,0 +1,652 @@
+{
+  "source": {
+    "image_revision": 3,
+    "layer": "legacy-parcels",
+    "layer_bounds": {
+      "min_x": -64,
+      "min_y": -64,
+      "max_x": 96,
+      "max_y": 96
+    },
+    "layer_exclusive": false,
+    "feature_count": 15,
+    "image_sha256": "8a65965faeffd7017f87f893065ce84c2c28e9b0c004fb8c83f6714e0395567f"
+  },
+  "target": {
+    "layer": "legacy-parcels",
+    "bounds": {
+      "min_x": -8,
+      "min_y": -8,
+      "max_x": 40,
+      "max_y": 24
+    },
+    "exclusive": true
+  },
+  "selection_rule": "within each mutually exclusive group, consider members by descending candidate area with ties broken by ascending id; keep a member when it has no positive-area overlap with any already-kept member, otherwise discard it",
+  "buckets": {
+    "fully-legal": [
+      {
+        "id": "alpha",
+        "class": "survey",
+        "original_shape": {
+          "extent": {
+            "min_x": 0,
+            "min_y": 0,
+            "max_x": 8,
+            "max_y": 8
+          }
+        },
+        "candidate_shape": {
+          "extent": {
+            "min_x": 0,
+            "min_y": 0,
+            "max_x": 8,
+            "max_y": 8
+          }
+        },
+        "clipped_by_boundary": false,
+        "conflict_companions": []
+      },
+      {
+        "id": "bravo",
+        "class": "fixture",
+        "original_shape": {
+          "extent": {
+            "min_x": 12,
+            "min_y": 0,
+            "max_x": 20,
+            "max_y": 6
+          }
+        },
+        "candidate_shape": {
+          "extent": {
+            "min_x": 12,
+            "min_y": 0,
+            "max_x": 20,
+            "max_y": 6
+          }
+        },
+        "clipped_by_boundary": false,
+        "conflict_companions": []
+      }
+    ],
+    "clippable": [
+      {
+        "id": "charlie",
+        "class": "fixture",
+        "original_shape": {
+          "extent": {
+            "min_x": -12,
+            "min_y": 0,
+            "max_x": -4,
+            "max_y": 6
+          }
+        },
+        "candidate_shape": {
+          "extent": {
+            "min_x": -8,
+            "min_y": 0,
+            "max_x": -4,
+            "max_y": 6
+          }
+        },
+        "clipped_by_boundary": true,
+        "conflict_companions": []
+      },
+      {
+        "id": "delta",
+        "class": "survey",
+        "original_shape": {
+          "extent": {
+            "min_x": 30,
+            "min_y": 18,
+            "max_x": 48,
+            "max_y": 28
+          }
+        },
+        "candidate_shape": {
+          "extent": {
+            "min_x": 30,
+            "min_y": 18,
+            "max_x": 40,
+            "max_y": 24
+          }
+        },
+        "clipped_by_boundary": true,
+        "conflict_companions": []
+      },
+      {
+        "id": "mike",
+        "class": "fixture",
+        "original_shape": {
+          "extent": {
+            "min_x": 34,
+            "min_y": 4,
+            "max_x": 48,
+            "max_y": 10
+          }
+        },
+        "candidate_shape": {
+          "extent": {
+            "min_x": 34,
+            "min_y": 4,
+            "max_x": 40,
+            "max_y": 10
+          }
+        },
+        "clipped_by_boundary": true,
+        "conflict_companions": []
+      }
+    ],
+    "conflicting": [
+      {
+        "id": "echo",
+        "class": "survey",
+        "original_shape": {
+          "extent": {
+            "min_x": 44,
+            "min_y": 4,
+            "max_x": 56,
+            "max_y": 10
+          }
+        },
+        "candidate_shape": null,
+        "clipped_by_boundary": false,
+        "conflict_companions": [],
+        "substatus": "unplaceable",
+        "reason": "no positive-area intersection with the target bounds; clipping leaves nothing to hand over"
+      },
+      {
+        "id": "foxtrot",
+        "class": "fixture",
+        "original_shape": {
+          "extent": {
+            "min_x": 0,
+            "min_y": 30,
+            "max_x": 10,
+            "max_y": 40
+          }
+        },
+        "candidate_shape": null,
+        "clipped_by_boundary": false,
+        "conflict_companions": [],
+        "substatus": "unplaceable",
+        "reason": "no positive-area intersection with the target bounds; clipping leaves nothing to hand over"
+      },
+      {
+        "id": "golf",
+        "class": "survey",
+        "original_shape": {
+          "extent": {
+            "min_x": -12,
+            "min_y": 2,
+            "max_x": -8,
+            "max_y": 9
+          }
+        },
+        "candidate_shape": null,
+        "clipped_by_boundary": false,
+        "conflict_companions": [],
+        "substatus": "unplaceable",
+        "reason": "no positive-area intersection with the target bounds; clipping leaves nothing to hand over"
+      },
+      {
+        "id": "hotel",
+        "class": "survey",
+        "original_shape": {
+          "extent": {
+            "min_x": 24,
+            "min_y": 8,
+            "max_x": 32,
+            "max_y": 16
+          }
+        },
+        "candidate_shape": {
+          "extent": {
+            "min_x": 24,
+            "min_y": 8,
+            "max_x": 32,
+            "max_y": 16
+          }
+        },
+        "clipped_by_boundary": false,
+        "conflict_companions": [
+          "india"
+        ],
+        "substatus": "conflict-kept",
+        "selection": {
+          "group": [
+            "hotel",
+            "india"
+          ],
+          "outcome": "kept",
+          "basis": "largest candidate area 64 in group"
+        }
+      },
+      {
+        "id": "india",
+        "class": "fixture",
+        "original_shape": {
+          "extent": {
+            "min_x": 26,
+            "min_y": 2,
+            "max_x": 33,
+            "max_y": 10
+          }
+        },
+        "candidate_shape": {
+          "extent": {
+            "min_x": 26,
+            "min_y": 2,
+            "max_x": 33,
+            "max_y": 10
+          }
+        },
+        "clipped_by_boundary": false,
+        "conflict_companions": [
+          "hotel"
+        ],
+        "substatus": "conflict-discarded",
+        "selection": {
+          "group": [
+            "hotel",
+            "india"
+          ],
+          "outcome": "discarded",
+          "basis": "overlaps kept 'hotel' (overlap area 12); smaller area 56 < 64"
+        },
+        "reason": "discarded during mutual-exclusion resolution; see selection.basis"
+      },
+      {
+        "id": "juliett",
+        "class": "fixture",
+        "original_shape": {
+          "extent": {
+            "min_x": 22,
+            "min_y": -6,
+            "max_x": 28,
+            "max_y": 0
+          }
+        },
+        "candidate_shape": {
+          "extent": {
+            "min_x": 22,
+            "min_y": -6,
+            "max_x": 28,
+            "max_y": 0
+          }
+        },
+        "clipped_by_boundary": false,
+        "conflict_companions": [
+          "kilo"
+        ],
+        "substatus": "conflict-kept",
+        "selection": {
+          "group": [
+            "juliett",
+            "kilo"
+          ],
+          "outcome": "kept",
+          "basis": "largest candidate area 36 in group; tied with ['kilo'], tie broken by ascending id"
+        }
+      },
+      {
+        "id": "kilo",
+        "class": "survey",
+        "original_shape": {
+          "extent": {
+            "min_x": 24,
+            "min_y": -4,
+            "max_x": 30,
+            "max_y": 2
+          }
+        },
+        "candidate_shape": {
+          "extent": {
+            "min_x": 24,
+            "min_y": -4,
+            "max_x": 30,
+            "max_y": 2
+          }
+        },
+        "clipped_by_boundary": false,
+        "conflict_companions": [
+          "juliett"
+        ],
+        "substatus": "conflict-discarded",
+        "selection": {
+          "group": [
+            "juliett",
+            "kilo"
+          ],
+          "outcome": "discarded",
+          "basis": "overlaps kept 'juliett' (overlap area 16); equal area, lost the ascending-id tie-break"
+        },
+        "reason": "discarded during mutual-exclusion resolution; see selection.basis"
+      },
+      {
+        "id": "november",
+        "class": "survey",
+        "original_shape": {
+          "extent": {
+            "min_x": 4,
+            "min_y": 12,
+            "max_x": 12,
+            "max_y": 20
+          }
+        },
+        "candidate_shape": {
+          "extent": {
+            "min_x": 4,
+            "min_y": 12,
+            "max_x": 12,
+            "max_y": 20
+          }
+        },
+        "clipped_by_boundary": false,
+        "conflict_companions": [
+          "oscar"
+        ],
+        "substatus": "conflict-kept",
+        "selection": {
+          "group": [
+            "november",
+            "oscar",
+            "papa"
+          ],
+          "outcome": "kept",
+          "basis": "largest candidate area 64 in group; tied with ['oscar', 'papa'], tie broken by ascending id"
+        }
+      },
+      {
+        "id": "oscar",
+        "class": "fixture",
+        "original_shape": {
+          "extent": {
+            "min_x": 8,
+            "min_y": 14,
+            "max_x": 16,
+            "max_y": 22
+          }
+        },
+        "candidate_shape": {
+          "extent": {
+            "min_x": 8,
+            "min_y": 14,
+            "max_x": 16,
+            "max_y": 22
+          }
+        },
+        "clipped_by_boundary": false,
+        "conflict_companions": [
+          "november",
+          "papa"
+        ],
+        "substatus": "conflict-discarded",
+        "selection": {
+          "group": [
+            "november",
+            "oscar",
+            "papa"
+          ],
+          "outcome": "discarded",
+          "basis": "overlaps kept 'november' (overlap area 24); equal area, lost the ascending-id tie-break"
+        },
+        "reason": "discarded during mutual-exclusion resolution; see selection.basis"
+      },
+      {
+        "id": "papa",
+        "class": "survey",
+        "original_shape": {
+          "extent": {
+            "min_x": 14,
+            "min_y": 12,
+            "max_x": 22,
+            "max_y": 20
+          }
+        },
+        "candidate_shape": {
+          "extent": {
+            "min_x": 14,
+            "min_y": 12,
+            "max_x": 22,
+            "max_y": 20
+          }
+        },
+        "clipped_by_boundary": false,
+        "conflict_companions": [
+          "oscar"
+        ],
+        "substatus": "conflict-kept",
+        "selection": {
+          "group": [
+            "november",
+            "oscar",
+            "papa"
+          ],
+          "outcome": "kept",
+          "basis": "candidate area 64; no positive-area overlap with already-kept ['november']"
+        }
+      }
+    ]
+  },
+  "conflict_resolution": [
+    {
+      "members": [
+        "hotel",
+        "india"
+      ],
+      "kept": [
+        "hotel"
+      ],
+      "discarded": [
+        "india"
+      ],
+      "decisions": [
+        {
+          "id": "hotel",
+          "outcome": "kept",
+          "basis": "largest candidate area 64 in group"
+        },
+        {
+          "id": "india",
+          "outcome": "discarded",
+          "basis": "overlaps kept 'hotel' (overlap area 12); smaller area 56 < 64"
+        }
+      ]
+    },
+    {
+      "members": [
+        "juliett",
+        "kilo"
+      ],
+      "kept": [
+        "juliett"
+      ],
+      "discarded": [
+        "kilo"
+      ],
+      "decisions": [
+        {
+          "id": "juliett",
+          "outcome": "kept",
+          "basis": "largest candidate area 36 in group; tied with ['kilo'], tie broken by ascending id"
+        },
+        {
+          "id": "kilo",
+          "outcome": "discarded",
+          "basis": "overlaps kept 'juliett' (overlap area 16); equal area, lost the ascending-id tie-break"
+        }
+      ]
+    },
+    {
+      "members": [
+        "november",
+        "oscar",
+        "papa"
+      ],
+      "kept": [
+        "november",
+        "papa"
+      ],
+      "discarded": [
+        "oscar"
+      ],
+      "decisions": [
+        {
+          "id": "november",
+          "outcome": "kept",
+          "basis": "largest candidate area 64 in group; tied with ['oscar', 'papa'], tie broken by ascending id"
+        },
+        {
+          "id": "oscar",
+          "outcome": "discarded",
+          "basis": "overlaps kept 'november' (overlap area 24); equal area, lost the ascending-id tie-break"
+        },
+        {
+          "id": "papa",
+          "outcome": "kept",
+          "basis": "candidate area 64; no positive-area overlap with already-kept ['november']"
+        }
+      ]
+    }
+  ],
+  "handover": {
+    "kept_ids": [
+      "alpha",
+      "bravo",
+      "charlie",
+      "delta",
+      "hotel",
+      "juliett",
+      "mike",
+      "november",
+      "papa"
+    ],
+    "dropped_ids": [
+      "echo",
+      "foxtrot",
+      "golf",
+      "india",
+      "kilo",
+      "oscar"
+    ],
+    "kept_count": 9,
+    "dropped_count": 6,
+    "features": [
+      {
+        "id": "alpha",
+        "class": "survey",
+        "shape": {
+          "extent": {
+            "min_x": 0,
+            "min_y": 0,
+            "max_x": 8,
+            "max_y": 8
+          }
+        }
+      },
+      {
+        "id": "bravo",
+        "class": "fixture",
+        "shape": {
+          "extent": {
+            "min_x": 12,
+            "min_y": 0,
+            "max_x": 20,
+            "max_y": 6
+          }
+        }
+      },
+      {
+        "id": "charlie",
+        "class": "fixture",
+        "shape": {
+          "extent": {
+            "min_x": -8,
+            "min_y": 0,
+            "max_x": -4,
+            "max_y": 6
+          }
+        }
+      },
+      {
+        "id": "delta",
+        "class": "survey",
+        "shape": {
+          "extent": {
+            "min_x": 30,
+            "min_y": 18,
+            "max_x": 40,
+            "max_y": 24
+          }
+        }
+      },
+      {
+        "id": "hotel",
+        "class": "survey",
+        "shape": {
+          "extent": {
+            "min_x": 24,
+            "min_y": 8,
+            "max_x": 32,
+            "max_y": 16
+          }
+        }
+      },
+      {
+        "id": "juliett",
+        "class": "fixture",
+        "shape": {
+          "extent": {
+            "min_x": 22,
+            "min_y": -6,
+            "max_x": 28,
+            "max_y": 0
+          }
+        }
+      },
+      {
+        "id": "mike",
+        "class": "fixture",
+        "shape": {
+          "extent": {
+            "min_x": 34,
+            "min_y": 4,
+            "max_x": 40,
+            "max_y": 10
+          }
+        }
+      },
+      {
+        "id": "november",
+        "class": "survey",
+        "shape": {
+          "extent": {
+            "min_x": 4,
+            "min_y": 12,
+            "max_x": 12,
+            "max_y": 20
+          }
+        }
+      },
+      {
+        "id": "papa",
+        "class": "survey",
+        "shape": {
+          "extent": {
+            "min_x": 14,
+            "min_y": 12,
+            "max_x": 22,
+            "max_y": 20
+          }
+        }
+      }
+    ],
+    "image_sha256": "57d5fc3aa77a104706b21f0324862b6445bdc24ce38f5406d291274539248866",
+    "image_bytes": 1437
+  },
+  "pass_through_layers": [
+    "control-marks"
+  ]
+}

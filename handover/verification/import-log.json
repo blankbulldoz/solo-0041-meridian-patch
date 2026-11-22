@@ -1,0 +1,178 @@
+{
+  "target": {
+    "layer": "legacy-parcels",
+    "bounds": {
+      "min_x": -8,
+      "min_y": -8,
+      "max_x": 40,
+      "max_y": 24
+    },
+    "exclusive": true
+  },
+  "steps": [
+    {
+      "step": "target repository starts empty",
+      "ok": true,
+      "detail": {
+        "revision": 0,
+        "writable": true
+      }
+    },
+    {
+      "step": "control A (unclipped shapes) rejected",
+      "ok": true,
+      "detail": {
+        "status": 400,
+        "body": {
+          "code": "invalid",
+          "message": "restore image: feature \"charlie\" is outside legacy-parcels bounds"
+        }
+      }
+    },
+    {
+      "step": "control B (conflicts unresolved) rejected",
+      "ok": true,
+      "detail": {
+        "status": 400,
+        "body": {
+          "code": "invalid",
+          "message": "restore image: exclusive layer legacy-parcels: hotel intersects india"
+        }
+      }
+    },
+    {
+      "step": "rejected imports left the target untouched",
+      "ok": true,
+      "detail": {
+        "revision": 0,
+        "writable": true
+      }
+    },
+    {
+      "step": "handover image imported once",
+      "ok": true,
+      "detail": {
+        "revision": 1,
+        "layers": [
+          {
+            "name": "control-marks",
+            "kind": "mark",
+            "bounds": {
+              "min_x": -64,
+              "min_y": -64,
+              "max_x": 96,
+              "max_y": 96
+            },
+            "exclusive": true,
+            "revision": 1,
+            "count": 3
+          },
+          {
+            "name": "legacy-parcels",
+            "kind": "extent",
+            "bounds": {
+              "min_x": -8,
+              "min_y": -8,
+              "max_x": 40,
+              "max_y": 24
+            },
+            "exclusive": true,
+            "revision": 1,
+            "count": 9
+          }
+        ]
+      }
+    },
+    {
+      "step": "revision assigned by target",
+      "ok": true,
+      "detail": {
+        "revision": 1,
+        "writable": true
+      }
+    },
+    {
+      "step": "target layer definition",
+      "ok": true,
+      "detail": {
+        "name": "legacy-parcels",
+        "kind": "extent",
+        "bounds": {
+          "min_x": -8,
+          "min_y": -8,
+          "max_x": 40,
+          "max_y": 24
+        },
+        "exclusive": true,
+        "revision": 1,
+        "count": 9
+      }
+    },
+    {
+      "step": "all kept features read back identically (id, class, shape)",
+      "ok": true,
+      "detail": {
+        "imported": 9,
+        "expected": 9,
+        "ids": [
+          "alpha",
+          "bravo",
+          "charlie",
+          "delta",
+          "hotel",
+          "juliett",
+          "mike",
+          "november",
+          "papa"
+        ]
+      }
+    },
+    {
+      "step": "index audit matches catalog",
+      "ok": true,
+      "detail": {
+        "revision": 1,
+        "layer_revision": 1,
+        "records": 9,
+        "checked_nodes": 1
+      }
+    },
+    {
+      "step": "pass-through layer 'control-marks' unchanged",
+      "ok": true,
+      "detail": {
+        "features": 3
+      }
+    },
+    {
+      "step": "re-exported catalog matches handover catalog",
+      "ok": true,
+      "detail": {
+        "layers": [
+          "control-marks",
+          "legacy-parcels"
+        ]
+      }
+    },
+    {
+      "step": "live exclusivity probe refused",
+      "ok": true,
+      "detail": {
+        "status": 409,
+        "body": {
+          "code": "conflict",
+          "message": "exclusive layer legacy-parcels: alpha intersects probe"
+        }
+      }
+    },
+    {
+      "step": "failed probe did not move the revision",
+      "ok": true,
+      "detail": {
+        "revision": 1,
+        "writable": true
+      }
+    }
+  ],
+  "ok": true
+}
