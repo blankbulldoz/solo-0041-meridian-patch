@@ -50,3 +50,5 @@ python3 examples/walkthrough.py --workflow coverage
 `409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
 
 边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。
+
+仍把"距离为 0"当作碰撞的客户端请见迁移手册 [docs/zero-distance-migration.md](docs/zero-distance-migration.md)；`examples/zero-distance-migration.sh` 可逐条复现手册中的请求与响应。
