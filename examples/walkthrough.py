@@ -216,6 +216,33 @@ def coverage(s):
     return result
 
 
+def stack(s):
+    seed(s)
+    top = 'mica-bed'
+    bottom = 'ochre-field'
+    query = dict(bounds=box(0, 0, 8, 4), layers=[dict(layer=top), dict(layer=bottom)])
+    result = s.post('/stack', query)
+    assert [entry['layer'] for entry in result['layers']] == [top, bottom]
+    upper, lower = result['layers']
+    # Bed shim [3,5)x[0,2) is the only bed geometry inside the window.
+    assert upper['gross_area'] == 4 and upper['visible_area'] == 4
+    assert upper['shards'] == [dict(min_x=3, min_y=0, max_x=5, max_y=2, area=4, sources=['shim'])]
+    # Field union covers 28 of 32 cells; the shim hides the 2x2 overlap.
+    assert lower['gross_area'] == 28 and lower['visible_area'] == 24
+    assert sum(shard['area'] for shard in lower['shards']) == lower['visible_area']
+    for shard in lower['shards']:
+        assert shard['sources'], 'every shard must be independently verifiable'
+    # Reversing the order must swap which layer keeps the contested overlap.
+    flipped = s.post('/stack', dict(query, layers=[dict(layer=bottom), dict(layer=top)]))
+    assert flipped['layers'][0]['visible_area'] == 28 and flipped['layers'][1]['visible_area'] == 0
+    # Equal visible areas stay attributable to distinct layer reports.
+    assert result['layers'][0]['layer'] != result['layers'][1]['layer']
+    s.post('/stack', dict(query, layers=[dict(layer=top)]), 400)
+    s.post('/stack', dict(query, layers=[dict(layer=PINS), dict(layer=bottom)]), 400)
+    s.post('/stack', dict(bounds=box(0, 0, 1, 0), layers=[dict(layer=top), dict(layer=bottom)]), 400)
+    return result
+
+
 def seams(s):
     seed(s)
     result = s.query(FIELD, 'seams', dict(bounds=box(4, 1, 8, 4), limit=2))
@@ -303,7 +330,7 @@ def reopen(binary, data):
     return result
 
 
-WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
+WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage, stack,
                                      inspect, seams, relation, audit, export, restore, reopen)}
 
 

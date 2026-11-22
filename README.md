@@ -31,6 +31,7 @@ python3 examples/walkthrough.py --workflow coverage
 | `POST /strata/{layer}/coverage` | `bounds` 和可选 `class`。返回 `covered`, `repeated`, `uncovered` |
 | `POST /strata/{layer}/seams` | `bounds`, `limit`。按 ID 对返回正长度共享边 |
 | `POST /join` | `left`, `right`, `bounds`, `limit`。返回同一全库修订的相交对 |
+| `POST /stack` | `bounds` 与自上而下排列的 `layers`（每项含 `layer` 和可选 `class`）。返回每层的 `gross_area`、`visible_area`、`covered_area` 及可核验 `shards` |
 | `POST /relation` | `left` 与 `right` 分别含 `layer` 和 `id`。返回相交、双向包含和闭包距离 |
 | `GET /strata/{layer}/index` | 返回 `tree` 结构统计 |
 | `GET /strata/{layer}/index-audit` | 核对索引和目录，返回 `records` 与 `checked_nodes` |
@@ -48,5 +49,7 @@ python3 examples/walkthrough.py --workflow coverage
 ```
 
 `409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
+
+`POST /stack` 按请求数组顺序把图层当作自上而下的叠放：上层覆盖下层，层内多块矩形的重叠面积只计一次。每个图层单独返回结果，因此即使两层的净可见面积相同也不会被合并。`shards` 是该层仍可见区域的一组互不重叠矩形分片，面积之和等于 `visible_area`，每个分片的 `sources` 列出覆盖它的本层地物 ID，便于客户端独立复核。分片数超过每层 2,000 或扫描工作量超过 200,000 时整次返回 `422 capacity`。
 
 边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。

@@ -64,3 +64,11 @@ func (a *api) audit(w http.ResponseWriter, r *http.Request) {
 	result, err := a.db.Audit(r.PathValue("layer"))
 	a.respond(w, http.StatusOK, result, err)
 }
+
+func (a *api) stack(w http.ResponseWriter, r *http.Request) {
+	var request db.StackQuery
+	if a.input(w, r, &request) {
+		result, err := a.db.Stack(request)
+		a.respond(w, http.StatusOK, result, err)
+	}
+}
