@@ -1,0 +1,521 @@
+{
+  "checks": [
+    {
+      "detail": "every read and join used database 10, left layer 6, right layer 10",
+      "name": "layer_revisions_stable",
+      "ok": true
+    },
+    {
+      "detail": "3 split(s) produced 4 leaf window(s)",
+      "name": "join_required_window_split",
+      "ok": true
+    },
+    {
+      "detail": "4023 clipped pair occurrences over 4020 unique pairs; recomputed from layer listings",
+      "name": "pair_occurrences_match_geometry",
+      "ok": true
+    },
+    {
+      "detail": "3 pair(s) reported in more than one leaf; clipped occurrences are disjoint and their union equals the true intersection",
+      "name": "seam_duplicates_union_exact",
+      "ok": true
+    },
+    {
+      "detail": "two overlapping beta rectangles inside probe-same classify as beta only, area 1800 of 1800",
+      "name": "same_class_overlap_is_one_class",
+      "ok": true
+    },
+    {
+      "detail": "2006 per-left decompositions from /join equal the listing-derived sweep",
+      "name": "join_matches_independent_geometry",
+      "ok": true
+    },
+    {
+      "detail": "exclusive + multi + uncovered == clipped left area for every feature",
+      "name": "per_feature_partition_closes",
+      "ok": true
+    },
+    {
+      "detail": "92120 total left area partitioned by detail and class-set rows",
+      "name": "summary_reconciles",
+      "ok": true
+    }
+  ],
+  "database_revision": 10,
+  "dataset": {
+    "left_tiles": 1998,
+    "probes": [
+      {
+        "extent": {
+          "max_x": 50,
+          "max_y": 60,
+          "min_x": 10,
+          "min_y": 30
+        },
+        "left": "probe-alpha",
+        "left_class": "probe",
+        "rights": [
+          {
+            "class": "alpha",
+            "extent": {
+              "max_x": 30,
+              "max_y": 60,
+              "min_x": 10,
+              "min_y": 30
+            },
+            "id": "right-alpha"
+          }
+        ]
+      },
+      {
+        "extent": {
+          "max_x": 120,
+          "max_y": 60,
+          "min_x": 60,
+          "min_y": 30
+        },
+        "left": "probe-same",
+        "left_class": "probe",
+        "rights": [
+          {
+            "class": "beta",
+            "extent": {
+              "max_x": 100,
+              "max_y": 60,
+              "min_x": 60,
+              "min_y": 30
+            },
+            "id": "right-beta-one"
+          },
+          {
+            "class": "beta",
+            "extent": {
+              "max_x": 120,
+              "max_y": 60,
+              "min_x": 80,
+              "min_y": 30
+            },
+            "id": "right-beta-two"
+          }
+        ]
+      },
+      {
+        "extent": {
+          "max_x": 200,
+          "max_y": 60,
+          "min_x": 130,
+          "min_y": 30
+        },
+        "left": "probe-multi",
+        "left_class": "probe",
+        "rights": [
+          {
+            "class": "gamma",
+            "extent": {
+              "max_x": 170,
+              "max_y": 60,
+              "min_x": 130,
+              "min_y": 30
+            },
+            "id": "right-gamma-one"
+          },
+          {
+            "class": "delta",
+            "extent": {
+              "max_x": 200,
+              "max_y": 60,
+              "min_x": 150,
+              "min_y": 30
+            },
+            "id": "right-delta-one"
+          }
+        ]
+      },
+      {
+        "extent": {
+          "max_x": 250,
+          "max_y": 60,
+          "min_x": 210,
+          "min_y": 30
+        },
+        "left": "probe-none",
+        "left_class": "probe",
+        "rights": []
+      },
+      {
+        "extent": {
+          "max_x": 320,
+          "max_y": 60,
+          "min_x": 260,
+          "min_y": 30
+        },
+        "left": "probe-triple",
+        "left_class": "probe",
+        "rights": [
+          {
+            "class": "epsilon",
+            "extent": {
+              "max_x": 300,
+              "max_y": 60,
+              "min_x": 260,
+              "min_y": 30
+            },
+            "id": "right-epsilon"
+          },
+          {
+            "class": "zeta",
+            "extent": {
+              "max_x": 320,
+              "max_y": 60,
+              "min_x": 280,
+              "min_y": 30
+            },
+            "id": "right-zeta"
+          },
+          {
+            "class": "eta",
+            "extent": {
+              "max_x": 310,
+              "max_y": 60,
+              "min_x": 290,
+              "min_y": 30
+            },
+            "id": "right-eta"
+          }
+        ]
+      },
+      {
+        "extent": {
+          "max_x": 400,
+          "max_y": 60,
+          "min_x": 330,
+          "min_y": 30
+        },
+        "left": "probe-mixed",
+        "left_class": "probe",
+        "rights": [
+          {
+            "class": "gamma",
+            "extent": {
+              "max_x": 370,
+              "max_y": 60,
+              "min_x": 330,
+              "min_y": 30
+            },
+            "id": "right-gamma-two"
+          },
+          {
+            "class": "gamma",
+            "extent": {
+              "max_x": 390,
+              "max_y": 60,
+              "min_x": 350,
+              "min_y": 30
+            },
+            "id": "right-gamma-three"
+          },
+          {
+            "class": "delta",
+            "extent": {
+              "max_x": 400,
+              "max_y": 60,
+              "min_x": 380,
+              "min_y": 30
+            },
+            "id": "right-delta-two"
+          }
+        ]
+      },
+      {
+        "extent": {
+          "max_x": 450,
+          "max_y": 60,
+          "min_x": 410,
+          "min_y": 30
+        },
+        "left": "probe-edge",
+        "left_class": "probe",
+        "rights": [
+          {
+            "class": "beta",
+            "extent": {
+              "max_x": 470,
+              "max_y": 60,
+              "min_x": 450,
+              "min_y": 30
+            },
+            "id": "right-edge"
+          }
+        ]
+      },
+      {
+        "extent": {
+          "max_x": 2020,
+          "max_y": 55,
+          "min_x": 1980,
+          "min_y": 35
+        },
+        "left": "probe-seam",
+        "left_class": "probe",
+        "rights": [
+          {
+            "class": "red",
+            "extent": {
+              "max_x": 2005,
+              "max_y": 55,
+              "min_x": 1980,
+              "min_y": 35
+            },
+            "id": "right-seam-red"
+          },
+          {
+            "class": "blue",
+            "extent": {
+              "max_x": 2020,
+              "max_y": 55,
+              "min_x": 1998,
+              "min_y": 35
+            },
+            "id": "right-seam-blue"
+          }
+        ]
+      }
+    ],
+    "right_tiles": 2000,
+    "span_tile": {
+      "class": "filler",
+      "extent": {
+        "max_x": 2010,
+        "max_y": 20,
+        "min_x": 1990,
+        "min_y": 0
+      },
+      "id": "right-span"
+    },
+    "tile_geometry": {
+      "left": "[2i+1,2i+3) x [0,20)",
+      "left_class": "tile",
+      "right": "[2j,2j+2) x [0,20)",
+      "right_class": "filler"
+    }
+  },
+  "generator": {
+    "method": "production HTTP API; window listing plus budget-split /join",
+    "script": "examples/occupancy.py",
+    "version": 1
+  },
+  "image": {
+    "bytes": 396395,
+    "media_type": "application/vnd.meridian.image",
+    "path": "meridian-revision-10.mpb",
+    "revision": 10,
+    "sha256": "5d3320fb81cf93acf64f5ad27f5a7796cf5cdeb9c6fe9841cba9df10ea6cc826"
+  },
+  "layers": {
+    "left": {
+      "bounds": {
+        "max_x": 4100,
+        "max_y": 200,
+        "min_x": -10,
+        "min_y": -10
+      },
+      "features_in_window": 2006,
+      "features_seeded": 2006,
+      "kind": "extent",
+      "name": "left-lattice",
+      "revision": 6
+    },
+    "right": {
+      "bounds": {
+        "max_x": 4100,
+        "max_y": 200,
+        "min_x": -10,
+        "min_y": -10
+      },
+      "features_in_window": 2015,
+      "features_seeded": 2015,
+      "kind": "extent",
+      "name": "right-lattice",
+      "revision": 10
+    }
+  },
+  "outputs": {
+    "meridian-revision-10.mpb": {
+      "bytes": 396395,
+      "sha256": "5d3320fb81cf93acf64f5ad27f5a7796cf5cdeb9c6fe9841cba9df10ea6cc826"
+    },
+    "occupancy_class_sets.csv": {
+      "bytes": 109152,
+      "rows": 2017,
+      "sha256": "c479136a798273c74865d655451f631a48884c3826e6b9ce3878fdbed62141d6"
+    },
+    "occupancy_detail.csv": {
+      "bytes": 140678,
+      "rows": 2006,
+      "sha256": "3d326f401b86141142692beeb9376d603184f7c9070c2a29ca1e46b622a53bfe"
+    },
+    "occupancy_summary.csv": {
+      "bytes": 1104,
+      "rows": 17,
+      "sha256": "a0e422699127045c3a12a898c82e3cdf3104581a8bb6c5b585be9ed3ee22c5c4"
+    }
+  },
+  "pair_limit": 2000,
+  "queries": {
+    "duplicate_pairs": [
+      {
+        "ground_truth_area": 40,
+        "intra_pair_overlap_area": 0,
+        "left": "l0999",
+        "occurrences": 2,
+        "right": "right-span",
+        "union_area": 40
+      },
+      {
+        "ground_truth_area": 440,
+        "intra_pair_overlap_area": 0,
+        "left": "probe-seam",
+        "occurrences": 2,
+        "right": "right-seam-blue",
+        "union_area": 440
+      },
+      {
+        "ground_truth_area": 500,
+        "intra_pair_overlap_area": 0,
+        "left": "probe-seam",
+        "occurrences": 2,
+        "right": "right-seam-red",
+        "union_area": 500
+      }
+    ],
+    "join_leaves": [
+      {
+        "bounds": [
+          0,
+          0,
+          1000,
+          100
+        ],
+        "candidates": 1519,
+        "nodes": 9128,
+        "pairs": 1010
+      },
+      {
+        "bounds": [
+          1000,
+          0,
+          2000,
+          100
+        ],
+        "candidates": 1512,
+        "nodes": 8879,
+        "pairs": 1008
+      },
+      {
+        "bounds": [
+          2000,
+          0,
+          3000,
+          100
+        ],
+        "candidates": 1512,
+        "nodes": 8809,
+        "pairs": 1008
+      },
+      {
+        "bounds": [
+          3000,
+          0,
+          4000,
+          100
+        ],
+        "candidates": 1497,
+        "nodes": 8728,
+        "pairs": 997
+      }
+    ],
+    "join_queries": 7,
+    "join_splits": [
+      {
+        "at": 2000,
+        "axis": "x",
+        "bounds": [
+          0,
+          0,
+          4000,
+          100
+        ],
+        "depth": 0,
+        "reason": "spatial join exceeds pair or candidate budget"
+      },
+      {
+        "at": 1000,
+        "axis": "x",
+        "bounds": [
+          0,
+          0,
+          2000,
+          100
+        ],
+        "depth": 1,
+        "reason": "spatial join exceeds pair or candidate budget"
+      },
+      {
+        "at": 3000,
+        "axis": "x",
+        "bounds": [
+          2000,
+          0,
+          4000,
+          100
+        ],
+        "depth": 1,
+        "reason": "spatial join exceeds pair or candidate budget"
+      }
+    ],
+    "pair_occurrences": 4023,
+    "unique_pairs": 4020,
+    "visit": {
+      "candidates": 6040,
+      "nodes": 35544
+    },
+    "window_pages": {
+      "left": 8,
+      "right": 8
+    }
+  },
+  "schema_version": 1,
+  "semantics": {
+    "exclusive": "area covered by right rectangles of exactly one distinct class",
+    "multi": "area covered by right rectangles of two or more distinct classes",
+    "same_class": "overlapping right rectangles of one class keep class count 1",
+    "seams": "class areas are unions of clipped intersections, never sums of leaf fragments",
+    "uncovered": "area covered by no right rectangle"
+  },
+  "totals": {
+    "exclusive_area": 87180,
+    "left_area": 92120,
+    "left_features": 2006,
+    "multi_area": 1940,
+    "right_classes": [
+      "alpha",
+      "beta",
+      "blue",
+      "delta",
+      "epsilon",
+      "eta",
+      "filler",
+      "gamma",
+      "red",
+      "zeta"
+    ],
+    "uncovered_area": 3000
+  },
+  "window": {
+    "max_x": 4000,
+    "max_y": 100,
+    "min_x": 0,
+    "min_y": 0
+  },
+  "window_area": 400000
+}
