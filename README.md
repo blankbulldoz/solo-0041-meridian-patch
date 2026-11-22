@@ -24,7 +24,7 @@ python3 examples/walkthrough.py --workflow coverage
 | `GET /strata` | 返回当前图层和各自修订、边界、排他标记与条目数 |
 | `POST /strata` | `name`, `kind`, `bounds`, `exclusive`, 可选 `if_revision` |
 | `PUT /strata/{layer}/layout` | 新 `bounds`、`exclusive` 及可选 `if_revision`。形状类型保持原样 |
-| `POST /edits` | `edits` 与可选 `if_revision`。每项有 `layer`, `id`, `mode`，写入时提供同 ID 的 `value` |
+| `POST /edits` | `edits` 与可选 `if_revision`、`if_layer_revisions`。每项有 `layer`, `id`, `mode`，写入时提供同 ID 的 `value` |
 | `POST /strata/{layer}/window` | `bounds`, `limit`, 可选 `class`, `bookmark`。按 ID 返回 `features`，有更多数据时返回 `next` |
 | `POST /strata/{layer}/locate` | `{ "x": 2, "y": 1 }`。返回拥有该点的 `features` |
 | `POST /strata/{layer}/nearest` | `point`, `limit`, 可选 `class`。返回带 `distance_squared` 的 `neighbors` |
@@ -45,6 +45,13 @@ python3 examples/walkthrough.py --workflow coverage
 
 ```json
 {"edits":[{"layer":"ochre-field","id":"prong","mode":"insert","value":{"id":"prong","class":"fixture","shape":{"extent":{"min_x":0,"min_y":0,"max_x":4,"max_y":3}}}}]}
+```
+
+图层级修订条件通过可选的 `if_layer_revisions` 声明，每项为 `{"layer": ..., "revision": ...}`。该字段出现时，写包触及的每个图层都必须在列表中有一条对应修订；列表可额外包含未触及图层作为额外守卫。未列出图层的变化不会阻止提交，任一名中图层的当前图层修订与声明不符则整包拒绝（`409 conflict`），不存在的图层返回 `404 missing`。图层名重复、修订为零或缺少触及图层的条件属于请求语义错误（`400 invalid`）。同时提供 `if_revision` 时，全库条件与图层条件在写锁内取逻辑与，二者都满足才提交。省略 `if_layer_revisions` 的旧客户端仍只按 `if_revision` 的全库语义工作。
+
+```json
+{"edits":[{"layer":"ochre-field","id":"prong","mode":"replace","value":{"id":"prong","class":"fixture","shape":{"extent":{"min_x":0,"min_y":0,"max_x":1,"max_y":1}}}}],
+ "if_layer_revisions":[{"layer":"ochre-field","revision":7}]}
 ```
 
 `409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。

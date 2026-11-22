@@ -60,10 +60,14 @@ class Session:
     def layer(self, name, kind='extent', exclusive=False, status=201):
         return self.post('/strata', dict(name=name, kind=kind, bounds=BOUNDS, exclusive=exclusive), status)
 
-    def edit(self, *items, status=200, revision=None):
+    def edit(self, *items, status=200, revision=None, layer_conditions=None):
         request = dict(edits=list(items))
         if revision is not None:
             request['if_revision'] = revision
+        if layer_conditions is not None:
+            request['if_layer_revisions'] = [
+                dict(layer=name, revision=rev) for name, rev in layer_conditions
+            ]
         return self.post('/edits', request, status)
 
     def restore(self, raw, revision, status=200):
@@ -143,6 +147,100 @@ def edit(s):
     result = s.query(FIELD, 'locate', point(2, 0))
     assert ids(result) == ['prong']
     return result
+
+
+def layer_conditions(s):
+    base = seed(s)
+    field_before = s.get('/strata')['layers']
+    revs = {row['name']: row['revision'] for row in field_before}
+    assert revs[FIELD] == base and revs[BED] == base
+
+    # A correct layer pin accepts the batch even though other teams moved
+    # another layer in between; only the pinned layer is checked.
+    s.edit(op(BED, 'shim', box(5, 0, 7, 2), mode='replace'))
+    after_other = s.get('/status')['revision']
+    assert after_other == base + 1
+    accepted = s.edit(
+        op(FIELD, 'prong', box(0, 0, 1, 1), mode='replace'),
+        layer_conditions=[(FIELD, revs[FIELD])],
+    )
+    assert accepted['revision'] == after_other + 1
+    assert [row['name'] for row in accepted['layers']] == [FIELD]
+    current = {row['name']: row['revision'] for row in s.get('/strata')['layers']}
+    assert current[FIELD] == after_other + 1 and current[BED] == after_other
+
+    # A stale pin rejects the whole package; nothing is applied.
+    rejected = s.edit(
+        op(FIELD, 'dowel', box(0, 0, 1, 1), mode='replace'),
+        status=409, layer_conditions=[(FIELD, revs[FIELD])],
+    )
+    assert rejected['code'] == 'conflict'
+    assert s.get('/status')['revision'] == after_other + 1
+
+    # A cross-layer batch must pin every layer it touches.
+    cross = s.edit(
+        op(FIELD, 'dowel', box(0, 0, 1, 1), mode='replace'),
+        op(BED, 'shim', mode='remove'),
+        status=400, layer_conditions=[(FIELD, current[FIELD])],
+    )
+    assert cross['code'] == 'invalid'
+    assert s.get('/status')['revision'] == after_other + 1
+
+    # Pins for both touched layers make the same cross-layer batch commit.
+    committed = s.edit(
+        op(FIELD, 'dowel', box(0, 0, 1, 1), mode='replace'),
+        op(BED, 'shim', mode='remove'),
+        layer_conditions=[(FIELD, current[FIELD]), (BED, current[BED])],
+    )
+    assert committed['revision'] == after_other + 2
+
+    # Unknown layers are reported as missing, zero revisions as invalid.
+    fresh = {row['name']: row['revision'] for row in s.get('/strata')['layers']}
+    duplicate = s.post('/edits', dict(
+        edits=[op(FIELD, 'ferrule', mode='remove')],
+        if_layer_revisions=[dict(layer=FIELD, revision=fresh[FIELD]),
+                            dict(layer=FIELD, revision=fresh[FIELD])],
+    ), 400)
+    assert duplicate['code'] == 'invalid'
+    unknown = s.edit(
+        op(FIELD, 'ferrule', mode='remove'),
+        status=404, layer_conditions=[(FIELD, fresh[FIELD]), ('no-such-layer', 5)],
+    )
+    assert unknown['code'] == 'missing'
+    zero = s.edit(
+        op(FIELD, 'ferrule', mode='remove'),
+        status=400, layer_conditions=[(FIELD, 0)],
+    )
+    assert zero['code'] == 'invalid'
+
+    # An empty condition list cannot protect any touched layer.
+    empty = s.edit(op(FIELD, 'ferrule', mode='remove'), status=400, layer_conditions=[])
+    assert empty['code'] == 'invalid'
+
+    # When both preconditions are present, the database-wide condition ANDs
+    # with the layer pins: a stale global revision fails even with fresh pins.
+    latest = s.get('/status')['revision']
+    rows = {row['name']: row['revision'] for row in s.get('/strata')['layers']}
+    both_fail = s.edit(
+        op(FIELD, 'ferrule', mode='remove'),
+        status=409, revision=latest - 1,
+        layer_conditions=[(FIELD, rows[FIELD])],
+    )
+    assert both_fail['code'] == 'conflict'
+    # And with both current, the batch commits.
+    both_ok = s.edit(
+        op(FIELD, 'ferrule', mode='remove'),
+        revision=latest, layer_conditions=[(FIELD, rows[FIELD])],
+    )
+    assert both_ok['revision'] == latest + 1
+
+    # Legacy requests without layer conditions keep database-wide semantics.
+    stale_legacy = s.edit(
+        op(FIELD, 'prong', box(0, 0, 2, 2), mode='replace'),
+        status=409, revision=base,
+    )
+    assert stale_legacy['code'] == 'conflict'
+    return both_ok
 
 
 def reframe(s):
@@ -303,8 +401,9 @@ def reopen(binary, data):
     return result
 
 
-WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
-                                     inspect, seams, relation, audit, export, restore, reopen)}
+WORKFLOWS = {f.__name__: f for f in (register, edit, layer_conditions, reframe, window, locate, nearest,
+                                     join, coverage, inspect, seams, relation, audit, export,
+                                     restore, reopen)}
 
 
 def main():

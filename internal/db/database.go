@@ -8,6 +8,7 @@ import (
 	"sync/atomic"
 
 	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/bookmark"
+	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/catalog"
 	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/folio"
 )
 
@@ -74,15 +75,40 @@ func (d *Database) Status() Status {
 	return Status{Revision: d.head.Load().revision, Writable: !d.blocked.Load()}
 }
 
-func (d *Database) commit(expected *uint64, prepare func(*state, uint64) (*state, error)) (*state, error) {
+// revisions holds the preconditions checked against the immutable head state
+// while the write lock is held. Layer conditions are nil when the client does
+// not use layer-scoped revision pins.
+type revisions struct {
+	database *uint64
+	layers   []catalog.LayerRevision
+}
+
+func (r revisions) check(current *state) error {
+	if r.database != nil && *r.database != current.revision {
+		return conflict("expected database revision %d, current revision is %d", *r.database, current.revision)
+	}
+	for _, condition := range r.layers {
+		l, err := current.getLayer(condition.Layer)
+		if err != nil {
+			return err
+		}
+		if l.revision != condition.Revision {
+			return conflict("expected layer %q revision %d, current layer revision is %d",
+				condition.Layer, condition.Revision, l.revision)
+		}
+	}
+	return nil
+}
+
+func (d *Database) commit(guard revisions, prepare func(*state, uint64) (*state, error)) (*state, error) {
 	d.write.Lock()
 	defer d.write.Unlock()
 	if d.blocked.Load() {
 		return nil, &Error{Code: "unavailable", Message: "database is fenced; reopen the data directory"}
 	}
 	current := d.head.Load()
-	if expected != nil && *expected != current.revision {
-		return nil, conflict("expected database revision %d, current revision is %d", *expected, current.revision)
+	if err := guard.check(current); err != nil {
+		return nil, err
 	}
 	if current.revision == math.MaxUint64 {
 		return nil, exhausted("database revision space is exhausted")

@@ -26,7 +26,7 @@ func (d *Database) List() Commit {
 }
 
 func (d *Database) Register(def catalog.Definition, expected *uint64) (Commit, error) {
-	s, err := d.commit(expected, func(current *state, revision uint64) (*state, error) {
+	s, err := d.commit(revisions{database: expected}, func(current *state, revision uint64) (*state, error) {
 		if current.layers[def.Name] != nil {
 			return nil, conflict("layer %q already exists", def.Name)
 		}
@@ -48,7 +48,7 @@ func (d *Database) Register(def catalog.Definition, expected *uint64) (Commit, e
 }
 
 func (d *Database) Reframe(name string, layout catalog.Layout, expected *uint64) (Commit, error) {
-	s, err := d.commit(expected, func(current *state, revision uint64) (*state, error) {
+	s, err := d.commit(revisions{database: expected}, func(current *state, revision uint64) (*state, error) {
 		old, err := current.getLayer(name)
 		if err != nil {
 			return nil, err
@@ -76,8 +76,12 @@ func (d *Database) Edit(batch catalog.EditBatch) (Commit, error) {
 	if len(batch.Edits) == 0 || len(batch.Edits) > catalog.MaxEdits {
 		return Commit{}, invalid("edit batch must contain 1..%d operations", catalog.MaxEdits)
 	}
+	if err := batch.ValidateConditions(); err != nil {
+		return Commit{}, invalid("%v", err)
+	}
 	changed := make([]string, 0)
-	s, err := d.commit(batch.IfRevision, func(current *state, revision uint64) (*state, error) {
+	guard := revisions{database: batch.IfRevision, layers: batch.IfLayerRevisions}
+	s, err := d.commit(guard, func(current *state, revision uint64) (*state, error) {
 		staged := make(map[string]map[string]catalog.Feature)
 		for i, edit := range batch.Edits {
 			l, err := current.getLayer(edit.Layer)

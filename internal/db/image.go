@@ -21,7 +21,7 @@ func (d *Database) Restore(raw []byte, expected uint64) (Commit, error) {
 	if err != nil {
 		return Commit{}, invalid("restore image: %v", err)
 	}
-	s, err := d.commit(&expected, func(_ *state, revision uint64) (*state, error) {
+	s, err := d.commit(revisions{database: &expected}, func(_ *state, revision uint64) (*state, error) {
 		candidate.revision = revision
 		for _, l := range candidate.layers {
 			l.revision = revision
