@@ -216,6 +216,53 @@ def coverage(s):
     return result
 
 
+def area_sum(fragments):
+    return sum((f['max_x'] - f['min_x']) * (f['max_y'] - f['min_y']) for f in fragments)
+
+
+def overlaps(a, b):
+    return (min(a['max_x'], b['max_x']) > max(a['min_x'], b['min_x'])
+            and min(a['max_y'], b['max_y']) > max(a['min_y'], b['min_y']))
+
+
+def check_fragments(result, expected):
+    fragments = result['fragments']
+    assert fragments == expected, (fragments, expected)
+    assert area_sum(fragments) == result['uncovered']
+    assert all(not overlaps(a, b) for i, a in enumerate(fragments) for b in fragments[i+1:])
+
+
+def uncovered(s):
+    seed(s)
+    query = dict(bounds=WINDOW, limit=8)
+    result = s.query(FIELD, 'uncovered', query)
+    check_fragments(result, [box(0, 3, 2, 4), box(6, 3, 8, 4)])
+    assert result['uncovered'] == s.query(FIELD, 'coverage', dict(bounds=WINDOW))['uncovered']
+    assert s.query(FIELD, 'uncovered', query) == result
+    sleeve = s.query(FIELD, 'uncovered', dict(query, **{'class': 'sleeve'}))
+    check_fragments(sleeve, [box(0, 0, 2, 4), box(2, 0, 6, 1), box(6, 0, 8, 4)])
+    assert sleeve['uncovered'] == s.query(FIELD, 'coverage', dict(bounds=WINDOW, **{'class': 'sleeve'}))['uncovered']
+    assert s.query(FIELD, 'uncovered', dict(query, limit=1), 422)['code'] == 'capacity'
+    s.query(FIELD, 'uncovered', dict(query, limit=0), 400)
+    s.query(PINS, 'uncovered', query, 400)
+    s.layer('notch-bed')
+    s.edit(op('notch-bed', 'base', box(0, 0, 8, 3)), op('notch-bed', 'wing', box(0, 3, 7, 4)))
+    check_fragments(s.query('notch-bed', 'uncovered', query), [box(7, 3, 8, 4)])
+    s.layer('slit-bed')
+    s.edit(op('slit-bed', 'left', box(0, 0, 3, 4)), op('slit-bed', 'right', box(4, 0, 8, 4)))
+    check_fragments(s.query('slit-bed', 'uncovered', query), [box(3, 0, 4, 4)])
+    s.layer('frame-bed')
+    s.edit(op('frame-bed', 'block', box(2, 1, 6, 3)))
+    frame = s.query('frame-bed', 'uncovered', query)
+    check_fragments(frame, [box(0, 0, 2, 4), box(2, 0, 6, 1), box(2, 3, 6, 4), box(6, 0, 8, 4)])
+    assert s.query('frame-bed', 'uncovered', dict(query, limit=3), 422)['code'] == 'capacity'
+    s.layer('bare-bed')
+    bare = s.query('bare-bed', 'uncovered', query)
+    check_fragments(bare, [WINDOW])
+    assert bare['uncovered'] == 32
+    return result
+
+
 def seams(s):
     seed(s)
     result = s.query(FIELD, 'seams', dict(bounds=box(4, 1, 8, 4), limit=2))
@@ -304,7 +351,7 @@ def reopen(binary, data):
 
 
 WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
-                                     inspect, seams, relation, audit, export, restore, reopen)}
+                                     inspect, seams, relation, audit, export, restore, reopen, uncovered)}
 
 
 def main():

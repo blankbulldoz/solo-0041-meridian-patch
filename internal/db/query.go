@@ -1,6 +1,7 @@
 package db
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/bookmark"
@@ -209,4 +210,40 @@ func (d *Database) Coverage(name string, q CoverageQuery) (CoverageResponse, err
 		return CoverageResponse{}, invalid("coverage requires an extent layer")
 	}
 	return CoverageResponse{ReadStamp: stamp(s, l), AreaResult: spatial.Coverage(l.tree, q.Bounds, q.Class)}, nil
+}
+
+type UncoveredQuery struct {
+	Bounds plane.Box `json:"bounds"`
+	Class  string    `json:"class,omitempty"`
+	Limit  int       `json:"limit"`
+}
+
+type UncoveredResponse struct {
+	ReadStamp
+	spatial.FragmentResult
+}
+
+func (d *Database) Uncovered(name string, q UncoveredQuery) (UncoveredResponse, error) {
+	if err := validateWindow(q.Bounds, q.Class); err != nil {
+		return UncoveredResponse{}, err
+	}
+	if q.Limit < 1 || q.Limit > spatial.MaxFragments {
+		return UncoveredResponse{}, invalid("uncovered limit must be 1..%d", spatial.MaxFragments)
+	}
+	s := d.head.Load()
+	l, err := s.getLayer(name)
+	if err != nil {
+		return UncoveredResponse{}, err
+	}
+	if l.definition.Kind != plane.Extent {
+		return UncoveredResponse{}, invalid("uncovered requires an extent layer")
+	}
+	result, err := spatial.Uncovered(l.tree, q.Bounds, q.Class, q.Limit)
+	if errors.Is(err, spatial.ErrFragmentBudget) {
+		return UncoveredResponse{}, exhausted("%v", err)
+	}
+	if err != nil {
+		return UncoveredResponse{}, err
+	}
+	return UncoveredResponse{ReadStamp: stamp(s, l), FragmentResult: result}, nil
 }

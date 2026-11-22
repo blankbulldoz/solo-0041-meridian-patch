@@ -27,6 +27,7 @@ func New(database *db.Database, log *slog.Logger) http.Handler {
 	mux.HandleFunc("POST "+Prefix+"/strata/{layer}/locate", a.locate)
 	mux.HandleFunc("POST "+Prefix+"/strata/{layer}/nearest", a.nearest)
 	mux.HandleFunc("POST "+Prefix+"/strata/{layer}/coverage", a.coverage)
+	mux.HandleFunc("POST "+Prefix+"/strata/{layer}/uncovered", a.uncovered)
 	mux.HandleFunc("GET "+Prefix+"/strata/{layer}/index", a.inspect)
 	mux.HandleFunc("GET "+Prefix+"/strata/{layer}/index-audit", a.audit)
 	mux.HandleFunc("POST "+Prefix+"/strata/{layer}/seams", a.seams)
