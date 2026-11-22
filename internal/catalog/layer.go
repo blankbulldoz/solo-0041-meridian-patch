@@ -9,10 +9,11 @@ import (
 )
 
 const (
-	MaxLayers    = 24
-	MaxLayerRows = 4096
-	MaxRows      = 16384
-	MaxEdits     = 512
+	MaxLayers          = 24
+	MaxLayerRows       = 4096
+	MaxRows            = 16384
+	MaxEdits           = 512
+	MaxRehearsalProbes = 8
 )
 
 var namePattern = regexp.MustCompile(`^[a-z][a-z0-9-]{0,47}$`)

@@ -25,6 +25,7 @@ python3 examples/walkthrough.py --workflow coverage
 | `POST /strata` | `name`, `kind`, `bounds`, `exclusive`, 可选 `if_revision` |
 | `PUT /strata/{layer}/layout` | 新 `bounds`、`exclusive` 及可选 `if_revision`。形状类型保持原样 |
 | `POST /edits` | `edits` 与可选 `if_revision`。每项有 `layer`, `id`, `mode`，写入时提供同 ID 的 `value` |
+| `POST /rehearsals` | 与 `/edits` 相同的写包，外加可选 `probes`。不落盘，返回约束结论、受影响图层与探针在基准/候选视图下的命中和面积差异 |
 | `POST /strata/{layer}/window` | `bounds`, `limit`, 可选 `class`, `bookmark`。按 ID 返回 `features`，有更多数据时返回 `next` |
 | `POST /strata/{layer}/locate` | `{ "x": 2, "y": 1 }`。返回拥有该点的 `features` |
 | `POST /strata/{layer}/nearest` | `point`, `limit`, 可选 `class`。返回带 `distance_squared` 的 `neighbors` |
@@ -48,5 +49,17 @@ python3 examples/walkthrough.py --workflow coverage
 ```
 
 `409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
+
+### 写包试演
+
+`POST /rehearsals` 接受与 `POST /edits` 完全相同的写包（含可选 `if_revision`），但不发布任何修订、不触碰磁盘镜像。写包按输入次序暂存，并走与正式提交相同的末态规则（形状、图层边界、排他策略与容量上限）；因此被拒绝的写包返回与 `/edits` 相同的状态码和问题码。通过约束时返回：
+
+- `ok`、`baseline_revision`（试演所基于的全库修订）与 `projected_revision`（正式提交将发布的修订）；
+- `affected`：受影响图层按名称排序的末态摘要（含投影修订与条目数）；
+- `probes`：每个探针在基准视图与候选视图下的结果差异。
+
+探针 `kind` 支持 `window`、`locate`、`nearest`、`coverage`、`seams` 与 `join`，参数与对应读取端点一致（`bounds`、`point`、`class`、`limit`、`layer`，join 使用 `left_layer`/`right_layer`），每次试演最多 8 个探针。命中类探针给出 `before`、`after`、`added`、`removed` 与候选视图的 `visit`；`coverage` 给出 `covered`、`repeated`、`uncovered` 三个面积的 `before`/`after`/`delta`。探针本身无效时按其镜像读取端点的状态码拒绝（如点图层 coverage 返回 400，图层缺失返回 404）。
+
+试演结果只在 `baseline_revision` 仍是当前全库修订时可引用。调用者在正式写入前应比对 `GET /status` 的 `revision`，或直接在 `POST /edits` 上携带 `if_revision=baseline_revision`：基准一旦变化，正式提交会以 `409 conflict` 失败，调用者即可判定旧预演失效并重新试演。对于需要交换矩形才能成立的写包，试演与正式提交共用同一末态暂存逻辑，因此两边的约束结论和投影结果一致。
 
 边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。

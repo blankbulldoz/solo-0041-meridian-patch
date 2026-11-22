@@ -286,6 +286,99 @@ def restore(s):
     return restored
 
 
+def rehearse(s):
+    rev = seed(s)
+    # A pack that adds a rectangle in the window's currently uncovered corner.
+    anchor = op(FIELD, 'anchor', box(6, 3, 8, 4), 'sleeve')
+    probes = [
+        dict(kind='window', layer=FIELD, bounds=WINDOW),
+        dict(kind='coverage', layer=FIELD, bounds=WINDOW),
+        dict(kind='locate', layer=FIELD, point=point(7, 3)),
+        dict(kind='join', left_layer=FIELD, right_layer=BED, bounds=WINDOW, limit=2000),
+        dict(kind='nearest', layer=PINS, point=point(7, 1), limit=2),
+        dict(kind='seams', layer=FIELD, bounds=WINDOW, limit=2000),
+    ]
+    result = s.post('/rehearsals', dict(edits=[anchor], probes=probes))
+    assert result['ok'] is True
+    assert result['baseline_revision'] == rev
+    assert result['projected_revision'] == rev + 1
+    # Nothing landed: the head revision is unchanged.
+    assert s.get('/status')['revision'] == rev
+    # The affected layer is reported with its projected revision and count.
+    affected = {layer['name']: layer for layer in result['affected']}
+    assert set(affected) == {FIELD}
+    assert affected[FIELD]['revision'] == rev + 1 and affected[FIELD]['count'] == 4
+    by_kind = {probe['kind']: probe for probe in result['probes']}
+    window = by_kind['window']['hits']
+    assert window['before'] == ['dowel', 'ferrule', 'prong']
+    assert window['after'] == ['anchor', 'dowel', 'ferrule', 'prong']
+    assert window['added'] == ['anchor'] and window['removed'] == []
+    locate = by_kind['locate']['hits']
+    assert locate['before'] == [] and locate['after'] == ['anchor']
+    assert locate['added'] == ['anchor']
+    coverage = by_kind['coverage']
+    assert (coverage['covered']['before'], coverage['covered']['after']) == (28, 30)
+    assert coverage['covered']['delta'] == 2
+    assert coverage['uncovered']['delta'] == -2
+    assert coverage['repeated']['delta'] == 0
+    join = by_kind['join']['hits']
+    assert join['added'] == [] and 'anchor|shim' not in join['after']
+    seams = by_kind['seams']['hits']
+    assert seams['before'] == ['dowel|prong']
+    assert seams['added'] == ['anchor|dowel', 'anchor|ferrule']
+    assert seams['after'] == ['anchor|dowel', 'anchor|ferrule', 'dowel|prong']
+    assert seams['removed'] == []
+    nearest = by_kind['nearest']['hits']
+    assert nearest['before'] == ['stud', 'brad'] and nearest['after'] == ['stud', 'brad']
+    assert nearest['added'] == [] and nearest['removed'] == []
+
+    # A dedicated exclusive layer exercises final-state rejection and the
+    # swap case: replacing one rectangle on its own overlaps the other and is
+    # rejected, while exchanging both rectangles inside one pack reaches a
+    # legal final state. Rehearsal and real submit must agree on both.
+    patch = 'patch-grid'
+    s.layer(patch, 'extent', True)
+    s.edit(op(patch, 'alpha', box(0, 0, 2, 2)), op(patch, 'beta', box(2, 0, 4, 2)))
+
+    # A pack that violates the exclusivity final state is rejected with the
+    # same 409 verdict a real submit would produce, and still does not land.
+    before = s.get('/status')['revision']
+    rejected = s.post('/rehearsals', dict(edits=[op(patch, 'collider', box(1, 1, 3, 2))]), status=409)
+    assert rejected['code'] == 'conflict'
+    assert s.get('/status')['revision'] == before
+
+    # A one-sided swap is invalid on both paths because the intermediate
+    # final state would contain two fully overlapping rectangles.
+    one_sided = [op(patch, 'alpha', box(2, 0, 4, 2), mode='replace')]
+    assert s.post('/rehearsals', dict(edits=one_sided), status=409)['code'] == 'conflict'
+    assert s.edit(*one_sided, status=409)['code'] == 'conflict'
+
+    swap = [
+        op(patch, 'alpha', box(2, 0, 4, 2), mode='replace'),
+        op(patch, 'beta', box(0, 0, 2, 2), mode='replace'),
+    ]
+    preview = s.post('/rehearsals', dict(edits=swap))
+    assert preview['ok'] and preview['baseline_revision'] == before
+    assert preview['projected_revision'] == before + 1
+    committed = s.edit(*swap, revision=before)
+    assert committed['revision'] == preview['projected_revision']
+    assert [layer['count'] for layer in committed['layers']] == \
+           [layer['count'] for layer in preview['affected']]
+
+    # Once the baseline moves, an earlier rehearsal can no longer be cited.
+    stale = s.post('/rehearsals', dict(edits=swap, if_revision=before), status=409)
+    assert stale['code'] == 'conflict'
+
+    # Malformed probes are refused like the read endpoints they mirror.
+    s.post('/rehearsals', dict(edits=[anchor], probes=[
+        dict(kind='coverage', layer=PINS, bounds=WINDOW),
+    ]), status=400)
+    s.post('/rehearsals', dict(edits=[anchor], probes=[
+        dict(kind='window', layer='missing-layer', bounds=WINDOW),
+    ]), status=404)
+    return result
+
+
 def reopen(binary, data):
     with running(binary, data) as s:
         rev = seed(s)
@@ -304,7 +397,7 @@ def reopen(binary, data):
 
 
 WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
-                                     inspect, seams, relation, audit, export, restore, reopen)}
+                                     inspect, seams, relation, audit, export, restore, rehearse, reopen)}
 
 
 def main():

@@ -23,6 +23,7 @@ func New(database *db.Database, log *slog.Logger) http.Handler {
 	mux.HandleFunc("POST "+Prefix+"/strata", a.register)
 	mux.HandleFunc("PUT "+Prefix+"/strata/{layer}/layout", a.reframe)
 	mux.HandleFunc("POST "+Prefix+"/edits", a.edit)
+	mux.HandleFunc("POST "+Prefix+"/rehearsals", a.rehearse)
 	mux.HandleFunc("POST "+Prefix+"/strata/{layer}/window", a.window)
 	mux.HandleFunc("POST "+Prefix+"/strata/{layer}/locate", a.locate)
 	mux.HandleFunc("POST "+Prefix+"/strata/{layer}/nearest", a.nearest)

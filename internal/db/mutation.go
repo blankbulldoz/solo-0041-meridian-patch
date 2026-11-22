@@ -78,42 +78,57 @@ func (d *Database) Edit(batch catalog.EditBatch) (Commit, error) {
 	}
 	changed := make([]string, 0)
 	s, err := d.commit(batch.IfRevision, func(current *state, revision uint64) (*state, error) {
-		staged := make(map[string]map[string]catalog.Feature)
-		for i, edit := range batch.Edits {
-			l, err := current.getLayer(edit.Layer)
-			if err != nil {
-				return nil, err
-			}
-			if staged[edit.Layer] == nil {
-				staged[edit.Layer] = maps.Clone(l.rows)
-				changed = append(changed, edit.Layer)
-			}
-			if err := applyEdit(l.definition, staged[edit.Layer], edit, i); err != nil {
-				return nil, err
-			}
+		next, names, err := stageEdits(current, revision, batch.Edits)
+		if err != nil {
+			return nil, err
 		}
-		slices.Sort(changed)
-		next := &state{revision: revision, layers: maps.Clone(current.layers)}
-		for _, name := range changed {
-			l, err := buildLayer(current.layers[name].definition, revision, staged[name])
-			if err != nil {
-				return nil, err
-			}
-			next.layers[name] = l
-		}
-		var total int
-		for _, l := range next.layers {
-			total += len(l.rows)
-		}
-		if total > catalog.MaxRows {
-			return nil, exhausted("database feature capacity reached")
-		}
+		changed = names
 		return next, nil
 	})
 	if err != nil {
 		return Commit{}, err
 	}
 	return summaries(s, changed), nil
+}
+
+// stageEdits interprets an edit batch in input order against current, clones
+// every touched layer, and rebuilds each affected layer with the final-state
+// rules (shape, bounds, exclusivity and capacity checks). It never mutates
+// current. The same function backs durable commits and non-persistent
+// rehearsals, so both observe identical final-state semantics.
+func stageEdits(current *state, revision uint64, edits []catalog.Edit) (*state, []string, error) {
+	changed := make([]string, 0)
+	staged := make(map[string]map[string]catalog.Feature)
+	for i, edit := range edits {
+		l, err := current.getLayer(edit.Layer)
+		if err != nil {
+			return nil, nil, err
+		}
+		if staged[edit.Layer] == nil {
+			staged[edit.Layer] = maps.Clone(l.rows)
+			changed = append(changed, edit.Layer)
+		}
+		if err := applyEdit(l.definition, staged[edit.Layer], edit, i); err != nil {
+			return nil, nil, err
+		}
+	}
+	slices.Sort(changed)
+	next := &state{revision: revision, layers: maps.Clone(current.layers)}
+	for _, name := range changed {
+		l, err := buildLayer(current.layers[name].definition, revision, staged[name])
+		if err != nil {
+			return nil, nil, err
+		}
+		next.layers[name] = l
+	}
+	var total int
+	for _, l := range next.layers {
+		total += len(l.rows)
+	}
+	if total > catalog.MaxRows {
+		return nil, nil, exhausted("database feature capacity reached")
+	}
+	return next, changed, nil
 }
 
 func applyEdit(def catalog.Definition, rows map[string]catalog.Feature, edit catalog.Edit, index int) error {

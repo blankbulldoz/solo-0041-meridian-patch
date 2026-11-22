@@ -303,6 +303,27 @@
       "verification": "python3 examples/walkthrough.py --workflow relation"
     },
     {
+      "id": "rehearse",
+      "name": "写包试演",
+      "entry": "POST /rehearsals",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "catalog",
+        "plane",
+        "packed",
+        "spatial"
+      ],
+      "steps": [
+        "共享末态暂存但不落盘",
+        "在基准与候选视图运行探针",
+        "返回约束结论与命中面积差异"
+      ],
+      "success": "投影修订、受影响图层与探针差异可对照正式提交",
+      "failure": "末态违规或探针无效按相同规则拒绝，基准漂移后旧试演失效",
+      "verification": "python3 examples/walkthrough.py --workflow rehearse"
+    },
+    {
       "id": "export",
       "name": "固定提交导出",
       "entry": "GET /image",
