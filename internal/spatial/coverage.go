@@ -24,22 +24,44 @@ type boundary struct {
 }
 
 func Coverage(tree packed.Tree, window plane.Box, class string) AreaResult {
-	events := make([]boundary, 0)
-	y := make([]int64, 0)
+	rectangles := make([]plane.Box, 0)
 	visit := tree.Search(window, func(row catalog.Feature) bool {
 		if class != "" && row.Class != class {
 			return true
 		}
-		b, present := window.Clip(*row.Shape.Extent)
-		if present {
-			events = append(events, boundary{b.MinX, b.MinY, b.MaxY, 1}, boundary{b.MaxX, b.MinY, b.MaxY, -1})
-			y = append(y, b.MinY, b.MaxY)
+		if b, present := window.Clip(*row.Shape.Extent); present {
+			rectangles = append(rectangles, b)
 		}
 		return true
 	})
-	result := AreaResult{Uncovered: window.Area(), Rectangles: len(events) / 2, Visit: visit}
-	if len(events) == 0 {
-		return result
+	covered, repeated := sweepArea(rectangles)
+	return AreaResult{
+		Covered:    covered,
+		Repeated:   repeated,
+		Uncovered:  window.Area() - covered,
+		Rectangles: len(rectangles),
+		Visit:      visit,
+	}
+}
+
+// UnionArea measures the area covered by at least one rectangle. Overlapping
+// coverage is counted once, so the result never exceeds the sum of the parts.
+func UnionArea(rectangles []plane.Box) int64 {
+	covered, _ := sweepArea(rectangles)
+	return covered
+}
+
+// sweepArea accumulates the singly and repeatedly covered area of rectangles
+// with an x-ordered boundary sweep over elementary y intervals.
+func sweepArea(rectangles []plane.Box) (covered, repeated int64) {
+	if len(rectangles) == 0 {
+		return 0, 0
+	}
+	events := make([]boundary, 0, 2*len(rectangles))
+	y := make([]int64, 0, 2*len(rectangles))
+	for _, b := range rectangles {
+		events = append(events, boundary{b.MinX, b.MinY, b.MaxY, 1}, boundary{b.MaxX, b.MinY, b.MaxY, -1})
+		y = append(y, b.MinY, b.MaxY)
 	}
 	slices.Sort(y)
 	y = slices.Compact(y)
@@ -48,13 +70,12 @@ func Coverage(tree packed.Tree, window plane.Box, class string) AreaResult {
 	previous := events[0].x
 	for _, e := range events {
 		width := e.x - previous
-		result.Covered += width * strips.covered()
-		result.Repeated += width * strips.repeated()
+		covered += width * strips.covered()
+		repeated += width * strips.repeated()
 		lo, _ := slices.BinarySearch(y, e.y0)
 		hi, _ := slices.BinarySearch(y, e.y1)
 		strips.update(1, 0, len(y)-1, lo, hi, e.delta)
 		previous = e.x
 	}
-	result.Uncovered -= result.Covered
-	return result
+	return covered, repeated
 }

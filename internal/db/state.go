@@ -8,6 +8,7 @@ import (
 
 	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/catalog"
 	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/packed"
+	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/plane"
 )
 
 type layer struct {
@@ -20,6 +21,7 @@ type layer struct {
 type state struct {
 	revision uint64
 	layers   map[string]*layer
+	quotas   map[string]catalog.Quota
 }
 
 func (l *layer) summary() catalog.Summary {
@@ -68,6 +70,15 @@ func (s *state) names() []string {
 	return names
 }
 
+func (s *state) quotaNames() []string {
+	names := make([]string, 0, len(s.quotas))
+	for name := range s.quotas {
+		names = append(names, name)
+	}
+	slices.Sort(names)
+	return names
+}
+
 func (s *state) image() catalog.CatalogImage {
 	image := catalog.CatalogImage{Revision: s.revision, Layers: make([]catalog.LayerImage, 0, len(s.layers))}
 	for _, name := range s.names() {
@@ -78,6 +89,9 @@ func (s *state) image() catalog.CatalogImage {
 			Features:   l.features(),
 		})
 	}
+	for _, name := range s.quotaNames() {
+		image.Quotas = append(image.Quotas, s.quotas[name])
+	}
 	return image
 }
 
@@ -85,7 +99,10 @@ func fromImage(image catalog.CatalogImage) (*state, error) {
 	if len(image.Layers) > catalog.MaxLayers || (image.Revision == 0 && len(image.Layers) > 0) {
 		return nil, fmt.Errorf("invalid layer count or revision")
 	}
-	s := &state{revision: image.Revision, layers: make(map[string]*layer)}
+	if len(image.Quotas) > catalog.MaxQuotas {
+		return nil, fmt.Errorf("invalid quota count")
+	}
+	s := &state{revision: image.Revision, layers: make(map[string]*layer), quotas: make(map[string]catalog.Quota)}
 	var total int
 	var previousLayer string
 	for _, entry := range image.Layers {
@@ -115,6 +132,37 @@ func fromImage(image catalog.CatalogImage) (*state, error) {
 			return nil, err
 		}
 		s.layers[name] = l
+	}
+	var previousQuota string
+	for _, quota := range image.Quotas {
+		if quota.Name <= previousQuota {
+			return nil, fmt.Errorf("invalid image quota order for %q", quota.Name)
+		}
+		previousQuota = quota.Name
+		if err := quota.Validate(); err != nil {
+			return nil, fmt.Errorf("invalid image quota: %v", err)
+		}
+		for i := 1; i < len(quota.Layers); i++ {
+			if quota.Layers[i] <= quota.Layers[i-1] {
+				return nil, fmt.Errorf("invalid image quota layer order for %q", quota.Name)
+			}
+		}
+		for _, name := range quota.Layers {
+			l := s.layers[name]
+			if l == nil {
+				return nil, fmt.Errorf("image quota %q references missing layer %q", quota.Name, name)
+			}
+			if l.definition.Kind != plane.Extent {
+				return nil, fmt.Errorf("image quota %q layer %q is not an extent layer", quota.Name, name)
+			}
+		}
+		s.quotas[quota.Name] = quota
+	}
+	for _, name := range s.quotaNames() {
+		quota := s.quotas[name]
+		if area := s.quotaArea(quota); area > quota.MaxArea {
+			return nil, fmt.Errorf("image quota %q coverage %d exceeds cap %d", name, area, quota.MaxArea)
+		}
 	}
 	return s, nil
 }

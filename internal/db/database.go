@@ -8,6 +8,7 @@ import (
 	"sync/atomic"
 
 	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/bookmark"
+	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/catalog"
 	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/folio"
 )
 
@@ -39,7 +40,7 @@ func openStore(store *folio.Store) (*Database, error) {
 		return nil, err
 	}
 	d := &Database{store: store, signer: signer}
-	s := &state{layers: make(map[string]*layer)}
+	s := &state{layers: make(map[string]*layer), quotas: make(map[string]catalog.Quota)}
 	raw, present, err := store.Read()
 	if err != nil {
 		return nil, fmt.Errorf("read state: %w", err)

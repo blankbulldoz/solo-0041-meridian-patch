@@ -15,7 +15,7 @@ func (a *api) respond(w http.ResponseWriter, status int, value any, err error) {
 	var problem *db.Error
 	if !errors.As(err, &problem) {
 		a.log.Error("database operation failed", "error", err)
-		a.json(w, http.StatusInternalServerError, issue{"internal", "database operation failed"})
+		a.json(w, http.StatusInternalServerError, issue{Code: "internal", Message: "database operation failed"})
 		return
 	}
 	statuses := map[string]int{
@@ -33,5 +33,5 @@ func (a *api) respond(w http.ResponseWriter, status int, value any, err error) {
 	if code >= 500 {
 		a.log.Error("database unavailable", "error", err)
 	}
-	a.json(w, code, issue{problem.Code, problem.Message})
+	a.json(w, code, issue{Code: problem.Code, Message: problem.Message, Details: problem.Details})
 }

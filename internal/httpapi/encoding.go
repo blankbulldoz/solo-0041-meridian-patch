@@ -13,6 +13,7 @@ const maxJSON = 1 << 20
 type issue struct {
 	Code    string `json:"code"`
 	Message string `json:"message"`
+	Details any    `json:"details,omitempty"`
 }
 
 func (a *api) json(w http.ResponseWriter, code int, value any) {
@@ -37,7 +38,7 @@ func (a *api) input(w http.ResponseWriter, r *http.Request, target any) bool {
 		return false
 	}
 	if len(raw) == 0 || raw[0] != '{' {
-		a.json(w, http.StatusBadRequest, issue{"invalid", "body must be a JSON object"})
+		a.json(w, http.StatusBadRequest, issue{Code: "invalid", Message: "body must be a JSON object"})
 		return false
 	}
 	if err := decoder.Decode(new(any)); !errors.Is(err, io.EOF) {
@@ -59,15 +60,15 @@ func (a *api) media(w http.ResponseWriter, r *http.Request, expected string) boo
 	if err == nil && actual == expected {
 		return true
 	}
-	a.json(w, http.StatusUnsupportedMediaType, issue{"media_type", "expected " + expected})
+	a.json(w, http.StatusUnsupportedMediaType, issue{Code: "media_type", Message: "expected " + expected})
 	return false
 }
 
 func (a *api) readError(w http.ResponseWriter, err error) {
 	var limit *http.MaxBytesError
 	if errors.As(err, &limit) {
-		a.json(w, http.StatusRequestEntityTooLarge, issue{"capacity", "request body exceeds size limit"})
+		a.json(w, http.StatusRequestEntityTooLarge, issue{Code: "capacity", Message: "request body exceeds size limit"})
 		return
 	}
-	a.json(w, http.StatusBadRequest, issue{"invalid", err.Error()})
+	a.json(w, http.StatusBadRequest, issue{Code: "invalid", Message: err.Error()})
 }

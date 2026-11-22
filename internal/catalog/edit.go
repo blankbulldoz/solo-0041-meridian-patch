@@ -36,6 +36,7 @@ func (e Edit) Validate() error {
 type CatalogImage struct {
 	Revision uint64       `json:"revision"`
 	Layers   []LayerImage `json:"layers"`
+	Quotas   []Quota      `json:"quotas,omitempty"`
 }
 
 type LayerImage struct {

@@ -37,7 +37,7 @@ func (d *Database) Register(def catalog.Definition, expected *uint64) (Commit, e
 		if err != nil {
 			return nil, err
 		}
-		next := &state{revision: revision, layers: maps.Clone(current.layers)}
+		next := &state{revision: revision, layers: maps.Clone(current.layers), quotas: current.quotas}
 		next.layers[def.Name] = l
 		return next, nil
 	})
@@ -62,7 +62,7 @@ func (d *Database) Reframe(name string, layout catalog.Layout, expected *uint64)
 		if err != nil {
 			return nil, err
 		}
-		next := &state{revision: revision, layers: maps.Clone(current.layers)}
+		next := &state{revision: revision, layers: maps.Clone(current.layers), quotas: current.quotas}
 		next.layers[name] = l
 		return next, nil
 	})
@@ -93,7 +93,7 @@ func (d *Database) Edit(batch catalog.EditBatch) (Commit, error) {
 			}
 		}
 		slices.Sort(changed)
-		next := &state{revision: revision, layers: maps.Clone(current.layers)}
+		next := &state{revision: revision, layers: maps.Clone(current.layers), quotas: current.quotas}
 		for _, name := range changed {
 			l, err := buildLayer(current.layers[name].definition, revision, staged[name])
 			if err != nil {
@@ -107,6 +107,9 @@ func (d *Database) Edit(batch catalog.EditBatch) (Commit, error) {
 		}
 		if total > catalog.MaxRows {
 			return nil, exhausted("database feature capacity reached")
+		}
+		if err := next.checkQuotas(changed); err != nil {
+			return nil, err
 		}
 		return next, nil
 	})

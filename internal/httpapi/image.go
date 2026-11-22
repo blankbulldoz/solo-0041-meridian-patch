@@ -33,12 +33,12 @@ func (a *api) restore(w http.ResponseWriter, r *http.Request) {
 	}
 	header := r.Header.Values(expectedRevisionHeader)
 	if len(header) != 1 {
-		a.json(w, http.StatusPreconditionRequired, issue{"revision_required", "supply one If-Meridian-Revision header"})
+		a.json(w, http.StatusPreconditionRequired, issue{Code: "revision_required", Message: "supply one If-Meridian-Revision header"})
 		return
 	}
 	expected, err := strconv.ParseUint(header[0], 10, 64)
 	if err != nil {
-		a.json(w, http.StatusBadRequest, issue{"invalid", "If-Meridian-Revision must be an unsigned integer"})
+		a.json(w, http.StatusBadRequest, issue{Code: "invalid", Message: "If-Meridian-Revision must be an unsigned integer"})
 		return
 	}
 	raw, err := io.ReadAll(http.MaxBytesReader(w, r.Body, folio.MaxImage))

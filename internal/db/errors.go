@@ -5,6 +5,9 @@ import "fmt"
 type Error struct {
 	Code    string
 	Message string
+	// Details optionally carries structured context for callers, rendered
+	// as the JSON "details" field of an error response.
+	Details any
 }
 
 func (e *Error) Error() string { return e.Message }

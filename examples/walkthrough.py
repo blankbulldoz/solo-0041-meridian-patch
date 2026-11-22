@@ -238,6 +238,88 @@ def relation(s):
     return right
 
 
+def quota(s):
+    s.layer(FIELD)
+    s.layer(BED)
+    s.layer(PINS, 'mark', True)
+    s.edit(
+        op(FIELD, 'prong', box(0, 0, 6, 2)),
+        op(BED, 'shim', box(4, 0, 10, 2)),
+        op(FIELD, 'left', box(0, 4, 5, 8)),
+        op(BED, 'right', box(5, 4, 10, 8)),
+    )
+
+    def register(body, status=201):
+        return s.post('/quotas', body, status)
+
+    band = dict(name='core-band', bounds=box(0, 0, 10, 2), layers=[FIELD, BED], max_area=20)
+    register(dict(band, layers=[]), 400)
+    register(dict(band, layers=[FIELD, 'missing-layer']), 404)
+    register(dict(band, layers=[PINS]), 400)
+    register(dict(band, max_area=-1), 400)
+    register(dict(band, layers=[FIELD, FIELD]), 400)
+    before = s.get('/status')['revision']
+    # prong and shim overlap by 4 inside the band: union is 20, not the 24 sum
+    created = register(dict(band, layers=[BED, FIELD]))
+    assert created['quota']['layers'] == [BED, FIELD] and created['revision'] == before + 1
+    register(band, 409)
+    register(dict(name='stale-quota', bounds=box(0, 0, 1, 1), layers=[FIELD], max_area=1, if_revision=0), 409)
+    view = s.get('/quotas')
+    assert view['revision'] == created['revision']
+    assert [(q['name'], q['used']) for q in view['quotas']] == [('core-band', 20)]
+
+    register(dict(name='split-band', bounds=box(0, 4, 10, 8), layers=[FIELD, BED], max_area=40))
+    register(dict(name='whole-plane', bounds=BOUNDS, layers=[FIELD, BED], max_area=100))
+    register(dict(name='core-cell', bounds=box(8, 8, 12, 12), layers=[FIELD, BED], max_area=2))
+    used = {q['name']: q['used'] for q in s.get('/quotas')['quotas']}
+    assert used == {'core-band': 20, 'split-band': 40, 'whole-plane': 60, 'core-cell': 0}
+
+    # registration rejects an already-exceeded cap and reports the measured area
+    before = s.get('/status')['revision']
+    tight = register(dict(name='tight-band', bounds=box(0, 0, 10, 2), layers=[FIELD, BED], max_area=10), 422)
+    assert tight['details'] == {'quota': 'tight-band', 'area': 20, 'cap': 10}
+    assert s.get('/status')['revision'] == before
+    assert 'tight-band' not in {q['name'] for q in s.get('/quotas')['quotas']}
+
+    # the small cell quota rejects an edit that the library-wide cap would admit
+    before = s.get('/status')['revision']
+    before_features = ids(s.query(BED, 'window', dict(bounds=BOUNDS, limit=16)))
+    rejected = s.edit(op(BED, 'wide', box(0, 8, 10, 12)), status=422)
+    assert rejected['details'] == {'quota': 'core-cell', 'area': 8, 'cap': 2}
+    assert s.get('/status')['revision'] == before
+    assert ids(s.query(BED, 'window', dict(bounds=BOUNDS, limit=16))) == before_features
+
+    # when several quotas reject, the lowest quota name is reported
+    rejected = s.edit(op(FIELD, 'huge', BOUNDS), status=422)
+    assert rejected['details']['quota'] == 'core-cell'
+    assert s.get('/status')['revision'] == before
+
+    # moving coverage from FIELD to BED in one commit keeps the union at the cap
+    moved = s.edit(
+        op(BED, 'left', box(0, 4, 5, 8)),
+        op(FIELD, 'left', mode='remove'),
+    )
+    assert moved['revision'] == before + 1
+    assert {q['name']: q['used'] for q in s.get('/quotas')['quotas']}['split-band'] == 40
+
+    # removing the small quota admits the edit it used to reject
+    s.post('/quotas/core-cell/remove', dict(if_revision=0), 409)
+    s.post('/quotas/core-cell/remove', dict())
+    s.post('/quotas/core-cell/remove', dict(), 404)
+    s.edit(op(BED, 'wide', box(0, 8, 10, 12)))
+
+    # quotas persist through image export and restore, and still reject
+    revision = s.get('/status')['revision']
+    s.restore(s.get('/image'), revision)
+    assert {q['name'] for q in s.get('/quotas')['quotas']} == {'core-band', 'split-band', 'whole-plane'}
+    before = s.get('/status')['revision']
+    rejected = s.edit(op(FIELD, 'huge', BOUNDS), status=422)
+    assert rejected['details'] == {'quota': 'whole-plane', 'area': 1600, 'cap': 100}
+    assert s.get('/status')['revision'] == before
+    assert ids(s.query(FIELD, 'window', dict(bounds=BOUNDS, limit=16))) == ['prong']
+    return s.get('/quotas')
+
+
 def load_index(s):
     s.layer(PINS, 'mark')
     s.edit(*(op(PINS, f'peg-{i}', point(i-12, i % 3)) for i in range(24)))
@@ -304,7 +386,7 @@ def reopen(binary, data):
 
 
 WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
-                                     inspect, seams, relation, audit, export, restore, reopen)}
+                                     inspect, seams, relation, quota, audit, export, restore, reopen)}
 
 
 def main():
