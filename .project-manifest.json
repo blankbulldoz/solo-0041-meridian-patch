@@ -148,6 +148,28 @@
       "verification": "python3 examples/walkthrough.py --workflow window"
     },
     {
+      "id": "classes",
+      "name": "类别集合窗口",
+      "entry": "POST /strata/{layer}/window",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "spatial",
+        "plane",
+        "packed",
+        "bookmark",
+        "catalog"
+      ],
+      "steps": [
+        "规范化允许与排除列表",
+        "索引候选转精确结果",
+        "按语义绑定书签"
+      ],
+      "success": "允许列表与排除列表组合筛选，等价写法可续页",
+      "failure": "语义改变、换窗口或同层写入拒绝旧书签",
+      "verification": "python3 examples/walkthrough.py --workflow classes"
+    },
+    {
       "id": "locate",
       "name": "点定位",
       "entry": "POST /strata/{layer}/locate",

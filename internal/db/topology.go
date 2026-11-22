@@ -20,7 +20,7 @@ type SeamResponse struct {
 }
 
 func (d *Database) Seams(name string, q SeamQuery) (SeamResponse, error) {
-	if err := validateWindow(q.Bounds, ""); err != nil {
+	if err := validateWindow(q.Bounds); err != nil {
 		return SeamResponse{}, err
 	}
 	if q.Limit < 1 || q.Limit > spatial.MaxPairs {

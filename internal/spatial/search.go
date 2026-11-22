@@ -15,10 +15,28 @@ type MatchSet struct {
 	Visit    packed.Visit      `json:"visit"`
 }
 
-func Window(tree packed.Tree, bounds plane.Box, class, after string) MatchSet {
-	return matches(tree, bounds, func(row catalog.Feature) bool {
-		return row.ID > after && (class == "" || row.Class == class) && row.Shape.InWindow(bounds)
+// WindowResult reports the page together with category-filtering cost. The
+// index prunes by geometry only, so ClassRejected counts candidates that pass
+// the window and cursor but are then dropped by the class predicate; a long
+// exclude list therefore shows up as filtering work, not as fewer candidates.
+type WindowResult struct {
+	MatchSet
+	ClassRejected int
+}
+
+func Window(tree packed.Tree, bounds plane.Box, classes catalog.ClassFilter, after string) WindowResult {
+	var rejected int
+	match := matches(tree, bounds, func(row catalog.Feature) bool {
+		if row.ID <= after || !row.Shape.InWindow(bounds) {
+			return false
+		}
+		if !classes.Matches(row.Class) {
+			rejected++
+			return false
+		}
+		return true
 	})
+	return WindowResult{MatchSet: match, ClassRejected: rejected}
 }
 
 func Locate(tree packed.Tree, p plane.Point) MatchSet {

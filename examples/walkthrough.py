@@ -26,6 +26,10 @@ def point(x, y):
 
 BOUNDS = box(-20, -20, 20, 20)
 WINDOW = box(0, 0, 8, 4)
+DECK, POCKET = 'swatch-deck', 'pocket-deck'
+DECK_BOUNDS = box(-40, -40, 40, 40)
+POCKET_BOUNDS = box(-4, -4, 4, 4)
+CELLS = box(1, 1, 7, 7)
 
 
 class Session:
@@ -57,8 +61,8 @@ class Session:
     def query(self, layer, rule, value, status=200):
         return self.post(f'/strata/{layer}/{rule}', value, status)
 
-    def layer(self, name, kind='extent', exclusive=False, status=201):
-        return self.post('/strata', dict(name=name, kind=kind, bounds=BOUNDS, exclusive=exclusive), status)
+    def layer(self, name, kind='extent', exclusive=False, status=201, bounds=None):
+        return self.post('/strata', dict(name=name, kind=kind, bounds=bounds or BOUNDS, exclusive=exclusive), status)
 
     def edit(self, *items, status=200, revision=None):
         request = dict(edits=list(items))
@@ -171,6 +175,155 @@ def window(s):
     s.edit(op(FIELD, 'prong', mode='remove'))
     s.query(FIELD, 'window', dict(query, bookmark=first['next']), 409)
     return second
+
+
+def deck(s):
+    """Two layouts over one 240-feature layer.
+
+    Tile n sits in a 20x12 grid; its class is deterministic, except for three
+    'quartz' tiles that form the rare class. The tiny window CELLS covers only
+    tiles 210, 211, 230 and 231.
+    """
+    s.layer(DECK, bounds=DECK_BOUNDS)
+    items = []
+    for n in range(240):
+        row, col = divmod(n, 20)
+        x, y = -40 + col * 4, -40 + row * 4
+        category = 'quartz' if n in (5, 210, 231) else f'c{n % 40:02d}'
+        items.append(op(DECK, f'tile-{n:03d}', box(x, y, x + 3, y + 3), category))
+    s.edit(*items)
+    s.layer('blank-bed', 'mark')
+
+
+def classes(s):
+    deck(s)
+    assert ids(s.query(DECK, 'window', dict(bounds=CELLS, limit=8))) == \
+        ['tile-210', 'tile-211', 'tile-230', 'tile-231']
+
+    # Layout A: a full-library window that allows one rare class. Geometry alone
+    # admits every tile, so the class filter cannot shrink the candidate scan.
+    rare = s.query(DECK, 'window', dict(bounds=DECK_BOUNDS, limit=8, allow_classes=['quartz']))
+    assert ids(rare) == ['tile-005', 'tile-210', 'tile-231']
+    assert rare['visit'] == dict(nodes=rare['visit']['nodes'], candidates=240)
+    assert rare['class_rejected'] == 237
+
+    # Layout B: a tiny window that excludes sixty classes. The long exclude
+    # list adds no candidates; only the four geometrically visible tiles are
+    # weighed against the predicate.
+    absent = [f'absent-{i:02d}' for i in range(60)]
+    tight = s.query(DECK, 'window', dict(bounds=CELLS, limit=8,
+                                        exclude_classes=absent + ['c11', 'c11']))
+    assert ids(tight) == ['tile-210', 'tile-230', 'tile-231']
+    assert tight['visit']['candidates'] == 4 and tight['class_rejected'] == 1
+    assert tight['classes']['exclude_classes'] == sorted(absent + ['c11'])
+    assert tight['classes']['allow_classes'] is None
+
+    # Omitted allow and explicitly empty allow are different predicates.
+    omitted = s.query(DECK, 'window', dict(bounds=CELLS, limit=8))
+    empty = s.query(DECK, 'window', dict(bounds=CELLS, limit=8, allow_classes=[]))
+    assert len(omitted['features']) == 4 and omitted['classes']['allow_classes'] is None
+    assert empty['features'] == [] and empty['classes']['allow_classes'] == []
+    assert empty['class_rejected'] == 4
+
+    # Allow and exclude compose: "in allow and not in exclude".
+    both = s.query(DECK, 'window', dict(bounds=CELLS, limit=8,
+                                        allow_classes=['c11', 'quartz'], exclude_classes=['quartz']))
+    assert ids(both) == ['tile-211']
+
+    duplicate = s.query(DECK, 'window', dict(bounds=CELLS, limit=8,
+                                             allow_classes=['c11', 'quartz']))
+    assert duplicate['classes'] == dict(allow_classes=['c11', 'quartz'], exclude_classes=[])
+
+    # The legacy single class is the one-item allow list and still composes
+    # with an exclude list.
+    legacy = s.query(DECK, 'window', dict(bounds=CELLS, limit=8,
+                                          **{'class': 'quartz'}, exclude_classes=['quartz']))
+    assert legacy['features'] == [] and legacy['classes']['allow_classes'] == []
+
+    s.query(DECK, 'window', dict(bounds=CELLS, limit=8, allow_classes=['quartz'], **{'class': 'quartz'}), 400)
+    s.query(DECK, 'window', dict(bounds=CELLS, limit=8, allow_classes=['Bad']), 400)
+    s.query(DECK, 'window', dict(bounds=CELLS, limit=8, allow_classes=None), 400)
+    s.query(DECK, 'window', dict(bounds=CELLS, limit=8,
+                                 allow_classes=[f'k{i:03d}' for i in range(257)]), 400)
+
+    # A long exclude list also stays inside the bookmark: the bound value is a
+    # digest of the canonical predicate, so the continuation works and page
+    # size can change without repeating or skipping an ID.
+    long_first = s.query(DECK, 'window', dict(bounds=DECK_BOUNDS, limit=2, exclude_classes=absent))
+    assert len(long_first['features']) == 2 and long_first['next']
+    assert len(long_first['next']) < 300
+    long_next = s.query(DECK, 'window', dict(bounds=DECK_BOUNDS, limit=7,
+                                            exclude_classes=list(reversed(absent)) + absent[:1],
+                                            bookmark=long_first['next']))
+    assert [row['id'] for row in long_next['features']] == [f'tile-{n:03d}' for n in range(2, 9)]
+    assert all(row['class'] != 'quartz' or row['id'] in ('tile-005', 'tile-210', 'tile-231')
+               for row in long_next['features'])
+    tampered = long_first['next'][:-1] + ('A' if long_first['next'][-1] != 'A' else 'B')
+    s.query(DECK, 'window', dict(bounds=DECK_BOUNDS, limit=2, exclude_classes=absent,
+                                 bookmark=tampered), 400)
+
+    # A bookmark can be continued with the same predicate spelled differently,
+    # and a changed page size must not repeat or skip an ID.
+    first = s.query(DECK, 'window', dict(bounds=DECK_BOUNDS, limit=5,
+                                         allow_classes=['c03', 'c00', 'c01', 'c00']))
+    assert first['classes']['allow_classes'] == ['c00', 'c01', 'c03']
+    s.edit(op('blank-bed', 'plinth', point(0, 0)))
+    second = s.query(DECK, 'window', dict(bounds=DECK_BOUNDS, limit=2,
+                                         allow_classes=['c01', 'c03', 'c00', 'c01'],
+                                         bookmark=first['next']))
+    assert len(second['features']) == 2 and second['next']
+    third = s.query(DECK, 'window', dict(bounds=DECK_BOUNDS, limit=9,
+                                        allow_classes=['c00', 'c03', 'c01'],
+                                        bookmark=second['next']))
+    seen = ids(first) + ids(second) + ids(third)
+    assert all(a < b for a, b in zip(seen, seen[1:])) and len(seen) == len(set(seen))
+    assert {row['class'] for row in first['features'] + second['features'] + third['features']} <= {'c00', 'c01', 'c03'}
+
+    # Changing the predicate itself rejects the continuation. An exclude entry
+    # that removes nothing is not a change, so the same bookmark still works.
+    equivalent = s.query(DECK, 'window', dict(bounds=DECK_BOUNDS, limit=2,
+                                             allow_classes=['c09', 'c03', 'c00', 'c01'],
+                                             exclude_classes=['c09'],
+                                             bookmark=first['next']))
+    assert equivalent['features'] == second['features']
+
+    # The legacy class field and a one-item allow list are the same predicate,
+    # so a bookmark crosses the spelling change but not a window change.
+    legacy_first = s.query(DECK, 'window', dict(bounds=DECK_BOUNDS, limit=1, **{'class': 'c00'}))
+    legacy_next = s.query(DECK, 'window', dict(bounds=DECK_BOUNDS, limit=4,
+                                              allow_classes=['c00'], bookmark=legacy_first['next']))
+    assert all(row['class'] == 'c00' for row in legacy_next['features'])
+    s.query(DECK, 'window', dict(bounds=CELLS, limit=1, allow_classes=['c00'],
+                                 bookmark=legacy_first['next']), 400)
+
+    s.query(DECK, 'window', dict(bounds=DECK_BOUNDS, limit=5,
+                                 allow_classes=['c00', 'c01'],
+                                 bookmark=first['next']), 400)
+    s.query(DECK, 'window', dict(bounds=DECK_BOUNDS, limit=5,
+                                 allow_classes=['c00', 'c01', 'c03'],
+                                 exclude_classes=['c03'],
+                                 bookmark=first['next']), 400)
+
+    # A same-layer write expires the bookmark even when it touches only a tile
+    # outside the tiny window. Other layers do not.
+    small = s.query(DECK, 'window', dict(bounds=CELLS, limit=1))
+    assert ids(small) == ['tile-210']
+    s.edit(op('blank-bed', 'plinth', point(1, 1), mode='replace'))
+    continued = s.query(DECK, 'window', dict(bounds=CELLS, limit=3, bookmark=small['next']))
+    assert ids(continued) == ['tile-211', 'tile-230', 'tile-231']
+    s.edit(op(DECK, 'tile-000', box(-40, -40, -37, -37), 'c05', mode='replace'))
+    expired = s.query(DECK, 'window', dict(bounds=CELLS, limit=1, bookmark=small['next']), 409)
+    assert expired['code'] == 'conflict'
+
+    return dict(
+        rare=dict(features=ids(rare), candidates=rare['visit']['candidates'],
+                  class_rejected=rare['class_rejected'], nodes=rare['visit']['nodes']),
+        tight=dict(features=ids(tight), candidates=tight['visit']['candidates'],
+                   class_rejected=tight['class_rejected'], nodes=tight['visit']['nodes'],
+                   excluded=len(tight['classes']['exclude_classes'])),
+        omitted_allows=len(omitted['features']), empty_allows=len(empty['features']),
+        composed=ids(both), bookmark_pages=len(seen), expired=expired['code'],
+    )
 
 
 def locate(s):
@@ -303,7 +456,7 @@ def reopen(binary, data):
     return result
 
 
-WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
+WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, classes, locate, nearest, join, coverage,
                                      inspect, seams, relation, audit, export, restore, reopen)}
 
 

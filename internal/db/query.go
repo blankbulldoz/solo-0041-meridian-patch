@@ -16,20 +16,28 @@ type ReadStamp struct {
 }
 
 type WindowQuery struct {
-	Bounds   plane.Box `json:"bounds"`
-	Class    string    `json:"class,omitempty"`
-	Limit    int       `json:"limit"`
-	Bookmark string    `json:"bookmark,omitempty"`
+	Bounds   plane.Box         `json:"bounds"`
+	Class    string            `json:"class,omitempty"`
+	Allow    catalog.ClassList `json:"allow_classes,omitempty"`
+	Exclude  catalog.ClassList `json:"exclude_classes,omitempty"`
+	Limit    int               `json:"limit"`
+	Bookmark string            `json:"bookmark,omitempty"`
 }
 
 type WindowPage struct {
 	ReadStamp
 	spatial.MatchSet
-	Next string `json:"next,omitempty"`
+	Classes       catalog.ClassFilter `json:"classes"`
+	ClassRejected int                 `json:"class_rejected"`
+	Next          string              `json:"next,omitempty"`
 }
 
 func (d *Database) Window(name string, q WindowQuery) (WindowPage, error) {
-	if err := validateWindow(q.Bounds, q.Class); err != nil {
+	classes, err := catalog.BuildClassFilter(q.Class, q.Allow, q.Exclude)
+	if err != nil {
+		return WindowPage{}, invalid("%v", err)
+	}
+	if err := validateWindow(q.Bounds); err != nil {
 		return WindowPage{}, err
 	}
 	if q.Limit < 1 || q.Limit > 256 {
@@ -40,11 +48,11 @@ func (d *Database) Window(name string, q WindowQuery) (WindowPage, error) {
 	if err != nil {
 		return WindowPage{}, err
 	}
-	scope := bookmark.Scope{Layer: name, Bounds: q.Bounds, Class: q.Class, Revision: l.revision}
+	scope := bookmark.Scope{Layer: name, Bounds: q.Bounds, Classes: classes.Fingerprint(), Revision: l.revision}
 	var after string
 	if q.Bookmark != "" {
 		previous, from, err := d.signer.Open(q.Bookmark)
-		if err != nil || previous.Layer != scope.Layer || previous.Bounds != scope.Bounds || previous.Class != scope.Class {
+		if err != nil || previous.Layer != scope.Layer || previous.Bounds != scope.Bounds || previous.Classes != scope.Classes {
 			return WindowPage{}, invalid("bookmark does not match the window predicate")
 		}
 		if previous.Revision != scope.Revision {
@@ -52,7 +60,11 @@ func (d *Database) Window(name string, q WindowQuery) (WindowPage, error) {
 		}
 		after = from
 	}
-	page := WindowPage{ReadStamp: stamp(s, l), MatchSet: spatial.Window(l.tree, q.Bounds, q.Class, after)}
+	found := spatial.Window(l.tree, q.Bounds, classes, after)
+	page := WindowPage{
+		ReadStamp: stamp(s, l), MatchSet: found.MatchSet,
+		Classes: classes, ClassRejected: found.ClassRejected,
+	}
 	if len(page.Features) > q.Limit {
 		page.Next = d.signer.Seal(scope, page.Features[q.Limit-1].ID)
 		page.Features = page.Features[:q.Limit]
@@ -96,7 +108,10 @@ func (d *Database) Nearest(name string, q NearestQuery) (NearestResult, error) {
 	if err := q.Point.Validate(); err != nil {
 		return NearestResult{}, invalid("%v", err)
 	}
-	if q.Limit < 1 || q.Limit > 128 || (q.Class != "" && !catalog.ValidName(q.Class)) {
+	if q.Limit < 1 || q.Limit > 128 {
+		return NearestResult{}, invalid("invalid nearest limit or class")
+	}
+	if err := validateClass(q.Class); err != nil {
 		return NearestResult{}, invalid("invalid nearest limit or class")
 	}
 	s := d.head.Load()
@@ -121,10 +136,14 @@ func copyFeatures(rows []catalog.Feature) {
 	}
 }
 
-func validateWindow(bounds plane.Box, class string) error {
+func validateWindow(bounds plane.Box) error {
 	if err := bounds.Validate(); err != nil {
 		return invalid("%v", err)
 	}
+	return nil
+}
+
+func validateClass(class string) error {
 	if class != "" && !catalog.ValidName(class) {
 		return invalid("invalid class %q", class)
 	}
@@ -164,7 +183,7 @@ func (d *Database) Join(q JoinQuery) (JoinResponse, error) {
 	if q.Left == q.Right || q.Limit < 1 || q.Limit > spatial.MaxPairs {
 		return JoinResponse{}, invalid("join requires distinct layers and a limit of 1..%d", spatial.MaxPairs)
 	}
-	if err := validateWindow(q.Bounds, ""); err != nil {
+	if err := validateWindow(q.Bounds); err != nil {
 		return JoinResponse{}, err
 	}
 	s := d.head.Load()
@@ -197,7 +216,10 @@ type CoverageResponse struct {
 }
 
 func (d *Database) Coverage(name string, q CoverageQuery) (CoverageResponse, error) {
-	if err := validateWindow(q.Bounds, q.Class); err != nil {
+	if err := validateWindow(q.Bounds); err != nil {
+		return CoverageResponse{}, err
+	}
+	if err := validateClass(q.Class); err != nil {
 		return CoverageResponse{}, err
 	}
 	s := d.head.Load()

@@ -23,10 +23,14 @@ func New() (Signer, error) {
 	return signer, err
 }
 
+// Scope binds a continuation to one layer revision and one canonical category
+// predicate. The predicate travels as a digest: duplicate or reordered class
+// lists in a later request canonicalize to the same digest, while any semantic
+// difference produces a different one, and long lists cannot overflow the token.
 type Scope struct {
 	Layer    string    `json:"layer"`
 	Bounds   plane.Box `json:"bounds"`
-	Class    string    `json:"class"`
+	Classes  string    `json:"classes"`
 	Revision uint64    `json:"revision"`
 }
 
