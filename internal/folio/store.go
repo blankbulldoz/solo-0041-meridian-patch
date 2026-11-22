@@ -2,36 +2,20 @@ package folio
 
 import (
 	"errors"
-	"fmt"
 	"io"
 	"os"
 	"path/filepath"
-	"syscall"
 )
 
 const stateName = "meridian-state.mpb"
+
+// LockFileName is the single directory entry both lock namespaces live on.
+const LockFileName = "meridian.writer"
 
 type Store struct {
 	dir  string
 	lock *os.File
 }
-
-func Open(dir string) (*Store, error) {
-	if err := os.MkdirAll(dir, 0700); err != nil {
-		return nil, err
-	}
-	lock, err := os.OpenFile(filepath.Join(dir, "meridian.writer"), os.O_CREATE|os.O_RDWR, 0600)
-	if err != nil {
-		return nil, err
-	}
-	if err := syscall.Flock(int(lock.Fd()), syscall.LOCK_EX|syscall.LOCK_NB); err != nil {
-		lock.Close()
-		return nil, fmt.Errorf("acquire data directory: %w", err)
-	}
-	return &Store{dir: dir, lock: lock}, nil
-}
-
-func (s *Store) Close() error { return s.lock.Close() }
 
 func (s *Store) Read() ([]byte, bool, error) {
 	file, err := os.Open(filepath.Join(s.dir, stateName))

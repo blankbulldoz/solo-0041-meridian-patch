@@ -87,6 +87,10 @@ func (d *Database) commit(expected *uint64, prepare func(*state, uint64) (*state
 	if current.revision == math.MaxUint64 {
 		return nil, exhausted("database revision space is exhausted")
 	}
+	if err := d.store.Validate(); err != nil {
+		d.blocked.Store(true)
+		return nil, &Error{Code: "unavailable", Message: err.Error()}
+	}
 	next, err := prepare(current, current.revision+1)
 	if err != nil {
 		return nil, err

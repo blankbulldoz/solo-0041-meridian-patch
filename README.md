@@ -14,6 +14,15 @@ python3 examples/walkthrough.py --workflow coverage
 
 演练脚本启动独立进程并使用临时状态目录和系统分配的端口。它不会修改运行中的数据库。数据文件为 `meridian-state.mpb`。`meridian.writer` 由操作系统锁定，不要手动删除后尝试接管。服务默认绑定回环地址，供受信任调用者使用。
 
+写者锁同时持有 BSD `flock` 守卫和整文件 POSIX 记录锁（`fcntl F_SETLK`）；目标环境用记录锁核验持有者，而 `flock` 让迁移期间的新旧二进制仍互斥。目录被占用时进程以退出码 75 退出，便于编排重试。部署检查与回退条件见 [docs/writer-lock-migration.md](docs/writer-lock-migration.md)。
+
+```sh
+./meridian -data ./data -check-lock          # 报告 flock/记录锁持有者与文件系统能力
+./meridian -data ./data -probe-lock legacy  # 用旧二进制的锁序竞争
+./meridian -data ./data -probe-lock record  # 用仅记录锁的锁序竞争
+./meridian -data ./data -probe-lock both    # 用本二进制的双锁序竞争
+```
+
 ## API
 
 所有路径以 `/meridian/v1` 开头。写入 JSON 使用 `Content-Type: application/json`。图层名、地物 ID、类别为不超过 48 字符的小写名称，首字符为小写 ASCII 字母。坐标对象中省略的整数分量使用零值。
