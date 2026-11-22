@@ -24,48 +24,42 @@ type SeamResult struct {
 }
 
 func Seams(tree packed.Tree, window plane.Box, limit int) (SeamResult, error) {
-	result := SeamResult{Seams: make([]SharedSeam, 0)}
 	// Search the closed envelope to keep features that lie entirely outside the
 	// window but share an edge on one of its included sides.
-	outer := make([]catalog.Feature, 0)
-	result.Visit = tree.Search(window, func(feature catalog.Feature) bool {
+	var outer []catalog.Feature
+	seed := tree.Search(window, func(feature catalog.Feature) bool {
 		outer = append(outer, feature)
 		return true
 	})
-	for _, row := range outer {
-		remaining := maxJoinCandidates - result.Visit.Candidates
-		var exhausted bool
-		visit := tree.Search(row.Shape.Envelope(), func(other catalog.Feature) bool {
-			remaining--
-			if remaining < 0 {
-				exhausted = true
-				return false
+	seams, visit, err := scanCandidates(
+		seed,
+		outer,
+		tree,
+		func(row catalog.Feature) plane.Box { return row.Shape.Envelope() },
+		limit,
+		ErrSeamBudget,
+		func(row, candidate catalog.Feature) (SharedSeam, bool) {
+			// Each unordered pair is handled once, from its lower-ID side.
+			if candidate.ID <= row.ID {
+				return SharedSeam{}, false
 			}
-			if other.ID <= row.ID {
-				return true
-			}
-			seam, shares := plane.SharedBoundary(*row.Shape.Extent, *other.Shape.Extent, window)
+			// SharedBoundary applies the half-open window clipping: left and
+			// bottom sides count, right and top sides do not.
+			seam, shares := plane.SharedBoundary(*row.Shape.Extent, *candidate.Shape.Extent, window)
 			if !shares {
-				return true
+				return SharedSeam{}, false
 			}
-			if len(result.Seams) == limit {
-				exhausted = true
-				return false
-			}
-			result.Seams = append(result.Seams, SharedSeam{First: row.ID, Second: other.ID, Seam: seam})
-			return true
-		})
-		if exhausted {
-			return SeamResult{}, ErrSeamBudget
-		}
-		result.Visit.Nodes += visit.Nodes
-		result.Visit.Candidates += visit.Candidates
+			return SharedSeam{First: row.ID, Second: candidate.ID, Seam: seam}, true
+		},
+	)
+	if err != nil {
+		return SeamResult{}, err
 	}
-	slices.SortFunc(result.Seams, func(a, b SharedSeam) int {
+	slices.SortFunc(seams, func(a, b SharedSeam) int {
 		if order := cmp.Compare(a.First, b.First); order != 0 {
 			return order
 		}
 		return cmp.Compare(a.Second, b.Second)
 	})
-	return result, nil
+	return SeamResult{Seams: seams, Visit: visit}, nil
 }

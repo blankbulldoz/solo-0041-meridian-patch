@@ -28,50 +28,51 @@ type JoinResult struct {
 	Visit packed.Visit `json:"visit"`
 }
 
+// joinSide pairs a left-side feature with the shape it presents inside the
+// query window. The join clips both sides against the window, so a feature
+// whose real intersection lies entirely outside the window never matches.
+type joinSide struct {
+	row     catalog.Feature
+	clipped plane.Shape
+}
+
 func Join(left, right packed.Tree, bounds plane.Box, pairLimit int) (JoinResult, error) {
-	var result JoinResult
 	leftRows := Window(left, bounds, "", "")
-	result.Visit = leftRows.Visit
-	result.Pairs = make([]Pair, 0)
+	sides := make([]joinSide, 0, len(leftRows.Features))
 	for _, row := range leftRows.Features {
 		clipped, _ := restrict(row.Shape, bounds)
-		var exhausted bool
-		remaining := maxJoinCandidates - result.Visit.Candidates
-		visit := right.Search(clipped.Envelope(), func(other catalog.Feature) bool {
-			remaining--
-			if remaining < 0 {
-				exhausted = true
-				return false
+		sides = append(sides, joinSide{row: row, clipped: clipped})
+	}
+	pairs, visit, err := scanCandidates(
+		leftRows.Visit,
+		sides,
+		right,
+		func(side joinSide) plane.Box { return side.clipped.Envelope() },
+		pairLimit,
+		ErrJoinBudget,
+		func(side joinSide, candidate catalog.Feature) (Pair, bool) {
+			rightShape, visible := restrict(candidate.Shape, bounds)
+			if !visible || !side.clipped.Meets(rightShape) {
+				return Pair{}, false
 			}
-			rightShape, visible := restrict(other.Shape, bounds)
-			if !visible || !clipped.Meets(rightShape) {
-				return true
-			}
-			if len(result.Pairs) == pairLimit {
-				exhausted = true
-				return false
-			}
-			pair := Pair{Left: row.ID, Right: other.ID}
-			if clipped.Extent != nil && rightShape.Extent != nil {
-				intersection, _ := clipped.Extent.Clip(*rightShape.Extent)
+			pair := Pair{Left: side.row.ID, Right: candidate.ID}
+			if side.clipped.Extent != nil && rightShape.Extent != nil {
+				intersection, _ := side.clipped.Extent.Clip(*rightShape.Extent)
 				pair.Intersection = &intersection
 			}
-			result.Pairs = append(result.Pairs, pair)
-			return true
-		})
-		if exhausted {
-			return JoinResult{}, ErrJoinBudget
-		}
-		result.Visit.Nodes += visit.Nodes
-		result.Visit.Candidates += visit.Candidates
+			return pair, true
+		},
+	)
+	if err != nil {
+		return JoinResult{}, err
 	}
-	slices.SortFunc(result.Pairs, func(a, b Pair) int {
+	slices.SortFunc(pairs, func(a, b Pair) int {
 		if order := cmp.Compare(a.Left, b.Left); order != 0 {
 			return order
 		}
 		return cmp.Compare(a.Right, b.Right)
 	})
-	return result, nil
+	return JoinResult{Pairs: pairs, Visit: visit}, nil
 }
 
 func restrict(shape plane.Shape, bounds plane.Box) (plane.Shape, bool) {

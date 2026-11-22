@@ -1,0 +1,86 @@
+{
+  "observed": {
+    "join": {
+      "left_revision": 5,
+      "pairs": [
+        {
+          "intersection": {
+            "max_x": 6,
+            "max_y": 8,
+            "min_x": 4,
+            "min_y": 6
+          },
+          "left": "alpha",
+          "right": "charlie"
+        }
+      ],
+      "revision": 5,
+      "right_revision": 5,
+      "visit": {
+        "candidates": 3,
+        "nodes": 2
+      }
+    },
+    "seams": {
+      "layer_revision": 4,
+      "revision": 5,
+      "seams": [
+        {
+          "first": "inner-bottom",
+          "seam": {
+            "axis": "vertical",
+            "fixed": 0,
+            "from": 6,
+            "to": 8
+          },
+          "second": "outer-left"
+        },
+        {
+          "first": "inner-left",
+          "seam": {
+            "axis": "vertical",
+            "fixed": 0,
+            "from": 2,
+            "to": 8
+          },
+          "second": "outer-left"
+        }
+      ],
+      "visit": {
+        "candidates": 30,
+        "nodes": 7
+      }
+    },
+    "window": {
+      "max_x": 10,
+      "max_y": 10,
+      "min_x": 0,
+      "min_y": 0
+    }
+  },
+  "verdict": {
+    "expectations": {
+      "inside_window_intersection_kept": true,
+      "left_side_seam_included": true,
+      "outside_window_intersection_dropped": true,
+      "right_side_seam_excluded": true,
+      "top_side_seam_excluded": true
+    },
+    "join_pairs": [
+      [
+        "alpha",
+        "charlie"
+      ]
+    ],
+    "seam_pairs": [
+      [
+        "inner-bottom",
+        "outer-left"
+      ],
+      [
+        "inner-left",
+        "outer-left"
+      ]
+    ]
+  }
+}
