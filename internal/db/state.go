@@ -26,37 +26,72 @@ func (l *layer) summary() catalog.Summary {
 	return catalog.Summary{Definition: l.definition, Revision: l.revision, Count: len(l.rows)}
 }
 
+func (l *layer) features() []catalog.Feature {
+	return sortedRows(l.rows)
+}
+
+func sortedRows(rows map[string]catalog.Feature) []catalog.Feature {
+	out := make([]catalog.Feature, 0, len(rows))
+	for _, row := range rows {
+		out = append(out, row)
+	}
+	slices.SortFunc(out, func(a, b catalog.Feature) int { return cmp.Compare(a.ID, b.ID) })
+	return out
+}
+
+// buildLayer rebuilds an immutable layer view from a catalog that has already
+// reached its post-request state. It never interprets individual edits: every
+// write path (/edits, /layout and image recovery) stages its own row map and
+// only then calls here, so interpretation-time rules cannot leak into
+// stage-end validation. The stages run in a fixed order and each one is a
+// standalone helper so other callers can reuse a single stage-end check
+// without rebuilding a whole layer.
 func buildLayer(def catalog.Definition, revision uint64, rows map[string]catalog.Feature) (*layer, error) {
 	if err := def.Validate(); err != nil {
 		return nil, invalid("%v", err)
 	}
+	ordered, err := verifyLayerContents(def, rows)
+	if err != nil {
+		return nil, err
+	}
+	l := &layer{definition: def, revision: revision, rows: rows, tree: packed.Build(ordered)}
+	if err := verifyExclusivePolicy(def, l.tree, ordered); err != nil {
+		return nil, err
+	}
+	return l, nil
+}
+
+// verifyLayerContents is the reusable end-of-stage catalog check. It answers
+// one question about the staged final state, independent of how the rows were
+// produced: does the row set respect the per-layer capacity, and does every
+// feature satisfy the layer's final definition (kind, coordinates and bounds)?
+// Features are returned in canonical ID order for index construction.
+func verifyLayerContents(def catalog.Definition, rows map[string]catalog.Feature) ([]catalog.Feature, error) {
 	if len(rows) > catalog.MaxLayerRows {
 		return nil, exhausted("layer %s exceeds feature capacity", def.Name)
 	}
-	l := &layer{definition: def, revision: revision, rows: rows}
-	ordered := l.features()
+	ordered := sortedRows(rows)
 	for _, row := range ordered {
 		if err := row.Validate(def); err != nil {
 			return nil, invalid("%v", err)
 		}
 	}
-	l.tree = packed.Build(ordered)
-	if def.Exclusive {
-		left, right, overlap := l.tree.Conflict(ordered)
-		if overlap {
-			return nil, conflict("exclusive layer %s: %s intersects %s", def.Name, left, right)
-		}
-	}
-	return l, nil
+	return ordered, nil
 }
 
-func (l *layer) features() []catalog.Feature {
-	rows := make([]catalog.Feature, 0, len(l.rows))
-	for _, row := range l.rows {
-		rows = append(rows, row)
+// verifyExclusivePolicy is the reusable end-of-stage exclusion check. The
+// exclusive policy is a property of the final catalog, so it is evaluated
+// only here, against the rebuilt index, never while a batch is still being
+// interpreted. Non-exclusive layers have no stage-end exclusion rule.
+func verifyExclusivePolicy(def catalog.Definition, tree packed.Tree, ordered []catalog.Feature) error {
+	if !def.Exclusive {
+		return nil
 	}
-	slices.SortFunc(rows, func(a, b catalog.Feature) int { return cmp.Compare(a.ID, b.ID) })
-	return rows
+	left, right, overlap := tree.Conflict(ordered)
+	if overlap {
+		return conflict("exclusive layer %s: %s intersects %s", def.Name, left, right)
+	}
+	return nil
 }
 
 func (s *state) names() []string {
