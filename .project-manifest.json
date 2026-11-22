@@ -360,6 +360,23 @@
       "success": "带回原修订并提供正常查询",
       "failure": "目录被另一进程占用或镜像损坏时拒绝",
       "verification": "python3 examples/walkthrough.py --workflow reopen"
+    },
+    {
+      "id": "review",
+      "name": "审阅会话固定视图",
+      "entry": "POST /reviews",
+      "module_ids": [
+        "httpapi",
+        "db"
+      ],
+      "steps": [
+        "打开时固定全库视图",
+        "会话内读取引用同一修订",
+        "过期或关闭后明确失效"
+      ],
+      "success": "间隔写入后续页、定位、配对仍读同一修订",
+      "failure": "容量满拒绝新会话，失效会话返回 410",
+      "verification": "python3 examples/walkthrough.py --workflow review"
     }
   ]
 }

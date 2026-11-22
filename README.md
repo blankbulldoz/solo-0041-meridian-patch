@@ -32,6 +32,8 @@ python3 examples/walkthrough.py --workflow coverage
 | `POST /strata/{layer}/seams` | `bounds`, `limit`。按 ID 对返回正长度共享边 |
 | `POST /join` | `left`, `right`, `bounds`, `limit`。返回同一全库修订的相交对 |
 | `POST /relation` | `left` 与 `right` 分别含 `layer` 和 `id`。返回相交、双向包含和闭包距离 |
+| `POST /reviews` | 打开审阅会话，固定当前全库视图。返回 `session`、`revision`、`expires_at` |
+| `DELETE /reviews/{session}` | 主动关闭会话并返回 `closed`；已失效的会话返回 `410 session_gone` |
 | `GET /strata/{layer}/index` | 返回 `tree` 结构统计 |
 | `GET /strata/{layer}/index-audit` | 核对索引和目录，返回 `records` 与 `checked_nodes` |
 | `GET /image` | 返回 MPB v1 镜像及 `Meridian-Revision` |
@@ -48,5 +50,7 @@ python3 examples/walkthrough.py --workflow coverage
 ```
 
 `409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
+
+窗口续页、点定位和跨层配对可携带 `Meridian-Session` 请求头，在会话打开时固定的全库视图上读取：会话间隔中发生的写入不影响该视图，窗口书签在会话内保持有效，响应的 `revision` 始终是打开时的修订。不携带该头的请求行为不变。同时保留的会话数与存活时间由 `-review-max`（默认 64）和 `-review-ttl`（默认 30m）限制；超限打开返回 `422 capacity`，过期或关闭后再引用返回 `410 session_gone`，之后打开的会话看到最新视图。
 
 边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。

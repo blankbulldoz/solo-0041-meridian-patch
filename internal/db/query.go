@@ -28,14 +28,17 @@ type WindowPage struct {
 	Next string `json:"next,omitempty"`
 }
 
-func (d *Database) Window(name string, q WindowQuery) (WindowPage, error) {
+func (d *Database) Window(name string, q WindowQuery, session string) (WindowPage, error) {
 	if err := validateWindow(q.Bounds, q.Class); err != nil {
 		return WindowPage{}, err
 	}
 	if q.Limit < 1 || q.Limit > 256 {
 		return WindowPage{}, invalid("window limit must be 1..256")
 	}
-	s := d.head.Load()
+	s, err := d.view(session)
+	if err != nil {
+		return WindowPage{}, err
+	}
 	l, err := s.getLayer(name)
 	if err != nil {
 		return WindowPage{}, err
@@ -66,11 +69,14 @@ type LocateResult struct {
 	spatial.MatchSet
 }
 
-func (d *Database) Locate(name string, p plane.Point) (LocateResult, error) {
+func (d *Database) Locate(name string, p plane.Point, session string) (LocateResult, error) {
 	if err := p.Validate(); err != nil {
 		return LocateResult{}, invalid("%v", err)
 	}
-	s := d.head.Load()
+	s, err := d.view(session)
+	if err != nil {
+		return LocateResult{}, err
+	}
 	l, err := s.getLayer(name)
 	if err != nil {
 		return LocateResult{}, err
@@ -160,14 +166,17 @@ type JoinResponse struct {
 	spatial.JoinResult
 }
 
-func (d *Database) Join(q JoinQuery) (JoinResponse, error) {
+func (d *Database) Join(q JoinQuery, session string) (JoinResponse, error) {
 	if q.Left == q.Right || q.Limit < 1 || q.Limit > spatial.MaxPairs {
 		return JoinResponse{}, invalid("join requires distinct layers and a limit of 1..%d", spatial.MaxPairs)
 	}
 	if err := validateWindow(q.Bounds, ""); err != nil {
 		return JoinResponse{}, err
 	}
-	s := d.head.Load()
+	s, err := d.view(session)
+	if err != nil {
+		return JoinResponse{}, err
+	}
 	left, err := s.getLayer(q.Left)
 	if err != nil {
 		return JoinResponse{}, err

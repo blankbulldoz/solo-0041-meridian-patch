@@ -18,6 +18,7 @@ type Database struct {
 	write   sync.Mutex
 	blocked atomic.Bool
 	closed  bool
+	reviews *reviews
 }
 
 func Open(dir string) (*Database, error) {
@@ -38,7 +39,7 @@ func openStore(store *folio.Store) (*Database, error) {
 	if err != nil {
 		return nil, err
 	}
-	d := &Database{store: store, signer: signer}
+	d := &Database{store: store, signer: signer, reviews: newReviews(DefaultReviewPolicy())}
 	s := &state{layers: make(map[string]*layer)}
 	raw, present, err := store.Read()
 	if err != nil {

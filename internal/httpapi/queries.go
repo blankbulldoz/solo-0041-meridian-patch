@@ -9,16 +9,18 @@ import (
 
 func (a *api) window(w http.ResponseWriter, r *http.Request) {
 	var request db.WindowQuery
-	if a.input(w, r, &request) {
-		result, err := a.db.Window(r.PathValue("layer"), request)
+	session, ok := a.sessionToken(w, r)
+	if ok && a.input(w, r, &request) {
+		result, err := a.db.Window(r.PathValue("layer"), request, session)
 		a.respond(w, http.StatusOK, result, err)
 	}
 }
 
 func (a *api) locate(w http.ResponseWriter, r *http.Request) {
 	var request plane.Point
-	if a.input(w, r, &request) {
-		result, err := a.db.Locate(r.PathValue("layer"), request)
+	session, ok := a.sessionToken(w, r)
+	if ok && a.input(w, r, &request) {
+		result, err := a.db.Locate(r.PathValue("layer"), request, session)
 		a.respond(w, http.StatusOK, result, err)
 	}
 }
@@ -46,8 +48,9 @@ func (a *api) inspect(w http.ResponseWriter, r *http.Request) {
 
 func (a *api) join(w http.ResponseWriter, r *http.Request) {
 	var request db.JoinQuery
-	if a.input(w, r, &request) {
-		result, err := a.db.Join(request)
+	session, ok := a.sessionToken(w, r)
+	if ok && a.input(w, r, &request) {
+		result, err := a.db.Join(request, session)
 		a.respond(w, http.StatusOK, result, err)
 	}
 }

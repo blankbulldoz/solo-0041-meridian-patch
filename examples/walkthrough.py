@@ -7,12 +7,14 @@ from pathlib import Path
 import select
 import subprocess
 import tempfile
+import time
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
 PREFIX = '/meridian/v1'
 IMAGE = 'application/vnd.meridian.image'
+SESSION = 'Meridian-Session'
 FIELD, BED, PINS = 'ochre-field', 'mica-bed', 'plumb-marks'
 
 
@@ -51,11 +53,11 @@ class Session:
     def get(self, path, status=200):
         return self.request('GET', path, status=status)[0]
 
-    def post(self, path, value, status=200):
-        return self.request('POST', path, value, status)[0]
+    def post(self, path, value, status=200, headers=None):
+        return self.request('POST', path, value, status, headers)[0]
 
-    def query(self, layer, rule, value, status=200):
-        return self.post(f'/strata/{layer}/{rule}', value, status)
+    def query(self, layer, rule, value, status=200, headers=None):
+        return self.post(f'/strata/{layer}/{rule}', value, status, headers)
 
     def layer(self, name, kind='extent', exclusive=False, status=201):
         return self.post('/strata', dict(name=name, kind=kind, bounds=BOUNDS, exclusive=exclusive), status)
@@ -73,8 +75,8 @@ class Session:
 
 
 @contextmanager
-def running(binary, data):
-    args = [str(binary), '-listen', '127.0.0.1:0', '-data', str(data)]
+def running(binary, data, extra=()):
+    args = [str(binary), '-listen', '127.0.0.1:0', '-data', str(data), *extra]
     child = subprocess.Popen(args, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
     try:
         readable, _, _ = select.select([child.stderr], [], [], 10)
@@ -286,6 +288,66 @@ def restore(s):
     return restored
 
 
+def review(binary, data):
+    with running(binary, data, ['-review-max', '2', '-review-ttl', '30s']) as s:
+        rev = seed(s)
+        opened = s.post('/reviews', {}, status=201)
+        token = opened['session']
+        assert opened['revision'] == rev and time.time() < opened['expires_at'] <= time.time() + 30
+        head = {SESSION: token}
+        query = dict(bounds=WINDOW, limit=1)
+        first = s.query(FIELD, 'window', query, headers=head)
+        assert ids(first) == ['dowel'] and first['revision'] == rev and first['next']
+        # writes between session reads move the head but not the pinned view
+        s.edit(op(FIELD, 'dowel', mode='remove'))
+        s.edit(op(BED, 'shim', mode='remove'))
+        assert s.get('/status')['revision'] == rev + 2
+        second = s.query(FIELD, 'window', dict(query, limit=2, bookmark=first['next']), headers=head)
+        assert ids(second) == ['ferrule', 'prong'] and 'next' not in second
+        assert second['revision'] == rev and second['layer_revision'] == first['layer_revision']
+        # without the session the same bookmark expired with the layer revision
+        s.query(FIELD, 'window', dict(query, bookmark=first['next']), status=409)
+        assert s.query(FIELD, 'window', query)['revision'] == rev + 2
+        # session locate and join still see the pinned features
+        assert ids(s.query(FIELD, 'locate', point(4, 0), headers=head)) == ['dowel']
+        assert ids(s.query(FIELD, 'locate', point(4, 0))) == []
+        join_query = dict(left=FIELD, right=BED, bounds=box(4, 0, 8, 4), limit=10)
+        pinned = s.post('/join', join_query, headers=head)
+        assert pinned['revision'] == rev
+        assert pinned['pairs'] == [dict(left='dowel', right='shim', intersection=box(4, 0, 5, 2)),
+                                   dict(left='ferrule', right='shim', intersection=box(4, 1, 5, 2))]
+        assert s.post('/join', join_query)['pairs'] == []
+        # layers created after the session opened are absent from its view
+        s.layer('late-layer')
+        s.query('late-layer', 'locate', point(0, 0), status=404, headers=head)
+        assert ids(s.query('late-layer', 'locate', point(0, 0))) == []
+        # a session opened later pins the new view
+        head_rev = s.get('/status')['revision']
+        later = s.post('/reviews', {}, status=201)
+        assert later['revision'] == head_rev
+        assert ids(s.query(FIELD, 'locate', point(4, 0), headers={SESSION: later['session']})) == []
+        # capacity: two live sessions, a third is refused until one closes
+        assert s.post('/reviews', {}, status=422)['code'] == 'capacity'
+        closed = s.request('DELETE', f'/reviews/{token}', status=200)[0]
+        assert closed == dict(session=token, closed=True)
+        assert s.post('/reviews', {}, status=201)['revision'] == head_rev
+        # closed or unknown sessions report one explicit terminal result
+        assert s.query(FIELD, 'window', query, status=410, headers=head)['code'] == 'session_gone'
+        assert s.request('DELETE', f'/reviews/{token}', status=410)[0]['code'] == 'session_gone'
+        assert s.query(FIELD, 'locate', point(4, 0), status=410, headers={SESSION: 'not-a-session'})['code'] == 'session_gone'
+    with running(binary, data, ['-review-ttl', '1s']) as s:
+        assert s.get('/status')['revision'] == head_rev
+        expiring = s.post('/reviews', {}, status=201)
+        head = {SESSION: expiring['session']}
+        assert ids(s.query(FIELD, 'locate', point(2, 1), headers=head)) == ['ferrule', 'prong']
+        time.sleep(1.4)
+        # expiry gives the same clear result and frees capacity for new sessions
+        assert s.query(FIELD, 'locate', point(2, 1), status=410, headers=head)['code'] == 'session_gone'
+        assert s.request('DELETE', f"/reviews/{expiring['session']}", status=410)[0]['code'] == 'session_gone'
+        assert s.post('/reviews', {}, status=201)['revision'] == head_rev
+    return dict(pinned_revision=rev, head_revision=head_rev)
+
+
 def reopen(binary, data):
     with running(binary, data) as s:
         rev = seed(s)
@@ -304,7 +366,7 @@ def reopen(binary, data):
 
 
 WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
-                                     inspect, seams, relation, audit, export, restore, reopen)}
+                                     inspect, seams, relation, audit, export, restore, reopen, review)}
 
 
 def main():
@@ -315,8 +377,9 @@ def main():
         root = Path(temporary)
         binary, data = root/'meridian', root/'space'
         subprocess.run(['go', 'build', '-o', str(binary), './cmd/meridian'], check=True, cwd=ROOT, timeout=90)
-        if args.workflow == 'reopen':
-            result = reopen(binary, data)
+        detached = dict(reopen=reopen, review=review)
+        if args.workflow in detached:
+            result = detached[args.workflow](binary, data)
         else:
             with running(binary, data) as session:
                 result = WORKFLOWS[args.workflow](session)

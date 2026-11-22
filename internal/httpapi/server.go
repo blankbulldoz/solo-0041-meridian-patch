@@ -32,6 +32,8 @@ func New(database *db.Database, log *slog.Logger) http.Handler {
 	mux.HandleFunc("POST "+Prefix+"/strata/{layer}/seams", a.seams)
 	mux.HandleFunc("POST "+Prefix+"/join", a.join)
 	mux.HandleFunc("POST "+Prefix+"/relation", a.relation)
+	mux.HandleFunc("POST "+Prefix+"/reviews", a.openReview)
+	mux.HandleFunc("DELETE "+Prefix+"/reviews/{session}", a.closeReview)
 	mux.HandleFunc("GET "+Prefix+"/image", a.export)
 	mux.HandleFunc("PUT "+Prefix+"/image", a.restore)
 	return mux

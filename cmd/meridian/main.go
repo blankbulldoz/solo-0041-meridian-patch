@@ -19,22 +19,26 @@ import (
 func main() {
 	addr := flag.String("listen", "127.0.0.1:8741", "HTTP service listen address")
 	dir := flag.String("data", "./data", "exclusive database directory")
+	reviewMax := flag.Int("review-max", db.DefaultReviewPolicy().Max, "maximum live review sessions")
+	reviewTTL := flag.Duration("review-ttl", db.DefaultReviewPolicy().TTL, "review session lifetime before expiry")
 	flag.Parse()
 	log := slog.New(slog.NewJSONHandler(os.Stderr, nil))
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer cancel()
-	if err := serve(ctx, *addr, *dir, log); err != nil {
+	policy := db.ReviewPolicy{Max: *reviewMax, TTL: *reviewTTL}
+	if err := serve(ctx, *addr, *dir, policy, log); err != nil {
 		log.Error("service stopped", "error", err)
 		os.Exit(1)
 	}
 }
 
-func serve(ctx context.Context, addr, dir string, log *slog.Logger) (err error) {
+func serve(ctx context.Context, addr, dir string, policy db.ReviewPolicy, log *slog.Logger) (err error) {
 	database, err := db.Open(dir)
 	if err != nil {
 		return err
 	}
 	defer func() { err = errors.Join(err, database.Close()) }()
+	database.SetReviewPolicy(policy)
 	listener, err := net.Listen("tcp", addr)
 	if err != nil {
 		return err
