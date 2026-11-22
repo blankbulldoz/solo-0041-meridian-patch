@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"flag"
+	"fmt"
 	"log/slog"
 	"net"
 	"net/http"
@@ -12,11 +13,28 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/db"
 	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/httpapi"
 )
 
 func main() {
+	if len(os.Args) > 1 && os.Args[1] != "" && os.Args[1][0] != '-' {
+		switch os.Args[1] {
+		case "diff":
+			if err := runDiff(os.Args[2:]); err != nil {
+				fail(err)
+			}
+			return
+		case "apply-patch":
+			if err := runApplyPatch(os.Args[2:]); err != nil {
+				fail(err)
+			}
+			return
+		default:
+			fail(fmt.Errorf("unknown subcommand %q; use diff, apply-patch, or no subcommand to serve", os.Args[1]))
+			return
+		}
+	}
+
 	addr := flag.String("listen", "127.0.0.1:8741", "HTTP service listen address")
 	dir := flag.String("data", "./data", "exclusive database directory")
 	flag.Parse()
@@ -29,8 +47,13 @@ func main() {
 	}
 }
 
+func fail(err error) {
+	fmt.Fprintln(os.Stderr, "meridian:", err)
+	os.Exit(1)
+}
+
 func serve(ctx context.Context, addr, dir string, log *slog.Logger) (err error) {
-	database, err := db.Open(dir)
+	database, err := openDatabase(dir)
 	if err != nil {
 		return err
 	}

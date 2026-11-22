@@ -19,12 +19,14 @@ func (a *api) respond(w http.ResponseWriter, status int, value any, err error) {
 		return
 	}
 	statuses := map[string]int{
-		"invalid":          http.StatusBadRequest,
-		"missing":          http.StatusNotFound,
-		"conflict":         http.StatusConflict,
-		"capacity":         http.StatusUnprocessableEntity,
-		"unavailable":      http.StatusServiceUnavailable,
-		"commit_uncertain": http.StatusServiceUnavailable,
+		"invalid":           http.StatusBadRequest,
+		"missing":           http.StatusNotFound,
+		"conflict":          http.StatusConflict,
+		"capacity":          http.StatusUnprocessableEntity,
+		"unavailable":       http.StatusServiceUnavailable,
+		"commit_uncertain":  http.StatusServiceUnavailable,
+		"baseline_mismatch": http.StatusConflict,
+		"content_mismatch":  http.StatusConflict,
 	}
 	code := statuses[problem.Code]
 	if code == 0 {

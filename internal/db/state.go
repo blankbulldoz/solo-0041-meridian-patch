@@ -90,6 +90,9 @@ func fromImage(image catalog.CatalogImage) (*state, error) {
 	var previousLayer string
 	for _, entry := range image.Layers {
 		name := entry.Definition.Name
+		// A layer revision only has to be positive and never exceed the database
+		// revision. An incremental package can leave an untouched layer at an older
+		// revision while the database revision advances, so equality is not required.
 		if name <= previousLayer || entry.Revision == 0 || entry.Revision > s.revision || entry.Features == nil {
 			return nil, fmt.Errorf("invalid image layer order or revision for %q", name)
 		}
