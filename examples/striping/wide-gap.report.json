@@ -1,0 +1,241 @@
+{
+  "range": {
+    "min_x": 0,
+    "min_y": 0,
+    "max_x": 20,
+    "max_y": 10
+  },
+  "bands": 4,
+  "range_width": 20,
+  "cuts": [
+    4,
+    11,
+    14
+  ],
+  "totals": {
+    "range_area": 200,
+    "covered": 96,
+    "repeated": 30,
+    "uncovered": 104
+  },
+  "stripes": [
+    {
+      "index": 1,
+      "from_x": 0,
+      "to_x": 4,
+      "width": 4,
+      "covered": 24,
+      "repeated": 5,
+      "uncovered": 16,
+      "deviation": {
+        "numerator": 0,
+        "denominator": 1
+      },
+      "feature_ids": [
+        "west-field",
+        "west-overlay"
+      ]
+    },
+    {
+      "index": 2,
+      "from_x": 4,
+      "to_x": 11,
+      "width": 7,
+      "covered": 24,
+      "repeated": 10,
+      "uncovered": 46,
+      "deviation": {
+        "numerator": 0,
+        "denominator": 1
+      },
+      "feature_ids": [
+        "east-field",
+        "west-field",
+        "west-overlay"
+      ]
+    },
+    {
+      "index": 3,
+      "from_x": 11,
+      "to_x": 14,
+      "width": 3,
+      "covered": 24,
+      "repeated": 0,
+      "uncovered": 6,
+      "deviation": {
+        "numerator": 0,
+        "denominator": 1
+      },
+      "feature_ids": [
+        "east-field"
+      ]
+    },
+    {
+      "index": 4,
+      "from_x": 14,
+      "to_x": 20,
+      "width": 6,
+      "covered": 24,
+      "repeated": 15,
+      "uncovered": 36,
+      "deviation": {
+        "numerator": 0,
+        "denominator": 1
+      },
+      "feature_ids": [
+        "east-field",
+        "east-overlay"
+      ]
+    }
+  ],
+  "quality": {
+    "target_covered_per_band": {
+      "numerator": 24,
+      "denominator": 1
+    },
+    "max_abs_deviation": {
+      "numerator": 0,
+      "denominator": 1
+    },
+    "sum_squared_scaled_deviation": 0,
+    "mean_abs_deviation": {
+      "numerator": 0,
+      "denominator": 1
+    },
+    "solver_path": "exact-dp",
+    "optimality": "exact: lexicographic minimum of (max |N·covered-total|, sum squared scaled deviation)"
+  },
+  "checks": [
+    {
+      "name": "integer_cuts_strictly_inside_range",
+      "passed": true,
+      "detail": "3 interior cuts"
+    },
+    {
+      "name": "all_bands_positive_width",
+      "passed": true
+    },
+    {
+      "name": "bands_tile_range_without_gap_or_overlap",
+      "passed": true,
+      "detail": "width sum 20 of 20"
+    },
+    {
+      "name": "covered_parts_sum_to_total",
+      "passed": true,
+      "detail": "sum 96 vs total 96"
+    },
+    {
+      "name": "repeated_parts_sum_to_total",
+      "passed": true,
+      "detail": "sum 30 vs total 30"
+    },
+    {
+      "name": "covered_plus_uncovered_equals_range_area",
+      "passed": true,
+      "detail": "96 + 104 = 200"
+    },
+    {
+      "name": "deviations_reconcile_with_coverage",
+      "passed": true
+    }
+  ],
+  "trace": {
+    "description": "宽空缝布局：左右两片覆盖区之间隔着 4 个单位的完全空缝；空缝不得被算作覆盖增长，纵带覆盖面积仍应均匀。",
+    "range": {
+      "min_x": 0,
+      "min_y": 0,
+      "max_x": 20,
+      "max_y": 10
+    },
+    "feature_count": 4,
+    "features": [
+      {
+        "id": "west-field",
+        "class": "survey",
+        "box": {
+          "min_x": 1,
+          "min_y": 1,
+          "max_x": 6,
+          "max_y": 9
+        }
+      },
+      {
+        "id": "west-overlay",
+        "class": "amend",
+        "box": {
+          "min_x": 3,
+          "min_y": 2,
+          "max_x": 6,
+          "max_y": 7
+        }
+      },
+      {
+        "id": "east-field",
+        "class": "survey",
+        "box": {
+          "min_x": 10,
+          "min_y": 1,
+          "max_x": 17,
+          "max_y": 9
+        }
+      },
+      {
+        "id": "east-overlay",
+        "class": "amend",
+        "box": {
+          "min_x": 14,
+          "min_y": 2,
+          "max_x": 17,
+          "max_y": 7
+        }
+      }
+    ],
+    "segments": [
+      {
+        "from_x": 0,
+        "to_x": 1,
+        "covered_y_length": 0,
+        "repeated_y_length": 0
+      },
+      {
+        "from_x": 1,
+        "to_x": 3,
+        "covered_y_length": 8,
+        "repeated_y_length": 0
+      },
+      {
+        "from_x": 3,
+        "to_x": 6,
+        "covered_y_length": 8,
+        "repeated_y_length": 5
+      },
+      {
+        "from_x": 6,
+        "to_x": 10,
+        "covered_y_length": 0,
+        "repeated_y_length": 0
+      },
+      {
+        "from_x": 10,
+        "to_x": 14,
+        "covered_y_length": 8,
+        "repeated_y_length": 0
+      },
+      {
+        "from_x": 14,
+        "to_x": 17,
+        "covered_y_length": 8,
+        "repeated_y_length": 5
+      },
+      {
+        "from_x": 17,
+        "to_x": 20,
+        "covered_y_length": 0,
+        "repeated_y_length": 0
+      }
+    ],
+    "ignored_outside_range": 0,
+    "solver": "internal/striping sweep-line (half-open integer cells, y breakpoints: 4)"
+  }
+}

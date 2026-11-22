@@ -1,0 +1,214 @@
+{
+  "range": {
+    "min_x": 0,
+    "min_y": 0,
+    "max_x": 10,
+    "max_y": 12
+  },
+  "bands": 4,
+  "range_width": 10,
+  "cuts": [
+    3,
+    6,
+    8
+  ],
+  "totals": {
+    "range_area": 120,
+    "covered": 102,
+    "repeated": 52,
+    "uncovered": 18
+  },
+  "stripes": [
+    {
+      "index": 1,
+      "from_x": 0,
+      "to_x": 3,
+      "width": 3,
+      "covered": 26,
+      "repeated": 0,
+      "uncovered": 10,
+      "deviation": {
+        "numerator": 1,
+        "denominator": 2
+      },
+      "feature_ids": [
+        "overlap-cap",
+        "slab-a"
+      ]
+    },
+    {
+      "index": 2,
+      "from_x": 3,
+      "to_x": 6,
+      "width": 3,
+      "covered": 32,
+      "repeated": 20,
+      "uncovered": 4,
+      "deviation": {
+        "numerator": 13,
+        "denominator": 2
+      },
+      "feature_ids": [
+        "overlap-cap",
+        "slab-a",
+        "slab-b"
+      ]
+    },
+    {
+      "index": 3,
+      "from_x": 6,
+      "to_x": 8,
+      "width": 2,
+      "covered": 22,
+      "repeated": 16,
+      "uncovered": 2,
+      "deviation": {
+        "numerator": -7,
+        "denominator": 2
+      },
+      "feature_ids": [
+        "slab-a",
+        "slab-b"
+      ]
+    },
+    {
+      "index": 4,
+      "from_x": 8,
+      "to_x": 10,
+      "width": 2,
+      "covered": 22,
+      "repeated": 16,
+      "uncovered": 2,
+      "deviation": {
+        "numerator": -7,
+        "denominator": 2
+      },
+      "feature_ids": [
+        "slab-a",
+        "slab-b"
+      ]
+    }
+  ],
+  "quality": {
+    "target_covered_per_band": {
+      "numerator": 51,
+      "denominator": 2
+    },
+    "max_abs_deviation": {
+      "numerator": 13,
+      "denominator": 2
+    },
+    "sum_squared_scaled_deviation": 1072,
+    "mean_abs_deviation": {
+      "numerator": 7,
+      "denominator": 2
+    },
+    "solver_path": "exact-dp",
+    "optimality": "exact: lexicographic minimum of (max |N·covered-total|, sum squared scaled deviation)"
+  },
+  "checks": [
+    {
+      "name": "integer_cuts_strictly_inside_range",
+      "passed": true,
+      "detail": "3 interior cuts"
+    },
+    {
+      "name": "all_bands_positive_width",
+      "passed": true
+    },
+    {
+      "name": "bands_tile_range_without_gap_or_overlap",
+      "passed": true,
+      "detail": "width sum 10 of 10"
+    },
+    {
+      "name": "covered_parts_sum_to_total",
+      "passed": true,
+      "detail": "sum 102 vs total 102"
+    },
+    {
+      "name": "repeated_parts_sum_to_total",
+      "passed": true,
+      "detail": "sum 52 vs total 52"
+    },
+    {
+      "name": "covered_plus_uncovered_equals_range_area",
+      "passed": true,
+      "detail": "102 + 18 = 120"
+    },
+    {
+      "name": "deviations_reconcile_with_coverage",
+      "passed": true
+    }
+  ],
+  "trace": {
+    "description": "连续大片布局：两块高度不同的矩形叠加一个重叠区，范围内没有空缝；4 个纵带应按覆盖面积均分而不是按宽度均分。",
+    "range": {
+      "min_x": 0,
+      "min_y": 0,
+      "max_x": 10,
+      "max_y": 12
+    },
+    "feature_count": 3,
+    "features": [
+      {
+        "id": "slab-a",
+        "class": "survey",
+        "box": {
+          "min_x": 0,
+          "min_y": 0,
+          "max_x": 10,
+          "max_y": 8
+        }
+      },
+      {
+        "id": "slab-b",
+        "class": "survey",
+        "box": {
+          "min_x": 4,
+          "min_y": 0,
+          "max_x": 10,
+          "max_y": 11
+        }
+      },
+      {
+        "id": "overlap-cap",
+        "class": "amend",
+        "box": {
+          "min_x": 2,
+          "min_y": 8,
+          "max_x": 6,
+          "max_y": 10
+        }
+      }
+    ],
+    "segments": [
+      {
+        "from_x": 0,
+        "to_x": 2,
+        "covered_y_length": 8,
+        "repeated_y_length": 0
+      },
+      {
+        "from_x": 2,
+        "to_x": 4,
+        "covered_y_length": 10,
+        "repeated_y_length": 0
+      },
+      {
+        "from_x": 4,
+        "to_x": 6,
+        "covered_y_length": 11,
+        "repeated_y_length": 10
+      },
+      {
+        "from_x": 6,
+        "to_x": 10,
+        "covered_y_length": 11,
+        "repeated_y_length": 8
+      }
+    ],
+    "ignored_outside_range": 0,
+    "solver": "internal/striping sweep-line (half-open integer cells, y breakpoints: 4)"
+  }
+}

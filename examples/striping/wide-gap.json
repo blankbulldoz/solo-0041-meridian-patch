@@ -1,0 +1,11 @@
+{
+  "description": "宽空缝布局：左右两片覆盖区之间隔着 4 个单位的完全空缝；空缝不得被算作覆盖增长，纵带覆盖面积仍应均匀。",
+  "range": { "min_x": 0, "min_y": 0, "max_x": 20, "max_y": 10 },
+  "bands": 4,
+  "features": [
+    { "id": "west-field", "class": "survey", "box": { "min_x": 1, "min_y": 1, "max_x": 6, "max_y": 9 } },
+    { "id": "west-overlay", "class": "amend", "box": { "min_x": 3, "min_y": 2, "max_x": 6, "max_y": 7 } },
+    { "id": "east-field", "class": "survey", "box": { "min_x": 10, "min_y": 1, "max_x": 17, "max_y": 9 } },
+    { "id": "east-overlay", "class": "amend", "box": { "min_x": 14, "min_y": 2, "max_x": 17, "max_y": 7 } }
+  ]
+}

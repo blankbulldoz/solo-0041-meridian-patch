@@ -1,0 +1,10 @@
+{
+  "description": "连续大片布局：两块高度不同的矩形叠加一个重叠区，范围内没有空缝；4 个纵带应按覆盖面积均分而不是按宽度均分。",
+  "range": { "min_x": 0, "min_y": 0, "max_x": 10, "max_y": 12 },
+  "bands": 4,
+  "features": [
+    { "id": "slab-a", "class": "survey", "box": { "min_x": 0, "min_y": 0, "max_x": 10, "max_y": 8 } },
+    { "id": "slab-b", "class": "survey", "box": { "min_x": 4, "min_y": 0, "max_x": 10, "max_y": 11 } },
+    { "id": "overlap-cap", "class": "amend", "box": { "min_x": 2, "min_y": 8, "max_x": 6, "max_y": 10 } }
+  ]
+}
