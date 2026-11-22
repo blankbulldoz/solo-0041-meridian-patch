@@ -173,6 +173,61 @@ def window(s):
     return second
 
 
+def window_order(s):
+    order = 'ridge-line'
+    s.layer(order)
+    rev = s.edit(
+        # ridge reaches in from outside the window; its own lower-left corner is
+        # (-10,-10) but only the part inside WINDOW is represented.
+        op(order, 'ridge', box(-10, -10, 6, 5)),
+        op(order, 'alder', box(-6, -6, 3, 2)),
+        op(order, 'birch', box(-2, -2, 4, 3)),
+        op(order, 'dune', box(5, 1, 7, 3)),
+        op(order, 'cinder', box(2, 2, 5, 6)),
+    )['revision']
+    query = dict(bounds=WINDOW, limit=2, order='yx')
+    first = s.query(order, 'window', query)
+    # alder, birch and ridge all represent (0,0), so ID breaks the tie.
+    assert ids(first) == ['alder', 'birch'] and first['next']
+    # A different page size must not repeat the last row of the previous page.
+    one = s.query(order, 'window', dict(query, limit=1, bookmark=first['next']))
+    assert ids(one) == ['ridge']
+    second = s.query(order, 'window', dict(query, bookmark=first['next']))
+    assert ids(second) == ['ridge', 'dune'] and second['next']
+    third = s.query(order, 'window', dict(query, limit=3, bookmark=second['next']))
+    assert ids(third) == ['cinder'] and 'next' not in third
+    seen = ids(first) + ids(second) + ids(third)
+    assert seen == ['alder', 'birch', 'ridge', 'dune', 'cinder'] and len(set(seen)) == 5
+    # The same window under ID order puts the long rectangle last.
+    assert ids(s.query(order, 'window', dict(bounds=WINDOW, limit=5))) == \
+        ['alder', 'birch', 'cinder', 'dune', 'ridge']
+    # Changing the window, the class or the order rejects the old cursor.
+    s.query(order, 'window', dict(query, bounds=box(0, 0, 7, 4), bookmark=first['next']), 400)
+    s.query(order, 'window', dict(query, bookmark=first['next'], **{'class': 'fixture'}), 400)
+    s.query(order, 'window', dict(bounds=WINDOW, limit=2, bookmark=first['next']), 400)
+    s.query(order, 'window', dict(query, bookmark=second['next'], order='id'), 400)
+    # A write to another layer does not expire the page; a write to this layer does.
+    s.layer(BED)
+    s.edit(op(BED, 'shim', box(3, 0, 5, 2)))
+    resumed = s.query(order, 'window', dict(query, bookmark=second['next']))
+    assert ids(resumed) == ['cinder']
+    s.edit(op(order, 'cinder', box(2, 2, 5, 5), mode='replace'))
+    s.query(order, 'window', dict(query, bookmark=second['next']), 409)
+    # A window entirely in negative space still starts at its own first anchor:
+    # no implicit zero cursor may skip rows below the origin.
+    negative = box(-8, -8, -1, -1)
+    left = s.query(order, 'window', dict(bounds=negative, limit=1, order='yx'))
+    assert ids(left) == ['ridge'] and left['next']
+    rest = s.query(order, 'window', dict(bounds=negative, limit=5, order='yx', bookmark=left['next']))
+    assert ids(rest) == ['alder', 'birch'] and 'next' not in rest
+    s.query(order, 'window', dict(bounds=WINDOW, order='y-then-x'), 400)
+    assert s.get('/status')['revision'] > rev
+    # The representative coordinate is the window-clipped lower-left corner.
+    return dict(order=seen, id_order=['alder', 'birch', 'cinder', 'dune', 'ridge'],
+                ridge_own=box(-10, -10, 6, 5), ridge_anchor=point(0, 0),
+                negative_window_order=ids(left) + ids(rest))
+
+
 def locate(s):
     seed(s)
     assert ids(s.query(FIELD, 'locate', point(4, 0))) == ['dowel']
@@ -303,8 +358,8 @@ def reopen(binary, data):
     return result
 
 
-WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
-                                     inspect, seams, relation, audit, export, restore, reopen)}
+WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, window_order, locate, nearest, join,
+                                     coverage, inspect, seams, relation, audit, export, restore, reopen)}
 
 
 def main():

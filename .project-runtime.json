@@ -24,6 +24,10 @@
       "command": "python3 examples/walkthrough.py --workflow window"
     },
     {
+      "workflow_id": "window_order",
+      "command": "python3 examples/walkthrough.py --workflow window_order"
+    },
+    {
       "workflow_id": "locate",
       "command": "python3 examples/walkthrough.py --workflow locate"
     },

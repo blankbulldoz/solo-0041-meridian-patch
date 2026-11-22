@@ -41,6 +41,21 @@ func (s Shape) Envelope() Box {
 	return *s.Extent
 }
 
+// Anchor returns the representative coordinate used to order window results.
+// A mark represents itself. An extent represents the lower-left corner of its
+// intersection with window, so a shape reaching in from outside is ordered by
+// the corner visible inside the window rather than by its own lower-left
+// corner. Callers only use it for shapes that match the window.
+func (s Shape) Anchor(window Box) Point {
+	if s.Mark != nil {
+		return *s.Mark
+	}
+	return Point{
+		X: max(s.Extent.MinX, window.MinX),
+		Y: max(s.Extent.MinY, window.MinY),
+	}
+}
+
 func (s Shape) Within(b Box) bool {
 	if s.Mark != nil {
 		return b.Owns(*s.Mark)

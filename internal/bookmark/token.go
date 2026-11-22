@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/plane"
+	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/spatial"
 )
 
 var ErrInvalid = errors.New("invalid window bookmark")
@@ -23,42 +24,49 @@ func New() (Signer, error) {
 	return signer, err
 }
 
+// Scope is the predicate a bookmark continues. Order is part of it because a
+// cursor is only meaningful under the ordering that produced it: switching the
+// order is as different as switching the window, class or layer revision.
 type Scope struct {
-	Layer    string    `json:"layer"`
-	Bounds   plane.Box `json:"bounds"`
-	Class    string    `json:"class"`
-	Revision uint64    `json:"revision"`
+	Layer    string        `json:"layer"`
+	Bounds   plane.Box     `json:"bounds"`
+	Class    string        `json:"class"`
+	Order    spatial.Order `json:"order"`
+	Revision uint64        `json:"revision"`
 }
 
 type payload struct {
-	Scope Scope  `json:"scope"`
-	After string `json:"after"`
+	Scope Scope          `json:"scope"`
+	After spatial.Cursor `json:"after"`
 }
 
-func (s Signer) Seal(scope Scope, after string) string {
+func (s Signer) Seal(scope Scope, after spatial.Cursor) string {
 	raw, _ := json.Marshal(payload{Scope: scope, After: after})
 	return base64.RawURLEncoding.EncodeToString(raw) + "." + base64.RawURLEncoding.EncodeToString(s.mac(raw))
 }
 
-func (s Signer) Open(token string) (Scope, string, error) {
+func (s Signer) Open(token string) (Scope, spatial.Cursor, error) {
 	if len(token) > 1024 {
-		return Scope{}, "", ErrInvalid
+		return Scope{}, spatial.Cursor{}, ErrInvalid
 	}
 	body, tag, ok := strings.Cut(token, ".")
 	if !ok {
-		return Scope{}, "", ErrInvalid
+		return Scope{}, spatial.Cursor{}, ErrInvalid
 	}
 	raw, err := base64.RawURLEncoding.Strict().DecodeString(body)
 	if err != nil {
-		return Scope{}, "", ErrInvalid
+		return Scope{}, spatial.Cursor{}, ErrInvalid
 	}
 	given, err := base64.RawURLEncoding.Strict().DecodeString(tag)
 	if err != nil || !hmac.Equal(given, s.mac(raw)) {
-		return Scope{}, "", ErrInvalid
+		return Scope{}, spatial.Cursor{}, ErrInvalid
 	}
 	var p payload
 	if err := json.Unmarshal(raw, &p); err != nil {
-		return Scope{}, "", ErrInvalid
+		return Scope{}, spatial.Cursor{}, ErrInvalid
+	}
+	if p.Scope.Order == "" {
+		p.Scope.Order = spatial.OrderID
 	}
 	return p.Scope, p.After, nil
 }

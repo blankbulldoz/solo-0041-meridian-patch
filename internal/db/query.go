@@ -18,6 +18,7 @@ type ReadStamp struct {
 type WindowQuery struct {
 	Bounds   plane.Box `json:"bounds"`
 	Class    string    `json:"class,omitempty"`
+	Order    string    `json:"order,omitempty"`
 	Limit    int       `json:"limit"`
 	Bookmark string    `json:"bookmark,omitempty"`
 }
@@ -35,26 +36,32 @@ func (d *Database) Window(name string, q WindowQuery) (WindowPage, error) {
 	if q.Limit < 1 || q.Limit > 256 {
 		return WindowPage{}, invalid("window limit must be 1..256")
 	}
+	order, err := spatial.ParseOrder(q.Order)
+	if err != nil {
+		return WindowPage{}, invalid("%v", err)
+	}
 	s := d.head.Load()
 	l, err := s.getLayer(name)
 	if err != nil {
 		return WindowPage{}, err
 	}
-	scope := bookmark.Scope{Layer: name, Bounds: q.Bounds, Class: q.Class, Revision: l.revision}
-	var after string
+	scope := bookmark.Scope{Layer: name, Bounds: q.Bounds, Class: q.Class, Order: order, Revision: l.revision}
+	var after *spatial.Cursor
 	if q.Bookmark != "" {
 		previous, from, err := d.signer.Open(q.Bookmark)
-		if err != nil || previous.Layer != scope.Layer || previous.Bounds != scope.Bounds || previous.Class != scope.Class {
+		if err != nil || previous.Layer != scope.Layer || previous.Bounds != scope.Bounds ||
+			previous.Class != scope.Class || previous.Order != scope.Order {
 			return WindowPage{}, invalid("bookmark does not match the window predicate")
 		}
 		if previous.Revision != scope.Revision {
 			return WindowPage{}, conflict("bookmark revision has expired")
 		}
-		after = from
+		after = &from
 	}
-	page := WindowPage{ReadStamp: stamp(s, l), MatchSet: spatial.Window(l.tree, q.Bounds, q.Class, after)}
+	page := WindowPage{ReadStamp: stamp(s, l), MatchSet: spatial.Window(l.tree, q.Bounds, q.Class, order, after)}
 	if len(page.Features) > q.Limit {
-		page.Next = d.signer.Seal(scope, page.Features[q.Limit-1].ID)
+		last := page.Features[q.Limit-1]
+		page.Next = d.signer.Seal(scope, spatial.CursorAt(last.Shape, q.Bounds, last.ID))
 		page.Features = page.Features[:q.Limit]
 	}
 	copyFeatures(page.Features)

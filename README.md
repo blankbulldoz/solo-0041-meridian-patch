@@ -25,7 +25,7 @@ python3 examples/walkthrough.py --workflow coverage
 | `POST /strata` | `name`, `kind`, `bounds`, `exclusive`, 可选 `if_revision` |
 | `PUT /strata/{layer}/layout` | 新 `bounds`、`exclusive` 及可选 `if_revision`。形状类型保持原样 |
 | `POST /edits` | `edits` 与可选 `if_revision`。每项有 `layer`, `id`, `mode`，写入时提供同 ID 的 `value` |
-| `POST /strata/{layer}/window` | `bounds`, `limit`, 可选 `class`, `bookmark`。按 ID 返回 `features`，有更多数据时返回 `next` |
+| `POST /strata/{layer}/window` | `bounds`, `limit`, 可选 `class`, `order`, `bookmark`。默认按 ID 返回 `features`，有更多数据时返回 `next` |
 | `POST /strata/{layer}/locate` | `{ "x": 2, "y": 1 }`。返回拥有该点的 `features` |
 | `POST /strata/{layer}/nearest` | `point`, `limit`, 可选 `class`。返回带 `distance_squared` 的 `neighbors` |
 | `POST /strata/{layer}/coverage` | `bounds` 和可选 `class`。返回 `covered`, `repeated`, `uncovered` |
@@ -48,5 +48,15 @@ python3 examples/walkthrough.py --workflow coverage
 ```
 
 `409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
+
+### 窗口排序与续页
+
+`order` 省略或为 `"id"` 时按地物 ID 升序返回，保持既有行为。`order: "yx"` 时按代表坐标先 y 后 x 升序、坐标相同再按 ID 升序，适合逐带巡检。点地物的代表坐标是其坐标；矩形地物的代表坐标是其与查询窗口交集的左下角（`max(min_x, window.min_x)`, `max(min_y, window.min_y)`），所以一条从窗口外伸入的长矩形按窗口内可见的左下角排序，而不是它自己的左下角。
+
+书签绑定窗口、类别、顺序和图层修订。改变窗口、切换 `order`、更换类别、同层写入或进程重启后旧书签都会被拒绝（换谓词为 `400`，同层修订变化为 `409`），其他图层写入不影响续页。分页大小可变，同一游标在不同 `limit` 下既不重复也不跳过已返回的行。
+
+```json
+{"bounds":{"min_x":0,"min_y":0,"max_x":8,"max_y":4},"order":"yx","limit":2}
+```
 
 边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。

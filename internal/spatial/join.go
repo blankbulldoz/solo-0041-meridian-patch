@@ -30,7 +30,7 @@ type JoinResult struct {
 
 func Join(left, right packed.Tree, bounds plane.Box, pairLimit int) (JoinResult, error) {
 	var result JoinResult
-	leftRows := Window(left, bounds, "", "")
+	leftRows := Window(left, bounds, "", OrderID, nil)
 	result.Visit = leftRows.Visit
 	result.Pairs = make([]Pair, 0)
 	for _, row := range leftRows.Features {
