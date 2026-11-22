@@ -360,6 +360,29 @@
       "success": "带回原修订并提供正常查询",
       "failure": "目录被另一进程占用或镜像损坏时拒绝",
       "verification": "python3 examples/walkthrough.py --workflow reopen"
+    },
+    {
+      "id": "paging",
+      "name": "分页续读判断",
+      "entry": "POST /strata/{layer}/window 与 GET /image / PUT /image",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "bookmark",
+        "folio",
+        "catalog",
+        "spatial",
+        "packed"
+      ],
+      "steps": [
+        "按图层修订校验书签",
+        "区分异层改动与同层写入",
+        "重启后重新签发书签",
+        "恢复后重定基并重读"
+      ],
+      "success": "异层改动可续页；同层写入、参数改变、重启与恢复均从头读；图层消失则停止",
+      "failure": "换谓词、跨重启或恢复后的旧书签被拒绝，不产生重复或漏读行",
+      "verification": "python3 examples/paging_client.py"
     }
   ]
 }

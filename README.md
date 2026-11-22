@@ -10,9 +10,12 @@ Meridian Patch 是一个带持久化和几何索引的 Go HTTP 数据库。它�
 go build -o meridian ./cmd/meridian
 ./meridian -listen 127.0.0.1:8741 -data ./data
 python3 examples/walkthrough.py --workflow coverage
+python3 examples/paging_client.py
 ```
 
 演练脚本启动独立进程并使用临时状态目录和系统分配的端口。它不会修改运行中的数据库。数据文件为 `meridian-state.mpb`。`meridian.writer` 由操作系统锁定，不要手动删除后尝试接管。服务默认绑定回环地址，供受信任调用者使用。
+
+`examples/paging_client.py` 是分页接入的参考客户端与演练：串过异层改动、同层写入、参数改变、重启和镜像恢复，逐条打印应续页、从头读还是停止，并演示如何把页交给下游而不重复发布。首次接入请对照 [docs/client-paging.md](docs/client-paging.md)。
 
 ## API
 
@@ -25,7 +28,7 @@ python3 examples/walkthrough.py --workflow coverage
 | `POST /strata` | `name`, `kind`, `bounds`, `exclusive`, 可选 `if_revision` |
 | `PUT /strata/{layer}/layout` | 新 `bounds`、`exclusive` 及可选 `if_revision`。形状类型保持原样 |
 | `POST /edits` | `edits` 与可选 `if_revision`。每项有 `layer`, `id`, `mode`，写入时提供同 ID 的 `value` |
-| `POST /strata/{layer}/window` | `bounds`, `limit`, 可选 `class`, `bookmark`。按 ID 返回 `features`，有更多数据时返回 `next` |
+| `POST /strata/{layer}/window` | `bounds`, `limit`, 可选 `class`, `bookmark`。按 ID 返回 `features`，有更多数据时返回 `next`。`next` 绑定图层、`bounds`、`class` 和图层修订，不绑定 `limit` |
 | `POST /strata/{layer}/locate` | `{ "x": 2, "y": 1 }`。返回拥有该点的 `features` |
 | `POST /strata/{layer}/nearest` | `point`, `limit`, 可选 `class`。返回带 `distance_squared` 的 `neighbors` |
 | `POST /strata/{layer}/coverage` | `bounds` 和可选 `class`。返回 `covered`, `repeated`, `uncovered` |
@@ -47,6 +50,6 @@ python3 examples/walkthrough.py --workflow coverage
 {"edits":[{"layer":"ochre-field","id":"prong","mode":"insert","value":{"id":"prong","class":"fixture","shape":{"extent":{"min_x":0,"min_y":0,"max_x":4,"max_y":3}}}}]}
 ```
 
-`409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
+`409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。`428 revision_required` 表示恢复缺少 `If-Meridian-Revision`，`503` 表示进程已围栏。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
 
-边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。
+边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。分页接入与"续页/从头读/停止"的判断见 [docs/client-paging.md](docs/client-paging.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。
