@@ -1,0 +1,596 @@
+{
+  "audit": {
+    "checked_nodes": 95,
+    "layer_revision": 1,
+    "records": 400,
+    "revision": 1
+  },
+  "catalog": {
+    "layers": [
+      {
+        "bounds": {
+          "max_x": 80,
+          "max_y": 80,
+          "min_x": -80,
+          "min_y": -80
+        },
+        "count": 400,
+        "exclusive": false,
+        "kind": "extent",
+        "name": "candidate-field",
+        "revision": 1
+      }
+    ],
+    "revision": 1
+  },
+  "class_probes": [
+    {
+      "feature_ids": [],
+      "request": {
+        "bounds": {
+          "max_x": -10,
+          "max_y": -34,
+          "min_x": -60,
+          "min_y": -36
+        },
+        "class": "halo",
+        "limit": 256
+      },
+      "request_sha256": "d8d257aa2792cc31228b3efc244251111e7bea5184866ae3ac00405ffbfdc102",
+      "visit": {
+        "candidates": 33,
+        "nodes": 23
+      },
+      "window": "w1"
+    },
+    {
+      "feature_ids": [],
+      "request": {
+        "bounds": {
+          "max_x": -10,
+          "max_y": -6,
+          "min_x": -60,
+          "min_y": -8
+        },
+        "class": "halo",
+        "limit": 256
+      },
+      "request_sha256": "08bfc6877a5c70b1d674ecf4b5d321dcd0fcc7b177f6be1464b28a92b8bc56ed",
+      "visit": {
+        "candidates": 33,
+        "nodes": 25
+      },
+      "window": "w2"
+    },
+    {
+      "feature_ids": [],
+      "request": {
+        "bounds": {
+          "max_x": -10,
+          "max_y": 26,
+          "min_x": -60,
+          "min_y": 24
+        },
+        "class": "halo",
+        "limit": 256
+      },
+      "request_sha256": "65ddd13c03a4f2e83b4225e77c9a007bd0f3dd91a12dd823dd80e18a1d146e80",
+      "visit": {
+        "candidates": 33,
+        "nodes": 17
+      },
+      "window": "w3"
+    },
+    {
+      "feature_ids": [],
+      "request": {
+        "bounds": {
+          "max_x": 12,
+          "max_y": 60,
+          "min_x": 10,
+          "min_y": -60
+        },
+        "class": "halo",
+        "limit": 256
+      },
+      "request_sha256": "720984b7c22e060244bdd3bf98b39b1282d68637f4d0394fb0a34007ba5d1084",
+      "visit": {
+        "candidates": 33,
+        "nodes": 25
+      },
+      "window": "w4"
+    },
+    {
+      "feature_ids": [],
+      "request": {
+        "bounds": {
+          "max_x": 42,
+          "max_y": 60,
+          "min_x": 40,
+          "min_y": -60
+        },
+        "class": "halo",
+        "limit": 256
+      },
+      "request_sha256": "b29e0a827fee0bd6f426b17ec139f1498826059090d817e9a415b24a8cae8bde",
+      "visit": {
+        "candidates": 33,
+        "nodes": 21
+      },
+      "window": "w5"
+    },
+    {
+      "feature_ids": [],
+      "request": {
+        "bounds": {
+          "max_x": 2,
+          "max_y": 2,
+          "min_x": -2,
+          "min_y": -2
+        },
+        "class": "halo",
+        "limit": 256
+      },
+      "request_sha256": "37664b60417c1fdd3806c3275cd1ab7bc66780e5ea3cfaee753b1903295885fb",
+      "visit": {
+        "candidates": 33,
+        "nodes": 21
+      },
+      "window": "w6"
+    }
+  ],
+  "image": {
+    "bytes": 40356,
+    "file": "images/sample-a.mpb",
+    "sha256": "85226c0e6d014a65614218ab3457cad467746c337c969f51aa3fd57d4fe670ce"
+  },
+  "import": {
+    "export_is_byte_identical": true,
+    "export_sha256": "85226c0e6d014a65614218ab3457cad467746c337c969f51aa3fd57d4fe670ce",
+    "restored_layers": [
+      {
+        "bounds": {
+          "max_x": 80,
+          "max_y": 80,
+          "min_x": -80,
+          "min_y": -80
+        },
+        "count": 400,
+        "exclusive": false,
+        "kind": "extent",
+        "name": "candidate-field",
+        "revision": 1
+      }
+    ]
+  },
+  "index": {
+    "layer_revision": 1,
+    "revision": 1,
+    "tree": {
+      "depth": 7,
+      "items": 400,
+      "leaves": 48,
+      "max_leaf": 12,
+      "nodes": 95,
+      "root_bounds": {
+        "max_x": 80,
+        "max_y": 80,
+        "min_x": -80,
+        "min_y": -80
+      }
+    }
+  },
+  "layer": {
+    "bounds": {
+      "max_x": 80,
+      "max_y": 80,
+      "min_x": -80,
+      "min_y": -80
+    },
+    "count": 400,
+    "exclusive": false,
+    "kind": "extent",
+    "name": "candidate-field",
+    "revision": 1
+  },
+  "sample": "a",
+  "status": {
+    "before": {
+      "revision": 0,
+      "writable": true
+    },
+    "restored_revision": 1
+  },
+  "windows": [
+    {
+      "feature_classes": [
+        "core"
+      ],
+      "feature_ids": [
+        "hit-w1-0",
+        "hit-w1-1",
+        "hit-w1-2"
+      ],
+      "features": [
+        {
+          "class": "core",
+          "id": "hit-w1-0",
+          "shape": {
+            "extent": {
+              "max_x": -48,
+              "max_y": -33,
+              "min_x": -54,
+              "min_y": -37
+            }
+          }
+        },
+        {
+          "class": "core",
+          "id": "hit-w1-1",
+          "shape": {
+            "extent": {
+              "max_x": -26,
+              "max_y": -33,
+              "min_x": -32,
+              "min_y": -35
+            }
+          }
+        },
+        {
+          "class": "core",
+          "id": "hit-w1-2",
+          "shape": {
+            "extent": {
+              "max_x": -12,
+              "max_y": -34,
+              "min_x": -18,
+              "min_y": -36
+            }
+          }
+        }
+      ],
+      "layer_revision": 1,
+      "request": {
+        "bounds": {
+          "max_x": -10,
+          "max_y": -34,
+          "min_x": -60,
+          "min_y": -36
+        },
+        "limit": 256
+      },
+      "request_sha256": "eddfe264454cb6b1dc248c9fad5a60ea83f57c9593c555f7717b435dd8183bb7",
+      "revision": 1,
+      "visit": {
+        "candidates": 33,
+        "nodes": 23
+      },
+      "window": "w1"
+    },
+    {
+      "feature_classes": [
+        "core"
+      ],
+      "feature_ids": [
+        "hit-w2-0",
+        "hit-w2-1",
+        "hit-w2-2"
+      ],
+      "features": [
+        {
+          "class": "core",
+          "id": "hit-w2-0",
+          "shape": {
+            "extent": {
+              "max_x": -46,
+              "max_y": -5,
+              "min_x": -52,
+              "min_y": -9
+            }
+          }
+        },
+        {
+          "class": "core",
+          "id": "hit-w2-1",
+          "shape": {
+            "extent": {
+              "max_x": -24,
+              "max_y": -6,
+              "min_x": -30,
+              "min_y": -8
+            }
+          }
+        },
+        {
+          "class": "core",
+          "id": "hit-w2-2",
+          "shape": {
+            "extent": {
+              "max_x": -12,
+              "max_y": -6,
+              "min_x": -16,
+              "min_y": -10
+            }
+          }
+        }
+      ],
+      "layer_revision": 1,
+      "request": {
+        "bounds": {
+          "max_x": -10,
+          "max_y": -6,
+          "min_x": -60,
+          "min_y": -8
+        },
+        "limit": 256
+      },
+      "request_sha256": "348022abd10fc36091a114007b9104af7331aaf08108fadd2c03f212c69c22a2",
+      "revision": 1,
+      "visit": {
+        "candidates": 33,
+        "nodes": 25
+      },
+      "window": "w2"
+    },
+    {
+      "feature_classes": [
+        "core"
+      ],
+      "feature_ids": [
+        "hit-w3-0",
+        "hit-w3-1",
+        "hit-w3-2"
+      ],
+      "features": [
+        {
+          "class": "core",
+          "id": "hit-w3-0",
+          "shape": {
+            "extent": {
+              "max_x": -50,
+              "max_y": 27,
+              "min_x": -56,
+              "min_y": 23
+            }
+          }
+        },
+        {
+          "class": "core",
+          "id": "hit-w3-1",
+          "shape": {
+            "extent": {
+              "max_x": -28,
+              "max_y": 26,
+              "min_x": -34,
+              "min_y": 24
+            }
+          }
+        },
+        {
+          "class": "core",
+          "id": "hit-w3-2",
+          "shape": {
+            "extent": {
+              "max_x": -14,
+              "max_y": 27,
+              "min_x": -20,
+              "min_y": 23
+            }
+          }
+        }
+      ],
+      "layer_revision": 1,
+      "request": {
+        "bounds": {
+          "max_x": -10,
+          "max_y": 26,
+          "min_x": -60,
+          "min_y": 24
+        },
+        "limit": 256
+      },
+      "request_sha256": "285aaa774fca50828b5dbaf407144efea79e0be51b868c1a7802553bba790e8d",
+      "revision": 1,
+      "visit": {
+        "candidates": 33,
+        "nodes": 17
+      },
+      "window": "w3"
+    },
+    {
+      "feature_classes": [
+        "core"
+      ],
+      "feature_ids": [
+        "hit-w4-0",
+        "hit-w4-1",
+        "hit-w4-2"
+      ],
+      "features": [
+        {
+          "class": "core",
+          "id": "hit-w4-0",
+          "shape": {
+            "extent": {
+              "max_x": 13,
+              "max_y": -42,
+              "min_x": 9,
+              "min_y": -48
+            }
+          }
+        },
+        {
+          "class": "core",
+          "id": "hit-w4-1",
+          "shape": {
+            "extent": {
+              "max_x": 12,
+              "max_y": -6,
+              "min_x": 10,
+              "min_y": -12
+            }
+          }
+        },
+        {
+          "class": "core",
+          "id": "hit-w4-2",
+          "shape": {
+            "extent": {
+              "max_x": 12,
+              "max_y": 26,
+              "min_x": 10,
+              "min_y": 20
+            }
+          }
+        }
+      ],
+      "layer_revision": 1,
+      "request": {
+        "bounds": {
+          "max_x": 12,
+          "max_y": 60,
+          "min_x": 10,
+          "min_y": -60
+        },
+        "limit": 256
+      },
+      "request_sha256": "e95c7cfd7a7d415afbab6e0db8e8c9acffa4b0897114cd41fcea375f319cff54",
+      "revision": 1,
+      "visit": {
+        "candidates": 33,
+        "nodes": 25
+      },
+      "window": "w4"
+    },
+    {
+      "feature_classes": [
+        "core"
+      ],
+      "feature_ids": [
+        "hit-w5-0",
+        "hit-w5-1",
+        "hit-w5-2"
+      ],
+      "features": [
+        {
+          "class": "core",
+          "id": "hit-w5-0",
+          "shape": {
+            "extent": {
+              "max_x": 43,
+              "max_y": -48,
+              "min_x": 39,
+              "min_y": -54
+            }
+          }
+        },
+        {
+          "class": "core",
+          "id": "hit-w5-1",
+          "shape": {
+            "extent": {
+              "max_x": 42,
+              "max_y": 10,
+              "min_x": 40,
+              "min_y": 4
+            }
+          }
+        },
+        {
+          "class": "core",
+          "id": "hit-w5-2",
+          "shape": {
+            "extent": {
+              "max_x": 44,
+              "max_y": 40,
+              "min_x": 38,
+              "min_y": 34
+            }
+          }
+        }
+      ],
+      "layer_revision": 1,
+      "request": {
+        "bounds": {
+          "max_x": 42,
+          "max_y": 60,
+          "min_x": 40,
+          "min_y": -60
+        },
+        "limit": 256
+      },
+      "request_sha256": "93f10d3ab957ac7fb521ba0e08f104e587e80aaa795452ab5c585adbf956a5d0",
+      "revision": 1,
+      "visit": {
+        "candidates": 33,
+        "nodes": 21
+      },
+      "window": "w5"
+    },
+    {
+      "feature_classes": [
+        "core"
+      ],
+      "feature_ids": [
+        "hit-w6-0",
+        "hit-w6-1",
+        "hit-w6-2"
+      ],
+      "features": [
+        {
+          "class": "core",
+          "id": "hit-w6-0",
+          "shape": {
+            "extent": {
+              "max_x": 1,
+              "max_y": 1,
+              "min_x": -3,
+              "min_y": -3
+            }
+          }
+        },
+        {
+          "class": "core",
+          "id": "hit-w6-1",
+          "shape": {
+            "extent": {
+              "max_x": 2,
+              "max_y": 1,
+              "min_x": 0,
+              "min_y": -1
+            }
+          }
+        },
+        {
+          "class": "core",
+          "id": "hit-w6-2",
+          "shape": {
+            "extent": {
+              "max_x": 3,
+              "max_y": 2,
+              "min_x": -1,
+              "min_y": 0
+            }
+          }
+        }
+      ],
+      "layer_revision": 1,
+      "request": {
+        "bounds": {
+          "max_x": 2,
+          "max_y": 2,
+          "min_x": -2,
+          "min_y": -2
+        },
+        "limit": 256
+      },
+      "request_sha256": "80ec4676e29cb0ebf0cc4844b4b3531aa0ccb7364700b96f7dc090b54c2792e3",
+      "revision": 1,
+      "visit": {
+        "candidates": 33,
+        "nodes": 21
+      },
+      "window": "w6"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "name": "w1",
+    "request": {
+      "bounds": {
+        "max_x": -10,
+        "max_y": -34,
+        "min_x": -60,
+        "min_y": -36
+      },
+      "limit": 256
+    }
+  },
+  {
+    "name": "w2",
+    "request": {
+      "bounds": {
+        "max_x": -10,
+        "max_y": -6,
+        "min_x": -60,
+        "min_y": -8
+      },
+      "limit": 256
+    }
+  },
+  {
+    "name": "w3",
+    "request": {
+      "bounds": {
+        "max_x": -10,
+        "max_y": 26,
+        "min_x": -60,
+        "min_y": 24
+      },
+      "limit": 256
+    }
+  },
+  {
+    "name": "w4",
+    "request": {
+      "bounds": {
+        "max_x": 12,
+        "max_y": 60,
+        "min_x": 10,
+        "min_y": -60
+      },
+      "limit": 256
+    }
+  },
+  {
+    "name": "w5",
+    "request": {
+      "bounds": {
+        "max_x": 42,
+        "max_y": 60,
+        "min_x": 40,
+        "min_y": -60
+      },
+      "limit": 256
+    }
+  },
+  {
+    "name": "w6",
+    "request": {
+      "bounds": {
+        "max_x": 2,
+        "max_y": 2,
+        "min_x": -2,
+        "min_y": -2
+      },
+      "limit": 256
+    }
+  }
+]

@@ -1,0 +1,28 @@
+{
+  "class_counts": {
+    "core": 200,
+    "edge": 80,
+    "halo": 120
+  },
+  "feature_count": 400,
+  "layer": {
+    "bounds": {
+      "max_x": 80,
+      "max_y": 80,
+      "min_x": -80,
+      "min_y": -80
+    },
+    "exclusive": false,
+    "kind": "extent",
+    "name": "candidate-field"
+  },
+  "roles": {
+    "anchor": 4,
+    "background": 198,
+    "fringe": 180,
+    "hit": 18
+  },
+  "sample_a_layout": "30 fringe rectangles touch each window with zero-area overlap",
+  "sample_b_layout": "the same 180 fringe rectangles parked in x[-72,-54], y[50,69]",
+  "windows_file": "windows.json"
+}

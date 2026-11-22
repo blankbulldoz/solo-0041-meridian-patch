@@ -1,0 +1,33 @@
+{
+  "classes": {
+    "core": 200,
+    "edge": 80,
+    "halo": 120
+  },
+  "features": 400,
+  "image_bytes": {
+    "a": 40356,
+    "b": 40494
+  },
+  "image_sha256": {
+    "a": "85226c0e6d014a65614218ab3457cad467746c337c969f51aa3fd57d4fe670ce",
+    "b": "1704baa73ac2495c10155b0e39ff4961ad3889156d60b6acbb37736aea45f023"
+  },
+  "layer_definition": {
+    "bounds": {
+      "max_x": 80,
+      "max_y": 80,
+      "min_x": -80,
+      "min_y": -80
+    },
+    "exclusive": false,
+    "kind": "extent",
+    "name": "candidate-field"
+  },
+  "moved_features": 180,
+  "revisions": {
+    "database": 1,
+    "layer": 1
+  },
+  "unchanged_non_fringe": 220
+}

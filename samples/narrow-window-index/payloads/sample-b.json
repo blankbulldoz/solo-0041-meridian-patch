@@ -1,0 +1,6815 @@
+{
+  "edits": [
+    {
+      "id": "anchor-0",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "anchor-0",
+        "shape": {
+          "extent": {
+            "max_x": -74,
+            "max_y": -74,
+            "min_x": -80,
+            "min_y": -80
+          }
+        }
+      }
+    },
+    {
+      "id": "anchor-1",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "anchor-1",
+        "shape": {
+          "extent": {
+            "max_x": 80,
+            "max_y": -74,
+            "min_x": 74,
+            "min_y": -80
+          }
+        }
+      }
+    },
+    {
+      "id": "anchor-2",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "anchor-2",
+        "shape": {
+          "extent": {
+            "max_x": -74,
+            "max_y": 80,
+            "min_x": -80,
+            "min_y": 74
+          }
+        }
+      }
+    },
+    {
+      "id": "anchor-3",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "anchor-3",
+        "shape": {
+          "extent": {
+            "max_x": 80,
+            "max_y": 80,
+            "min_x": 74,
+            "min_y": 74
+          }
+        }
+      }
+    },
+    {
+      "id": "hit-w1-0",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "hit-w1-0",
+        "shape": {
+          "extent": {
+            "max_x": -48,
+            "max_y": -33,
+            "min_x": -54,
+            "min_y": -37
+          }
+        }
+      }
+    },
+    {
+      "id": "hit-w1-1",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "hit-w1-1",
+        "shape": {
+          "extent": {
+            "max_x": -26,
+            "max_y": -33,
+            "min_x": -32,
+            "min_y": -35
+          }
+        }
+      }
+    },
+    {
+      "id": "hit-w1-2",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "hit-w1-2",
+        "shape": {
+          "extent": {
+            "max_x": -12,
+            "max_y": -34,
+            "min_x": -18,
+            "min_y": -36
+          }
+        }
+      }
+    },
+    {
+      "id": "hit-w2-0",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "hit-w2-0",
+        "shape": {
+          "extent": {
+            "max_x": -46,
+            "max_y": -5,
+            "min_x": -52,
+            "min_y": -9
+          }
+        }
+      }
+    },
+    {
+      "id": "hit-w2-1",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "hit-w2-1",
+        "shape": {
+          "extent": {
+            "max_x": -24,
+            "max_y": -6,
+            "min_x": -30,
+            "min_y": -8
+          }
+        }
+      }
+    },
+    {
+      "id": "hit-w2-2",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "hit-w2-2",
+        "shape": {
+          "extent": {
+            "max_x": -12,
+            "max_y": -6,
+            "min_x": -16,
+            "min_y": -10
+          }
+        }
+      }
+    },
+    {
+      "id": "hit-w3-0",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "hit-w3-0",
+        "shape": {
+          "extent": {
+            "max_x": -50,
+            "max_y": 27,
+            "min_x": -56,
+            "min_y": 23
+          }
+        }
+      }
+    },
+    {
+      "id": "hit-w3-1",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "hit-w3-1",
+        "shape": {
+          "extent": {
+            "max_x": -28,
+            "max_y": 26,
+            "min_x": -34,
+            "min_y": 24
+          }
+        }
+      }
+    },
+    {
+      "id": "hit-w3-2",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "hit-w3-2",
+        "shape": {
+          "extent": {
+            "max_x": -14,
+            "max_y": 27,
+            "min_x": -20,
+            "min_y": 23
+          }
+        }
+      }
+    },
+    {
+      "id": "hit-w4-0",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "hit-w4-0",
+        "shape": {
+          "extent": {
+            "max_x": 13,
+            "max_y": -42,
+            "min_x": 9,
+            "min_y": -48
+          }
+        }
+      }
+    },
+    {
+      "id": "hit-w4-1",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "hit-w4-1",
+        "shape": {
+          "extent": {
+            "max_x": 12,
+            "max_y": -6,
+            "min_x": 10,
+            "min_y": -12
+          }
+        }
+      }
+    },
+    {
+      "id": "hit-w4-2",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "hit-w4-2",
+        "shape": {
+          "extent": {
+            "max_x": 12,
+            "max_y": 26,
+            "min_x": 10,
+            "min_y": 20
+          }
+        }
+      }
+    },
+    {
+      "id": "hit-w5-0",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "hit-w5-0",
+        "shape": {
+          "extent": {
+            "max_x": 43,
+            "max_y": -48,
+            "min_x": 39,
+            "min_y": -54
+          }
+        }
+      }
+    },
+    {
+      "id": "hit-w5-1",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "hit-w5-1",
+        "shape": {
+          "extent": {
+            "max_x": 42,
+            "max_y": 10,
+            "min_x": 40,
+            "min_y": 4
+          }
+        }
+      }
+    },
+    {
+      "id": "hit-w5-2",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "hit-w5-2",
+        "shape": {
+          "extent": {
+            "max_x": 44,
+            "max_y": 40,
+            "min_x": 38,
+            "min_y": 34
+          }
+        }
+      }
+    },
+    {
+      "id": "hit-w6-0",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "hit-w6-0",
+        "shape": {
+          "extent": {
+            "max_x": 1,
+            "max_y": 1,
+            "min_x": -3,
+            "min_y": -3
+          }
+        }
+      }
+    },
+    {
+      "id": "hit-w6-1",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "hit-w6-1",
+        "shape": {
+          "extent": {
+            "max_x": 2,
+            "max_y": 1,
+            "min_x": 0,
+            "min_y": -1
+          }
+        }
+      }
+    },
+    {
+      "id": "hit-w6-2",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "hit-w6-2",
+        "shape": {
+          "extent": {
+            "max_x": 3,
+            "max_y": 2,
+            "min_x": -1,
+            "min_y": 0
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-00",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-00",
+        "shape": {
+          "extent": {
+            "max_x": -71,
+            "max_y": 51,
+            "min_x": -72,
+            "min_y": 50
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-01",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-01",
+        "shape": {
+          "extent": {
+            "max_x": -70,
+            "max_y": 51,
+            "min_x": -71,
+            "min_y": 50
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-02",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-02",
+        "shape": {
+          "extent": {
+            "max_x": -69,
+            "max_y": 51,
+            "min_x": -70,
+            "min_y": 50
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-03",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-03",
+        "shape": {
+          "extent": {
+            "max_x": -68,
+            "max_y": 51,
+            "min_x": -69,
+            "min_y": 50
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-04",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-04",
+        "shape": {
+          "extent": {
+            "max_x": -67,
+            "max_y": 51,
+            "min_x": -68,
+            "min_y": 50
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-05",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-05",
+        "shape": {
+          "extent": {
+            "max_x": -66,
+            "max_y": 51,
+            "min_x": -67,
+            "min_y": 50
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-06",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-06",
+        "shape": {
+          "extent": {
+            "max_x": -65,
+            "max_y": 51,
+            "min_x": -66,
+            "min_y": 50
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-07",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-07",
+        "shape": {
+          "extent": {
+            "max_x": -64,
+            "max_y": 51,
+            "min_x": -65,
+            "min_y": 50
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-08",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-08",
+        "shape": {
+          "extent": {
+            "max_x": -63,
+            "max_y": 51,
+            "min_x": -64,
+            "min_y": 50
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-09",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-09",
+        "shape": {
+          "extent": {
+            "max_x": -62,
+            "max_y": 51,
+            "min_x": -63,
+            "min_y": 50
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-10",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-10",
+        "shape": {
+          "extent": {
+            "max_x": -61,
+            "max_y": 51,
+            "min_x": -62,
+            "min_y": 50
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-11",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-11",
+        "shape": {
+          "extent": {
+            "max_x": -60,
+            "max_y": 51,
+            "min_x": -61,
+            "min_y": 50
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-12",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-12",
+        "shape": {
+          "extent": {
+            "max_x": -59,
+            "max_y": 51,
+            "min_x": -60,
+            "min_y": 50
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-13",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-13",
+        "shape": {
+          "extent": {
+            "max_x": -58,
+            "max_y": 51,
+            "min_x": -59,
+            "min_y": 50
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-14",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-14",
+        "shape": {
+          "extent": {
+            "max_x": -57,
+            "max_y": 51,
+            "min_x": -58,
+            "min_y": 50
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-15",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-15",
+        "shape": {
+          "extent": {
+            "max_x": -56,
+            "max_y": 51,
+            "min_x": -57,
+            "min_y": 50
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-16",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-16",
+        "shape": {
+          "extent": {
+            "max_x": -55,
+            "max_y": 51,
+            "min_x": -56,
+            "min_y": 50
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-17",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-17",
+        "shape": {
+          "extent": {
+            "max_x": -54,
+            "max_y": 51,
+            "min_x": -55,
+            "min_y": 50
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-18",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-18",
+        "shape": {
+          "extent": {
+            "max_x": -71,
+            "max_y": 53,
+            "min_x": -72,
+            "min_y": 52
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-19",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-19",
+        "shape": {
+          "extent": {
+            "max_x": -70,
+            "max_y": 53,
+            "min_x": -71,
+            "min_y": 52
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-20",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-20",
+        "shape": {
+          "extent": {
+            "max_x": -69,
+            "max_y": 53,
+            "min_x": -70,
+            "min_y": 52
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-21",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-21",
+        "shape": {
+          "extent": {
+            "max_x": -68,
+            "max_y": 53,
+            "min_x": -69,
+            "min_y": 52
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-22",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-22",
+        "shape": {
+          "extent": {
+            "max_x": -67,
+            "max_y": 53,
+            "min_x": -68,
+            "min_y": 52
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-23",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-23",
+        "shape": {
+          "extent": {
+            "max_x": -66,
+            "max_y": 53,
+            "min_x": -67,
+            "min_y": 52
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-24",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-24",
+        "shape": {
+          "extent": {
+            "max_x": -65,
+            "max_y": 53,
+            "min_x": -66,
+            "min_y": 52
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-25",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-25",
+        "shape": {
+          "extent": {
+            "max_x": -64,
+            "max_y": 53,
+            "min_x": -65,
+            "min_y": 52
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-26",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-26",
+        "shape": {
+          "extent": {
+            "max_x": -63,
+            "max_y": 53,
+            "min_x": -64,
+            "min_y": 52
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-27",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-27",
+        "shape": {
+          "extent": {
+            "max_x": -62,
+            "max_y": 53,
+            "min_x": -63,
+            "min_y": 52
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-28",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-28",
+        "shape": {
+          "extent": {
+            "max_x": -61,
+            "max_y": 53,
+            "min_x": -62,
+            "min_y": 52
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w1-29",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w1-29",
+        "shape": {
+          "extent": {
+            "max_x": -60,
+            "max_y": 53,
+            "min_x": -61,
+            "min_y": 52
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-00",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-00",
+        "shape": {
+          "extent": {
+            "max_x": -59,
+            "max_y": 53,
+            "min_x": -60,
+            "min_y": 52
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-01",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-01",
+        "shape": {
+          "extent": {
+            "max_x": -58,
+            "max_y": 53,
+            "min_x": -59,
+            "min_y": 52
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-02",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-02",
+        "shape": {
+          "extent": {
+            "max_x": -57,
+            "max_y": 53,
+            "min_x": -58,
+            "min_y": 52
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-03",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-03",
+        "shape": {
+          "extent": {
+            "max_x": -56,
+            "max_y": 53,
+            "min_x": -57,
+            "min_y": 52
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-04",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-04",
+        "shape": {
+          "extent": {
+            "max_x": -55,
+            "max_y": 53,
+            "min_x": -56,
+            "min_y": 52
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-05",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-05",
+        "shape": {
+          "extent": {
+            "max_x": -54,
+            "max_y": 53,
+            "min_x": -55,
+            "min_y": 52
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-06",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-06",
+        "shape": {
+          "extent": {
+            "max_x": -71,
+            "max_y": 55,
+            "min_x": -72,
+            "min_y": 54
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-07",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-07",
+        "shape": {
+          "extent": {
+            "max_x": -70,
+            "max_y": 55,
+            "min_x": -71,
+            "min_y": 54
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-08",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-08",
+        "shape": {
+          "extent": {
+            "max_x": -69,
+            "max_y": 55,
+            "min_x": -70,
+            "min_y": 54
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-09",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-09",
+        "shape": {
+          "extent": {
+            "max_x": -68,
+            "max_y": 55,
+            "min_x": -69,
+            "min_y": 54
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-10",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-10",
+        "shape": {
+          "extent": {
+            "max_x": -67,
+            "max_y": 55,
+            "min_x": -68,
+            "min_y": 54
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-11",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-11",
+        "shape": {
+          "extent": {
+            "max_x": -66,
+            "max_y": 55,
+            "min_x": -67,
+            "min_y": 54
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-12",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-12",
+        "shape": {
+          "extent": {
+            "max_x": -65,
+            "max_y": 55,
+            "min_x": -66,
+            "min_y": 54
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-13",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-13",
+        "shape": {
+          "extent": {
+            "max_x": -64,
+            "max_y": 55,
+            "min_x": -65,
+            "min_y": 54
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-14",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-14",
+        "shape": {
+          "extent": {
+            "max_x": -63,
+            "max_y": 55,
+            "min_x": -64,
+            "min_y": 54
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-15",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-15",
+        "shape": {
+          "extent": {
+            "max_x": -62,
+            "max_y": 55,
+            "min_x": -63,
+            "min_y": 54
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-16",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-16",
+        "shape": {
+          "extent": {
+            "max_x": -61,
+            "max_y": 55,
+            "min_x": -62,
+            "min_y": 54
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-17",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-17",
+        "shape": {
+          "extent": {
+            "max_x": -60,
+            "max_y": 55,
+            "min_x": -61,
+            "min_y": 54
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-18",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-18",
+        "shape": {
+          "extent": {
+            "max_x": -59,
+            "max_y": 55,
+            "min_x": -60,
+            "min_y": 54
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-19",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-19",
+        "shape": {
+          "extent": {
+            "max_x": -58,
+            "max_y": 55,
+            "min_x": -59,
+            "min_y": 54
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-20",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-20",
+        "shape": {
+          "extent": {
+            "max_x": -57,
+            "max_y": 55,
+            "min_x": -58,
+            "min_y": 54
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-21",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-21",
+        "shape": {
+          "extent": {
+            "max_x": -56,
+            "max_y": 55,
+            "min_x": -57,
+            "min_y": 54
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-22",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-22",
+        "shape": {
+          "extent": {
+            "max_x": -55,
+            "max_y": 55,
+            "min_x": -56,
+            "min_y": 54
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-23",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-23",
+        "shape": {
+          "extent": {
+            "max_x": -54,
+            "max_y": 55,
+            "min_x": -55,
+            "min_y": 54
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-24",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-24",
+        "shape": {
+          "extent": {
+            "max_x": -71,
+            "max_y": 57,
+            "min_x": -72,
+            "min_y": 56
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-25",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-25",
+        "shape": {
+          "extent": {
+            "max_x": -70,
+            "max_y": 57,
+            "min_x": -71,
+            "min_y": 56
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-26",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-26",
+        "shape": {
+          "extent": {
+            "max_x": -69,
+            "max_y": 57,
+            "min_x": -70,
+            "min_y": 56
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-27",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-27",
+        "shape": {
+          "extent": {
+            "max_x": -68,
+            "max_y": 57,
+            "min_x": -69,
+            "min_y": 56
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-28",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-28",
+        "shape": {
+          "extent": {
+            "max_x": -67,
+            "max_y": 57,
+            "min_x": -68,
+            "min_y": 56
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w2-29",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w2-29",
+        "shape": {
+          "extent": {
+            "max_x": -66,
+            "max_y": 57,
+            "min_x": -67,
+            "min_y": 56
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-00",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-00",
+        "shape": {
+          "extent": {
+            "max_x": -65,
+            "max_y": 57,
+            "min_x": -66,
+            "min_y": 56
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-01",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-01",
+        "shape": {
+          "extent": {
+            "max_x": -64,
+            "max_y": 57,
+            "min_x": -65,
+            "min_y": 56
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-02",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-02",
+        "shape": {
+          "extent": {
+            "max_x": -63,
+            "max_y": 57,
+            "min_x": -64,
+            "min_y": 56
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-03",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-03",
+        "shape": {
+          "extent": {
+            "max_x": -62,
+            "max_y": 57,
+            "min_x": -63,
+            "min_y": 56
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-04",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-04",
+        "shape": {
+          "extent": {
+            "max_x": -61,
+            "max_y": 57,
+            "min_x": -62,
+            "min_y": 56
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-05",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-05",
+        "shape": {
+          "extent": {
+            "max_x": -60,
+            "max_y": 57,
+            "min_x": -61,
+            "min_y": 56
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-06",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-06",
+        "shape": {
+          "extent": {
+            "max_x": -59,
+            "max_y": 57,
+            "min_x": -60,
+            "min_y": 56
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-07",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-07",
+        "shape": {
+          "extent": {
+            "max_x": -58,
+            "max_y": 57,
+            "min_x": -59,
+            "min_y": 56
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-08",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-08",
+        "shape": {
+          "extent": {
+            "max_x": -57,
+            "max_y": 57,
+            "min_x": -58,
+            "min_y": 56
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-09",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-09",
+        "shape": {
+          "extent": {
+            "max_x": -56,
+            "max_y": 57,
+            "min_x": -57,
+            "min_y": 56
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-10",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-10",
+        "shape": {
+          "extent": {
+            "max_x": -55,
+            "max_y": 57,
+            "min_x": -56,
+            "min_y": 56
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-11",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-11",
+        "shape": {
+          "extent": {
+            "max_x": -54,
+            "max_y": 57,
+            "min_x": -55,
+            "min_y": 56
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-12",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-12",
+        "shape": {
+          "extent": {
+            "max_x": -71,
+            "max_y": 59,
+            "min_x": -72,
+            "min_y": 58
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-13",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-13",
+        "shape": {
+          "extent": {
+            "max_x": -70,
+            "max_y": 59,
+            "min_x": -71,
+            "min_y": 58
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-14",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-14",
+        "shape": {
+          "extent": {
+            "max_x": -69,
+            "max_y": 59,
+            "min_x": -70,
+            "min_y": 58
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-15",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-15",
+        "shape": {
+          "extent": {
+            "max_x": -68,
+            "max_y": 59,
+            "min_x": -69,
+            "min_y": 58
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-16",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-16",
+        "shape": {
+          "extent": {
+            "max_x": -67,
+            "max_y": 59,
+            "min_x": -68,
+            "min_y": 58
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-17",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-17",
+        "shape": {
+          "extent": {
+            "max_x": -66,
+            "max_y": 59,
+            "min_x": -67,
+            "min_y": 58
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-18",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-18",
+        "shape": {
+          "extent": {
+            "max_x": -65,
+            "max_y": 59,
+            "min_x": -66,
+            "min_y": 58
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-19",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-19",
+        "shape": {
+          "extent": {
+            "max_x": -64,
+            "max_y": 59,
+            "min_x": -65,
+            "min_y": 58
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-20",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-20",
+        "shape": {
+          "extent": {
+            "max_x": -63,
+            "max_y": 59,
+            "min_x": -64,
+            "min_y": 58
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-21",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-21",
+        "shape": {
+          "extent": {
+            "max_x": -62,
+            "max_y": 59,
+            "min_x": -63,
+            "min_y": 58
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-22",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-22",
+        "shape": {
+          "extent": {
+            "max_x": -61,
+            "max_y": 59,
+            "min_x": -62,
+            "min_y": 58
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-23",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-23",
+        "shape": {
+          "extent": {
+            "max_x": -60,
+            "max_y": 59,
+            "min_x": -61,
+            "min_y": 58
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-24",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-24",
+        "shape": {
+          "extent": {
+            "max_x": -59,
+            "max_y": 59,
+            "min_x": -60,
+            "min_y": 58
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-25",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-25",
+        "shape": {
+          "extent": {
+            "max_x": -58,
+            "max_y": 59,
+            "min_x": -59,
+            "min_y": 58
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-26",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-26",
+        "shape": {
+          "extent": {
+            "max_x": -57,
+            "max_y": 59,
+            "min_x": -58,
+            "min_y": 58
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-27",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-27",
+        "shape": {
+          "extent": {
+            "max_x": -56,
+            "max_y": 59,
+            "min_x": -57,
+            "min_y": 58
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-28",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-28",
+        "shape": {
+          "extent": {
+            "max_x": -55,
+            "max_y": 59,
+            "min_x": -56,
+            "min_y": 58
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w3-29",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w3-29",
+        "shape": {
+          "extent": {
+            "max_x": -54,
+            "max_y": 59,
+            "min_x": -55,
+            "min_y": 58
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-00",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-00",
+        "shape": {
+          "extent": {
+            "max_x": -71,
+            "max_y": 61,
+            "min_x": -72,
+            "min_y": 60
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-01",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-01",
+        "shape": {
+          "extent": {
+            "max_x": -70,
+            "max_y": 61,
+            "min_x": -71,
+            "min_y": 60
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-02",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-02",
+        "shape": {
+          "extent": {
+            "max_x": -69,
+            "max_y": 61,
+            "min_x": -70,
+            "min_y": 60
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-03",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-03",
+        "shape": {
+          "extent": {
+            "max_x": -68,
+            "max_y": 61,
+            "min_x": -69,
+            "min_y": 60
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-04",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-04",
+        "shape": {
+          "extent": {
+            "max_x": -67,
+            "max_y": 61,
+            "min_x": -68,
+            "min_y": 60
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-05",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-05",
+        "shape": {
+          "extent": {
+            "max_x": -66,
+            "max_y": 61,
+            "min_x": -67,
+            "min_y": 60
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-06",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-06",
+        "shape": {
+          "extent": {
+            "max_x": -65,
+            "max_y": 61,
+            "min_x": -66,
+            "min_y": 60
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-07",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-07",
+        "shape": {
+          "extent": {
+            "max_x": -64,
+            "max_y": 61,
+            "min_x": -65,
+            "min_y": 60
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-08",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-08",
+        "shape": {
+          "extent": {
+            "max_x": -63,
+            "max_y": 61,
+            "min_x": -64,
+            "min_y": 60
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-09",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-09",
+        "shape": {
+          "extent": {
+            "max_x": -62,
+            "max_y": 61,
+            "min_x": -63,
+            "min_y": 60
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-10",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-10",
+        "shape": {
+          "extent": {
+            "max_x": -61,
+            "max_y": 61,
+            "min_x": -62,
+            "min_y": 60
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-11",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-11",
+        "shape": {
+          "extent": {
+            "max_x": -60,
+            "max_y": 61,
+            "min_x": -61,
+            "min_y": 60
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-12",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-12",
+        "shape": {
+          "extent": {
+            "max_x": -59,
+            "max_y": 61,
+            "min_x": -60,
+            "min_y": 60
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-13",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-13",
+        "shape": {
+          "extent": {
+            "max_x": -58,
+            "max_y": 61,
+            "min_x": -59,
+            "min_y": 60
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-14",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-14",
+        "shape": {
+          "extent": {
+            "max_x": -57,
+            "max_y": 61,
+            "min_x": -58,
+            "min_y": 60
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-15",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-15",
+        "shape": {
+          "extent": {
+            "max_x": -56,
+            "max_y": 61,
+            "min_x": -57,
+            "min_y": 60
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-16",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-16",
+        "shape": {
+          "extent": {
+            "max_x": -55,
+            "max_y": 61,
+            "min_x": -56,
+            "min_y": 60
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-17",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-17",
+        "shape": {
+          "extent": {
+            "max_x": -54,
+            "max_y": 61,
+            "min_x": -55,
+            "min_y": 60
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-18",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-18",
+        "shape": {
+          "extent": {
+            "max_x": -71,
+            "max_y": 63,
+            "min_x": -72,
+            "min_y": 62
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-19",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-19",
+        "shape": {
+          "extent": {
+            "max_x": -70,
+            "max_y": 63,
+            "min_x": -71,
+            "min_y": 62
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-20",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-20",
+        "shape": {
+          "extent": {
+            "max_x": -69,
+            "max_y": 63,
+            "min_x": -70,
+            "min_y": 62
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-21",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-21",
+        "shape": {
+          "extent": {
+            "max_x": -68,
+            "max_y": 63,
+            "min_x": -69,
+            "min_y": 62
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-22",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-22",
+        "shape": {
+          "extent": {
+            "max_x": -67,
+            "max_y": 63,
+            "min_x": -68,
+            "min_y": 62
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-23",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-23",
+        "shape": {
+          "extent": {
+            "max_x": -66,
+            "max_y": 63,
+            "min_x": -67,
+            "min_y": 62
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-24",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-24",
+        "shape": {
+          "extent": {
+            "max_x": -65,
+            "max_y": 63,
+            "min_x": -66,
+            "min_y": 62
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-25",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-25",
+        "shape": {
+          "extent": {
+            "max_x": -64,
+            "max_y": 63,
+            "min_x": -65,
+            "min_y": 62
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-26",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-26",
+        "shape": {
+          "extent": {
+            "max_x": -63,
+            "max_y": 63,
+            "min_x": -64,
+            "min_y": 62
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-27",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-27",
+        "shape": {
+          "extent": {
+            "max_x": -62,
+            "max_y": 63,
+            "min_x": -63,
+            "min_y": 62
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-28",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-28",
+        "shape": {
+          "extent": {
+            "max_x": -61,
+            "max_y": 63,
+            "min_x": -62,
+            "min_y": 62
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w4-29",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "fringe-w4-29",
+        "shape": {
+          "extent": {
+            "max_x": -60,
+            "max_y": 63,
+            "min_x": -61,
+            "min_y": 62
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-00",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-00",
+        "shape": {
+          "extent": {
+            "max_x": -59,
+            "max_y": 63,
+            "min_x": -60,
+            "min_y": 62
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-01",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-01",
+        "shape": {
+          "extent": {
+            "max_x": -58,
+            "max_y": 63,
+            "min_x": -59,
+            "min_y": 62
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-02",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-02",
+        "shape": {
+          "extent": {
+            "max_x": -57,
+            "max_y": 63,
+            "min_x": -58,
+            "min_y": 62
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-03",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-03",
+        "shape": {
+          "extent": {
+            "max_x": -56,
+            "max_y": 63,
+            "min_x": -57,
+            "min_y": 62
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-04",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-04",
+        "shape": {
+          "extent": {
+            "max_x": -55,
+            "max_y": 63,
+            "min_x": -56,
+            "min_y": 62
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-05",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-05",
+        "shape": {
+          "extent": {
+            "max_x": -54,
+            "max_y": 63,
+            "min_x": -55,
+            "min_y": 62
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-06",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-06",
+        "shape": {
+          "extent": {
+            "max_x": -71,
+            "max_y": 65,
+            "min_x": -72,
+            "min_y": 64
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-07",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-07",
+        "shape": {
+          "extent": {
+            "max_x": -70,
+            "max_y": 65,
+            "min_x": -71,
+            "min_y": 64
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-08",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-08",
+        "shape": {
+          "extent": {
+            "max_x": -69,
+            "max_y": 65,
+            "min_x": -70,
+            "min_y": 64
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-09",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-09",
+        "shape": {
+          "extent": {
+            "max_x": -68,
+            "max_y": 65,
+            "min_x": -69,
+            "min_y": 64
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-10",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-10",
+        "shape": {
+          "extent": {
+            "max_x": -67,
+            "max_y": 65,
+            "min_x": -68,
+            "min_y": 64
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-11",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-11",
+        "shape": {
+          "extent": {
+            "max_x": -66,
+            "max_y": 65,
+            "min_x": -67,
+            "min_y": 64
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-12",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-12",
+        "shape": {
+          "extent": {
+            "max_x": -65,
+            "max_y": 65,
+            "min_x": -66,
+            "min_y": 64
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-13",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-13",
+        "shape": {
+          "extent": {
+            "max_x": -64,
+            "max_y": 65,
+            "min_x": -65,
+            "min_y": 64
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-14",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-14",
+        "shape": {
+          "extent": {
+            "max_x": -63,
+            "max_y": 65,
+            "min_x": -64,
+            "min_y": 64
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-15",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-15",
+        "shape": {
+          "extent": {
+            "max_x": -62,
+            "max_y": 65,
+            "min_x": -63,
+            "min_y": 64
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-16",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-16",
+        "shape": {
+          "extent": {
+            "max_x": -61,
+            "max_y": 65,
+            "min_x": -62,
+            "min_y": 64
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-17",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-17",
+        "shape": {
+          "extent": {
+            "max_x": -60,
+            "max_y": 65,
+            "min_x": -61,
+            "min_y": 64
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-18",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-18",
+        "shape": {
+          "extent": {
+            "max_x": -59,
+            "max_y": 65,
+            "min_x": -60,
+            "min_y": 64
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-19",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-19",
+        "shape": {
+          "extent": {
+            "max_x": -58,
+            "max_y": 65,
+            "min_x": -59,
+            "min_y": 64
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-20",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-20",
+        "shape": {
+          "extent": {
+            "max_x": -57,
+            "max_y": 65,
+            "min_x": -58,
+            "min_y": 64
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-21",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-21",
+        "shape": {
+          "extent": {
+            "max_x": -56,
+            "max_y": 65,
+            "min_x": -57,
+            "min_y": 64
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-22",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-22",
+        "shape": {
+          "extent": {
+            "max_x": -55,
+            "max_y": 65,
+            "min_x": -56,
+            "min_y": 64
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-23",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-23",
+        "shape": {
+          "extent": {
+            "max_x": -54,
+            "max_y": 65,
+            "min_x": -55,
+            "min_y": 64
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-24",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-24",
+        "shape": {
+          "extent": {
+            "max_x": -71,
+            "max_y": 67,
+            "min_x": -72,
+            "min_y": 66
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-25",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-25",
+        "shape": {
+          "extent": {
+            "max_x": -70,
+            "max_y": 67,
+            "min_x": -71,
+            "min_y": 66
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-26",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-26",
+        "shape": {
+          "extent": {
+            "max_x": -69,
+            "max_y": 67,
+            "min_x": -70,
+            "min_y": 66
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-27",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-27",
+        "shape": {
+          "extent": {
+            "max_x": -68,
+            "max_y": 67,
+            "min_x": -69,
+            "min_y": 66
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-28",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-28",
+        "shape": {
+          "extent": {
+            "max_x": -67,
+            "max_y": 67,
+            "min_x": -68,
+            "min_y": 66
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w5-29",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w5-29",
+        "shape": {
+          "extent": {
+            "max_x": -66,
+            "max_y": 67,
+            "min_x": -67,
+            "min_y": 66
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-00",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-00",
+        "shape": {
+          "extent": {
+            "max_x": -65,
+            "max_y": 67,
+            "min_x": -66,
+            "min_y": 66
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-01",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-01",
+        "shape": {
+          "extent": {
+            "max_x": -64,
+            "max_y": 67,
+            "min_x": -65,
+            "min_y": 66
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-02",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-02",
+        "shape": {
+          "extent": {
+            "max_x": -63,
+            "max_y": 67,
+            "min_x": -64,
+            "min_y": 66
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-03",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-03",
+        "shape": {
+          "extent": {
+            "max_x": -62,
+            "max_y": 67,
+            "min_x": -63,
+            "min_y": 66
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-04",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-04",
+        "shape": {
+          "extent": {
+            "max_x": -61,
+            "max_y": 67,
+            "min_x": -62,
+            "min_y": 66
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-05",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-05",
+        "shape": {
+          "extent": {
+            "max_x": -60,
+            "max_y": 67,
+            "min_x": -61,
+            "min_y": 66
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-06",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-06",
+        "shape": {
+          "extent": {
+            "max_x": -59,
+            "max_y": 67,
+            "min_x": -60,
+            "min_y": 66
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-07",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-07",
+        "shape": {
+          "extent": {
+            "max_x": -58,
+            "max_y": 67,
+            "min_x": -59,
+            "min_y": 66
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-08",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-08",
+        "shape": {
+          "extent": {
+            "max_x": -57,
+            "max_y": 67,
+            "min_x": -58,
+            "min_y": 66
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-09",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-09",
+        "shape": {
+          "extent": {
+            "max_x": -56,
+            "max_y": 67,
+            "min_x": -57,
+            "min_y": 66
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-10",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-10",
+        "shape": {
+          "extent": {
+            "max_x": -55,
+            "max_y": 67,
+            "min_x": -56,
+            "min_y": 66
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-11",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-11",
+        "shape": {
+          "extent": {
+            "max_x": -54,
+            "max_y": 67,
+            "min_x": -55,
+            "min_y": 66
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-12",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-12",
+        "shape": {
+          "extent": {
+            "max_x": -71,
+            "max_y": 69,
+            "min_x": -72,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-13",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-13",
+        "shape": {
+          "extent": {
+            "max_x": -70,
+            "max_y": 69,
+            "min_x": -71,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-14",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-14",
+        "shape": {
+          "extent": {
+            "max_x": -69,
+            "max_y": 69,
+            "min_x": -70,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-15",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-15",
+        "shape": {
+          "extent": {
+            "max_x": -68,
+            "max_y": 69,
+            "min_x": -69,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-16",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-16",
+        "shape": {
+          "extent": {
+            "max_x": -67,
+            "max_y": 69,
+            "min_x": -68,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-17",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-17",
+        "shape": {
+          "extent": {
+            "max_x": -66,
+            "max_y": 69,
+            "min_x": -67,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-18",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-18",
+        "shape": {
+          "extent": {
+            "max_x": -65,
+            "max_y": 69,
+            "min_x": -66,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-19",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-19",
+        "shape": {
+          "extent": {
+            "max_x": -64,
+            "max_y": 69,
+            "min_x": -65,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-20",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-20",
+        "shape": {
+          "extent": {
+            "max_x": -63,
+            "max_y": 69,
+            "min_x": -64,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-21",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-21",
+        "shape": {
+          "extent": {
+            "max_x": -62,
+            "max_y": 69,
+            "min_x": -63,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-22",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-22",
+        "shape": {
+          "extent": {
+            "max_x": -61,
+            "max_y": 69,
+            "min_x": -62,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-23",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-23",
+        "shape": {
+          "extent": {
+            "max_x": -60,
+            "max_y": 69,
+            "min_x": -61,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-24",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-24",
+        "shape": {
+          "extent": {
+            "max_x": -59,
+            "max_y": 69,
+            "min_x": -60,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-25",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-25",
+        "shape": {
+          "extent": {
+            "max_x": -58,
+            "max_y": 69,
+            "min_x": -59,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-26",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-26",
+        "shape": {
+          "extent": {
+            "max_x": -57,
+            "max_y": 69,
+            "min_x": -58,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-27",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-27",
+        "shape": {
+          "extent": {
+            "max_x": -56,
+            "max_y": 69,
+            "min_x": -57,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-28",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-28",
+        "shape": {
+          "extent": {
+            "max_x": -55,
+            "max_y": 69,
+            "min_x": -56,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "fringe-w6-29",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "fringe-w6-29",
+        "shape": {
+          "extent": {
+            "max_x": -54,
+            "max_y": 69,
+            "min_x": -55,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-000",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-000",
+        "shape": {
+          "extent": {
+            "max_x": -68,
+            "max_y": 69,
+            "min_x": -70,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-001",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-001",
+        "shape": {
+          "extent": {
+            "max_x": -64,
+            "max_y": 69,
+            "min_x": -66,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-002",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-002",
+        "shape": {
+          "extent": {
+            "max_x": -60,
+            "max_y": 69,
+            "min_x": -62,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-003",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-003",
+        "shape": {
+          "extent": {
+            "max_x": -56,
+            "max_y": 69,
+            "min_x": -58,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-004",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-004",
+        "shape": {
+          "extent": {
+            "max_x": -52,
+            "max_y": 69,
+            "min_x": -54,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-005",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-005",
+        "shape": {
+          "extent": {
+            "max_x": -48,
+            "max_y": 69,
+            "min_x": -50,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-006",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-006",
+        "shape": {
+          "extent": {
+            "max_x": -44,
+            "max_y": 69,
+            "min_x": -46,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-007",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-007",
+        "shape": {
+          "extent": {
+            "max_x": -40,
+            "max_y": 69,
+            "min_x": -42,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-008",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-008",
+        "shape": {
+          "extent": {
+            "max_x": -36,
+            "max_y": 69,
+            "min_x": -38,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-009",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-009",
+        "shape": {
+          "extent": {
+            "max_x": -32,
+            "max_y": 69,
+            "min_x": -34,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-010",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-010",
+        "shape": {
+          "extent": {
+            "max_x": -28,
+            "max_y": 69,
+            "min_x": -30,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-011",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-011",
+        "shape": {
+          "extent": {
+            "max_x": -24,
+            "max_y": 69,
+            "min_x": -26,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-012",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-012",
+        "shape": {
+          "extent": {
+            "max_x": -20,
+            "max_y": 69,
+            "min_x": -22,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-013",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-013",
+        "shape": {
+          "extent": {
+            "max_x": -16,
+            "max_y": 69,
+            "min_x": -18,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-014",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-014",
+        "shape": {
+          "extent": {
+            "max_x": -12,
+            "max_y": 69,
+            "min_x": -14,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-015",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-015",
+        "shape": {
+          "extent": {
+            "max_x": -8,
+            "max_y": 69,
+            "min_x": -10,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-016",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-016",
+        "shape": {
+          "extent": {
+            "max_x": -4,
+            "max_y": 69,
+            "min_x": -6,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-017",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-017",
+        "shape": {
+          "extent": {
+            "max_x": 0,
+            "max_y": 69,
+            "min_x": -2,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-018",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-018",
+        "shape": {
+          "extent": {
+            "max_x": 4,
+            "max_y": 69,
+            "min_x": 2,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-019",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-019",
+        "shape": {
+          "extent": {
+            "max_x": 8,
+            "max_y": 69,
+            "min_x": 6,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-020",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-020",
+        "shape": {
+          "extent": {
+            "max_x": 12,
+            "max_y": 69,
+            "min_x": 10,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-021",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-021",
+        "shape": {
+          "extent": {
+            "max_x": 16,
+            "max_y": 69,
+            "min_x": 14,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-022",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-022",
+        "shape": {
+          "extent": {
+            "max_x": 20,
+            "max_y": 69,
+            "min_x": 18,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-023",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-023",
+        "shape": {
+          "extent": {
+            "max_x": 24,
+            "max_y": 69,
+            "min_x": 22,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-024",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-024",
+        "shape": {
+          "extent": {
+            "max_x": 28,
+            "max_y": 69,
+            "min_x": 26,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-025",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-025",
+        "shape": {
+          "extent": {
+            "max_x": 32,
+            "max_y": 69,
+            "min_x": 30,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-026",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-026",
+        "shape": {
+          "extent": {
+            "max_x": 36,
+            "max_y": 69,
+            "min_x": 34,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-027",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-027",
+        "shape": {
+          "extent": {
+            "max_x": 40,
+            "max_y": 69,
+            "min_x": 38,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-028",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-028",
+        "shape": {
+          "extent": {
+            "max_x": 44,
+            "max_y": 69,
+            "min_x": 42,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-029",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-029",
+        "shape": {
+          "extent": {
+            "max_x": 48,
+            "max_y": 69,
+            "min_x": 46,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-030",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-030",
+        "shape": {
+          "extent": {
+            "max_x": 52,
+            "max_y": 69,
+            "min_x": 50,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-031",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-031",
+        "shape": {
+          "extent": {
+            "max_x": 56,
+            "max_y": 69,
+            "min_x": 54,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-032",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-032",
+        "shape": {
+          "extent": {
+            "max_x": 60,
+            "max_y": 69,
+            "min_x": 58,
+            "min_y": 68
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-033",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-033",
+        "shape": {
+          "extent": {
+            "max_x": -68,
+            "max_y": 71,
+            "min_x": -70,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-034",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-034",
+        "shape": {
+          "extent": {
+            "max_x": -64,
+            "max_y": 71,
+            "min_x": -66,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-035",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-035",
+        "shape": {
+          "extent": {
+            "max_x": -60,
+            "max_y": 71,
+            "min_x": -62,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-036",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-036",
+        "shape": {
+          "extent": {
+            "max_x": -56,
+            "max_y": 71,
+            "min_x": -58,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-037",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-037",
+        "shape": {
+          "extent": {
+            "max_x": -52,
+            "max_y": 71,
+            "min_x": -54,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-038",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-038",
+        "shape": {
+          "extent": {
+            "max_x": -48,
+            "max_y": 71,
+            "min_x": -50,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-039",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-039",
+        "shape": {
+          "extent": {
+            "max_x": -44,
+            "max_y": 71,
+            "min_x": -46,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-040",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-040",
+        "shape": {
+          "extent": {
+            "max_x": -40,
+            "max_y": 71,
+            "min_x": -42,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-041",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-041",
+        "shape": {
+          "extent": {
+            "max_x": -36,
+            "max_y": 71,
+            "min_x": -38,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-042",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-042",
+        "shape": {
+          "extent": {
+            "max_x": -32,
+            "max_y": 71,
+            "min_x": -34,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-043",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-043",
+        "shape": {
+          "extent": {
+            "max_x": -28,
+            "max_y": 71,
+            "min_x": -30,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-044",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-044",
+        "shape": {
+          "extent": {
+            "max_x": -24,
+            "max_y": 71,
+            "min_x": -26,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-045",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-045",
+        "shape": {
+          "extent": {
+            "max_x": -20,
+            "max_y": 71,
+            "min_x": -22,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-046",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-046",
+        "shape": {
+          "extent": {
+            "max_x": -16,
+            "max_y": 71,
+            "min_x": -18,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-047",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-047",
+        "shape": {
+          "extent": {
+            "max_x": -12,
+            "max_y": 71,
+            "min_x": -14,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-048",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-048",
+        "shape": {
+          "extent": {
+            "max_x": -8,
+            "max_y": 71,
+            "min_x": -10,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-049",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-049",
+        "shape": {
+          "extent": {
+            "max_x": -4,
+            "max_y": 71,
+            "min_x": -6,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-050",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-050",
+        "shape": {
+          "extent": {
+            "max_x": 0,
+            "max_y": 71,
+            "min_x": -2,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-051",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-051",
+        "shape": {
+          "extent": {
+            "max_x": 4,
+            "max_y": 71,
+            "min_x": 2,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-052",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-052",
+        "shape": {
+          "extent": {
+            "max_x": 8,
+            "max_y": 71,
+            "min_x": 6,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-053",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-053",
+        "shape": {
+          "extent": {
+            "max_x": 12,
+            "max_y": 71,
+            "min_x": 10,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-054",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-054",
+        "shape": {
+          "extent": {
+            "max_x": 16,
+            "max_y": 71,
+            "min_x": 14,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-055",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-055",
+        "shape": {
+          "extent": {
+            "max_x": 20,
+            "max_y": 71,
+            "min_x": 18,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-056",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-056",
+        "shape": {
+          "extent": {
+            "max_x": 24,
+            "max_y": 71,
+            "min_x": 22,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-057",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "core",
+        "id": "bg-057",
+        "shape": {
+          "extent": {
+            "max_x": 28,
+            "max_y": 71,
+            "min_x": 26,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-058",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-058",
+        "shape": {
+          "extent": {
+            "max_x": 32,
+            "max_y": 71,
+            "min_x": 30,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-059",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-059",
+        "shape": {
+          "extent": {
+            "max_x": 36,
+            "max_y": 71,
+            "min_x": 34,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-060",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-060",
+        "shape": {
+          "extent": {
+            "max_x": 40,
+            "max_y": 71,
+            "min_x": 38,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-061",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-061",
+        "shape": {
+          "extent": {
+            "max_x": 44,
+            "max_y": 71,
+            "min_x": 42,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-062",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-062",
+        "shape": {
+          "extent": {
+            "max_x": 48,
+            "max_y": 71,
+            "min_x": 46,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-063",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-063",
+        "shape": {
+          "extent": {
+            "max_x": 52,
+            "max_y": 71,
+            "min_x": 50,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-064",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-064",
+        "shape": {
+          "extent": {
+            "max_x": 56,
+            "max_y": 71,
+            "min_x": 54,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-065",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-065",
+        "shape": {
+          "extent": {
+            "max_x": 60,
+            "max_y": 71,
+            "min_x": 58,
+            "min_y": 70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-066",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-066",
+        "shape": {
+          "extent": {
+            "max_x": -68,
+            "max_y": 73,
+            "min_x": -70,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-067",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-067",
+        "shape": {
+          "extent": {
+            "max_x": -64,
+            "max_y": 73,
+            "min_x": -66,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-068",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-068",
+        "shape": {
+          "extent": {
+            "max_x": -60,
+            "max_y": 73,
+            "min_x": -62,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-069",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-069",
+        "shape": {
+          "extent": {
+            "max_x": -56,
+            "max_y": 73,
+            "min_x": -58,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-070",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-070",
+        "shape": {
+          "extent": {
+            "max_x": -52,
+            "max_y": 73,
+            "min_x": -54,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-071",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-071",
+        "shape": {
+          "extent": {
+            "max_x": -48,
+            "max_y": 73,
+            "min_x": -50,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-072",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-072",
+        "shape": {
+          "extent": {
+            "max_x": -44,
+            "max_y": 73,
+            "min_x": -46,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-073",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-073",
+        "shape": {
+          "extent": {
+            "max_x": -40,
+            "max_y": 73,
+            "min_x": -42,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-074",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-074",
+        "shape": {
+          "extent": {
+            "max_x": -36,
+            "max_y": 73,
+            "min_x": -38,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-075",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-075",
+        "shape": {
+          "extent": {
+            "max_x": -32,
+            "max_y": 73,
+            "min_x": -34,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-076",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-076",
+        "shape": {
+          "extent": {
+            "max_x": -28,
+            "max_y": 73,
+            "min_x": -30,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-077",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-077",
+        "shape": {
+          "extent": {
+            "max_x": -24,
+            "max_y": 73,
+            "min_x": -26,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-078",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-078",
+        "shape": {
+          "extent": {
+            "max_x": -20,
+            "max_y": 73,
+            "min_x": -22,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-079",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-079",
+        "shape": {
+          "extent": {
+            "max_x": -16,
+            "max_y": 73,
+            "min_x": -18,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-080",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-080",
+        "shape": {
+          "extent": {
+            "max_x": -12,
+            "max_y": 73,
+            "min_x": -14,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-081",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-081",
+        "shape": {
+          "extent": {
+            "max_x": -8,
+            "max_y": 73,
+            "min_x": -10,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-082",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-082",
+        "shape": {
+          "extent": {
+            "max_x": -4,
+            "max_y": 73,
+            "min_x": -6,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-083",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-083",
+        "shape": {
+          "extent": {
+            "max_x": 0,
+            "max_y": 73,
+            "min_x": -2,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-084",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-084",
+        "shape": {
+          "extent": {
+            "max_x": 4,
+            "max_y": 73,
+            "min_x": 2,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-085",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-085",
+        "shape": {
+          "extent": {
+            "max_x": 8,
+            "max_y": 73,
+            "min_x": 6,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-086",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-086",
+        "shape": {
+          "extent": {
+            "max_x": 12,
+            "max_y": 73,
+            "min_x": 10,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-087",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-087",
+        "shape": {
+          "extent": {
+            "max_x": 16,
+            "max_y": 73,
+            "min_x": 14,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-088",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-088",
+        "shape": {
+          "extent": {
+            "max_x": 20,
+            "max_y": 73,
+            "min_x": 18,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-089",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-089",
+        "shape": {
+          "extent": {
+            "max_x": 24,
+            "max_y": 73,
+            "min_x": 22,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-090",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-090",
+        "shape": {
+          "extent": {
+            "max_x": 28,
+            "max_y": 73,
+            "min_x": 26,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-091",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-091",
+        "shape": {
+          "extent": {
+            "max_x": 32,
+            "max_y": 73,
+            "min_x": 30,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-092",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-092",
+        "shape": {
+          "extent": {
+            "max_x": 36,
+            "max_y": 73,
+            "min_x": 34,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-093",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-093",
+        "shape": {
+          "extent": {
+            "max_x": 40,
+            "max_y": 73,
+            "min_x": 38,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-094",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-094",
+        "shape": {
+          "extent": {
+            "max_x": 44,
+            "max_y": 73,
+            "min_x": 42,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-095",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-095",
+        "shape": {
+          "extent": {
+            "max_x": 48,
+            "max_y": 73,
+            "min_x": 46,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-096",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-096",
+        "shape": {
+          "extent": {
+            "max_x": 52,
+            "max_y": 73,
+            "min_x": 50,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-097",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-097",
+        "shape": {
+          "extent": {
+            "max_x": 56,
+            "max_y": 73,
+            "min_x": 54,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-098",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-098",
+        "shape": {
+          "extent": {
+            "max_x": 60,
+            "max_y": 73,
+            "min_x": 58,
+            "min_y": 72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-099",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-099",
+        "shape": {
+          "extent": {
+            "max_x": -68,
+            "max_y": -73,
+            "min_x": -70,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-100",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-100",
+        "shape": {
+          "extent": {
+            "max_x": -64,
+            "max_y": -73,
+            "min_x": -66,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-101",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-101",
+        "shape": {
+          "extent": {
+            "max_x": -60,
+            "max_y": -73,
+            "min_x": -62,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-102",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-102",
+        "shape": {
+          "extent": {
+            "max_x": -56,
+            "max_y": -73,
+            "min_x": -58,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-103",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-103",
+        "shape": {
+          "extent": {
+            "max_x": -52,
+            "max_y": -73,
+            "min_x": -54,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-104",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-104",
+        "shape": {
+          "extent": {
+            "max_x": -48,
+            "max_y": -73,
+            "min_x": -50,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-105",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-105",
+        "shape": {
+          "extent": {
+            "max_x": -44,
+            "max_y": -73,
+            "min_x": -46,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-106",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-106",
+        "shape": {
+          "extent": {
+            "max_x": -40,
+            "max_y": -73,
+            "min_x": -42,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-107",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-107",
+        "shape": {
+          "extent": {
+            "max_x": -36,
+            "max_y": -73,
+            "min_x": -38,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-108",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-108",
+        "shape": {
+          "extent": {
+            "max_x": -32,
+            "max_y": -73,
+            "min_x": -34,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-109",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-109",
+        "shape": {
+          "extent": {
+            "max_x": -28,
+            "max_y": -73,
+            "min_x": -30,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-110",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-110",
+        "shape": {
+          "extent": {
+            "max_x": -24,
+            "max_y": -73,
+            "min_x": -26,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-111",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-111",
+        "shape": {
+          "extent": {
+            "max_x": -20,
+            "max_y": -73,
+            "min_x": -22,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-112",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-112",
+        "shape": {
+          "extent": {
+            "max_x": -16,
+            "max_y": -73,
+            "min_x": -18,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-113",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-113",
+        "shape": {
+          "extent": {
+            "max_x": -12,
+            "max_y": -73,
+            "min_x": -14,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-114",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-114",
+        "shape": {
+          "extent": {
+            "max_x": -8,
+            "max_y": -73,
+            "min_x": -10,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-115",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-115",
+        "shape": {
+          "extent": {
+            "max_x": -4,
+            "max_y": -73,
+            "min_x": -6,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-116",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-116",
+        "shape": {
+          "extent": {
+            "max_x": 0,
+            "max_y": -73,
+            "min_x": -2,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-117",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "halo",
+        "id": "bg-117",
+        "shape": {
+          "extent": {
+            "max_x": 4,
+            "max_y": -73,
+            "min_x": 2,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-118",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-118",
+        "shape": {
+          "extent": {
+            "max_x": 8,
+            "max_y": -73,
+            "min_x": 6,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-119",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-119",
+        "shape": {
+          "extent": {
+            "max_x": 12,
+            "max_y": -73,
+            "min_x": 10,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-120",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-120",
+        "shape": {
+          "extent": {
+            "max_x": 16,
+            "max_y": -73,
+            "min_x": 14,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-121",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-121",
+        "shape": {
+          "extent": {
+            "max_x": 20,
+            "max_y": -73,
+            "min_x": 18,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-122",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-122",
+        "shape": {
+          "extent": {
+            "max_x": 24,
+            "max_y": -73,
+            "min_x": 22,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-123",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-123",
+        "shape": {
+          "extent": {
+            "max_x": 28,
+            "max_y": -73,
+            "min_x": 26,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-124",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-124",
+        "shape": {
+          "extent": {
+            "max_x": 32,
+            "max_y": -73,
+            "min_x": 30,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-125",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-125",
+        "shape": {
+          "extent": {
+            "max_x": 36,
+            "max_y": -73,
+            "min_x": 34,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-126",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-126",
+        "shape": {
+          "extent": {
+            "max_x": 40,
+            "max_y": -73,
+            "min_x": 38,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-127",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-127",
+        "shape": {
+          "extent": {
+            "max_x": 44,
+            "max_y": -73,
+            "min_x": 42,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-128",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-128",
+        "shape": {
+          "extent": {
+            "max_x": 48,
+            "max_y": -73,
+            "min_x": 46,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-129",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-129",
+        "shape": {
+          "extent": {
+            "max_x": 52,
+            "max_y": -73,
+            "min_x": 50,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-130",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-130",
+        "shape": {
+          "extent": {
+            "max_x": 56,
+            "max_y": -73,
+            "min_x": 54,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-131",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-131",
+        "shape": {
+          "extent": {
+            "max_x": 60,
+            "max_y": -73,
+            "min_x": 58,
+            "min_y": -74
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-132",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-132",
+        "shape": {
+          "extent": {
+            "max_x": -68,
+            "max_y": -71,
+            "min_x": -70,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-133",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-133",
+        "shape": {
+          "extent": {
+            "max_x": -64,
+            "max_y": -71,
+            "min_x": -66,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-134",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-134",
+        "shape": {
+          "extent": {
+            "max_x": -60,
+            "max_y": -71,
+            "min_x": -62,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-135",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-135",
+        "shape": {
+          "extent": {
+            "max_x": -56,
+            "max_y": -71,
+            "min_x": -58,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-136",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-136",
+        "shape": {
+          "extent": {
+            "max_x": -52,
+            "max_y": -71,
+            "min_x": -54,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-137",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-137",
+        "shape": {
+          "extent": {
+            "max_x": -48,
+            "max_y": -71,
+            "min_x": -50,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-138",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-138",
+        "shape": {
+          "extent": {
+            "max_x": -44,
+            "max_y": -71,
+            "min_x": -46,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-139",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-139",
+        "shape": {
+          "extent": {
+            "max_x": -40,
+            "max_y": -71,
+            "min_x": -42,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-140",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-140",
+        "shape": {
+          "extent": {
+            "max_x": -36,
+            "max_y": -71,
+            "min_x": -38,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-141",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-141",
+        "shape": {
+          "extent": {
+            "max_x": -32,
+            "max_y": -71,
+            "min_x": -34,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-142",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-142",
+        "shape": {
+          "extent": {
+            "max_x": -28,
+            "max_y": -71,
+            "min_x": -30,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-143",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-143",
+        "shape": {
+          "extent": {
+            "max_x": -24,
+            "max_y": -71,
+            "min_x": -26,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-144",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-144",
+        "shape": {
+          "extent": {
+            "max_x": -20,
+            "max_y": -71,
+            "min_x": -22,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-145",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-145",
+        "shape": {
+          "extent": {
+            "max_x": -16,
+            "max_y": -71,
+            "min_x": -18,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-146",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-146",
+        "shape": {
+          "extent": {
+            "max_x": -12,
+            "max_y": -71,
+            "min_x": -14,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-147",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-147",
+        "shape": {
+          "extent": {
+            "max_x": -8,
+            "max_y": -71,
+            "min_x": -10,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-148",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-148",
+        "shape": {
+          "extent": {
+            "max_x": -4,
+            "max_y": -71,
+            "min_x": -6,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-149",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-149",
+        "shape": {
+          "extent": {
+            "max_x": 0,
+            "max_y": -71,
+            "min_x": -2,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-150",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-150",
+        "shape": {
+          "extent": {
+            "max_x": 4,
+            "max_y": -71,
+            "min_x": 2,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-151",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-151",
+        "shape": {
+          "extent": {
+            "max_x": 8,
+            "max_y": -71,
+            "min_x": 6,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-152",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-152",
+        "shape": {
+          "extent": {
+            "max_x": 12,
+            "max_y": -71,
+            "min_x": 10,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-153",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-153",
+        "shape": {
+          "extent": {
+            "max_x": 16,
+            "max_y": -71,
+            "min_x": 14,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-154",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-154",
+        "shape": {
+          "extent": {
+            "max_x": 20,
+            "max_y": -71,
+            "min_x": 18,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-155",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-155",
+        "shape": {
+          "extent": {
+            "max_x": 24,
+            "max_y": -71,
+            "min_x": 22,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-156",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-156",
+        "shape": {
+          "extent": {
+            "max_x": 28,
+            "max_y": -71,
+            "min_x": 26,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-157",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-157",
+        "shape": {
+          "extent": {
+            "max_x": 32,
+            "max_y": -71,
+            "min_x": 30,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-158",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-158",
+        "shape": {
+          "extent": {
+            "max_x": 36,
+            "max_y": -71,
+            "min_x": 34,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-159",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-159",
+        "shape": {
+          "extent": {
+            "max_x": 40,
+            "max_y": -71,
+            "min_x": 38,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-160",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-160",
+        "shape": {
+          "extent": {
+            "max_x": 44,
+            "max_y": -71,
+            "min_x": 42,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-161",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-161",
+        "shape": {
+          "extent": {
+            "max_x": 48,
+            "max_y": -71,
+            "min_x": 46,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-162",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-162",
+        "shape": {
+          "extent": {
+            "max_x": 52,
+            "max_y": -71,
+            "min_x": 50,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-163",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-163",
+        "shape": {
+          "extent": {
+            "max_x": 56,
+            "max_y": -71,
+            "min_x": 54,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-164",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-164",
+        "shape": {
+          "extent": {
+            "max_x": 60,
+            "max_y": -71,
+            "min_x": 58,
+            "min_y": -72
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-165",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-165",
+        "shape": {
+          "extent": {
+            "max_x": -68,
+            "max_y": -69,
+            "min_x": -70,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-166",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-166",
+        "shape": {
+          "extent": {
+            "max_x": -64,
+            "max_y": -69,
+            "min_x": -66,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-167",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-167",
+        "shape": {
+          "extent": {
+            "max_x": -60,
+            "max_y": -69,
+            "min_x": -62,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-168",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-168",
+        "shape": {
+          "extent": {
+            "max_x": -56,
+            "max_y": -69,
+            "min_x": -58,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-169",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-169",
+        "shape": {
+          "extent": {
+            "max_x": -52,
+            "max_y": -69,
+            "min_x": -54,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-170",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-170",
+        "shape": {
+          "extent": {
+            "max_x": -48,
+            "max_y": -69,
+            "min_x": -50,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-171",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-171",
+        "shape": {
+          "extent": {
+            "max_x": -44,
+            "max_y": -69,
+            "min_x": -46,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-172",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-172",
+        "shape": {
+          "extent": {
+            "max_x": -40,
+            "max_y": -69,
+            "min_x": -42,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-173",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-173",
+        "shape": {
+          "extent": {
+            "max_x": -36,
+            "max_y": -69,
+            "min_x": -38,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-174",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-174",
+        "shape": {
+          "extent": {
+            "max_x": -32,
+            "max_y": -69,
+            "min_x": -34,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-175",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-175",
+        "shape": {
+          "extent": {
+            "max_x": -28,
+            "max_y": -69,
+            "min_x": -30,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-176",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-176",
+        "shape": {
+          "extent": {
+            "max_x": -24,
+            "max_y": -69,
+            "min_x": -26,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-177",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-177",
+        "shape": {
+          "extent": {
+            "max_x": -20,
+            "max_y": -69,
+            "min_x": -22,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-178",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-178",
+        "shape": {
+          "extent": {
+            "max_x": -16,
+            "max_y": -69,
+            "min_x": -18,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-179",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-179",
+        "shape": {
+          "extent": {
+            "max_x": -12,
+            "max_y": -69,
+            "min_x": -14,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-180",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-180",
+        "shape": {
+          "extent": {
+            "max_x": -8,
+            "max_y": -69,
+            "min_x": -10,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-181",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-181",
+        "shape": {
+          "extent": {
+            "max_x": -4,
+            "max_y": -69,
+            "min_x": -6,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-182",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-182",
+        "shape": {
+          "extent": {
+            "max_x": 0,
+            "max_y": -69,
+            "min_x": -2,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-183",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-183",
+        "shape": {
+          "extent": {
+            "max_x": 4,
+            "max_y": -69,
+            "min_x": 2,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-184",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-184",
+        "shape": {
+          "extent": {
+            "max_x": 8,
+            "max_y": -69,
+            "min_x": 6,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-185",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-185",
+        "shape": {
+          "extent": {
+            "max_x": 12,
+            "max_y": -69,
+            "min_x": 10,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-186",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-186",
+        "shape": {
+          "extent": {
+            "max_x": 16,
+            "max_y": -69,
+            "min_x": 14,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-187",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-187",
+        "shape": {
+          "extent": {
+            "max_x": 20,
+            "max_y": -69,
+            "min_x": 18,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-188",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-188",
+        "shape": {
+          "extent": {
+            "max_x": 24,
+            "max_y": -69,
+            "min_x": 22,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-189",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-189",
+        "shape": {
+          "extent": {
+            "max_x": 28,
+            "max_y": -69,
+            "min_x": 26,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-190",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-190",
+        "shape": {
+          "extent": {
+            "max_x": 32,
+            "max_y": -69,
+            "min_x": 30,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-191",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-191",
+        "shape": {
+          "extent": {
+            "max_x": 36,
+            "max_y": -69,
+            "min_x": 34,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-192",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-192",
+        "shape": {
+          "extent": {
+            "max_x": 40,
+            "max_y": -69,
+            "min_x": 38,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-193",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-193",
+        "shape": {
+          "extent": {
+            "max_x": 44,
+            "max_y": -69,
+            "min_x": 42,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-194",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-194",
+        "shape": {
+          "extent": {
+            "max_x": 48,
+            "max_y": -69,
+            "min_x": 46,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-195",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-195",
+        "shape": {
+          "extent": {
+            "max_x": 52,
+            "max_y": -69,
+            "min_x": 50,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-196",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-196",
+        "shape": {
+          "extent": {
+            "max_x": 56,
+            "max_y": -69,
+            "min_x": 54,
+            "min_y": -70
+          }
+        }
+      }
+    },
+    {
+      "id": "bg-197",
+      "layer": "candidate-field",
+      "mode": "insert",
+      "value": {
+        "class": "edge",
+        "id": "bg-197",
+        "shape": {
+          "extent": {
+            "max_x": 60,
+            "max_y": -69,
+            "min_x": 58,
+            "min_y": -70
+          }
+        }
+      }
+    }
+  ],
+  "layer": {
+    "bounds": {
+      "max_x": 80,
+      "max_y": 80,
+      "min_x": -80,
+      "min_y": -80
+    },
+    "exclusive": false,
+    "kind": "extent",
+    "name": "candidate-field"
+  }
+}
