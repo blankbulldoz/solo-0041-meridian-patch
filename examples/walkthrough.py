@@ -54,6 +54,9 @@ class Session:
     def post(self, path, value, status=200):
         return self.request('POST', path, value, status)[0]
 
+    def create(self, path, value):
+        return self.request('POST', path, value, 201)[0]
+
     def query(self, layer, rule, value, status=200):
         return self.post(f'/strata/{layer}/{rule}', value, status)
 
@@ -286,6 +289,66 @@ def restore(s):
     return restored
 
 
+def subscribe(s):
+    rev = seed(s)
+    snapshot = s.create(f'/strata/{FIELD}/subscribe', dict(bounds=WINDOW))
+    assert ids(snapshot) == ['dowel', 'ferrule', 'prong']
+    assert snapshot['revision'] == rev and snapshot['subscription']
+    token = snapshot['subscription']
+
+    def events(after, wait=0):
+        return s.post('/subscriptions/events',
+                      dict(subscription=token, after_revision=after, wait_millis=wait))
+
+    assert events(rev)['batches'] == []
+    s.edit(op(FIELD, 'ferrule', box(2, 1, 6, 3), mode='replace'))
+    s.edit(op(FIELD, 'prong', box(9, 9, 10, 10), mode='replace'))
+    s.edit(op(FIELD, 'newcomer', box(0, 0, 1, 1)))
+    result = events(rev)
+    flat = [(batch['revision'], event['id'], event['kind'])
+            for batch in result['batches'] for event in batch['events']]
+    assert [kind for _, _, kind in flat] == ['changed', 'left', 'entered']
+    assert [row[0] for row in flat] == sorted(row[0] for row in flat)
+    assert flat[-1] == (result['revision'], 'newcomer', 'entered')
+    left = [event for batch in result['batches'] for event in batch['events'] if event['id'] == 'prong'][0]
+    assert left['feature']['shape']['extent'] == box(0, 0, 4, 3)
+
+    # A cross-layer batch stays one revision and one event batch.
+    before = s.get('/status')['revision']
+    s.edit(op(FIELD, 'paired', box(1, 1, 2, 2)), op(BED, 'paired', box(1, 1, 2, 2)))
+    atomic = events(before)
+    assert atomic['revision'] == before + 1 and len(atomic['batches']) == 1
+    assert [event['id'] for event in atomic['batches'][0]['events']] == ['paired']
+
+    # Class filter binds the predicate; other classes never appear.
+    filtered = s.create(f'/strata/{FIELD}/subscribe', dict(bounds=WINDOW, **{'class': 'sleeve'}))
+    f_token, f_rev = filtered['subscription'], filtered['revision']
+    s.edit(op(FIELD, 'sleeve-move', box(0, 0, 1, 1), category='sleeve'))
+    s.edit(op(FIELD, 'plain-move', box(0, 0, 1, 1)))
+    class_events = s.post('/subscriptions/events', dict(subscription=f_token, after_revision=f_rev))
+    assert [event['id'] for batch in class_events['batches'] for event in batch['events']] == ['sleeve-move']
+
+    # Tampered tokens, window bookmarks and cursors past the head are rejected.
+    s.post('/subscriptions/events', dict(subscription=token + 'x', after_revision=rev), 400)
+    bookmark = s.query(FIELD, 'window', dict(bounds=WINDOW, limit=1))['next']
+    s.post('/subscriptions/events', dict(subscription=bookmark, after_revision=rev), 400)
+    s.post('/subscriptions/events', dict(subscription=token, after_revision=rev - 1), 400)
+    s.post('/subscriptions/events', dict(subscription=token, after_revision=rev + 999), 400)
+    s.post('/subscriptions/events', dict(subscription=token, after_revision=rev, wait_millis=99999), 400)
+
+    # Once the retention window passes, the stream explicitly asks for a resync.
+    fresh = s.create(f'/strata/{FIELD}/subscribe', dict(bounds=WINDOW))
+    for i in range(70):
+        s.edit(op(FIELD, f'rot-{i}', box(0, 0, 1, 1)))
+    gone = s.post('/subscriptions/events',
+                  dict(subscription=fresh['subscription'], after_revision=fresh['revision']), 410)
+    assert gone['code'] == 'resync'
+    rebuilt = s.create(f'/strata/{FIELD}/subscribe', dict(bounds=WINDOW))
+    assert rebuilt['revision'] == s.get('/status')['revision']
+    s.post('/strata/missing/subscribe', dict(bounds=WINDOW), 404)
+    return result
+
+
 def reopen(binary, data):
     with running(binary, data) as s:
         rev = seed(s)
@@ -304,7 +367,7 @@ def reopen(binary, data):
 
 
 WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
-                                     inspect, seams, relation, audit, export, restore, reopen)}
+                                     inspect, seams, relation, audit, export, restore, subscribe, reopen)}
 
 
 def main():

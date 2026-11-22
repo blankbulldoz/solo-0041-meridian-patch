@@ -26,6 +26,8 @@ python3 examples/walkthrough.py --workflow coverage
 | `PUT /strata/{layer}/layout` | 新 `bounds`、`exclusive` 及可选 `if_revision`。形状类型保持原样 |
 | `POST /edits` | `edits` 与可选 `if_revision`。每项有 `layer`, `id`, `mode`，写入时提供同 ID 的 `value` |
 | `POST /strata/{layer}/window` | `bounds`, `limit`, 可选 `class`, `bookmark`。按 ID 返回 `features`，有更多数据时返回 `next` |
+| `POST /strata/{layer}/subscribe` | `bounds` 与可选 `class`。返回该修订的窗口快照和签名 `subscription` |
+| `POST /subscriptions/events` | `subscription`, `after_revision`, 可选 `wait_millis`。按提交顺序返回之后每个修订的 `entered`/`left`/`changed` 批次 |
 | `POST /strata/{layer}/locate` | `{ "x": 2, "y": 1 }`。返回拥有该点的 `features` |
 | `POST /strata/{layer}/nearest` | `point`, `limit`, 可选 `class`。返回带 `distance_squared` 的 `neighbors` |
 | `POST /strata/{layer}/coverage` | `bounds` 和可选 `class`。返回 `covered`, `repeated`, `uncovered` |
@@ -48,5 +50,7 @@ python3 examples/walkthrough.py --workflow coverage
 ```
 
 `409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
+
+窗口订阅分两步：先对 `POST /strata/{layer}/subscribe` 取得当前修订的窗口快照与签名 `subscription`，再用 `POST /subscriptions/events` 携带最后处理过的 `after_revision` 补读。响应按提交修订分批，每个地物按订阅窗口的前后归属归为 `entered`、`left`（携带离开前最后内容）或 `changed`；与窗口无关的修订返回空批次列表而不占修订号。一次写包（含跨层写入）只产生一个修订和一个批次，不会出现半次可见。`wait_millis` 开启长轮询，上限 25 秒，超时返回空批次列表。服务只保留最近 64 个修订的变更；游标早于保留起点时返回 `410 resync`，客户端应重新建立订阅并以新快照为准。重启进程后旧订阅令牌同样失效，需要重新建立。
 
 边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。

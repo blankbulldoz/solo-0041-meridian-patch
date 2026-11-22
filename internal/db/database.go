@@ -9,6 +9,7 @@ import (
 
 	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/bookmark"
 	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/folio"
+	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/journal"
 )
 
 type Database struct {
@@ -18,6 +19,7 @@ type Database struct {
 	write   sync.Mutex
 	blocked atomic.Bool
 	closed  bool
+	journal *journal.Journal
 }
 
 func Open(dir string) (*Database, error) {
@@ -38,7 +40,7 @@ func openStore(store *folio.Store) (*Database, error) {
 	if err != nil {
 		return nil, err
 	}
-	d := &Database{store: store, signer: signer}
+	d := &Database{store: store, signer: signer, journal: journal.New()}
 	s := &state{layers: make(map[string]*layer)}
 	raw, present, err := store.Read()
 	if err != nil {
@@ -107,5 +109,6 @@ func (d *Database) commit(expected *uint64, prepare func(*state, uint64) (*state
 		return nil, fmt.Errorf("persist commit: %w", err)
 	}
 	d.head.Store(next)
+	d.journal.Append(diffStates(current, next))
 	return next, nil
 }

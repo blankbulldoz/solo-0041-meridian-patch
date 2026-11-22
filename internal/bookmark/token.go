@@ -1,4 +1,4 @@
-// Package bookmark binds window continuation to one predicate and layer revision.
+// Package bookmark binds window continuation and window subscriptions to one predicate.
 package bookmark
 
 import (
@@ -67,4 +67,49 @@ func (s Signer) mac(raw []byte) []byte {
 	m := hmac.New(sha256.New, s.key[:])
 	m.Write(raw)
 	return m.Sum(nil)
+}
+
+// Subscription binds a change stream to one layer, window, class and the
+// database revision at which the initial snapshot was taken.
+type Subscription struct {
+	Layer    string    `json:"layer"`
+	Bounds   plane.Box `json:"bounds"`
+	Class    string    `json:"class"`
+	Revision uint64    `json:"revision"`
+}
+
+type subscriptionPayload struct {
+	Kind string       `json:"kind"`
+	Sub  Subscription `json:"subscription"`
+}
+
+// SealSubscription signs a subscription descriptor. The kind marker keeps
+// subscription tokens from being accepted as window bookmarks.
+func (s Signer) SealSubscription(sub Subscription) string {
+	raw, _ := json.Marshal(subscriptionPayload{Kind: "subscription", Sub: sub})
+	return base64.RawURLEncoding.EncodeToString(raw) + "." + base64.RawURLEncoding.EncodeToString(s.mac(raw))
+}
+
+// OpenSubscription verifies a token and rejects window bookmarks or altered predicates.
+func (s Signer) OpenSubscription(token string) (Subscription, error) {
+	if len(token) > 1024 {
+		return Subscription{}, ErrInvalid
+	}
+	body, tag, ok := strings.Cut(token, ".")
+	if !ok {
+		return Subscription{}, ErrInvalid
+	}
+	raw, err := base64.RawURLEncoding.Strict().DecodeString(body)
+	if err != nil {
+		return Subscription{}, ErrInvalid
+	}
+	given, err := base64.RawURLEncoding.Strict().DecodeString(tag)
+	if err != nil || !hmac.Equal(given, s.mac(raw)) {
+		return Subscription{}, ErrInvalid
+	}
+	var p subscriptionPayload
+	if err := json.Unmarshal(raw, &p); err != nil || p.Kind != "subscription" {
+		return Subscription{}, ErrInvalid
+	}
+	return p.Sub, nil
 }

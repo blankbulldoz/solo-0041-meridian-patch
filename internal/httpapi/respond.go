@@ -1,6 +1,7 @@
 package httpapi
 
 import (
+	"context"
 	"errors"
 	"net/http"
 
@@ -10,6 +11,10 @@ import (
 func (a *api) respond(w http.ResponseWriter, status int, value any, err error) {
 	if err == nil {
 		a.json(w, status, value)
+		return
+	}
+	if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+		a.json(w, http.StatusServiceUnavailable, issue{"unavailable", "request ended before the subscription could be answered"})
 		return
 	}
 	var problem *db.Error
@@ -23,6 +28,7 @@ func (a *api) respond(w http.ResponseWriter, status int, value any, err error) {
 		"missing":          http.StatusNotFound,
 		"conflict":         http.StatusConflict,
 		"capacity":         http.StatusUnprocessableEntity,
+		"resync":           http.StatusGone,
 		"unavailable":      http.StatusServiceUnavailable,
 		"commit_uncertain": http.StatusServiceUnavailable,
 	}

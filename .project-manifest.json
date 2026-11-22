@@ -45,6 +45,11 @@
       "id": "folio",
       "name": "镜像和耐久替换",
       "path": "internal/folio"
+    },
+    {
+      "id": "journal",
+      "name": "有界提交日志与长轮询唤醒",
+      "path": "internal/journal"
     }
   ],
   "complexity": {
@@ -340,6 +345,28 @@
       "success": "全部导入层重置到目标新修订",
       "failure": "镜像无效或目标修订变化都保留旧库",
       "verification": "python3 examples/walkthrough.py --workflow restore"
+    },
+    {
+      "id": "subscribe",
+      "name": "固定窗口订阅",
+      "entry": "POST /strata/{layer}/subscribe 与 POST /subscriptions/events",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "journal",
+        "bookmark",
+        "spatial",
+        "plane",
+        "catalog"
+      ],
+      "steps": [
+        "快照与签名订阅令牌",
+        "提交日志按修订生成窗口进出与变化事件",
+        "保留窗口外游标明确返回重新建立"
+      ],
+      "success": "跨层写包作为一个修订批次可见，补读按提交顺序返回",
+      "failure": "保留范围已过时返回 410 resync，篡改或换谓词令牌拒绝",
+      "verification": "python3 examples/walkthrough.py --workflow subscribe"
     },
     {
       "id": "reopen",
