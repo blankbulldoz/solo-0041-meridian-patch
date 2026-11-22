@@ -80,10 +80,19 @@ func (d *Database) Locate(name string, p plane.Point) (LocateResult, error) {
 	return LocateResult{ReadStamp: stamp(s, l), MatchSet: result}, nil
 }
 
+// ClassQuota caps how many nearest neighbors one class may return. A zero
+// quota excludes the class.
+type ClassQuota struct {
+	Class string `json:"class"`
+	Quota int    `json:"quota"`
+}
+
 type NearestQuery struct {
-	Point plane.Point `json:"point"`
-	Class string      `json:"class,omitempty"`
-	Limit int         `json:"limit"`
+	Point          plane.Point  `json:"point"`
+	Class          string       `json:"class,omitempty"`
+	Limit          int          `json:"limit"`
+	ClassQuotas    []ClassQuota `json:"class_quotas,omitempty"`
+	IncludeUnknown bool         `json:"include_unknown,omitempty"`
 }
 
 type NearestResult struct {
@@ -99,12 +108,23 @@ func (d *Database) Nearest(name string, q NearestQuery) (NearestResult, error) {
 	if q.Limit < 1 || q.Limit > 128 || (q.Class != "" && !catalog.ValidName(q.Class)) {
 		return NearestResult{}, invalid("invalid nearest limit or class")
 	}
+	quotas := make(map[string]int, len(q.ClassQuotas))
+	for _, entry := range q.ClassQuotas {
+		if !catalog.ValidName(entry.Class) || entry.Quota < 0 || entry.Quota > 128 {
+			return NearestResult{}, invalid("invalid nearest class quota")
+		}
+		if _, duplicate := quotas[entry.Class]; duplicate {
+			return NearestResult{}, invalid("duplicate nearest class quota for %q", entry.Class)
+		}
+		quotas[entry.Class] = entry.Quota
+	}
 	s := d.head.Load()
 	l, err := s.getLayer(name)
 	if err != nil {
 		return NearestResult{}, err
 	}
-	neighbors, visit := l.tree.Nearest(q.Point, q.Limit, q.Class)
+	policy := packed.NearestPolicy{Class: q.Class, Quotas: quotas, IncludeUnknown: q.IncludeUnknown}
+	neighbors, visit := l.tree.Nearest(q.Point, q.Limit, policy)
 	for i := range neighbors {
 		neighbors[i].Feature = neighbors[i].Feature.Copy()
 	}

@@ -194,6 +194,43 @@ def nearest(s):
     return result
 
 
+def nearest_quotas(s):
+    layer = 'quota-pins'
+    s.layer(layer, 'mark', True)
+    edits = [op(layer, f'n{i}', point(i, 0), 'near') for i in range(1, 13)]
+    edits += [op(layer, 'm1', point(4, 4), 'mid'),
+              op(layer, 'f1', point(10, 1), 'far'),
+              op(layer, 'f2', point(10, 2), 'far')]
+    s.edit(*edits)
+    origin = dict(point=point(0, 0))
+
+    def neighbors(result):
+        return [(row['feature']['id'], row['distance_squared']) for row in result['neighbors']]
+
+    plain = s.query(layer, 'nearest', dict(origin, limit=5))
+    assert neighbors(plain) == [('n1', 1), ('n2', 4), ('n3', 9), ('n4', 16), ('n5', 25)]
+    quotas = [dict(**{'class': 'near'}, quota=2)]
+    mixed = s.query(layer, 'nearest', dict(origin, limit=5, class_quotas=quotas, include_unknown=True))
+    assert neighbors(mixed) == [('n1', 1), ('n2', 4), ('m1', 32), ('f1', 101), ('f2', 104)]
+    capped = s.query(layer, 'nearest', dict(origin, limit=5, class_quotas=quotas))
+    assert neighbors(capped) == [('n1', 1), ('n2', 4)]
+    two = s.query(layer, 'nearest', dict(origin, limit=5, class_quotas=quotas + [dict(**{'class': 'mid'}, quota=1)]))
+    assert neighbors(two) == [('n1', 1), ('n2', 4), ('m1', 32)]
+    excluded = s.query(layer, 'nearest', dict(origin, limit=5, class_quotas=[dict(**{'class': 'near'}, quota=0)], include_unknown=True))
+    assert neighbors(excluded) == [('m1', 32), ('f1', 101), ('f2', 104)]
+    top = s.query(layer, 'nearest', dict(origin, limit=3, class_quotas=quotas, include_unknown=True))
+    assert neighbors(top) == [('n1', 1), ('n2', 4), ('m1', 32)]
+    s.query(layer, 'nearest', dict(origin, limit=5, class_quotas=[dict(**{'class': 'near'}, quota=129)]), 400)
+    s.query(layer, 'nearest', dict(origin, limit=5, class_quotas=[dict(**{'class': 'near'}, quota=-1)]), 400)
+    s.query(layer, 'nearest', dict(origin, limit=5, class_quotas=[dict(**{'class': 'Near'}, quota=1)]), 400)
+    s.query(layer, 'nearest', dict(origin, limit=5, class_quotas=quotas + quotas), 400)
+    s.layer('tie-pins', 'mark', True)
+    s.edit(op('tie-pins', 't2', point(2, 0), 'tie'), op('tie-pins', 't1', point(0, 2), 'tie'))
+    tie = s.query('tie-pins', 'nearest', dict(origin, limit=5, class_quotas=[dict(**{'class': 'tie'}, quota=1)]))
+    assert neighbors(tie) == [('t1', 4)]
+    return mixed
+
+
 def join(s):
     seed(s)
     query = dict(left=FIELD, right=BED, bounds=box(4, 0, 8, 4), limit=10)
@@ -303,7 +340,7 @@ def reopen(binary, data):
     return result
 
 
-WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
+WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, nearest_quotas, join, coverage,
                                      inspect, seams, relation, audit, export, restore, reopen)}
 
 

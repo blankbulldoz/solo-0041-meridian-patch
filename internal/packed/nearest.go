@@ -14,6 +14,42 @@ type Neighbor struct {
 	DistanceSquared int64           `json:"distance_squared"`
 }
 
+// NearestPolicy selects the features eligible for a nearest-neighbor result
+// and caps how many neighbors each class may contribute.
+type NearestPolicy struct {
+	// Class restricts the search to a single class when set.
+	Class string
+	// Quotas caps the neighbors returned for each listed class. A zero
+	// quota excludes the class. An empty map disables per-class caps.
+	Quotas map[string]int
+	// IncludeUnknown admits classes missing from Quotas, bounded only by
+	// the overall limit. It has no effect when Quotas is empty.
+	IncludeUnknown bool
+}
+
+// bucket keeps the nearest accepted neighbors for one class, for every
+// class when quotas are disabled, or for every unlisted class.
+type bucket struct {
+	limit int
+	rows  []Neighbor
+}
+
+func (b *bucket) offer(next Neighbor) {
+	pos, _ := slices.BinarySearchFunc(b.rows, next, compareNeighbor)
+	if pos < b.limit {
+		if len(b.rows) == b.limit {
+			b.rows = b.rows[:b.limit-1]
+		}
+		b.rows = slices.Insert(b.rows, pos, next)
+	}
+}
+
+// sealed reports whether no feature at distance lowerBound or beyond could
+// still enter the bucket, including by winning an ID tiebreak.
+func (b *bucket) sealed(lowerBound int64) bool {
+	return len(b.rows) == b.limit && lowerBound > b.rows[b.limit-1].DistanceSquared
+}
+
 type nodeDistance struct {
 	node       *node
 	lowerBound int64
@@ -33,16 +69,42 @@ func (f *frontier) Pop() any {
 	return value
 }
 
-func (t Tree) Nearest(p plane.Point, size int, class string) ([]Neighbor, Visit) {
+func (t Tree) Nearest(p plane.Point, size int, policy NearestPolicy) ([]Neighbor, Visit) {
 	found := make([]Neighbor, 0, size)
 	var visit Visit
-	if t.root == nil {
+	if t.root == nil || size <= 0 {
 		return found, visit
+	}
+	byClass := make(map[string]*bucket)
+	var shared *bucket
+	var buckets []*bucket
+	if len(policy.Quotas) == 0 {
+		shared = &bucket{limit: size}
+		buckets = append(buckets, shared)
+	} else {
+		for class, quota := range policy.Quotas {
+			if quota > 0 {
+				b := &bucket{limit: min(quota, size)}
+				byClass[class] = b
+				buckets = append(buckets, b)
+			}
+		}
+		if policy.IncludeUnknown {
+			shared = &bucket{limit: size}
+			buckets = append(buckets, shared)
+		}
 	}
 	pending := frontier{{node: t.root, lowerBound: t.root.bounds.DistanceSquared(p)}}
 	for len(pending) != 0 {
 		current := heap.Pop(&pending).(nodeDistance)
-		if len(found) == size && current.lowerBound > found[size-1].DistanceSquared {
+		sealed := true
+		for _, b := range buckets {
+			if !b.sealed(current.lowerBound) {
+				sealed = false
+				break
+			}
+		}
+		if sealed {
 			break
 		}
 		visit.Nodes++
@@ -54,18 +116,27 @@ func (t Tree) Nearest(p plane.Point, size int, class string) ([]Neighbor, Visit)
 		}
 		for _, row := range n.rows {
 			visit.Candidates++
-			if class != "" && row.Class != class {
+			if policy.Class != "" && row.Class != policy.Class {
 				continue
 			}
-			next := Neighbor{Feature: row, DistanceSquared: row.Shape.Envelope().DistanceSquared(p)}
-			pos, _ := slices.BinarySearchFunc(found, next, compareNeighbor)
-			if pos < size {
-				if len(found) == size {
-					found = found[:size-1]
+			b := shared
+			if len(policy.Quotas) != 0 {
+				if _, listed := policy.Quotas[row.Class]; listed {
+					b = byClass[row.Class] // nil when the quota is zero
 				}
-				found = slices.Insert(found, pos, next)
 			}
+			if b == nil {
+				continue
+			}
+			b.offer(Neighbor{Feature: row, DistanceSquared: row.Shape.Envelope().DistanceSquared(p)})
 		}
+	}
+	for _, b := range buckets {
+		found = append(found, b.rows...)
+	}
+	slices.SortFunc(found, compareNeighbor)
+	if len(found) > size {
+		found = found[:size]
 	}
 	return found, visit
 }
