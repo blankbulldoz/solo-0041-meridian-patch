@@ -202,6 +202,25 @@ def join(s):
                                dict(left='ferrule', right='shim', intersection=box(4, 1, 5, 2))]
     s.post('/join', dict(query, limit=1), 422)
     assert s.post('/join', dict(query, right=PINS))['pairs'][0] == dict(left='dowel', right='brad')
+    s.post('/join', dict(query, right=FIELD), 400)
+    s.post('/join', dict(query, self=True), 400)
+    own = dict(left=FIELD, right=FIELD, bounds=WINDOW, limit=10, self=True)
+    inner = s.post('/join', own)
+    assert inner['left_revision'] == inner['right_revision']
+    assert inner['pairs'] == [dict(left='dowel', right='ferrule', intersection=box(4, 1, 6, 3)),
+                              dict(left='ferrule', right='prong', intersection=box(2, 1, 4, 3))]
+    assert s.post('/join', dict(own, limit=1), 422)['code'] == 'capacity'
+    s.layer('field-copy')
+    s.edit(op('field-copy', 'prong', box(0, 0, 4, 3)),
+           op('field-copy', 'dowel', box(4, 0, 8, 3)),
+           op('field-copy', 'ferrule', box(2, 1, 6, 4)))
+    cross = s.post('/join', dict(left=FIELD, right='field-copy', bounds=WINDOW, limit=10))
+    assert [pair for pair in cross['pairs'] if pair['left'] < pair['right']] == inner['pairs']
+    s.layer('echo-marks', 'mark')
+    s.edit(op('echo-marks', 'pin', point(4, 1)), op('echo-marks', 'tack', point(4, 1)),
+           op('echo-marks', 'nail', point(6, 1)))
+    marks = s.post('/join', dict(left='echo-marks', right='echo-marks', bounds=WINDOW, limit=10, self=True))
+    assert marks['pairs'] == [dict(left='pin', right='tack')]
     return result
 
 

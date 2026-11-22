@@ -151,6 +151,7 @@ type JoinQuery struct {
 	Right  string    `json:"right"`
 	Bounds plane.Box `json:"bounds"`
 	Limit  int       `json:"limit"`
+	Self   bool      `json:"self,omitempty"`
 }
 
 type JoinResponse struct {
@@ -161,8 +162,14 @@ type JoinResponse struct {
 }
 
 func (d *Database) Join(q JoinQuery) (JoinResponse, error) {
-	if q.Left == q.Right || q.Limit < 1 || q.Limit > spatial.MaxPairs {
-		return JoinResponse{}, invalid("join requires distinct layers and a limit of 1..%d", spatial.MaxPairs)
+	if q.Limit < 1 || q.Limit > spatial.MaxPairs {
+		return JoinResponse{}, invalid("join limit must be 1..%d", spatial.MaxPairs)
+	}
+	if q.Self && q.Left != q.Right {
+		return JoinResponse{}, invalid("self join requires left and right to name the same layer")
+	}
+	if !q.Self && q.Left == q.Right {
+		return JoinResponse{}, invalid("join requires distinct layers unless self is set")
 	}
 	if err := validateWindow(q.Bounds, ""); err != nil {
 		return JoinResponse{}, err
@@ -176,7 +183,12 @@ func (d *Database) Join(q JoinQuery) (JoinResponse, error) {
 	if err != nil {
 		return JoinResponse{}, err
 	}
-	result, err := spatial.Join(left.tree, right.tree, q.Bounds, q.Limit)
+	var result spatial.JoinResult
+	if q.Self {
+		result, err = spatial.SelfJoin(left.tree, q.Bounds, q.Limit)
+	} else {
+		result, err = spatial.Join(left.tree, right.tree, q.Bounds, q.Limit)
+	}
 	if err == spatial.ErrJoinBudget {
 		return JoinResponse{}, exhausted("%v", err)
 	}

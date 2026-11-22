@@ -29,6 +29,18 @@ type JoinResult struct {
 }
 
 func Join(left, right packed.Tree, bounds plane.Box, pairLimit int) (JoinResult, error) {
+	return pair(left, right, bounds, pairLimit, false)
+}
+
+// SelfJoin pairs distinct features of one layer within the window. A feature
+// never pairs with itself and each unordered pair is reported once, with the
+// smaller feature ID on the left. Intersections follow the same window-clipped
+// rules as a cross-layer Join.
+func SelfJoin(layer packed.Tree, bounds plane.Box, pairLimit int) (JoinResult, error) {
+	return pair(layer, layer, bounds, pairLimit, true)
+}
+
+func pair(left, right packed.Tree, bounds plane.Box, pairLimit int, self bool) (JoinResult, error) {
 	var result JoinResult
 	leftRows := Window(left, bounds, "", "")
 	result.Visit = leftRows.Visit
@@ -42,6 +54,9 @@ func Join(left, right packed.Tree, bounds plane.Box, pairLimit int) (JoinResult,
 			if remaining < 0 {
 				exhausted = true
 				return false
+			}
+			if self && other.ID <= row.ID {
+				return true
 			}
 			rightShape, visible := restrict(other.Shape, bounds)
 			if !visible || !clipped.Meets(rightShape) {
