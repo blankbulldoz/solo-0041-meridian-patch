@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PREFIX = '/meridian/v1'
 IMAGE = 'application/vnd.meridian.image'
 FIELD, BED, PINS = 'ochre-field', 'mica-bed', 'plumb-marks'
+ROW = 'slate-row'
 
 
 def box(x0, y0, x1, y1):
@@ -219,10 +220,69 @@ def coverage(s):
 def seams(s):
     seed(s)
     result = s.query(FIELD, 'seams', dict(bounds=box(4, 1, 8, 4), limit=2))
-    assert result['seams'] == [dict(first='dowel', second='prong', seam=dict(axis='vertical', fixed=4, **{'from': 1}, to=3))]
-    assert s.query(FIELD, 'seams', dict(bounds=box(0, 0, 4, 4), limit=2))['seams'] == []
+    edge = dict(axis='vertical', fixed=4, **{'from': 1}, to=3)
+    assert result['seams'] == [dict(first='dowel', second='prong', seam=edge)]
+    assert result['segments'] == [dict(seam=edge, pairs=[dict(first='dowel', second='prong')])]
+    empty = s.query(FIELD, 'seams', dict(bounds=box(0, 0, 4, 4), limit=2))
+    assert empty['seams'] == [] and empty['segments'] == []
     s.query(PINS, 'seams', dict(bounds=WINDOW, limit=2), 400)
-    return result
+
+    def seam(lo, hi):
+        return dict(axis='vertical', fixed=4, **{'from': lo}, to=hi)
+
+    def ledge(lo, hi):
+        return dict(axis='horizontal', fixed=7, **{'from': lo}, to=hi)
+
+    def pair(first, second):
+        return dict(first=first, second=second)
+
+    s.layer(ROW)
+    s.edit(
+        op(ROW, 'west-a', box(0, 0, 4, 4)),
+        op(ROW, 'east-a', box(4, 0, 8, 4)),
+        op(ROW, 'west-b', box(0, 3, 4, 7)),
+        op(ROW, 'east-b', box(4, 3, 8, 7)),
+        op(ROW, 'west-c', box(0, 7, 4, 10)),
+        op(ROW, 'east-c', box(4, 7, 8, 10)),
+    )
+    overlap = [pair('east-a', 'west-a'), pair('east-a', 'west-b'),
+               pair('east-b', 'west-a'), pair('east-b', 'west-b')]
+    full = s.query(ROW, 'seams', dict(bounds=box(0, 0, 8, 10), limit=16))
+    assert full['seams'] == [
+        dict(**pair('east-a', 'west-a'), seam=seam(0, 4)),
+        dict(**pair('east-a', 'west-b'), seam=seam(3, 4)),
+        dict(**pair('east-b', 'east-c'), seam=ledge(4, 8)),
+        dict(**pair('east-b', 'west-a'), seam=seam(3, 4)),
+        dict(**pair('east-b', 'west-b'), seam=seam(3, 7)),
+        dict(**pair('east-c', 'west-c'), seam=seam(7, 10)),
+        dict(**pair('west-b', 'west-c'), seam=ledge(0, 4)),
+    ]
+    # Partially overlapping intervals merge by contributor set. Runs that
+    # meet only at an endpoint (x=4 on the ledge, y=7 on the upright) stay
+    # contiguous in the output but keep their own contributors.
+    assert full['segments'] == [
+        dict(seam=ledge(0, 4), pairs=[pair('west-b', 'west-c')]),
+        dict(seam=ledge(4, 8), pairs=[pair('east-b', 'east-c')]),
+        dict(seam=seam(0, 3), pairs=[pair('east-a', 'west-a')]),
+        dict(seam=seam(3, 4), pairs=overlap),
+        dict(seam=seam(4, 7), pairs=[pair('east-b', 'west-b')]),
+        dict(seam=seam(7, 10), pairs=[pair('east-c', 'west-c')]),
+    ]
+    # The same lines with the window clipping y to [2,6): the ledge at y=7
+    # and the top pair drop out, and the surviving runs are cut to the window.
+    clipped = s.query(ROW, 'seams', dict(bounds=box(0, 2, 8, 6), limit=16))
+    assert clipped['seams'] == [
+        dict(**pair('east-a', 'west-a'), seam=seam(2, 4)),
+        dict(**pair('east-a', 'west-b'), seam=seam(3, 4)),
+        dict(**pair('east-b', 'west-a'), seam=seam(3, 4)),
+        dict(**pair('east-b', 'west-b'), seam=seam(3, 6)),
+    ]
+    assert clipped['segments'] == [
+        dict(seam=seam(2, 3), pairs=[pair('east-a', 'west-a')]),
+        dict(seam=seam(3, 4), pairs=overlap),
+        dict(seam=seam(4, 6), pairs=[pair('east-b', 'west-b')]),
+    ]
+    return dict(full=full, clipped=clipped)
 
 
 def relation(s):
