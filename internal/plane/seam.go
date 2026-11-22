@@ -9,6 +9,20 @@ type Seam struct {
 	To    int64  `json:"to"`
 }
 
+// DistanceSquared is the squared Euclidean distance from p to the closed
+// clipped segment. Points on the seam closure report zero, matching the
+// closure rule used for nearest-feature distances.
+func (s Seam) DistanceSquared(p Point) int64 {
+	if s.Axis == "vertical" {
+		dx := max(p.X-s.Fixed, s.Fixed-p.X)
+		dy := max(s.From-p.Y, p.Y-s.To, 0)
+		return dx*dx + dy*dy
+	}
+	dx := max(s.From-p.X, p.X-s.To, 0)
+	dy := max(p.Y-s.Fixed, s.Fixed-p.Y)
+	return dx*dx + dy*dy
+}
+
 func SharedBoundary(a, b, window Box) (Seam, bool) {
 	if a.MaxX == b.MinX || b.MaxX == a.MinX {
 		x := max(a.MinX, b.MinX)

@@ -44,6 +44,43 @@ func (d *Database) Seams(name string, q SeamQuery) (SeamResponse, error) {
 	return SeamResponse{ReadStamp: stamp(s, l), SeamResult: result}, nil
 }
 
+type NearestSeamQuery struct {
+	Bounds plane.Box   `json:"bounds"`
+	Point  plane.Point `json:"point"`
+}
+
+type NearestSeamResponse struct {
+	ReadStamp
+	Found bool             `json:"found"`
+	Hit   *spatial.SeamHit `json:"hit,omitempty"`
+	Visit packed.Visit     `json:"visit"`
+}
+
+func (d *Database) NearestSeam(name string, q NearestSeamQuery) (NearestSeamResponse, error) {
+	if err := validateWindow(q.Bounds, ""); err != nil {
+		return NearestSeamResponse{}, err
+	}
+	if err := q.Point.Validate(); err != nil {
+		return NearestSeamResponse{}, invalid("%v", err)
+	}
+	s := d.head.Load()
+	l, err := s.getLayer(name)
+	if err != nil {
+		return NearestSeamResponse{}, err
+	}
+	if l.definition.Kind != plane.Extent {
+		return NearestSeamResponse{}, invalid("nearest seam requires an extent layer")
+	}
+	hit, visit, err := spatial.NearestSeam(l.tree, q.Bounds, q.Point)
+	if errors.Is(err, spatial.ErrSeamBudget) {
+		return NearestSeamResponse{}, exhausted("%v", err)
+	}
+	if err != nil {
+		return NearestSeamResponse{}, err
+	}
+	return NearestSeamResponse{ReadStamp: stamp(s, l), Found: hit != nil, Hit: hit, Visit: visit}, nil
+}
+
 type IndexAudit struct {
 	ReadStamp
 	packed.Audit

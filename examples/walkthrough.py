@@ -225,6 +225,42 @@ def seams(s):
     return result
 
 
+def seamnearest(s):
+    seed(s)
+    near = s.query(FIELD, 'seam-nearest', dict(bounds=box(0, 0, 8, 4), point=point(6, 2)))
+    assert near['found'] and near['hit']['distance_squared'] == 4
+    assert (near['hit']['first'], near['hit']['second']) == ('dowel', 'prong')
+    assert near['hit']['seam'] == dict(axis='vertical', fixed=4, **{'from': 0}, to=3)
+    clipped = s.query(FIELD, 'seam-nearest', dict(bounds=box(4, 2, 8, 4), point=point(4, 1)))
+    assert clipped['hit']['seam'] == dict(axis='vertical', fixed=4, **{'from': 2}, to=3)
+    assert clipped['hit']['distance_squared'] == 1
+    empty = s.query(FIELD, 'seam-nearest', dict(bounds=box(10, 10, 12, 12), point=point(11, 11)))
+    assert not empty['found'] and 'hit' not in empty
+    s.query(PINS, 'seam-nearest', dict(bounds=WINDOW, point=point(4, 1)), 400)
+    s.query(FIELD, 'seam-nearest', dict(bounds=WINDOW, point=point(1_000_000_001, 0)), 400)
+    s.query('gone', 'seam-nearest', dict(bounds=WINDOW, point=point(0, 0)), 404)
+    s.layer('twin-field')
+    s.edit(
+        op('twin-field', 'alpha', box(0, 0, 4, 3)),
+        op('twin-field', 'bravo', box(4, 0, 8, 3)),
+        op('twin-field', 'charlie', box(0, 0, 4, 3)),
+        op('twin-field', 'delta', box(4, 0, 8, 3)),
+        op('twin-field', 'echo', box(0, 3, 4, 6)),
+        op('twin-field', 'golf', box(10, 10, 12, 12)),
+        op('twin-field', 'hotel', box(12, 12, 14, 14)),
+    )
+    listed = s.query('twin-field', 'seams', dict(bounds=box(0, 0, 8, 8), limit=8))
+    assert len(listed['seams']) == 6
+    twins = s.query('twin-field', 'seam-nearest', dict(bounds=box(0, 0, 8, 8), point=point(4, 1)))
+    assert (twins['hit']['first'], twins['hit']['second']) == ('alpha', 'bravo')
+    assert twins['hit']['distance_squared'] == 0
+    again = s.query('twin-field', 'seam-nearest', dict(bounds=box(0, 0, 8, 8), point=point(4, 1)))
+    assert again['hit'] == twins['hit']
+    corner = s.query('twin-field', 'seam-nearest', dict(bounds=box(9, 9, 15, 15), point=point(12, 12)))
+    assert not corner['found']
+    return near
+
+
 def relation(s):
     seed(s)
     pin = dict(layer=PINS, id='brad')
@@ -304,7 +340,7 @@ def reopen(binary, data):
 
 
 WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
-                                     inspect, seams, relation, audit, export, restore, reopen)}
+                                     inspect, seams, seamnearest, relation, audit, export, restore, reopen)}
 
 
 def main():

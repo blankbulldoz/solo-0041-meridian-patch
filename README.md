@@ -30,6 +30,7 @@ python3 examples/walkthrough.py --workflow coverage
 | `POST /strata/{layer}/nearest` | `point`, `limit`, 可选 `class`。返回带 `distance_squared` 的 `neighbors` |
 | `POST /strata/{layer}/coverage` | `bounds` 和可选 `class`。返回 `covered`, `repeated`, `uncovered` |
 | `POST /strata/{layer}/seams` | `bounds`, `limit`。按 ID 对返回正长度共享边 |
+| `POST /strata/{layer}/seam-nearest` | `bounds`, `point`。返回窗内距点击点闭包距离最小的共享边：`found`、含双方 ID 与裁切端点的 `hit` |
 | `POST /join` | `left`, `right`, `bounds`, `limit`。返回同一全库修订的相交对 |
 | `POST /relation` | `left` 与 `right` 分别含 `layer` 和 `id`。返回相交、双向包含和闭包距离 |
 | `GET /strata/{layer}/index` | 返回 `tree` 结构统计 |
