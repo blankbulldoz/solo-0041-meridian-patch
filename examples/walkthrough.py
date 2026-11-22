@@ -104,6 +104,14 @@ def op(layer, feature, shape=None, category='fixture', mode='insert'):
     return item
 
 
+def shift_op(layer, ids, dx, dy):
+    # A group translation never carries replacement shapes: the server derives
+    # every final geometry from its own staged copy of the listed features.
+    first = ids[0] if isinstance(ids, (list, tuple)) else ids
+    group = list(ids) if isinstance(ids, (list, tuple)) else [ids]
+    return dict(layer=layer, id=first, mode='shift', shift=dict(ids=group, dx=dx, dy=dy))
+
+
 def seed(s):
     s.layer(FIELD)
     s.layer(BED)
@@ -286,6 +294,55 @@ def restore(s):
     return restored
 
 
+def shift(s):
+    # Exclusive layer: a swap would create positive-area overlap in any
+    # intermediate state, so it is only expressible as one atomic batch.
+    s.layer(FIELD, exclusive=True)
+    initial = s.edit(
+        op(FIELD, 'alpha', box(0, 0, 2, 2)),
+        op(FIELD, 'beta', box(4, 0, 6, 2)),
+    )['revision']
+
+    def geometry(feature_id):
+        rows = s.query(FIELD, 'window', dict(bounds=BOUNDS, limit=256))['features']
+        return next(row['shape']['extent'] for row in rows if row['id'] == feature_id)
+
+    # One batch, only ids and a translation vector: no prior reads, no replaced
+    # shapes. Both rectangles jump over each other and keep their dimensions.
+    commit = s.edit(
+        shift_op(FIELD, ['alpha'], 4, 0),
+        shift_op(FIELD, ['beta'], -4, 0),
+    )
+    assert commit['revision'] == initial + 1
+    assert geometry('alpha') == box(4, 0, 6, 2)
+    assert geometry('beta') == box(0, 0, 2, 2)
+
+    # New records inserted in the same batch can join a later shift group, and
+    # every member keeps its relative position inside the group.
+    s.edit(
+        op(FIELD, 'gamma', box(0, 8, 1, 9)),
+        shift_op(FIELD, ['beta', 'gamma'], 2, -4),
+    )
+    assert geometry('beta') == box(2, -4, 4, -2)
+    assert geometry('gamma') == box(2, 4, 3, 5)
+
+    # A group that would cross the layer boundary is rejected as a whole; the
+    # exclusive final state and revision from the accepted commits stay intact.
+    before = s.get('/status')['revision']
+    s.edit(shift_op(FIELD, ['alpha', 'beta'], 0, 30), status=400)
+    assert s.get('/status')['revision'] == before
+    assert geometry('alpha') == box(4, 0, 6, 2)
+    assert geometry('beta') == box(2, -4, 4, -2)
+
+    # Missing group members, empty groups and zero translation are invalid too,
+    # and again leave no partial movement behind.
+    s.edit(shift_op(FIELD, ['alpha', 'ghost'], 1, 0), status=404)
+    s.post('/edits', dict(edits=[dict(layer=FIELD, id='alpha', mode='shift',
+                                       shift=dict(ids=['alpha'], dx=0, dy=0))]), 400)
+    assert s.get('/status')['revision'] == before
+    return commit
+
+
 def reopen(binary, data):
     with running(binary, data) as s:
         rev = seed(s)
@@ -303,7 +360,7 @@ def reopen(binary, data):
     return result
 
 
-WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
+WORKFLOWS = {f.__name__: f for f in (register, edit, shift, reframe, window, locate, nearest, join, coverage,
                                      inspect, seams, relation, audit, export, restore, reopen)}
 
 

@@ -5,6 +5,7 @@ import (
 	"slices"
 
 	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/catalog"
+	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/plane"
 )
 
 type Commit struct {
@@ -120,6 +121,12 @@ func applyEdit(def catalog.Definition, rows map[string]catalog.Feature, edit cat
 	if err := edit.Validate(); err != nil {
 		return invalid("edit %d: %v", index, err)
 	}
+	if edit.Mode == "shift" {
+		if edit.ID != edit.Shift.IDs[0] {
+			return invalid("edit %d: shift edit id %q must name the first group id", index, edit.ID)
+		}
+		return applyShift(def, rows, *edit.Shift, index)
+	}
 	_, present := rows[edit.ID]
 	if edit.Mode == "insert" && present {
 		return conflict("edit %d: feature %q already exists", index, edit.ID)
@@ -136,4 +143,60 @@ func applyEdit(def catalog.Definition, rows map[string]catalog.Feature, edit cat
 	}
 	rows[edit.ID] = edit.Value.Copy()
 	return nil
+}
+
+// applyShift moves every feature in the group by the same vector against the
+// staged rows, so same-batch inserts can participate. The caller never supplies
+// replacement shapes: the database derives each final shape from the current
+// staged one and only the resulting rows are ever published.
+func applyShift(def catalog.Definition, rows map[string]catalog.Feature, group catalog.Shift, index int) error {
+	moved := make([]catalog.Feature, 0, len(group.IDs))
+	for _, id := range group.IDs {
+		feature, present := rows[id]
+		if !present {
+			return missing("edit %d: shift group feature %q does not exist", index, id)
+		}
+		shape, ok := shiftShape(feature.Shape, group.Dx, group.Dy)
+		if !ok {
+			return invalid("edit %d: shifting %q overflows the integer plane", index, id)
+		}
+		feature.Shape = shape
+		moved = append(moved, feature)
+	}
+	for _, feature := range moved {
+		if err := feature.Validate(def); err != nil {
+			return invalid("edit %d: %v", index, err)
+		}
+		rows[feature.ID] = feature
+	}
+	return nil
+}
+
+func shiftShape(shape plane.Shape, dx, dy int64) (plane.Shape, bool) {
+	add := func(n, delta int64) (int64, bool) {
+		if delta > 0 && n > plane.CoordinateLimit-delta {
+			return 0, false
+		}
+		if delta < 0 && n < -plane.CoordinateLimit-delta {
+			return 0, false
+		}
+		return n + delta, true
+	}
+	if shape.Mark != nil {
+		x, okX := add(shape.Mark.X, dx)
+		y, okY := add(shape.Mark.Y, dy)
+		if !okX || !okY {
+			return plane.Shape{}, false
+		}
+		return plane.Shape{Mark: &plane.Point{X: x, Y: y}}, true
+	}
+	b := shape.Extent
+	minX, ok1 := add(b.MinX, dx)
+	maxX, ok2 := add(b.MaxX, dx)
+	minY, ok3 := add(b.MinY, dy)
+	maxY, ok4 := add(b.MaxY, dy)
+	if !ok1 || !ok2 || !ok3 || !ok4 {
+		return plane.Shape{}, false
+	}
+	return plane.Shape{Extent: &plane.Box{MinX: minX, MinY: minY, MaxX: maxX, MaxY: maxY}}, true
 }

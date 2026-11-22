@@ -74,12 +74,14 @@ func search(n *node, bounds plane.Box, accept func(catalog.Feature) bool, visit 
 	if !n.bounds.MayMeet(bounds) {
 		return true
 	}
+	// The node envelope above provides index pruning. Row membership is left
+	// to the caller's exact spatial relation: a point envelope has zero width
+	// and height, so MayMeet would silently drop coincident marks before the
+	// precise predicate ever runs.
 	for _, row := range n.rows {
-		if row.Shape.Envelope().MayMeet(bounds) {
-			visit.Candidates++
-			if !accept(row) {
-				return false
-			}
+		visit.Candidates++
+		if !accept(row) {
+			return false
 		}
 	}
 	return search(n.left, bounds, accept, visit) && search(n.right, bounds, accept, visit)

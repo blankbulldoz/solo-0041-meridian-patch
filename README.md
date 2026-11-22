@@ -24,7 +24,7 @@ python3 examples/walkthrough.py --workflow coverage
 | `GET /strata` | 返回当前图层和各自修订、边界、排他标记与条目数 |
 | `POST /strata` | `name`, `kind`, `bounds`, `exclusive`, 可选 `if_revision` |
 | `PUT /strata/{layer}/layout` | 新 `bounds`、`exclusive` 及可选 `if_revision`。形状类型保持原样 |
-| `POST /edits` | `edits` 与可选 `if_revision`。每项有 `layer`, `id`, `mode`，写入时提供同 ID 的 `value` |
+| `POST /edits` | `edits` 与可选 `if_revision`。每项有 `layer`, `id`, `mode`，写入时提供同 ID 的 `value`；`shift` 模式见下 |
 | `POST /strata/{layer}/window` | `bounds`, `limit`, 可选 `class`, `bookmark`。按 ID 返回 `features`，有更多数据时返回 `next` |
 | `POST /strata/{layer}/locate` | `{ "x": 2, "y": 1 }`。返回拥有该点的 `features` |
 | `POST /strata/{layer}/nearest` | `point`, `limit`, 可选 `class`。返回带 `distance_squared` 的 `neighbors` |
@@ -46,6 +46,17 @@ python3 examples/walkthrough.py --workflow coverage
 ```json
 {"edits":[{"layer":"ochre-field","id":"prong","mode":"insert","value":{"id":"prong","class":"fixture","shape":{"extent":{"min_x":0,"min_y":0,"max_x":4,"max_y":3}}}}]}
 ```
+
+`mode: "shift"` 表达以批次当前阶段状态为参照的整组平移，客户端只给 ID 列表和 `dx`/`dy`，不需要先读取旧形状，也不逐项提交替换值。
+
+```json
+{"edits":[
+  {"layer":"ochre-field","id":"alpha","mode":"shift","shift":{"ids":["alpha"],"dx":4,"dy":0}},
+  {"layer":"ochre-field","id":"beta","mode":"shift","shift":{"ids":["beta"],"dx":-4,"dy":0}}
+]}
+```
+
+组内每个地物由数据库从其当前形状平移得到，相对位置完全保持；同一批次先前 `insert` 的新地物也可以出现在后续 `shift` 组中。多个编辑按输入次序解释，但只发布末态，因此排他图层中交换两个占位矩形（中间态必然重叠）也能在单个写包内完成。平移后越过图层边界或超出整数平面的整包拒绝，旧修订和旧索引继续可读。顶层 `id` 必须等于 `shift.ids` 的第一个 ID，组内 ID 不得重复且平移向量不得为 `(0,0)`。
 
 `409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
 

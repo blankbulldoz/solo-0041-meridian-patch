@@ -65,6 +65,9 @@ func (s Shape) At(p Point) bool {
 
 func (s Shape) Meets(other Shape) bool {
 	if s.Mark != nil {
+		if other.Mark != nil {
+			return *s.Mark == *other.Mark
+		}
 		return other.At(*s.Mark)
 	}
 	return other.InWindow(*s.Extent)

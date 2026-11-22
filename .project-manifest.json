@@ -98,12 +98,35 @@
       ],
       "steps": [
         "顺序阶段性应用",
+        "整组按向量平移并保留相对位置",
         "检查最终排他策略",
         "同步发布"
       ],
       "success": "多层共享提交修订",
       "failure": "异层冲突整包回滚，旧读仍成立",
       "verification": "python3 examples/walkthrough.py --workflow edit"
+    },
+    {
+      "id": "shift",
+      "name": "整组平移",
+      "entry": "POST /edits",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "catalog",
+        "plane",
+        "packed",
+        "folio"
+      ],
+      "steps": [
+        "按阶段状态解析组内 ID",
+        "整体平移且不暴露中间态",
+        "末态边界与排他校验",
+        "同步发布"
+      ],
+      "success": "排他矩形交换占位且仅产生最终结果",
+      "failure": "越界组整包拒绝，旧修订与形状不变",
+      "verification": "python3 examples/walkthrough.py --workflow shift"
     },
     {
       "id": "reframe",
