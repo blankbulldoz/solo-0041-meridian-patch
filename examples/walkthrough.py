@@ -216,6 +216,53 @@ def coverage(s):
     return result
 
 
+def coverage_union(s):
+    seed(s)
+    # A ring of four windows brackets a hole over (2,2)-(4,4) with no feature
+    # inside that hole. Windows overlap on their corner strips, and the hole
+    # must not be measured because it is outside every window.
+    ring = [box(0, 0, 2, 6), box(4, 0, 6, 6), box(0, 0, 6, 2), box(0, 4, 6, 6)]
+    result = s.query(FIELD, 'coverage', dict(windows=ring))
+    assert (result['covered'], result['repeated'], result['uncovered']) == (18, 6, 14)
+    assert result['covered'] + result['uncovered'] == 32
+    assert result['rectangles'] == 3
+
+    # The same subset expressed as one solid window measures the hole as well,
+    # so its union is larger and its uncovered area drops.
+    solid = s.query(FIELD, 'coverage', dict(bounds=box(0, 0, 6, 6)))
+    assert (solid['covered'], solid['repeated'], solid['uncovered']) == (22, 8, 14)
+
+    # Repeating a window and adding one wholly inside the union changes
+    # nothing: membership is per region, and feature depth stays per feature.
+    contained = s.query(FIELD, 'coverage', dict(windows=ring + [box(1, 0, 3, 2), ring[0], ring[1]]))
+    assert (contained['covered'], contained['repeated'], contained['uncovered']) == (18, 6, 14)
+
+    # A single window still means the same thing as bounds would.
+    single = s.query(FIELD, 'coverage', dict(windows=[box(0, 0, 6, 2)]))
+    bounded = s.query(FIELD, 'coverage', dict(bounds=box(0, 0, 6, 2)))
+    assert (single['covered'], single['repeated'], single['uncovered']) == (12, 4, 0)
+    assert {k: single[k] for k in ('covered', 'repeated', 'uncovered')} == \
+        {k: bounded[k] for k in ('covered', 'repeated', 'uncovered')}
+
+    # A fully contained small window is measured on its own terms: prong fills
+    # it and ferrule overlaps one quarter, so that quarter is the only repeat.
+    inner = s.query(FIELD, 'coverage', dict(windows=[box(1, 0, 3, 2)]))
+    assert (inner['covered'], inner['repeated'], inner['uncovered']) == (4, 1, 0)
+
+    s.query(FIELD, 'coverage', dict(bounds=WINDOW, windows=ring), 400)
+    s.query(FIELD, 'coverage', dict(), 400)
+    s.query(FIELD, 'coverage', dict(windows=[]), 400)
+    s.query(FIELD, 'coverage', dict(windows=[box(2, 2, 2, 4)]), 400)
+    s.query(FIELD, 'coverage', dict(windows=[box(0, 0, 2, 6)] * 65), 400)
+    s.query(PINS, 'coverage', dict(windows=ring), 400)
+
+    # Overlap depth inside the union is per feature, so a sleeve rectangle
+    # straddling two windows still counts once where the windows meet.
+    sleeve = s.query(FIELD, 'coverage', dict(windows=[box(0, 0, 3, 3), box(3, 0, 6, 3)], **{'class': 'sleeve'}))
+    assert (sleeve['covered'], sleeve['repeated'], sleeve['uncovered']) == (8, 0, 10)
+    return result
+
+
 def seams(s):
     seed(s)
     result = s.query(FIELD, 'seams', dict(bounds=box(4, 1, 8, 4), limit=2))
@@ -304,7 +351,8 @@ def reopen(binary, data):
 
 
 WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
-                                     inspect, seams, relation, audit, export, restore, reopen)}
+                                     coverage_union, inspect, seams, relation, audit, export, restore,
+                                     reopen)}
 
 
 def main():

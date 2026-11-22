@@ -40,6 +40,10 @@
       "command": "python3 examples/walkthrough.py --workflow coverage"
     },
     {
+      "workflow_id": "coverage_union",
+      "command": "python3 examples/walkthrough.py --workflow coverage_union"
+    },
+    {
       "workflow_id": "inspect",
       "command": "python3 examples/walkthrough.py --workflow inspect"
     },

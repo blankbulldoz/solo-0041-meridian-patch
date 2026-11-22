@@ -28,7 +28,7 @@ python3 examples/walkthrough.py --workflow coverage
 | `POST /strata/{layer}/window` | `bounds`, `limit`, 可选 `class`, `bookmark`。按 ID 返回 `features`，有更多数据时返回 `next` |
 | `POST /strata/{layer}/locate` | `{ "x": 2, "y": 1 }`。返回拥有该点的 `features` |
 | `POST /strata/{layer}/nearest` | `point`, `limit`, 可选 `class`。返回带 `distance_squared` 的 `neighbors` |
-| `POST /strata/{layer}/coverage` | `bounds` 和可选 `class`。返回 `covered`, `repeated`, `uncovered` |
+| `POST /strata/{layer}/coverage` | `bounds` 或 `windows`（最多 64 个），可选 `class`。返回并集窗口内的 `covered`, `repeated`, `uncovered`, `rectangles` |
 | `POST /strata/{layer}/seams` | `bounds`, `limit`。按 ID 对返回正长度共享边 |
 | `POST /join` | `left`, `right`, `bounds`, `limit`。返回同一全库修订的相交对 |
 | `POST /relation` | `left` 与 `right` 分别含 `layer` 和 `id`。返回相交、双向包含和闭包距离 |
@@ -48,5 +48,7 @@ python3 examples/walkthrough.py --workflow coverage
 ```
 
 `409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
+
+`coverage` 请求必须恰好给出 `bounds` 或 `windows` 之一：`bounds` 表示单个窗口，`windows` 表示至多 64 个可相互重叠的窗口。未覆盖面积只在窗口并集内计算；同一区域属于多个窗口时只累计一次，而 `repeated` 仍表示该区域至少被两个地物覆盖。
 
 边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。

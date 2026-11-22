@@ -186,9 +186,12 @@ func (d *Database) Join(q JoinQuery) (JoinResponse, error) {
 	return JoinResponse{Revision: s.revision, LeftRevision: left.revision, RightRevision: right.revision, JoinResult: result}, nil
 }
 
+// CoverageQuery accepts either one window in bounds or up to MaxCoverageWindows
+// windows; the two forms are mutually exclusive.
 type CoverageQuery struct {
-	Bounds plane.Box `json:"bounds"`
-	Class  string    `json:"class,omitempty"`
+	Bounds  *plane.Box  `json:"bounds,omitempty"`
+	Windows []plane.Box `json:"windows,omitempty"`
+	Class   string      `json:"class,omitempty"`
 }
 
 type CoverageResponse struct {
@@ -197,7 +200,8 @@ type CoverageResponse struct {
 }
 
 func (d *Database) Coverage(name string, q CoverageQuery) (CoverageResponse, error) {
-	if err := validateWindow(q.Bounds, q.Class); err != nil {
+	windows, err := coverageWindows(q)
+	if err != nil {
 		return CoverageResponse{}, err
 	}
 	s := d.head.Load()
@@ -208,5 +212,37 @@ func (d *Database) Coverage(name string, q CoverageQuery) (CoverageResponse, err
 	if l.definition.Kind != plane.Extent {
 		return CoverageResponse{}, invalid("coverage requires an extent layer")
 	}
-	return CoverageResponse{ReadStamp: stamp(s, l), AreaResult: spatial.Coverage(l.tree, q.Bounds, q.Class)}, nil
+	return CoverageResponse{ReadStamp: stamp(s, l), AreaResult: spatial.Coverage(l.tree, windows, q.Class)}, nil
+}
+
+const MaxCoverageWindows = 64
+
+func coverageWindows(q CoverageQuery) ([]plane.Box, error) {
+	if q.Class != "" && !catalog.ValidName(q.Class) {
+		return nil, invalid("invalid class %q", q.Class)
+	}
+	switch {
+	case q.Bounds != nil:
+		if len(q.Windows) != 0 {
+			return nil, invalid("coverage accepts either bounds or windows, not both")
+		}
+		if err := q.Bounds.Validate(); err != nil {
+			return nil, invalid("%v", err)
+		}
+		return []plane.Box{*q.Bounds}, nil
+	case len(q.Windows) != 0:
+		if len(q.Windows) > MaxCoverageWindows {
+			return nil, invalid("coverage accepts at most %d windows", MaxCoverageWindows)
+		}
+		windows := make([]plane.Box, 0, len(q.Windows))
+		for _, window := range q.Windows {
+			if err := window.Validate(); err != nil {
+				return nil, invalid("%v", err)
+			}
+			windows = append(windows, window)
+		}
+		return windows, nil
+	default:
+		return nil, invalid("coverage requires bounds or windows")
+	}
 }
