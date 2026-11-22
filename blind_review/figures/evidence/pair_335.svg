@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="231" height="550" font-family="Helvetica, Arial, sans-serif">
+<rect width="100%" height="100%" fill="white"/>
+<rect x="73.85" y="73.85" width="83.08" height="332.31" fill="#1f77b4" fill-opacity="0.25" stroke="#1f77b4" stroke-width="2"/>
+<rect x="76.92" y="76.92" width="76.92" height="326.15" fill="#d62728" fill-opacity="0.3" stroke="#d62728" stroke-width="2"/>
+<text x="8" y="18" font-size="14" fill="#333">pair_335 · C3_REVERSE_CONTAINMENT 反转左右才变成包含</text>
+<text x="8" y="520" font-size="13" fill="#222">intersects=True  left_contains=False  right_contains=True  distance_squared=0</text>
+<text x="8" y="540" font-size="13" fill="#444">右包含左（反转左右后左包含右）</text>
+</svg>

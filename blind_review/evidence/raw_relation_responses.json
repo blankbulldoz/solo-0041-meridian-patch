@@ -1,0 +1,7214 @@
+{
+  "artifact": "raw_shape_evidence",
+  "note": "原始形状证据：每条有序查询的原始 HTTP 响应与查询入参",
+  "layer_bounds": {
+    "min_x": -1000,
+    "min_y": -1000,
+    "max_x": 1000,
+    "max_y": 1000
+  },
+  "pairs": [
+    {
+      "pair_id": "pair_007",
+      "pair_index": 7,
+      "group": "train",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p007-a",
+      "right_id": "p007-b",
+      "left": {
+        "min_x": -34,
+        "min_y": -7,
+        "max_x": 87,
+        "max_y": 20
+      },
+      "right": {
+        "min_x": -112,
+        "min_y": -1,
+        "max_x": -24,
+        "max_y": 109
+      }
+    },
+    {
+      "pair_id": "pair_013",
+      "pair_index": 13,
+      "group": "train",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p013-a",
+      "right_id": "p013-b",
+      "left": {
+        "min_x": -70,
+        "min_y": 56,
+        "max_x": 35,
+        "max_y": 124
+      },
+      "right": {
+        "min_x": -96,
+        "min_y": 28,
+        "max_x": -35,
+        "max_y": 123
+      }
+    },
+    {
+      "pair_id": "pair_016",
+      "pair_index": 16,
+      "group": "train",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p016-a",
+      "right_id": "p016-b",
+      "left": {
+        "min_x": -59,
+        "min_y": 31,
+        "max_x": 0,
+        "max_y": 143
+      },
+      "right": {
+        "min_x": -82,
+        "min_y": 110,
+        "max_x": 27,
+        "max_y": 125
+      }
+    },
+    {
+      "pair_id": "pair_023",
+      "pair_index": 23,
+      "group": "train",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p023-a",
+      "right_id": "p023-b",
+      "left": {
+        "min_x": -36,
+        "min_y": -17,
+        "max_x": 24,
+        "max_y": 14
+      },
+      "right": {
+        "min_x": -34,
+        "min_y": -103,
+        "max_x": 53,
+        "max_y": 18
+      }
+    },
+    {
+      "pair_id": "pair_024",
+      "pair_index": 24,
+      "group": "train",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p024-a",
+      "right_id": "p024-b",
+      "left": {
+        "min_x": -16,
+        "min_y": -23,
+        "max_x": 70,
+        "max_y": 85
+      },
+      "right": {
+        "min_x": 1,
+        "min_y": 68,
+        "max_x": 136,
+        "max_y": 142
+      }
+    },
+    {
+      "pair_id": "pair_029",
+      "pair_index": 29,
+      "group": "train",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p029-a",
+      "right_id": "p029-b",
+      "left": {
+        "min_x": -17,
+        "min_y": 122,
+        "max_x": 38,
+        "max_y": 180
+      },
+      "right": {
+        "min_x": -66,
+        "min_y": 96,
+        "max_x": 62,
+        "max_y": 169
+      }
+    },
+    {
+      "pair_id": "pair_032",
+      "pair_index": 32,
+      "group": "train",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p032-a",
+      "right_id": "p032-b",
+      "left": {
+        "min_x": 81,
+        "min_y": -40,
+        "max_x": 121,
+        "max_y": 99
+      },
+      "right": {
+        "min_x": 20,
+        "min_y": -40,
+        "max_x": 123,
+        "max_y": 43
+      }
+    },
+    {
+      "pair_id": "pair_034",
+      "pair_index": 34,
+      "group": "audit",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p034-a",
+      "right_id": "p034-b",
+      "left": {
+        "min_x": 85,
+        "min_y": -85,
+        "max_x": 171,
+        "max_y": -9
+      },
+      "right": {
+        "min_x": 55,
+        "min_y": -17,
+        "max_x": 114,
+        "max_y": 113
+      }
+    },
+    {
+      "pair_id": "pair_036",
+      "pair_index": 36,
+      "group": "audit",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p036-a",
+      "right_id": "p036-b",
+      "left": {
+        "min_x": -108,
+        "min_y": -95,
+        "max_x": -25,
+        "max_y": -16
+      },
+      "right": {
+        "min_x": -107,
+        "min_y": -61,
+        "max_x": -67,
+        "max_y": -1
+      }
+    },
+    {
+      "pair_id": "pair_038",
+      "pair_index": 38,
+      "group": "train",
+      "stage": "A_random",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p038-a",
+      "right_id": "p038-b",
+      "left": {
+        "min_x": -82,
+        "min_y": 76,
+        "max_x": -5,
+        "max_y": 82
+      },
+      "right": {
+        "min_x": -91,
+        "min_y": 68,
+        "max_x": 5,
+        "max_y": 177
+      }
+    },
+    {
+      "pair_id": "pair_042",
+      "pair_index": 42,
+      "group": "audit",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p042-a",
+      "right_id": "p042-b",
+      "left": {
+        "min_x": -2,
+        "min_y": -98,
+        "max_x": 93,
+        "max_y": -41
+      },
+      "right": {
+        "min_x": 44,
+        "min_y": -58,
+        "max_x": 150,
+        "max_y": 77
+      }
+    },
+    {
+      "pair_id": "pair_054",
+      "pair_index": 54,
+      "group": "train",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p054-a",
+      "right_id": "p054-b",
+      "left": {
+        "min_x": 89,
+        "min_y": -135,
+        "max_x": 147,
+        "max_y": 1
+      },
+      "right": {
+        "min_x": 7,
+        "min_y": -42,
+        "max_x": 123,
+        "max_y": 0
+      }
+    },
+    {
+      "pair_id": "pair_062",
+      "pair_index": 62,
+      "group": "train",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p062-a",
+      "right_id": "p062-b",
+      "left": {
+        "min_x": 4,
+        "min_y": 54,
+        "max_x": 71,
+        "max_y": 83
+      },
+      "right": {
+        "min_x": -86,
+        "min_y": 45,
+        "max_x": 15,
+        "max_y": 111
+      }
+    },
+    {
+      "pair_id": "pair_064",
+      "pair_index": 64,
+      "group": "train",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p064-a",
+      "right_id": "p064-b",
+      "left": {
+        "min_x": -60,
+        "min_y": 8,
+        "max_x": 60,
+        "max_y": 99
+      },
+      "right": {
+        "min_x": 55,
+        "min_y": 46,
+        "max_x": 78,
+        "max_y": 59
+      }
+    },
+    {
+      "pair_id": "pair_066",
+      "pair_index": 66,
+      "group": "audit",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p066-a",
+      "right_id": "p066-b",
+      "left": {
+        "min_x": -80,
+        "min_y": -111,
+        "max_x": 26,
+        "max_y": -26
+      },
+      "right": {
+        "min_x": -100,
+        "min_y": -97,
+        "max_x": -25,
+        "max_y": -35
+      }
+    },
+    {
+      "pair_id": "pair_071",
+      "pair_index": 71,
+      "group": "audit",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p071-a",
+      "right_id": "p071-b",
+      "left": {
+        "min_x": -121,
+        "min_y": -23,
+        "max_x": -34,
+        "max_y": 86
+      },
+      "right": {
+        "min_x": -164,
+        "min_y": -98,
+        "max_x": -106,
+        "max_y": 32
+      }
+    },
+    {
+      "pair_id": "pair_074",
+      "pair_index": 74,
+      "group": "train",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p074-a",
+      "right_id": "p074-b",
+      "left": {
+        "min_x": 91,
+        "min_y": -78,
+        "max_x": 143,
+        "max_y": 22
+      },
+      "right": {
+        "min_x": 91,
+        "min_y": -153,
+        "max_x": 140,
+        "max_y": -73
+      }
+    },
+    {
+      "pair_id": "pair_078",
+      "pair_index": 78,
+      "group": "audit",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p078-a",
+      "right_id": "p078-b",
+      "left": {
+        "min_x": 8,
+        "min_y": 80,
+        "max_x": 142,
+        "max_y": 126
+      },
+      "right": {
+        "min_x": -29,
+        "min_y": 16,
+        "max_x": 58,
+        "max_y": 130
+      }
+    },
+    {
+      "pair_id": "pair_081",
+      "pair_index": 81,
+      "group": "train",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p081-a",
+      "right_id": "p081-b",
+      "left": {
+        "min_x": -40,
+        "min_y": 19,
+        "max_x": 17,
+        "max_y": 62
+      },
+      "right": {
+        "min_x": -73,
+        "min_y": 21,
+        "max_x": 21,
+        "max_y": 157
+      }
+    },
+    {
+      "pair_id": "pair_091",
+      "pair_index": 91,
+      "group": "train",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p091-a",
+      "right_id": "p091-b",
+      "left": {
+        "min_x": 2,
+        "min_y": 66,
+        "max_x": 84,
+        "max_y": 156
+      },
+      "right": {
+        "min_x": 14,
+        "min_y": 74,
+        "max_x": 119,
+        "max_y": 131
+      }
+    },
+    {
+      "pair_id": "pair_093",
+      "pair_index": 93,
+      "group": "train",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p093-a",
+      "right_id": "p093-b",
+      "left": {
+        "min_x": -12,
+        "min_y": -119,
+        "max_x": 77,
+        "max_y": -24
+      },
+      "right": {
+        "min_x": -43,
+        "min_y": -135,
+        "max_x": 51,
+        "max_y": -68
+      }
+    },
+    {
+      "pair_id": "pair_098",
+      "pair_index": 98,
+      "group": "train",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p098-a",
+      "right_id": "p098-b",
+      "left": {
+        "min_x": 18,
+        "min_y": -74,
+        "max_x": 137,
+        "max_y": -14
+      },
+      "right": {
+        "min_x": 75,
+        "min_y": -30,
+        "max_x": 180,
+        "max_y": -2
+      }
+    },
+    {
+      "pair_id": "pair_101",
+      "pair_index": 101,
+      "group": "train",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p101-a",
+      "right_id": "p101-b",
+      "left": {
+        "min_x": 105,
+        "min_y": -166,
+        "max_x": 151,
+        "max_y": -122
+      },
+      "right": {
+        "min_x": 36,
+        "min_y": -138,
+        "max_x": 139,
+        "max_y": -93
+      }
+    },
+    {
+      "pair_id": "pair_105",
+      "pair_index": 105,
+      "group": "train",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p105-a",
+      "right_id": "p105-b",
+      "left": {
+        "min_x": 114,
+        "min_y": -62,
+        "max_x": 173,
+        "max_y": 24
+      },
+      "right": {
+        "min_x": 25,
+        "min_y": -89,
+        "max_x": 121,
+        "max_y": -12
+      }
+    },
+    {
+      "pair_id": "pair_114",
+      "pair_index": 114,
+      "group": "train",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p114-a",
+      "right_id": "p114-b",
+      "left": {
+        "min_x": 16,
+        "min_y": -124,
+        "max_x": 62,
+        "max_y": 10
+      },
+      "right": {
+        "min_x": 13,
+        "min_y": -132,
+        "max_x": 119,
+        "max_y": -56
+      }
+    },
+    {
+      "pair_id": "pair_125",
+      "pair_index": 125,
+      "group": "train",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p125-a",
+      "right_id": "p125-b",
+      "left": {
+        "min_x": -66,
+        "min_y": -157,
+        "max_x": -2,
+        "max_y": -19
+      },
+      "right": {
+        "min_x": -76,
+        "min_y": -87,
+        "max_x": 4,
+        "max_y": 43
+      }
+    },
+    {
+      "pair_id": "pair_126",
+      "pair_index": 126,
+      "group": "train",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p126-a",
+      "right_id": "p126-b",
+      "left": {
+        "min_x": -79,
+        "min_y": 96,
+        "max_x": -18,
+        "max_y": 151
+      },
+      "right": {
+        "min_x": -36,
+        "min_y": 32,
+        "max_x": 71,
+        "max_y": 127
+      }
+    },
+    {
+      "pair_id": "pair_141",
+      "pair_index": 141,
+      "group": "train",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p141-a",
+      "right_id": "p141-b",
+      "left": {
+        "min_x": -85,
+        "min_y": -19,
+        "max_x": -11,
+        "max_y": 98
+      },
+      "right": {
+        "min_x": -76,
+        "min_y": -20,
+        "max_x": 56,
+        "max_y": 90
+      }
+    },
+    {
+      "pair_id": "pair_145",
+      "pair_index": 145,
+      "group": "train",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p145-a",
+      "right_id": "p145-b",
+      "left": {
+        "min_x": -41,
+        "min_y": -36,
+        "max_x": 13,
+        "max_y": 3
+      },
+      "right": {
+        "min_x": -101,
+        "min_y": -108,
+        "max_x": -12,
+        "max_y": -35
+      }
+    },
+    {
+      "pair_id": "pair_146",
+      "pair_index": 146,
+      "group": "train",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p146-a",
+      "right_id": "p146-b",
+      "left": {
+        "min_x": -111,
+        "min_y": -78,
+        "max_x": 24,
+        "max_y": 40
+      },
+      "right": {
+        "min_x": -47,
+        "min_y": -67,
+        "max_x": 70,
+        "max_y": 1
+      }
+    },
+    {
+      "pair_id": "pair_147",
+      "pair_index": 147,
+      "group": "train",
+      "stage": "A_random",
+      "target_class": "C2_PARTIAL_OVERLAP",
+      "target_class_cn": "正面积相交但互不包含",
+      "left_id": "p147-a",
+      "right_id": "p147-b",
+      "left": {
+        "min_x": 14,
+        "min_y": 0,
+        "max_x": 58,
+        "max_y": 65
+      },
+      "right": {
+        "min_x": 38,
+        "min_y": -6,
+        "max_x": 124,
+        "max_y": 107
+      }
+    },
+    {
+      "pair_id": "pair_233",
+      "pair_index": 233,
+      "group": "train",
+      "stage": "A_random",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p233-a",
+      "right_id": "p233-b",
+      "left": {
+        "min_x": -23,
+        "min_y": 46,
+        "max_x": -17,
+        "max_y": 162
+      },
+      "right": {
+        "min_x": -17,
+        "min_y": 25,
+        "max_x": 88,
+        "max_y": 95
+      }
+    },
+    {
+      "pair_id": "pair_300",
+      "pair_index": 300,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p300-a",
+      "right_id": "p300-b",
+      "left": {
+        "min_x": -189,
+        "min_y": -49,
+        "max_x": -146,
+        "max_y": 71
+      },
+      "right": {
+        "min_x": -146,
+        "min_y": -133,
+        "max_x": -33,
+        "max_y": -46
+      }
+    },
+    {
+      "pair_id": "pair_301",
+      "pair_index": 301,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p301-a",
+      "right_id": "p301-b",
+      "left": {
+        "min_x": 190,
+        "min_y": -593,
+        "max_x": 328,
+        "max_y": -469
+      },
+      "right": {
+        "min_x": 250,
+        "min_y": -469,
+        "max_x": 263,
+        "max_y": -375
+      }
+    },
+    {
+      "pair_id": "pair_302",
+      "pair_index": 302,
+      "group": "audit",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p302-a",
+      "right_id": "p302-b",
+      "left": {
+        "min_x": -171,
+        "min_y": 130,
+        "max_x": -81,
+        "max_y": 250
+      },
+      "right": {
+        "min_x": -262,
+        "min_y": 89,
+        "max_x": -171,
+        "max_y": 197
+      }
+    },
+    {
+      "pair_id": "pair_303",
+      "pair_index": 303,
+      "group": "audit",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p303-a",
+      "right_id": "p303-b",
+      "left": {
+        "min_x": -101,
+        "min_y": 259,
+        "max_x": -5,
+        "max_y": 356
+      },
+      "right": {
+        "min_x": -5,
+        "min_y": 356,
+        "max_x": 65,
+        "max_y": 413
+      }
+    },
+    {
+      "pair_id": "pair_304",
+      "pair_index": 304,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p304-a",
+      "right_id": "p304-b",
+      "left": {
+        "min_x": 674,
+        "min_y": 213,
+        "max_x": 721,
+        "max_y": 313
+      },
+      "right": {
+        "min_x": 721,
+        "min_y": 179,
+        "max_x": 846,
+        "max_y": 213
+      }
+    },
+    {
+      "pair_id": "pair_305",
+      "pair_index": 305,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p305-a",
+      "right_id": "p305-b",
+      "left": {
+        "min_x": 477,
+        "min_y": 568,
+        "max_x": 601,
+        "max_y": 600
+      },
+      "right": {
+        "min_x": 396,
+        "min_y": 502,
+        "max_x": 477,
+        "max_y": 618
+      }
+    },
+    {
+      "pair_id": "pair_306",
+      "pair_index": 306,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p306-a",
+      "right_id": "p306-b",
+      "left": {
+        "min_x": -810,
+        "min_y": 311,
+        "max_x": -731,
+        "max_y": 412
+      },
+      "right": {
+        "min_x": -731,
+        "min_y": 187,
+        "max_x": -622,
+        "max_y": 319
+      }
+    },
+    {
+      "pair_id": "pair_307",
+      "pair_index": 307,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p307-a",
+      "right_id": "p307-b",
+      "left": {
+        "min_x": 19,
+        "min_y": -617,
+        "max_x": 142,
+        "max_y": -483
+      },
+      "right": {
+        "min_x": -116,
+        "min_y": -666,
+        "max_x": 19,
+        "max_y": -552
+      }
+    },
+    {
+      "pair_id": "pair_308",
+      "pair_index": 308,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p308-a",
+      "right_id": "p308-b",
+      "left": {
+        "min_x": 505,
+        "min_y": 133,
+        "max_x": 596,
+        "max_y": 213
+      },
+      "right": {
+        "min_x": 596,
+        "min_y": 103,
+        "max_x": 666,
+        "max_y": 163
+      }
+    },
+    {
+      "pair_id": "pair_309",
+      "pair_index": 309,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p309-a",
+      "right_id": "p309-b",
+      "left": {
+        "min_x": 341,
+        "min_y": 461,
+        "max_x": 441,
+        "max_y": 590
+      },
+      "right": {
+        "min_x": 340,
+        "min_y": 590,
+        "max_x": 409,
+        "max_y": 653
+      }
+    },
+    {
+      "pair_id": "pair_310",
+      "pair_index": 310,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p310-a",
+      "right_id": "p310-b",
+      "left": {
+        "min_x": -790,
+        "min_y": -521,
+        "max_x": -687,
+        "max_y": -453
+      },
+      "right": {
+        "min_x": -778,
+        "min_y": -453,
+        "max_x": -748,
+        "max_y": -358
+      }
+    },
+    {
+      "pair_id": "pair_311",
+      "pair_index": 311,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p311-a",
+      "right_id": "p311-b",
+      "left": {
+        "min_x": 228,
+        "min_y": 273,
+        "max_x": 352,
+        "max_y": 362
+      },
+      "right": {
+        "min_x": 352,
+        "min_y": 266,
+        "max_x": 440,
+        "max_y": 386
+      }
+    },
+    {
+      "pair_id": "pair_312",
+      "pair_index": 312,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p312-a",
+      "right_id": "p312-b",
+      "left": {
+        "min_x": 198,
+        "min_y": -652,
+        "max_x": 245,
+        "max_y": -527
+      },
+      "right": {
+        "min_x": 245,
+        "min_y": -569,
+        "max_x": 323,
+        "max_y": -520
+      }
+    },
+    {
+      "pair_id": "pair_313",
+      "pair_index": 313,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p313-a",
+      "right_id": "p313-b",
+      "left": {
+        "min_x": -86,
+        "min_y": -582,
+        "max_x": -21,
+        "max_y": -513
+      },
+      "right": {
+        "min_x": -144,
+        "min_y": -513,
+        "max_x": -21,
+        "max_y": -506
+      }
+    },
+    {
+      "pair_id": "pair_314",
+      "pair_index": 314,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p314-a",
+      "right_id": "p314-b",
+      "left": {
+        "min_x": 418,
+        "min_y": 461,
+        "max_x": 482,
+        "max_y": 567
+      },
+      "right": {
+        "min_x": 439,
+        "min_y": 567,
+        "max_x": 465,
+        "max_y": 644
+      }
+    },
+    {
+      "pair_id": "pair_315",
+      "pair_index": 315,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p315-a",
+      "right_id": "p315-b",
+      "left": {
+        "min_x": 463,
+        "min_y": 385,
+        "max_x": 597,
+        "max_y": 472
+      },
+      "right": {
+        "min_x": 388,
+        "min_y": 434,
+        "max_x": 463,
+        "max_y": 446
+      }
+    },
+    {
+      "pair_id": "pair_316",
+      "pair_index": 316,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p316-a",
+      "right_id": "p316-b",
+      "left": {
+        "min_x": -756,
+        "min_y": -82,
+        "max_x": -657,
+        "max_y": 19
+      },
+      "right": {
+        "min_x": -830,
+        "min_y": -115,
+        "max_x": -756,
+        "max_y": -5
+      }
+    },
+    {
+      "pair_id": "pair_317",
+      "pair_index": 317,
+      "group": "audit",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p317-a",
+      "right_id": "p317-b",
+      "left": {
+        "min_x": 284,
+        "min_y": -362,
+        "max_x": 379,
+        "max_y": -244
+      },
+      "right": {
+        "min_x": 379,
+        "min_y": -462,
+        "max_x": 414,
+        "max_y": -335
+      }
+    },
+    {
+      "pair_id": "pair_318",
+      "pair_index": 318,
+      "group": "audit",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p318-a",
+      "right_id": "p318-b",
+      "left": {
+        "min_x": 216,
+        "min_y": 569,
+        "max_x": 330,
+        "max_y": 680
+      },
+      "right": {
+        "min_x": 202,
+        "min_y": 557,
+        "max_x": 216,
+        "max_y": 680
+      }
+    },
+    {
+      "pair_id": "pair_319",
+      "pair_index": 319,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p319-a",
+      "right_id": "p319-b",
+      "left": {
+        "min_x": -120,
+        "min_y": 229,
+        "max_x": -41,
+        "max_y": 293
+      },
+      "right": {
+        "min_x": -211,
+        "min_y": 242,
+        "max_x": -120,
+        "max_y": 338
+      }
+    },
+    {
+      "pair_id": "pair_320",
+      "pair_index": 320,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p320-a",
+      "right_id": "p320-b",
+      "left": {
+        "min_x": -619,
+        "min_y": 321,
+        "max_x": -503,
+        "max_y": 421
+      },
+      "right": {
+        "min_x": -626,
+        "min_y": 421,
+        "max_x": -619,
+        "max_y": 544
+      }
+    },
+    {
+      "pair_id": "pair_321",
+      "pair_index": 321,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p321-a",
+      "right_id": "p321-b",
+      "left": {
+        "min_x": -788,
+        "min_y": 371,
+        "max_x": -671,
+        "max_y": 435
+      },
+      "right": {
+        "min_x": -671,
+        "min_y": 401,
+        "max_x": -592,
+        "max_y": 433
+      }
+    },
+    {
+      "pair_id": "pair_322",
+      "pair_index": 322,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p322-a",
+      "right_id": "p322-b",
+      "left": {
+        "min_x": -98,
+        "min_y": -698,
+        "max_x": -55,
+        "max_y": -600
+      },
+      "right": {
+        "min_x": -221,
+        "min_y": -606,
+        "max_x": -98,
+        "max_y": -563
+      }
+    },
+    {
+      "pair_id": "pair_323",
+      "pair_index": 323,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p323-a",
+      "right_id": "p323-b",
+      "left": {
+        "min_x": 289,
+        "min_y": 691,
+        "max_x": 359,
+        "max_y": 743
+      },
+      "right": {
+        "min_x": 269,
+        "min_y": 743,
+        "max_x": 333,
+        "max_y": 868
+      }
+    },
+    {
+      "pair_id": "pair_324",
+      "pair_index": 324,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p324-a",
+      "right_id": "p324-b",
+      "left": {
+        "min_x": -613,
+        "min_y": 158,
+        "max_x": -525,
+        "max_y": 273
+      },
+      "right": {
+        "min_x": -676,
+        "min_y": 160,
+        "max_x": -613,
+        "max_y": 181
+      }
+    },
+    {
+      "pair_id": "pair_325",
+      "pair_index": 325,
+      "group": "audit",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p325-a",
+      "right_id": "p325-b",
+      "left": {
+        "min_x": 511,
+        "min_y": 373,
+        "max_x": 640,
+        "max_y": 429
+      },
+      "right": {
+        "min_x": 459,
+        "min_y": 373,
+        "max_x": 511,
+        "max_y": 412
+      }
+    },
+    {
+      "pair_id": "pair_326",
+      "pair_index": 326,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p326-a",
+      "right_id": "p326-b",
+      "left": {
+        "min_x": -414,
+        "min_y": -73,
+        "max_x": -310,
+        "max_y": -16
+      },
+      "right": {
+        "min_x": -538,
+        "min_y": -16,
+        "max_x": -414,
+        "max_y": 72
+      }
+    },
+    {
+      "pair_id": "pair_327",
+      "pair_index": 327,
+      "group": "audit",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p327-a",
+      "right_id": "p327-b",
+      "left": {
+        "min_x": 513,
+        "min_y": -147,
+        "max_x": 649,
+        "max_y": -117
+      },
+      "right": {
+        "min_x": 379,
+        "min_y": -131,
+        "max_x": 513,
+        "max_y": -64
+      }
+    },
+    {
+      "pair_id": "pair_328",
+      "pair_index": 328,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C1_TOUCH_DISJOINT",
+      "target_class_cn": "零距离不相交",
+      "left_id": "p328-a",
+      "right_id": "p328-b",
+      "left": {
+        "min_x": 334,
+        "min_y": 237,
+        "max_x": 376,
+        "max_y": 294
+      },
+      "right": {
+        "min_x": 363,
+        "min_y": 294,
+        "max_x": 438,
+        "max_y": 345
+      }
+    },
+    {
+      "pair_id": "pair_329",
+      "pair_index": 329,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p329-a",
+      "right_id": "p329-b",
+      "left": {
+        "min_x": -269,
+        "min_y": -186,
+        "max_x": -183,
+        "max_y": -160
+      },
+      "right": {
+        "min_x": -270,
+        "min_y": -187,
+        "max_x": -182,
+        "max_y": -159
+      }
+    },
+    {
+      "pair_id": "pair_330",
+      "pair_index": 330,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p330-a",
+      "right_id": "p330-b",
+      "left": {
+        "min_x": -586,
+        "min_y": -125,
+        "max_x": -529,
+        "max_y": -54
+      },
+      "right": {
+        "min_x": -587,
+        "min_y": -126,
+        "max_x": -528,
+        "max_y": -53
+      }
+    },
+    {
+      "pair_id": "pair_331",
+      "pair_index": 331,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p331-a",
+      "right_id": "p331-b",
+      "left": {
+        "min_x": -604,
+        "min_y": -755,
+        "max_x": -558,
+        "max_y": -690
+      },
+      "right": {
+        "min_x": -605,
+        "min_y": -756,
+        "max_x": -557,
+        "max_y": -689
+      }
+    },
+    {
+      "pair_id": "pair_332",
+      "pair_index": 332,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p332-a",
+      "right_id": "p332-b",
+      "left": {
+        "min_x": -546,
+        "min_y": 305,
+        "max_x": -453,
+        "max_y": 408
+      },
+      "right": {
+        "min_x": -547,
+        "min_y": 304,
+        "max_x": -452,
+        "max_y": 409
+      }
+    },
+    {
+      "pair_id": "pair_333",
+      "pair_index": 333,
+      "group": "audit",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p333-a",
+      "right_id": "p333-b",
+      "left": {
+        "min_x": -185,
+        "min_y": 59,
+        "max_x": -61,
+        "max_y": 166
+      },
+      "right": {
+        "min_x": -186,
+        "min_y": 58,
+        "max_x": -60,
+        "max_y": 167
+      }
+    },
+    {
+      "pair_id": "pair_334",
+      "pair_index": 334,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p334-a",
+      "right_id": "p334-b",
+      "left": {
+        "min_x": 344,
+        "min_y": -118,
+        "max_x": 449,
+        "max_y": -73
+      },
+      "right": {
+        "min_x": 343,
+        "min_y": -119,
+        "max_x": 450,
+        "max_y": -72
+      }
+    },
+    {
+      "pair_id": "pair_335",
+      "pair_index": 335,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p335-a",
+      "right_id": "p335-b",
+      "left": {
+        "min_x": 745,
+        "min_y": 180,
+        "max_x": 770,
+        "max_y": 286
+      },
+      "right": {
+        "min_x": 744,
+        "min_y": 179,
+        "max_x": 771,
+        "max_y": 287
+      }
+    },
+    {
+      "pair_id": "pair_336",
+      "pair_index": 336,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p336-a",
+      "right_id": "p336-b",
+      "left": {
+        "min_x": -386,
+        "min_y": -329,
+        "max_x": -268,
+        "max_y": -238
+      },
+      "right": {
+        "min_x": -387,
+        "min_y": -330,
+        "max_x": -267,
+        "max_y": -237
+      }
+    },
+    {
+      "pair_id": "pair_337",
+      "pair_index": 337,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p337-a",
+      "right_id": "p337-b",
+      "left": {
+        "min_x": 367,
+        "min_y": -529,
+        "max_x": 421,
+        "max_y": -435
+      },
+      "right": {
+        "min_x": 366,
+        "min_y": -530,
+        "max_x": 422,
+        "max_y": -434
+      }
+    },
+    {
+      "pair_id": "pair_338",
+      "pair_index": 338,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p338-a",
+      "right_id": "p338-b",
+      "left": {
+        "min_x": -530,
+        "min_y": -513,
+        "max_x": -503,
+        "max_y": -436
+      },
+      "right": {
+        "min_x": -531,
+        "min_y": -514,
+        "max_x": -502,
+        "max_y": -435
+      }
+    },
+    {
+      "pair_id": "pair_339",
+      "pair_index": 339,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p339-a",
+      "right_id": "p339-b",
+      "left": {
+        "min_x": -27,
+        "min_y": -51,
+        "max_x": 0,
+        "max_y": -27
+      },
+      "right": {
+        "min_x": -28,
+        "min_y": -52,
+        "max_x": 1,
+        "max_y": -26
+      }
+    },
+    {
+      "pair_id": "pair_340",
+      "pair_index": 340,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p340-a",
+      "right_id": "p340-b",
+      "left": {
+        "min_x": 261,
+        "min_y": 552,
+        "max_x": 286,
+        "max_y": 598
+      },
+      "right": {
+        "min_x": 260,
+        "min_y": 551,
+        "max_x": 287,
+        "max_y": 599
+      }
+    },
+    {
+      "pair_id": "pair_341",
+      "pair_index": 341,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p341-a",
+      "right_id": "p341-b",
+      "left": {
+        "min_x": -740,
+        "min_y": -660,
+        "max_x": -653,
+        "max_y": -618
+      },
+      "right": {
+        "min_x": -741,
+        "min_y": -661,
+        "max_x": -652,
+        "max_y": -617
+      }
+    },
+    {
+      "pair_id": "pair_342",
+      "pair_index": 342,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p342-a",
+      "right_id": "p342-b",
+      "left": {
+        "min_x": -377,
+        "min_y": 662,
+        "max_x": -330,
+        "max_y": 722
+      },
+      "right": {
+        "min_x": -378,
+        "min_y": 661,
+        "max_x": -329,
+        "max_y": 723
+      }
+    },
+    {
+      "pair_id": "pair_343",
+      "pair_index": 343,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p343-a",
+      "right_id": "p343-b",
+      "left": {
+        "min_x": -702,
+        "min_y": -621,
+        "max_x": -602,
+        "max_y": -581
+      },
+      "right": {
+        "min_x": -703,
+        "min_y": -622,
+        "max_x": -601,
+        "max_y": -580
+      }
+    },
+    {
+      "pair_id": "pair_344",
+      "pair_index": 344,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p344-a",
+      "right_id": "p344-b",
+      "left": {
+        "min_x": 483,
+        "min_y": 277,
+        "max_x": 586,
+        "max_y": 386
+      },
+      "right": {
+        "min_x": 482,
+        "min_y": 276,
+        "max_x": 587,
+        "max_y": 387
+      }
+    },
+    {
+      "pair_id": "pair_345",
+      "pair_index": 345,
+      "group": "audit",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p345-a",
+      "right_id": "p345-b",
+      "left": {
+        "min_x": 481,
+        "min_y": 82,
+        "max_x": 568,
+        "max_y": 211
+      },
+      "right": {
+        "min_x": 480,
+        "min_y": 81,
+        "max_x": 569,
+        "max_y": 212
+      }
+    },
+    {
+      "pair_id": "pair_346",
+      "pair_index": 346,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p346-a",
+      "right_id": "p346-b",
+      "left": {
+        "min_x": -490,
+        "min_y": 699,
+        "max_x": -409,
+        "max_y": 833
+      },
+      "right": {
+        "min_x": -491,
+        "min_y": 698,
+        "max_x": -408,
+        "max_y": 834
+      }
+    },
+    {
+      "pair_id": "pair_347",
+      "pair_index": 347,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p347-a",
+      "right_id": "p347-b",
+      "left": {
+        "min_x": 57,
+        "min_y": -289,
+        "max_x": 108,
+        "max_y": -203
+      },
+      "right": {
+        "min_x": 56,
+        "min_y": -290,
+        "max_x": 109,
+        "max_y": -202
+      }
+    },
+    {
+      "pair_id": "pair_348",
+      "pair_index": 348,
+      "group": "audit",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p348-a",
+      "right_id": "p348-b",
+      "left": {
+        "min_x": -173,
+        "min_y": 51,
+        "max_x": -95,
+        "max_y": 107
+      },
+      "right": {
+        "min_x": -174,
+        "min_y": 50,
+        "max_x": -94,
+        "max_y": 108
+      }
+    },
+    {
+      "pair_id": "pair_349",
+      "pair_index": 349,
+      "group": "audit",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p349-a",
+      "right_id": "p349-b",
+      "left": {
+        "min_x": 466,
+        "min_y": -47,
+        "max_x": 597,
+        "max_y": 74
+      },
+      "right": {
+        "min_x": 465,
+        "min_y": -48,
+        "max_x": 598,
+        "max_y": 75
+      }
+    },
+    {
+      "pair_id": "pair_350",
+      "pair_index": 350,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p350-a",
+      "right_id": "p350-b",
+      "left": {
+        "min_x": -624,
+        "min_y": 434,
+        "max_x": -521,
+        "max_y": 567
+      },
+      "right": {
+        "min_x": -625,
+        "min_y": 433,
+        "max_x": -520,
+        "max_y": 568
+      }
+    },
+    {
+      "pair_id": "pair_351",
+      "pair_index": 351,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p351-a",
+      "right_id": "p351-b",
+      "left": {
+        "min_x": -561,
+        "min_y": 625,
+        "max_x": -489,
+        "max_y": 659
+      },
+      "right": {
+        "min_x": -562,
+        "min_y": 624,
+        "max_x": -488,
+        "max_y": 660
+      }
+    },
+    {
+      "pair_id": "pair_352",
+      "pair_index": 352,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p352-a",
+      "right_id": "p352-b",
+      "left": {
+        "min_x": -374,
+        "min_y": -233,
+        "max_x": -318,
+        "max_y": -122
+      },
+      "right": {
+        "min_x": -375,
+        "min_y": -234,
+        "max_x": -317,
+        "max_y": -121
+      }
+    },
+    {
+      "pair_id": "pair_353",
+      "pair_index": 353,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p353-a",
+      "right_id": "p353-b",
+      "left": {
+        "min_x": 511,
+        "min_y": -340,
+        "max_x": 557,
+        "max_y": -214
+      },
+      "right": {
+        "min_x": 510,
+        "min_y": -341,
+        "max_x": 558,
+        "max_y": -213
+      }
+    },
+    {
+      "pair_id": "pair_354",
+      "pair_index": 354,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p354-a",
+      "right_id": "p354-b",
+      "left": {
+        "min_x": -143,
+        "min_y": -714,
+        "max_x": -5,
+        "max_y": -674
+      },
+      "right": {
+        "min_x": -144,
+        "min_y": -715,
+        "max_x": -4,
+        "max_y": -673
+      }
+    },
+    {
+      "pair_id": "pair_355",
+      "pair_index": 355,
+      "group": "audit",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p355-a",
+      "right_id": "p355-b",
+      "left": {
+        "min_x": -4,
+        "min_y": 44,
+        "max_x": 100,
+        "max_y": 77
+      },
+      "right": {
+        "min_x": -5,
+        "min_y": 43,
+        "max_x": 101,
+        "max_y": 78
+      }
+    },
+    {
+      "pair_id": "pair_356",
+      "pair_index": 356,
+      "group": "train",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p356-a",
+      "right_id": "p356-b",
+      "left": {
+        "min_x": 446,
+        "min_y": -125,
+        "max_x": 540,
+        "max_y": -1
+      },
+      "right": {
+        "min_x": 445,
+        "min_y": -126,
+        "max_x": 541,
+        "max_y": 0
+      }
+    },
+    {
+      "pair_id": "pair_357",
+      "pair_index": 357,
+      "group": "audit",
+      "stage": "B_supplement",
+      "target_class": "C3_REVERSE_CONTAINMENT",
+      "target_class_cn": "反转左右才变成包含",
+      "left_id": "p357-a",
+      "right_id": "p357-b",
+      "left": {
+        "min_x": -131,
+        "min_y": -362,
+        "max_x": -3,
+        "max_y": -294
+      },
+      "right": {
+        "min_x": -132,
+        "min_y": -363,
+        "max_x": -2,
+        "max_y": -293
+      }
+    }
+  ],
+  "rows": [
+    {
+      "row_id": "pair_007_forward",
+      "pair_id": "pair_007",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p007-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p007-b"
+        }
+      },
+      "raw_response": {
+        "revision": 9,
+        "left_revision": 9,
+        "right_revision": 9,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -34,
+          "min_y": -1,
+          "max_x": -24,
+          "max_y": 20
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_007_reversed",
+      "pair_id": "pair_007",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p007-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p007-a"
+        }
+      },
+      "raw_response": {
+        "revision": 9,
+        "left_revision": 9,
+        "right_revision": 9,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -34,
+          "min_y": -1,
+          "max_x": -24,
+          "max_y": 20
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_013_forward",
+      "pair_id": "pair_013",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p013-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p013-b"
+        }
+      },
+      "raw_response": {
+        "revision": 15,
+        "left_revision": 15,
+        "right_revision": 15,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -70,
+          "min_y": 56,
+          "max_x": -35,
+          "max_y": 123
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_013_reversed",
+      "pair_id": "pair_013",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p013-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p013-a"
+        }
+      },
+      "raw_response": {
+        "revision": 15,
+        "left_revision": 15,
+        "right_revision": 15,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -70,
+          "min_y": 56,
+          "max_x": -35,
+          "max_y": 123
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_016_forward",
+      "pair_id": "pair_016",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p016-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p016-b"
+        }
+      },
+      "raw_response": {
+        "revision": 18,
+        "left_revision": 18,
+        "right_revision": 18,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -59,
+          "min_y": 110,
+          "max_x": 0,
+          "max_y": 125
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_016_reversed",
+      "pair_id": "pair_016",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p016-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p016-a"
+        }
+      },
+      "raw_response": {
+        "revision": 18,
+        "left_revision": 18,
+        "right_revision": 18,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -59,
+          "min_y": 110,
+          "max_x": 0,
+          "max_y": 125
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_023_forward",
+      "pair_id": "pair_023",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p023-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p023-b"
+        }
+      },
+      "raw_response": {
+        "revision": 25,
+        "left_revision": 25,
+        "right_revision": 25,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -34,
+          "min_y": -17,
+          "max_x": 24,
+          "max_y": 14
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_023_reversed",
+      "pair_id": "pair_023",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p023-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p023-a"
+        }
+      },
+      "raw_response": {
+        "revision": 25,
+        "left_revision": 25,
+        "right_revision": 25,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -34,
+          "min_y": -17,
+          "max_x": 24,
+          "max_y": 14
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_024_forward",
+      "pair_id": "pair_024",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p024-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p024-b"
+        }
+      },
+      "raw_response": {
+        "revision": 26,
+        "left_revision": 26,
+        "right_revision": 26,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 1,
+          "min_y": 68,
+          "max_x": 70,
+          "max_y": 85
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_024_reversed",
+      "pair_id": "pair_024",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p024-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p024-a"
+        }
+      },
+      "raw_response": {
+        "revision": 26,
+        "left_revision": 26,
+        "right_revision": 26,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 1,
+          "min_y": 68,
+          "max_x": 70,
+          "max_y": 85
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_029_forward",
+      "pair_id": "pair_029",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p029-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p029-b"
+        }
+      },
+      "raw_response": {
+        "revision": 31,
+        "left_revision": 31,
+        "right_revision": 31,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -17,
+          "min_y": 122,
+          "max_x": 38,
+          "max_y": 169
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_029_reversed",
+      "pair_id": "pair_029",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p029-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p029-a"
+        }
+      },
+      "raw_response": {
+        "revision": 31,
+        "left_revision": 31,
+        "right_revision": 31,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -17,
+          "min_y": 122,
+          "max_x": 38,
+          "max_y": 169
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_032_forward",
+      "pair_id": "pair_032",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p032-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p032-b"
+        }
+      },
+      "raw_response": {
+        "revision": 34,
+        "left_revision": 34,
+        "right_revision": 34,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 81,
+          "min_y": -40,
+          "max_x": 121,
+          "max_y": 43
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_032_reversed",
+      "pair_id": "pair_032",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p032-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p032-a"
+        }
+      },
+      "raw_response": {
+        "revision": 34,
+        "left_revision": 34,
+        "right_revision": 34,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 81,
+          "min_y": -40,
+          "max_x": 121,
+          "max_y": 43
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_034_forward",
+      "pair_id": "pair_034",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p034-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p034-b"
+        }
+      },
+      "raw_response": {
+        "revision": 36,
+        "left_revision": 36,
+        "right_revision": 36,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 85,
+          "min_y": -17,
+          "max_x": 114,
+          "max_y": -9
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_034_reversed",
+      "pair_id": "pair_034",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p034-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p034-a"
+        }
+      },
+      "raw_response": {
+        "revision": 36,
+        "left_revision": 36,
+        "right_revision": 36,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 85,
+          "min_y": -17,
+          "max_x": 114,
+          "max_y": -9
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_036_forward",
+      "pair_id": "pair_036",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p036-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p036-b"
+        }
+      },
+      "raw_response": {
+        "revision": 38,
+        "left_revision": 38,
+        "right_revision": 38,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -107,
+          "min_y": -61,
+          "max_x": -67,
+          "max_y": -16
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_036_reversed",
+      "pair_id": "pair_036",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p036-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p036-a"
+        }
+      },
+      "raw_response": {
+        "revision": 38,
+        "left_revision": 38,
+        "right_revision": 38,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -107,
+          "min_y": -61,
+          "max_x": -67,
+          "max_y": -16
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_038_forward",
+      "pair_id": "pair_038",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p038-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p038-b"
+        }
+      },
+      "raw_response": {
+        "revision": 40,
+        "left_revision": 40,
+        "right_revision": 40,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -82,
+          "min_y": 76,
+          "max_x": -5,
+          "max_y": 82
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_038_reversed",
+      "pair_id": "pair_038",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p038-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p038-a"
+        }
+      },
+      "raw_response": {
+        "revision": 40,
+        "left_revision": 40,
+        "right_revision": 40,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -82,
+          "min_y": 76,
+          "max_x": -5,
+          "max_y": 82
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_042_forward",
+      "pair_id": "pair_042",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p042-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p042-b"
+        }
+      },
+      "raw_response": {
+        "revision": 44,
+        "left_revision": 44,
+        "right_revision": 44,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 44,
+          "min_y": -58,
+          "max_x": 93,
+          "max_y": -41
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_042_reversed",
+      "pair_id": "pair_042",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p042-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p042-a"
+        }
+      },
+      "raw_response": {
+        "revision": 44,
+        "left_revision": 44,
+        "right_revision": 44,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 44,
+          "min_y": -58,
+          "max_x": 93,
+          "max_y": -41
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_054_forward",
+      "pair_id": "pair_054",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p054-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p054-b"
+        }
+      },
+      "raw_response": {
+        "revision": 56,
+        "left_revision": 56,
+        "right_revision": 56,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 89,
+          "min_y": -42,
+          "max_x": 123,
+          "max_y": 0
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_054_reversed",
+      "pair_id": "pair_054",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p054-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p054-a"
+        }
+      },
+      "raw_response": {
+        "revision": 56,
+        "left_revision": 56,
+        "right_revision": 56,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 89,
+          "min_y": -42,
+          "max_x": 123,
+          "max_y": 0
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_062_forward",
+      "pair_id": "pair_062",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p062-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p062-b"
+        }
+      },
+      "raw_response": {
+        "revision": 64,
+        "left_revision": 64,
+        "right_revision": 64,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 4,
+          "min_y": 54,
+          "max_x": 15,
+          "max_y": 83
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_062_reversed",
+      "pair_id": "pair_062",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p062-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p062-a"
+        }
+      },
+      "raw_response": {
+        "revision": 64,
+        "left_revision": 64,
+        "right_revision": 64,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 4,
+          "min_y": 54,
+          "max_x": 15,
+          "max_y": 83
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_064_forward",
+      "pair_id": "pair_064",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p064-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p064-b"
+        }
+      },
+      "raw_response": {
+        "revision": 66,
+        "left_revision": 66,
+        "right_revision": 66,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 55,
+          "min_y": 46,
+          "max_x": 60,
+          "max_y": 59
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_064_reversed",
+      "pair_id": "pair_064",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p064-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p064-a"
+        }
+      },
+      "raw_response": {
+        "revision": 66,
+        "left_revision": 66,
+        "right_revision": 66,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 55,
+          "min_y": 46,
+          "max_x": 60,
+          "max_y": 59
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_066_forward",
+      "pair_id": "pair_066",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p066-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p066-b"
+        }
+      },
+      "raw_response": {
+        "revision": 68,
+        "left_revision": 68,
+        "right_revision": 68,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -80,
+          "min_y": -97,
+          "max_x": -25,
+          "max_y": -35
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_066_reversed",
+      "pair_id": "pair_066",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p066-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p066-a"
+        }
+      },
+      "raw_response": {
+        "revision": 68,
+        "left_revision": 68,
+        "right_revision": 68,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -80,
+          "min_y": -97,
+          "max_x": -25,
+          "max_y": -35
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_071_forward",
+      "pair_id": "pair_071",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p071-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p071-b"
+        }
+      },
+      "raw_response": {
+        "revision": 73,
+        "left_revision": 73,
+        "right_revision": 73,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -121,
+          "min_y": -23,
+          "max_x": -106,
+          "max_y": 32
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_071_reversed",
+      "pair_id": "pair_071",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p071-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p071-a"
+        }
+      },
+      "raw_response": {
+        "revision": 73,
+        "left_revision": 73,
+        "right_revision": 73,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -121,
+          "min_y": -23,
+          "max_x": -106,
+          "max_y": 32
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_074_forward",
+      "pair_id": "pair_074",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p074-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p074-b"
+        }
+      },
+      "raw_response": {
+        "revision": 76,
+        "left_revision": 76,
+        "right_revision": 76,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 91,
+          "min_y": -78,
+          "max_x": 140,
+          "max_y": -73
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_074_reversed",
+      "pair_id": "pair_074",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p074-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p074-a"
+        }
+      },
+      "raw_response": {
+        "revision": 76,
+        "left_revision": 76,
+        "right_revision": 76,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 91,
+          "min_y": -78,
+          "max_x": 140,
+          "max_y": -73
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_078_forward",
+      "pair_id": "pair_078",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p078-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p078-b"
+        }
+      },
+      "raw_response": {
+        "revision": 80,
+        "left_revision": 80,
+        "right_revision": 80,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 8,
+          "min_y": 80,
+          "max_x": 58,
+          "max_y": 126
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_078_reversed",
+      "pair_id": "pair_078",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p078-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p078-a"
+        }
+      },
+      "raw_response": {
+        "revision": 80,
+        "left_revision": 80,
+        "right_revision": 80,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 8,
+          "min_y": 80,
+          "max_x": 58,
+          "max_y": 126
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_081_forward",
+      "pair_id": "pair_081",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p081-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p081-b"
+        }
+      },
+      "raw_response": {
+        "revision": 83,
+        "left_revision": 83,
+        "right_revision": 83,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -40,
+          "min_y": 21,
+          "max_x": 17,
+          "max_y": 62
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_081_reversed",
+      "pair_id": "pair_081",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p081-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p081-a"
+        }
+      },
+      "raw_response": {
+        "revision": 83,
+        "left_revision": 83,
+        "right_revision": 83,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -40,
+          "min_y": 21,
+          "max_x": 17,
+          "max_y": 62
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_091_forward",
+      "pair_id": "pair_091",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p091-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p091-b"
+        }
+      },
+      "raw_response": {
+        "revision": 93,
+        "left_revision": 93,
+        "right_revision": 93,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 14,
+          "min_y": 74,
+          "max_x": 84,
+          "max_y": 131
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_091_reversed",
+      "pair_id": "pair_091",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p091-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p091-a"
+        }
+      },
+      "raw_response": {
+        "revision": 93,
+        "left_revision": 93,
+        "right_revision": 93,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 14,
+          "min_y": 74,
+          "max_x": 84,
+          "max_y": 131
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_093_forward",
+      "pair_id": "pair_093",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p093-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p093-b"
+        }
+      },
+      "raw_response": {
+        "revision": 95,
+        "left_revision": 95,
+        "right_revision": 95,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -12,
+          "min_y": -119,
+          "max_x": 51,
+          "max_y": -68
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_093_reversed",
+      "pair_id": "pair_093",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p093-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p093-a"
+        }
+      },
+      "raw_response": {
+        "revision": 95,
+        "left_revision": 95,
+        "right_revision": 95,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -12,
+          "min_y": -119,
+          "max_x": 51,
+          "max_y": -68
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_098_forward",
+      "pair_id": "pair_098",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p098-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p098-b"
+        }
+      },
+      "raw_response": {
+        "revision": 100,
+        "left_revision": 100,
+        "right_revision": 100,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 75,
+          "min_y": -30,
+          "max_x": 137,
+          "max_y": -14
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_098_reversed",
+      "pair_id": "pair_098",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p098-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p098-a"
+        }
+      },
+      "raw_response": {
+        "revision": 100,
+        "left_revision": 100,
+        "right_revision": 100,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 75,
+          "min_y": -30,
+          "max_x": 137,
+          "max_y": -14
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_101_forward",
+      "pair_id": "pair_101",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p101-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p101-b"
+        }
+      },
+      "raw_response": {
+        "revision": 103,
+        "left_revision": 103,
+        "right_revision": 103,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 105,
+          "min_y": -138,
+          "max_x": 139,
+          "max_y": -122
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_101_reversed",
+      "pair_id": "pair_101",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p101-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p101-a"
+        }
+      },
+      "raw_response": {
+        "revision": 103,
+        "left_revision": 103,
+        "right_revision": 103,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 105,
+          "min_y": -138,
+          "max_x": 139,
+          "max_y": -122
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_105_forward",
+      "pair_id": "pair_105",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p105-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p105-b"
+        }
+      },
+      "raw_response": {
+        "revision": 107,
+        "left_revision": 107,
+        "right_revision": 107,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 114,
+          "min_y": -62,
+          "max_x": 121,
+          "max_y": -12
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_105_reversed",
+      "pair_id": "pair_105",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p105-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p105-a"
+        }
+      },
+      "raw_response": {
+        "revision": 107,
+        "left_revision": 107,
+        "right_revision": 107,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 114,
+          "min_y": -62,
+          "max_x": 121,
+          "max_y": -12
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_114_forward",
+      "pair_id": "pair_114",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p114-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p114-b"
+        }
+      },
+      "raw_response": {
+        "revision": 116,
+        "left_revision": 116,
+        "right_revision": 116,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 16,
+          "min_y": -124,
+          "max_x": 62,
+          "max_y": -56
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_114_reversed",
+      "pair_id": "pair_114",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p114-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p114-a"
+        }
+      },
+      "raw_response": {
+        "revision": 116,
+        "left_revision": 116,
+        "right_revision": 116,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 16,
+          "min_y": -124,
+          "max_x": 62,
+          "max_y": -56
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_125_forward",
+      "pair_id": "pair_125",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p125-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p125-b"
+        }
+      },
+      "raw_response": {
+        "revision": 127,
+        "left_revision": 127,
+        "right_revision": 127,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -66,
+          "min_y": -87,
+          "max_x": -2,
+          "max_y": -19
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_125_reversed",
+      "pair_id": "pair_125",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p125-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p125-a"
+        }
+      },
+      "raw_response": {
+        "revision": 127,
+        "left_revision": 127,
+        "right_revision": 127,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -66,
+          "min_y": -87,
+          "max_x": -2,
+          "max_y": -19
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_126_forward",
+      "pair_id": "pair_126",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p126-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p126-b"
+        }
+      },
+      "raw_response": {
+        "revision": 128,
+        "left_revision": 128,
+        "right_revision": 128,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -36,
+          "min_y": 96,
+          "max_x": -18,
+          "max_y": 127
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_126_reversed",
+      "pair_id": "pair_126",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p126-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p126-a"
+        }
+      },
+      "raw_response": {
+        "revision": 128,
+        "left_revision": 128,
+        "right_revision": 128,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -36,
+          "min_y": 96,
+          "max_x": -18,
+          "max_y": 127
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_141_forward",
+      "pair_id": "pair_141",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p141-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p141-b"
+        }
+      },
+      "raw_response": {
+        "revision": 143,
+        "left_revision": 143,
+        "right_revision": 143,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -76,
+          "min_y": -19,
+          "max_x": -11,
+          "max_y": 90
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_141_reversed",
+      "pair_id": "pair_141",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p141-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p141-a"
+        }
+      },
+      "raw_response": {
+        "revision": 143,
+        "left_revision": 143,
+        "right_revision": 143,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -76,
+          "min_y": -19,
+          "max_x": -11,
+          "max_y": 90
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_145_forward",
+      "pair_id": "pair_145",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p145-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p145-b"
+        }
+      },
+      "raw_response": {
+        "revision": 147,
+        "left_revision": 147,
+        "right_revision": 147,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -41,
+          "min_y": -36,
+          "max_x": -12,
+          "max_y": -35
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_145_reversed",
+      "pair_id": "pair_145",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p145-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p145-a"
+        }
+      },
+      "raw_response": {
+        "revision": 147,
+        "left_revision": 147,
+        "right_revision": 147,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -41,
+          "min_y": -36,
+          "max_x": -12,
+          "max_y": -35
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_146_forward",
+      "pair_id": "pair_146",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p146-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p146-b"
+        }
+      },
+      "raw_response": {
+        "revision": 148,
+        "left_revision": 148,
+        "right_revision": 148,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -47,
+          "min_y": -67,
+          "max_x": 24,
+          "max_y": 1
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_146_reversed",
+      "pair_id": "pair_146",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p146-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p146-a"
+        }
+      },
+      "raw_response": {
+        "revision": 148,
+        "left_revision": 148,
+        "right_revision": 148,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -47,
+          "min_y": -67,
+          "max_x": 24,
+          "max_y": 1
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_147_forward",
+      "pair_id": "pair_147",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p147-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p147-b"
+        }
+      },
+      "raw_response": {
+        "revision": 149,
+        "left_revision": 149,
+        "right_revision": 149,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 38,
+          "min_y": 0,
+          "max_x": 58,
+          "max_y": 65
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_147_reversed",
+      "pair_id": "pair_147",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p147-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p147-a"
+        }
+      },
+      "raw_response": {
+        "revision": 149,
+        "left_revision": 149,
+        "right_revision": 149,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 38,
+          "min_y": 0,
+          "max_x": 58,
+          "max_y": 65
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_233_forward",
+      "pair_id": "pair_233",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p233-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p233-b"
+        }
+      },
+      "raw_response": {
+        "revision": 235,
+        "left_revision": 235,
+        "right_revision": 235,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_233_reversed",
+      "pair_id": "pair_233",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p233-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p233-a"
+        }
+      },
+      "raw_response": {
+        "revision": 235,
+        "left_revision": 235,
+        "right_revision": 235,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_300_forward",
+      "pair_id": "pair_300",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p300-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p300-b"
+        }
+      },
+      "raw_response": {
+        "revision": 302,
+        "left_revision": 302,
+        "right_revision": 302,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_300_reversed",
+      "pair_id": "pair_300",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p300-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p300-a"
+        }
+      },
+      "raw_response": {
+        "revision": 302,
+        "left_revision": 302,
+        "right_revision": 302,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_301_forward",
+      "pair_id": "pair_301",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p301-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p301-b"
+        }
+      },
+      "raw_response": {
+        "revision": 303,
+        "left_revision": 303,
+        "right_revision": 303,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_301_reversed",
+      "pair_id": "pair_301",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p301-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p301-a"
+        }
+      },
+      "raw_response": {
+        "revision": 303,
+        "left_revision": 303,
+        "right_revision": 303,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_302_forward",
+      "pair_id": "pair_302",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p302-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p302-b"
+        }
+      },
+      "raw_response": {
+        "revision": 304,
+        "left_revision": 304,
+        "right_revision": 304,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_302_reversed",
+      "pair_id": "pair_302",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p302-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p302-a"
+        }
+      },
+      "raw_response": {
+        "revision": 304,
+        "left_revision": 304,
+        "right_revision": 304,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_303_forward",
+      "pair_id": "pair_303",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p303-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p303-b"
+        }
+      },
+      "raw_response": {
+        "revision": 305,
+        "left_revision": 305,
+        "right_revision": 305,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_303_reversed",
+      "pair_id": "pair_303",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p303-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p303-a"
+        }
+      },
+      "raw_response": {
+        "revision": 305,
+        "left_revision": 305,
+        "right_revision": 305,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_304_forward",
+      "pair_id": "pair_304",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p304-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p304-b"
+        }
+      },
+      "raw_response": {
+        "revision": 306,
+        "left_revision": 306,
+        "right_revision": 306,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_304_reversed",
+      "pair_id": "pair_304",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p304-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p304-a"
+        }
+      },
+      "raw_response": {
+        "revision": 306,
+        "left_revision": 306,
+        "right_revision": 306,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_305_forward",
+      "pair_id": "pair_305",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p305-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p305-b"
+        }
+      },
+      "raw_response": {
+        "revision": 307,
+        "left_revision": 307,
+        "right_revision": 307,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_305_reversed",
+      "pair_id": "pair_305",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p305-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p305-a"
+        }
+      },
+      "raw_response": {
+        "revision": 307,
+        "left_revision": 307,
+        "right_revision": 307,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_306_forward",
+      "pair_id": "pair_306",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p306-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p306-b"
+        }
+      },
+      "raw_response": {
+        "revision": 308,
+        "left_revision": 308,
+        "right_revision": 308,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_306_reversed",
+      "pair_id": "pair_306",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p306-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p306-a"
+        }
+      },
+      "raw_response": {
+        "revision": 308,
+        "left_revision": 308,
+        "right_revision": 308,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_307_forward",
+      "pair_id": "pair_307",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p307-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p307-b"
+        }
+      },
+      "raw_response": {
+        "revision": 309,
+        "left_revision": 309,
+        "right_revision": 309,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_307_reversed",
+      "pair_id": "pair_307",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p307-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p307-a"
+        }
+      },
+      "raw_response": {
+        "revision": 309,
+        "left_revision": 309,
+        "right_revision": 309,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_308_forward",
+      "pair_id": "pair_308",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p308-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p308-b"
+        }
+      },
+      "raw_response": {
+        "revision": 310,
+        "left_revision": 310,
+        "right_revision": 310,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_308_reversed",
+      "pair_id": "pair_308",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p308-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p308-a"
+        }
+      },
+      "raw_response": {
+        "revision": 310,
+        "left_revision": 310,
+        "right_revision": 310,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_309_forward",
+      "pair_id": "pair_309",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p309-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p309-b"
+        }
+      },
+      "raw_response": {
+        "revision": 311,
+        "left_revision": 311,
+        "right_revision": 311,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_309_reversed",
+      "pair_id": "pair_309",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p309-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p309-a"
+        }
+      },
+      "raw_response": {
+        "revision": 311,
+        "left_revision": 311,
+        "right_revision": 311,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_310_forward",
+      "pair_id": "pair_310",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p310-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p310-b"
+        }
+      },
+      "raw_response": {
+        "revision": 312,
+        "left_revision": 312,
+        "right_revision": 312,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_310_reversed",
+      "pair_id": "pair_310",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p310-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p310-a"
+        }
+      },
+      "raw_response": {
+        "revision": 312,
+        "left_revision": 312,
+        "right_revision": 312,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_311_forward",
+      "pair_id": "pair_311",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p311-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p311-b"
+        }
+      },
+      "raw_response": {
+        "revision": 313,
+        "left_revision": 313,
+        "right_revision": 313,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_311_reversed",
+      "pair_id": "pair_311",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p311-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p311-a"
+        }
+      },
+      "raw_response": {
+        "revision": 313,
+        "left_revision": 313,
+        "right_revision": 313,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_312_forward",
+      "pair_id": "pair_312",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p312-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p312-b"
+        }
+      },
+      "raw_response": {
+        "revision": 314,
+        "left_revision": 314,
+        "right_revision": 314,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_312_reversed",
+      "pair_id": "pair_312",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p312-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p312-a"
+        }
+      },
+      "raw_response": {
+        "revision": 314,
+        "left_revision": 314,
+        "right_revision": 314,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_313_forward",
+      "pair_id": "pair_313",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p313-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p313-b"
+        }
+      },
+      "raw_response": {
+        "revision": 315,
+        "left_revision": 315,
+        "right_revision": 315,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_313_reversed",
+      "pair_id": "pair_313",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p313-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p313-a"
+        }
+      },
+      "raw_response": {
+        "revision": 315,
+        "left_revision": 315,
+        "right_revision": 315,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_314_forward",
+      "pair_id": "pair_314",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p314-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p314-b"
+        }
+      },
+      "raw_response": {
+        "revision": 316,
+        "left_revision": 316,
+        "right_revision": 316,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_314_reversed",
+      "pair_id": "pair_314",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p314-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p314-a"
+        }
+      },
+      "raw_response": {
+        "revision": 316,
+        "left_revision": 316,
+        "right_revision": 316,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_315_forward",
+      "pair_id": "pair_315",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p315-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p315-b"
+        }
+      },
+      "raw_response": {
+        "revision": 317,
+        "left_revision": 317,
+        "right_revision": 317,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_315_reversed",
+      "pair_id": "pair_315",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p315-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p315-a"
+        }
+      },
+      "raw_response": {
+        "revision": 317,
+        "left_revision": 317,
+        "right_revision": 317,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_316_forward",
+      "pair_id": "pair_316",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p316-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p316-b"
+        }
+      },
+      "raw_response": {
+        "revision": 318,
+        "left_revision": 318,
+        "right_revision": 318,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_316_reversed",
+      "pair_id": "pair_316",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p316-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p316-a"
+        }
+      },
+      "raw_response": {
+        "revision": 318,
+        "left_revision": 318,
+        "right_revision": 318,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_317_forward",
+      "pair_id": "pair_317",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p317-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p317-b"
+        }
+      },
+      "raw_response": {
+        "revision": 319,
+        "left_revision": 319,
+        "right_revision": 319,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_317_reversed",
+      "pair_id": "pair_317",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p317-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p317-a"
+        }
+      },
+      "raw_response": {
+        "revision": 319,
+        "left_revision": 319,
+        "right_revision": 319,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_318_forward",
+      "pair_id": "pair_318",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p318-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p318-b"
+        }
+      },
+      "raw_response": {
+        "revision": 320,
+        "left_revision": 320,
+        "right_revision": 320,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_318_reversed",
+      "pair_id": "pair_318",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p318-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p318-a"
+        }
+      },
+      "raw_response": {
+        "revision": 320,
+        "left_revision": 320,
+        "right_revision": 320,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_319_forward",
+      "pair_id": "pair_319",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p319-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p319-b"
+        }
+      },
+      "raw_response": {
+        "revision": 321,
+        "left_revision": 321,
+        "right_revision": 321,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_319_reversed",
+      "pair_id": "pair_319",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p319-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p319-a"
+        }
+      },
+      "raw_response": {
+        "revision": 321,
+        "left_revision": 321,
+        "right_revision": 321,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_320_forward",
+      "pair_id": "pair_320",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p320-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p320-b"
+        }
+      },
+      "raw_response": {
+        "revision": 322,
+        "left_revision": 322,
+        "right_revision": 322,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_320_reversed",
+      "pair_id": "pair_320",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p320-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p320-a"
+        }
+      },
+      "raw_response": {
+        "revision": 322,
+        "left_revision": 322,
+        "right_revision": 322,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_321_forward",
+      "pair_id": "pair_321",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p321-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p321-b"
+        }
+      },
+      "raw_response": {
+        "revision": 323,
+        "left_revision": 323,
+        "right_revision": 323,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_321_reversed",
+      "pair_id": "pair_321",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p321-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p321-a"
+        }
+      },
+      "raw_response": {
+        "revision": 323,
+        "left_revision": 323,
+        "right_revision": 323,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_322_forward",
+      "pair_id": "pair_322",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p322-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p322-b"
+        }
+      },
+      "raw_response": {
+        "revision": 324,
+        "left_revision": 324,
+        "right_revision": 324,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_322_reversed",
+      "pair_id": "pair_322",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p322-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p322-a"
+        }
+      },
+      "raw_response": {
+        "revision": 324,
+        "left_revision": 324,
+        "right_revision": 324,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_323_forward",
+      "pair_id": "pair_323",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p323-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p323-b"
+        }
+      },
+      "raw_response": {
+        "revision": 325,
+        "left_revision": 325,
+        "right_revision": 325,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_323_reversed",
+      "pair_id": "pair_323",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p323-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p323-a"
+        }
+      },
+      "raw_response": {
+        "revision": 325,
+        "left_revision": 325,
+        "right_revision": 325,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_324_forward",
+      "pair_id": "pair_324",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p324-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p324-b"
+        }
+      },
+      "raw_response": {
+        "revision": 326,
+        "left_revision": 326,
+        "right_revision": 326,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_324_reversed",
+      "pair_id": "pair_324",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p324-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p324-a"
+        }
+      },
+      "raw_response": {
+        "revision": 326,
+        "left_revision": 326,
+        "right_revision": 326,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_325_forward",
+      "pair_id": "pair_325",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p325-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p325-b"
+        }
+      },
+      "raw_response": {
+        "revision": 327,
+        "left_revision": 327,
+        "right_revision": 327,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_325_reversed",
+      "pair_id": "pair_325",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p325-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p325-a"
+        }
+      },
+      "raw_response": {
+        "revision": 327,
+        "left_revision": 327,
+        "right_revision": 327,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_326_forward",
+      "pair_id": "pair_326",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p326-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p326-b"
+        }
+      },
+      "raw_response": {
+        "revision": 328,
+        "left_revision": 328,
+        "right_revision": 328,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_326_reversed",
+      "pair_id": "pair_326",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p326-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p326-a"
+        }
+      },
+      "raw_response": {
+        "revision": 328,
+        "left_revision": 328,
+        "right_revision": 328,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_327_forward",
+      "pair_id": "pair_327",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p327-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p327-b"
+        }
+      },
+      "raw_response": {
+        "revision": 329,
+        "left_revision": 329,
+        "right_revision": 329,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_327_reversed",
+      "pair_id": "pair_327",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p327-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p327-a"
+        }
+      },
+      "raw_response": {
+        "revision": 329,
+        "left_revision": 329,
+        "right_revision": 329,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_328_forward",
+      "pair_id": "pair_328",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p328-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p328-b"
+        }
+      },
+      "raw_response": {
+        "revision": 330,
+        "left_revision": 330,
+        "right_revision": 330,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_328_reversed",
+      "pair_id": "pair_328",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p328-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p328-a"
+        }
+      },
+      "raw_response": {
+        "revision": 330,
+        "left_revision": 330,
+        "right_revision": 330,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_329_forward",
+      "pair_id": "pair_329",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p329-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p329-b"
+        }
+      },
+      "raw_response": {
+        "revision": 331,
+        "left_revision": 331,
+        "right_revision": 331,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -269,
+          "min_y": -186,
+          "max_x": -183,
+          "max_y": -160
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_329_reversed",
+      "pair_id": "pair_329",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p329-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p329-a"
+        }
+      },
+      "raw_response": {
+        "revision": 331,
+        "left_revision": 331,
+        "right_revision": 331,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -269,
+          "min_y": -186,
+          "max_x": -183,
+          "max_y": -160
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_330_forward",
+      "pair_id": "pair_330",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p330-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p330-b"
+        }
+      },
+      "raw_response": {
+        "revision": 332,
+        "left_revision": 332,
+        "right_revision": 332,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -586,
+          "min_y": -125,
+          "max_x": -529,
+          "max_y": -54
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_330_reversed",
+      "pair_id": "pair_330",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p330-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p330-a"
+        }
+      },
+      "raw_response": {
+        "revision": 332,
+        "left_revision": 332,
+        "right_revision": 332,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -586,
+          "min_y": -125,
+          "max_x": -529,
+          "max_y": -54
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_331_forward",
+      "pair_id": "pair_331",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p331-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p331-b"
+        }
+      },
+      "raw_response": {
+        "revision": 333,
+        "left_revision": 333,
+        "right_revision": 333,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -604,
+          "min_y": -755,
+          "max_x": -558,
+          "max_y": -690
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_331_reversed",
+      "pair_id": "pair_331",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p331-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p331-a"
+        }
+      },
+      "raw_response": {
+        "revision": 333,
+        "left_revision": 333,
+        "right_revision": 333,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -604,
+          "min_y": -755,
+          "max_x": -558,
+          "max_y": -690
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_332_forward",
+      "pair_id": "pair_332",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p332-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p332-b"
+        }
+      },
+      "raw_response": {
+        "revision": 334,
+        "left_revision": 334,
+        "right_revision": 334,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -546,
+          "min_y": 305,
+          "max_x": -453,
+          "max_y": 408
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_332_reversed",
+      "pair_id": "pair_332",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p332-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p332-a"
+        }
+      },
+      "raw_response": {
+        "revision": 334,
+        "left_revision": 334,
+        "right_revision": 334,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -546,
+          "min_y": 305,
+          "max_x": -453,
+          "max_y": 408
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_333_forward",
+      "pair_id": "pair_333",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p333-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p333-b"
+        }
+      },
+      "raw_response": {
+        "revision": 335,
+        "left_revision": 335,
+        "right_revision": 335,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -185,
+          "min_y": 59,
+          "max_x": -61,
+          "max_y": 166
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_333_reversed",
+      "pair_id": "pair_333",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p333-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p333-a"
+        }
+      },
+      "raw_response": {
+        "revision": 335,
+        "left_revision": 335,
+        "right_revision": 335,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -185,
+          "min_y": 59,
+          "max_x": -61,
+          "max_y": 166
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_334_forward",
+      "pair_id": "pair_334",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p334-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p334-b"
+        }
+      },
+      "raw_response": {
+        "revision": 336,
+        "left_revision": 336,
+        "right_revision": 336,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 344,
+          "min_y": -118,
+          "max_x": 449,
+          "max_y": -73
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_334_reversed",
+      "pair_id": "pair_334",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p334-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p334-a"
+        }
+      },
+      "raw_response": {
+        "revision": 336,
+        "left_revision": 336,
+        "right_revision": 336,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 344,
+          "min_y": -118,
+          "max_x": 449,
+          "max_y": -73
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_335_forward",
+      "pair_id": "pair_335",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p335-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p335-b"
+        }
+      },
+      "raw_response": {
+        "revision": 337,
+        "left_revision": 337,
+        "right_revision": 337,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 745,
+          "min_y": 180,
+          "max_x": 770,
+          "max_y": 286
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_335_reversed",
+      "pair_id": "pair_335",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p335-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p335-a"
+        }
+      },
+      "raw_response": {
+        "revision": 337,
+        "left_revision": 337,
+        "right_revision": 337,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 745,
+          "min_y": 180,
+          "max_x": 770,
+          "max_y": 286
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_336_forward",
+      "pair_id": "pair_336",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p336-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p336-b"
+        }
+      },
+      "raw_response": {
+        "revision": 338,
+        "left_revision": 338,
+        "right_revision": 338,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -386,
+          "min_y": -329,
+          "max_x": -268,
+          "max_y": -238
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_336_reversed",
+      "pair_id": "pair_336",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p336-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p336-a"
+        }
+      },
+      "raw_response": {
+        "revision": 338,
+        "left_revision": 338,
+        "right_revision": 338,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -386,
+          "min_y": -329,
+          "max_x": -268,
+          "max_y": -238
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_337_forward",
+      "pair_id": "pair_337",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p337-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p337-b"
+        }
+      },
+      "raw_response": {
+        "revision": 339,
+        "left_revision": 339,
+        "right_revision": 339,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 367,
+          "min_y": -529,
+          "max_x": 421,
+          "max_y": -435
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_337_reversed",
+      "pair_id": "pair_337",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p337-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p337-a"
+        }
+      },
+      "raw_response": {
+        "revision": 339,
+        "left_revision": 339,
+        "right_revision": 339,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 367,
+          "min_y": -529,
+          "max_x": 421,
+          "max_y": -435
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_338_forward",
+      "pair_id": "pair_338",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p338-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p338-b"
+        }
+      },
+      "raw_response": {
+        "revision": 340,
+        "left_revision": 340,
+        "right_revision": 340,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -530,
+          "min_y": -513,
+          "max_x": -503,
+          "max_y": -436
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_338_reversed",
+      "pair_id": "pair_338",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p338-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p338-a"
+        }
+      },
+      "raw_response": {
+        "revision": 340,
+        "left_revision": 340,
+        "right_revision": 340,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -530,
+          "min_y": -513,
+          "max_x": -503,
+          "max_y": -436
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_339_forward",
+      "pair_id": "pair_339",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p339-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p339-b"
+        }
+      },
+      "raw_response": {
+        "revision": 341,
+        "left_revision": 341,
+        "right_revision": 341,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -27,
+          "min_y": -51,
+          "max_x": 0,
+          "max_y": -27
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_339_reversed",
+      "pair_id": "pair_339",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p339-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p339-a"
+        }
+      },
+      "raw_response": {
+        "revision": 341,
+        "left_revision": 341,
+        "right_revision": 341,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -27,
+          "min_y": -51,
+          "max_x": 0,
+          "max_y": -27
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_340_forward",
+      "pair_id": "pair_340",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p340-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p340-b"
+        }
+      },
+      "raw_response": {
+        "revision": 342,
+        "left_revision": 342,
+        "right_revision": 342,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 261,
+          "min_y": 552,
+          "max_x": 286,
+          "max_y": 598
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_340_reversed",
+      "pair_id": "pair_340",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p340-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p340-a"
+        }
+      },
+      "raw_response": {
+        "revision": 342,
+        "left_revision": 342,
+        "right_revision": 342,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 261,
+          "min_y": 552,
+          "max_x": 286,
+          "max_y": 598
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_341_forward",
+      "pair_id": "pair_341",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p341-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p341-b"
+        }
+      },
+      "raw_response": {
+        "revision": 343,
+        "left_revision": 343,
+        "right_revision": 343,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -740,
+          "min_y": -660,
+          "max_x": -653,
+          "max_y": -618
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_341_reversed",
+      "pair_id": "pair_341",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p341-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p341-a"
+        }
+      },
+      "raw_response": {
+        "revision": 343,
+        "left_revision": 343,
+        "right_revision": 343,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -740,
+          "min_y": -660,
+          "max_x": -653,
+          "max_y": -618
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_342_forward",
+      "pair_id": "pair_342",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p342-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p342-b"
+        }
+      },
+      "raw_response": {
+        "revision": 344,
+        "left_revision": 344,
+        "right_revision": 344,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -377,
+          "min_y": 662,
+          "max_x": -330,
+          "max_y": 722
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_342_reversed",
+      "pair_id": "pair_342",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p342-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p342-a"
+        }
+      },
+      "raw_response": {
+        "revision": 344,
+        "left_revision": 344,
+        "right_revision": 344,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -377,
+          "min_y": 662,
+          "max_x": -330,
+          "max_y": 722
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_343_forward",
+      "pair_id": "pair_343",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p343-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p343-b"
+        }
+      },
+      "raw_response": {
+        "revision": 345,
+        "left_revision": 345,
+        "right_revision": 345,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -702,
+          "min_y": -621,
+          "max_x": -602,
+          "max_y": -581
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_343_reversed",
+      "pair_id": "pair_343",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p343-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p343-a"
+        }
+      },
+      "raw_response": {
+        "revision": 345,
+        "left_revision": 345,
+        "right_revision": 345,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -702,
+          "min_y": -621,
+          "max_x": -602,
+          "max_y": -581
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_344_forward",
+      "pair_id": "pair_344",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p344-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p344-b"
+        }
+      },
+      "raw_response": {
+        "revision": 346,
+        "left_revision": 346,
+        "right_revision": 346,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 483,
+          "min_y": 277,
+          "max_x": 586,
+          "max_y": 386
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_344_reversed",
+      "pair_id": "pair_344",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p344-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p344-a"
+        }
+      },
+      "raw_response": {
+        "revision": 346,
+        "left_revision": 346,
+        "right_revision": 346,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 483,
+          "min_y": 277,
+          "max_x": 586,
+          "max_y": 386
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_345_forward",
+      "pair_id": "pair_345",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p345-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p345-b"
+        }
+      },
+      "raw_response": {
+        "revision": 347,
+        "left_revision": 347,
+        "right_revision": 347,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 481,
+          "min_y": 82,
+          "max_x": 568,
+          "max_y": 211
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_345_reversed",
+      "pair_id": "pair_345",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p345-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p345-a"
+        }
+      },
+      "raw_response": {
+        "revision": 347,
+        "left_revision": 347,
+        "right_revision": 347,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 481,
+          "min_y": 82,
+          "max_x": 568,
+          "max_y": 211
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_346_forward",
+      "pair_id": "pair_346",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p346-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p346-b"
+        }
+      },
+      "raw_response": {
+        "revision": 348,
+        "left_revision": 348,
+        "right_revision": 348,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -490,
+          "min_y": 699,
+          "max_x": -409,
+          "max_y": 833
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_346_reversed",
+      "pair_id": "pair_346",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p346-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p346-a"
+        }
+      },
+      "raw_response": {
+        "revision": 348,
+        "left_revision": 348,
+        "right_revision": 348,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -490,
+          "min_y": 699,
+          "max_x": -409,
+          "max_y": 833
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_347_forward",
+      "pair_id": "pair_347",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p347-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p347-b"
+        }
+      },
+      "raw_response": {
+        "revision": 349,
+        "left_revision": 349,
+        "right_revision": 349,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 57,
+          "min_y": -289,
+          "max_x": 108,
+          "max_y": -203
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_347_reversed",
+      "pair_id": "pair_347",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p347-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p347-a"
+        }
+      },
+      "raw_response": {
+        "revision": 349,
+        "left_revision": 349,
+        "right_revision": 349,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 57,
+          "min_y": -289,
+          "max_x": 108,
+          "max_y": -203
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_348_forward",
+      "pair_id": "pair_348",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p348-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p348-b"
+        }
+      },
+      "raw_response": {
+        "revision": 350,
+        "left_revision": 350,
+        "right_revision": 350,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -173,
+          "min_y": 51,
+          "max_x": -95,
+          "max_y": 107
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_348_reversed",
+      "pair_id": "pair_348",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p348-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p348-a"
+        }
+      },
+      "raw_response": {
+        "revision": 350,
+        "left_revision": 350,
+        "right_revision": 350,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -173,
+          "min_y": 51,
+          "max_x": -95,
+          "max_y": 107
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_349_forward",
+      "pair_id": "pair_349",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p349-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p349-b"
+        }
+      },
+      "raw_response": {
+        "revision": 351,
+        "left_revision": 351,
+        "right_revision": 351,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 466,
+          "min_y": -47,
+          "max_x": 597,
+          "max_y": 74
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_349_reversed",
+      "pair_id": "pair_349",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p349-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p349-a"
+        }
+      },
+      "raw_response": {
+        "revision": 351,
+        "left_revision": 351,
+        "right_revision": 351,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 466,
+          "min_y": -47,
+          "max_x": 597,
+          "max_y": 74
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_350_forward",
+      "pair_id": "pair_350",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p350-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p350-b"
+        }
+      },
+      "raw_response": {
+        "revision": 352,
+        "left_revision": 352,
+        "right_revision": 352,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -624,
+          "min_y": 434,
+          "max_x": -521,
+          "max_y": 567
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_350_reversed",
+      "pair_id": "pair_350",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p350-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p350-a"
+        }
+      },
+      "raw_response": {
+        "revision": 352,
+        "left_revision": 352,
+        "right_revision": 352,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -624,
+          "min_y": 434,
+          "max_x": -521,
+          "max_y": 567
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_351_forward",
+      "pair_id": "pair_351",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p351-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p351-b"
+        }
+      },
+      "raw_response": {
+        "revision": 353,
+        "left_revision": 353,
+        "right_revision": 353,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -561,
+          "min_y": 625,
+          "max_x": -489,
+          "max_y": 659
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_351_reversed",
+      "pair_id": "pair_351",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p351-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p351-a"
+        }
+      },
+      "raw_response": {
+        "revision": 353,
+        "left_revision": 353,
+        "right_revision": 353,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -561,
+          "min_y": 625,
+          "max_x": -489,
+          "max_y": 659
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_352_forward",
+      "pair_id": "pair_352",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p352-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p352-b"
+        }
+      },
+      "raw_response": {
+        "revision": 354,
+        "left_revision": 354,
+        "right_revision": 354,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -374,
+          "min_y": -233,
+          "max_x": -318,
+          "max_y": -122
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_352_reversed",
+      "pair_id": "pair_352",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p352-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p352-a"
+        }
+      },
+      "raw_response": {
+        "revision": 354,
+        "left_revision": 354,
+        "right_revision": 354,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -374,
+          "min_y": -233,
+          "max_x": -318,
+          "max_y": -122
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_353_forward",
+      "pair_id": "pair_353",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p353-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p353-b"
+        }
+      },
+      "raw_response": {
+        "revision": 355,
+        "left_revision": 355,
+        "right_revision": 355,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 511,
+          "min_y": -340,
+          "max_x": 557,
+          "max_y": -214
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_353_reversed",
+      "pair_id": "pair_353",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p353-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p353-a"
+        }
+      },
+      "raw_response": {
+        "revision": 355,
+        "left_revision": 355,
+        "right_revision": 355,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 511,
+          "min_y": -340,
+          "max_x": 557,
+          "max_y": -214
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_354_forward",
+      "pair_id": "pair_354",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p354-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p354-b"
+        }
+      },
+      "raw_response": {
+        "revision": 356,
+        "left_revision": 356,
+        "right_revision": 356,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -143,
+          "min_y": -714,
+          "max_x": -5,
+          "max_y": -674
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_354_reversed",
+      "pair_id": "pair_354",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p354-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p354-a"
+        }
+      },
+      "raw_response": {
+        "revision": 356,
+        "left_revision": 356,
+        "right_revision": 356,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -143,
+          "min_y": -714,
+          "max_x": -5,
+          "max_y": -674
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_355_forward",
+      "pair_id": "pair_355",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p355-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p355-b"
+        }
+      },
+      "raw_response": {
+        "revision": 357,
+        "left_revision": 357,
+        "right_revision": 357,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -4,
+          "min_y": 44,
+          "max_x": 100,
+          "max_y": 77
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_355_reversed",
+      "pair_id": "pair_355",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p355-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p355-a"
+        }
+      },
+      "raw_response": {
+        "revision": 357,
+        "left_revision": 357,
+        "right_revision": 357,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -4,
+          "min_y": 44,
+          "max_x": 100,
+          "max_y": 77
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_356_forward",
+      "pair_id": "pair_356",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p356-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p356-b"
+        }
+      },
+      "raw_response": {
+        "revision": 358,
+        "left_revision": 358,
+        "right_revision": 358,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 446,
+          "min_y": -125,
+          "max_x": 540,
+          "max_y": -1
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_356_reversed",
+      "pair_id": "pair_356",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p356-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p356-a"
+        }
+      },
+      "raw_response": {
+        "revision": 358,
+        "left_revision": 358,
+        "right_revision": 358,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 446,
+          "min_y": -125,
+          "max_x": 540,
+          "max_y": -1
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_357_forward",
+      "pair_id": "pair_357",
+      "direction": "forward",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p357-a"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p357-b"
+        }
+      },
+      "raw_response": {
+        "revision": 359,
+        "left_revision": 359,
+        "right_revision": 359,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -131,
+          "min_y": -362,
+          "max_x": -3,
+          "max_y": -294
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    },
+    {
+      "row_id": "pair_357_reversed",
+      "pair_id": "pair_357",
+      "direction": "reversed",
+      "query": {
+        "left": {
+          "layer": "blind-pairs",
+          "id": "p357-b"
+        },
+        "right": {
+          "layer": "blind-pairs",
+          "id": "p357-a"
+        }
+      },
+      "raw_response": {
+        "revision": 359,
+        "left_revision": 359,
+        "right_revision": 359,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -131,
+          "min_y": -362,
+          "max_x": -3,
+          "max_y": -294
+        }
+      },
+      "source": "POST /meridian/v1/relation"
+    }
+  ]
+}

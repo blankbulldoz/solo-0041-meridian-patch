@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="635" height="550" font-family="Helvetica, Arial, sans-serif">
+<rect width="100%" height="100%" fill="white"/>
+<rect x="349.37" y="224.81" width="212.66" height="182.28" fill="#1f77b4" fill-opacity="0.25" stroke="#1f77b4" stroke-width="2"/>
+<rect x="72.91" y="72.91" width="276.46" height="243.04" fill="#d62728" fill-opacity="0.3" stroke="#d62728" stroke-width="2"/>
+<text x="8" y="18" font-size="14" fill="#333">pair_308 · C1_TOUCH_DISJOINT 零距离不相交</text>
+<text x="8" y="520" font-size="13" fill="#222">intersects=False  left_contains=False  right_contains=False  distance_squared=0</text>
+<text x="8" y="540" font-size="13" fill="#444">不相交（闭包零距离）</text>
+</svg>

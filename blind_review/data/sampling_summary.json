@@ -1,0 +1,42 @@
+{
+  "seed": 20261122,
+  "random_draws": 300,
+  "stage_a_class_counts": {
+    "C0_OTHER": 243,
+    "C2_PARTIAL_OVERLAP": 55,
+    "C3_REVERSE_CONTAINMENT": 1,
+    "C1_TOUCH_DISJOINT": 1
+  },
+  "supplement_counts": {
+    "C1_TOUCH_DISJOINT": 29,
+    "C3_REVERSE_CONTAINMENT": 29
+  },
+  "final_pair_counts": {
+    "C2_PARTIAL_OVERLAP": 30,
+    "C3_REVERSE_CONTAINMENT": 30,
+    "C1_TOUCH_DISJOINT": 30
+  },
+  "ordered_rows": 180,
+  "group_pair_counts": {
+    "audit": 18,
+    "train": 72
+  },
+  "group_row_counts": {
+    "train": 144,
+    "audit": 36
+  },
+  "groups_by_class": {
+    "C1_TOUCH_DISJOINT": {
+      "train": 24,
+      "audit": 6
+    },
+    "C2_PARTIAL_OVERLAP": {
+      "train": 24,
+      "audit": 6
+    },
+    "C3_REVERSE_CONTAINMENT": {
+      "train": 24,
+      "audit": 6
+    }
+  }
+}

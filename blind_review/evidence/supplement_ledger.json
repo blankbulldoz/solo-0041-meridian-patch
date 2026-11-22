@@ -1,0 +1,2597 @@
+{
+  "artifact": "supplement_ledger",
+  "note": "补样依据：阶段A盲抽后各类缺口、定向构造数量与服务器复核结果",
+  "sample_window": {
+    "min_x": -180,
+    "min_y": -180,
+    "max_x": 180,
+    "max_y": 180
+  },
+  "layer_bounds": {
+    "min_x": -1000,
+    "min_y": -1000,
+    "max_x": 1000,
+    "max_y": 1000
+  },
+  "random_draws": 300,
+  "target_per_class": 30,
+  "stage_a_server_class_counts": {
+    "C0_OTHER": 243,
+    "C2_PARTIAL_OVERLAP": 55,
+    "C3_REVERSE_CONTAINMENT": 1,
+    "C1_TOUCH_DISJOINT": 1
+  },
+  "deficits": {
+    "C1_TOUCH_DISJOINT": 29,
+    "C2_PARTIAL_OVERLAP": 0,
+    "C3_REVERSE_CONTAINMENT": 29
+  },
+  "supplements_accepted": {
+    "C1_TOUCH_DISJOINT": 29,
+    "C3_REVERSE_CONTAINMENT": 29
+  },
+  "final_class_counts": {
+    "C2_PARTIAL_OVERLAP": 30,
+    "C3_REVERSE_CONTAINMENT": 30,
+    "C1_TOUCH_DISJOINT": 30
+  },
+  "balance_check": {
+    "C1_TOUCH_DISJOINT": true,
+    "C2_PARTIAL_OVERLAP": true,
+    "C3_REVERSE_CONTAINMENT": true
+  },
+  "entries": [
+    {
+      "pair_index": 300,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 29,
+      "left": {
+        "min_x": -189,
+        "min_y": -49,
+        "max_x": -146,
+        "max_y": 71
+      },
+      "right": {
+        "min_x": -146,
+        "min_y": -133,
+        "max_x": -33,
+        "max_y": -46
+      },
+      "response_ab": {
+        "revision": 302,
+        "left_revision": 302,
+        "right_revision": 302,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 302,
+        "left_revision": 302,
+        "right_revision": 302,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 301,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 28,
+      "left": {
+        "min_x": 190,
+        "min_y": -593,
+        "max_x": 328,
+        "max_y": -469
+      },
+      "right": {
+        "min_x": 250,
+        "min_y": -469,
+        "max_x": 263,
+        "max_y": -375
+      },
+      "response_ab": {
+        "revision": 303,
+        "left_revision": 303,
+        "right_revision": 303,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 303,
+        "left_revision": 303,
+        "right_revision": 303,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 302,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 27,
+      "left": {
+        "min_x": -171,
+        "min_y": 130,
+        "max_x": -81,
+        "max_y": 250
+      },
+      "right": {
+        "min_x": -262,
+        "min_y": 89,
+        "max_x": -171,
+        "max_y": 197
+      },
+      "response_ab": {
+        "revision": 304,
+        "left_revision": 304,
+        "right_revision": 304,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 304,
+        "left_revision": 304,
+        "right_revision": 304,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 303,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 26,
+      "left": {
+        "min_x": -101,
+        "min_y": 259,
+        "max_x": -5,
+        "max_y": 356
+      },
+      "right": {
+        "min_x": -5,
+        "min_y": 356,
+        "max_x": 65,
+        "max_y": 413
+      },
+      "response_ab": {
+        "revision": 305,
+        "left_revision": 305,
+        "right_revision": 305,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 305,
+        "left_revision": 305,
+        "right_revision": 305,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 304,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 25,
+      "left": {
+        "min_x": 674,
+        "min_y": 213,
+        "max_x": 721,
+        "max_y": 313
+      },
+      "right": {
+        "min_x": 721,
+        "min_y": 179,
+        "max_x": 846,
+        "max_y": 213
+      },
+      "response_ab": {
+        "revision": 306,
+        "left_revision": 306,
+        "right_revision": 306,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 306,
+        "left_revision": 306,
+        "right_revision": 306,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 305,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 24,
+      "left": {
+        "min_x": 477,
+        "min_y": 568,
+        "max_x": 601,
+        "max_y": 600
+      },
+      "right": {
+        "min_x": 396,
+        "min_y": 502,
+        "max_x": 477,
+        "max_y": 618
+      },
+      "response_ab": {
+        "revision": 307,
+        "left_revision": 307,
+        "right_revision": 307,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 307,
+        "left_revision": 307,
+        "right_revision": 307,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 306,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 23,
+      "left": {
+        "min_x": -810,
+        "min_y": 311,
+        "max_x": -731,
+        "max_y": 412
+      },
+      "right": {
+        "min_x": -731,
+        "min_y": 187,
+        "max_x": -622,
+        "max_y": 319
+      },
+      "response_ab": {
+        "revision": 308,
+        "left_revision": 308,
+        "right_revision": 308,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 308,
+        "left_revision": 308,
+        "right_revision": 308,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 307,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 22,
+      "left": {
+        "min_x": 19,
+        "min_y": -617,
+        "max_x": 142,
+        "max_y": -483
+      },
+      "right": {
+        "min_x": -116,
+        "min_y": -666,
+        "max_x": 19,
+        "max_y": -552
+      },
+      "response_ab": {
+        "revision": 309,
+        "left_revision": 309,
+        "right_revision": 309,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 309,
+        "left_revision": 309,
+        "right_revision": 309,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 308,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 21,
+      "left": {
+        "min_x": 505,
+        "min_y": 133,
+        "max_x": 596,
+        "max_y": 213
+      },
+      "right": {
+        "min_x": 596,
+        "min_y": 103,
+        "max_x": 666,
+        "max_y": 163
+      },
+      "response_ab": {
+        "revision": 310,
+        "left_revision": 310,
+        "right_revision": 310,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 310,
+        "left_revision": 310,
+        "right_revision": 310,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 309,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 20,
+      "left": {
+        "min_x": 341,
+        "min_y": 461,
+        "max_x": 441,
+        "max_y": 590
+      },
+      "right": {
+        "min_x": 340,
+        "min_y": 590,
+        "max_x": 409,
+        "max_y": 653
+      },
+      "response_ab": {
+        "revision": 311,
+        "left_revision": 311,
+        "right_revision": 311,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 311,
+        "left_revision": 311,
+        "right_revision": 311,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 310,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 19,
+      "left": {
+        "min_x": -790,
+        "min_y": -521,
+        "max_x": -687,
+        "max_y": -453
+      },
+      "right": {
+        "min_x": -778,
+        "min_y": -453,
+        "max_x": -748,
+        "max_y": -358
+      },
+      "response_ab": {
+        "revision": 312,
+        "left_revision": 312,
+        "right_revision": 312,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 312,
+        "left_revision": 312,
+        "right_revision": 312,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 311,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 18,
+      "left": {
+        "min_x": 228,
+        "min_y": 273,
+        "max_x": 352,
+        "max_y": 362
+      },
+      "right": {
+        "min_x": 352,
+        "min_y": 266,
+        "max_x": 440,
+        "max_y": 386
+      },
+      "response_ab": {
+        "revision": 313,
+        "left_revision": 313,
+        "right_revision": 313,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 313,
+        "left_revision": 313,
+        "right_revision": 313,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 312,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 17,
+      "left": {
+        "min_x": 198,
+        "min_y": -652,
+        "max_x": 245,
+        "max_y": -527
+      },
+      "right": {
+        "min_x": 245,
+        "min_y": -569,
+        "max_x": 323,
+        "max_y": -520
+      },
+      "response_ab": {
+        "revision": 314,
+        "left_revision": 314,
+        "right_revision": 314,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 314,
+        "left_revision": 314,
+        "right_revision": 314,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 313,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 16,
+      "left": {
+        "min_x": -86,
+        "min_y": -582,
+        "max_x": -21,
+        "max_y": -513
+      },
+      "right": {
+        "min_x": -144,
+        "min_y": -513,
+        "max_x": -21,
+        "max_y": -506
+      },
+      "response_ab": {
+        "revision": 315,
+        "left_revision": 315,
+        "right_revision": 315,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 315,
+        "left_revision": 315,
+        "right_revision": 315,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 314,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 15,
+      "left": {
+        "min_x": 418,
+        "min_y": 461,
+        "max_x": 482,
+        "max_y": 567
+      },
+      "right": {
+        "min_x": 439,
+        "min_y": 567,
+        "max_x": 465,
+        "max_y": 644
+      },
+      "response_ab": {
+        "revision": 316,
+        "left_revision": 316,
+        "right_revision": 316,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 316,
+        "left_revision": 316,
+        "right_revision": 316,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 315,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 14,
+      "left": {
+        "min_x": 463,
+        "min_y": 385,
+        "max_x": 597,
+        "max_y": 472
+      },
+      "right": {
+        "min_x": 388,
+        "min_y": 434,
+        "max_x": 463,
+        "max_y": 446
+      },
+      "response_ab": {
+        "revision": 317,
+        "left_revision": 317,
+        "right_revision": 317,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 317,
+        "left_revision": 317,
+        "right_revision": 317,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 316,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 13,
+      "left": {
+        "min_x": -756,
+        "min_y": -82,
+        "max_x": -657,
+        "max_y": 19
+      },
+      "right": {
+        "min_x": -830,
+        "min_y": -115,
+        "max_x": -756,
+        "max_y": -5
+      },
+      "response_ab": {
+        "revision": 318,
+        "left_revision": 318,
+        "right_revision": 318,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 318,
+        "left_revision": 318,
+        "right_revision": 318,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 317,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 12,
+      "left": {
+        "min_x": 284,
+        "min_y": -362,
+        "max_x": 379,
+        "max_y": -244
+      },
+      "right": {
+        "min_x": 379,
+        "min_y": -462,
+        "max_x": 414,
+        "max_y": -335
+      },
+      "response_ab": {
+        "revision": 319,
+        "left_revision": 319,
+        "right_revision": 319,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 319,
+        "left_revision": 319,
+        "right_revision": 319,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 318,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 11,
+      "left": {
+        "min_x": 216,
+        "min_y": 569,
+        "max_x": 330,
+        "max_y": 680
+      },
+      "right": {
+        "min_x": 202,
+        "min_y": 557,
+        "max_x": 216,
+        "max_y": 680
+      },
+      "response_ab": {
+        "revision": 320,
+        "left_revision": 320,
+        "right_revision": 320,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 320,
+        "left_revision": 320,
+        "right_revision": 320,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 319,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 10,
+      "left": {
+        "min_x": -120,
+        "min_y": 229,
+        "max_x": -41,
+        "max_y": 293
+      },
+      "right": {
+        "min_x": -211,
+        "min_y": 242,
+        "max_x": -120,
+        "max_y": 338
+      },
+      "response_ab": {
+        "revision": 321,
+        "left_revision": 321,
+        "right_revision": 321,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 321,
+        "left_revision": 321,
+        "right_revision": 321,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 320,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 9,
+      "left": {
+        "min_x": -619,
+        "min_y": 321,
+        "max_x": -503,
+        "max_y": 421
+      },
+      "right": {
+        "min_x": -626,
+        "min_y": 421,
+        "max_x": -619,
+        "max_y": 544
+      },
+      "response_ab": {
+        "revision": 322,
+        "left_revision": 322,
+        "right_revision": 322,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 322,
+        "left_revision": 322,
+        "right_revision": 322,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 321,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 8,
+      "left": {
+        "min_x": -788,
+        "min_y": 371,
+        "max_x": -671,
+        "max_y": 435
+      },
+      "right": {
+        "min_x": -671,
+        "min_y": 401,
+        "max_x": -592,
+        "max_y": 433
+      },
+      "response_ab": {
+        "revision": 323,
+        "left_revision": 323,
+        "right_revision": 323,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 323,
+        "left_revision": 323,
+        "right_revision": 323,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 322,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 7,
+      "left": {
+        "min_x": -98,
+        "min_y": -698,
+        "max_x": -55,
+        "max_y": -600
+      },
+      "right": {
+        "min_x": -221,
+        "min_y": -606,
+        "max_x": -98,
+        "max_y": -563
+      },
+      "response_ab": {
+        "revision": 324,
+        "left_revision": 324,
+        "right_revision": 324,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 324,
+        "left_revision": 324,
+        "right_revision": 324,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 323,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 6,
+      "left": {
+        "min_x": 289,
+        "min_y": 691,
+        "max_x": 359,
+        "max_y": 743
+      },
+      "right": {
+        "min_x": 269,
+        "min_y": 743,
+        "max_x": 333,
+        "max_y": 868
+      },
+      "response_ab": {
+        "revision": 325,
+        "left_revision": 325,
+        "right_revision": 325,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 325,
+        "left_revision": 325,
+        "right_revision": 325,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 324,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 5,
+      "left": {
+        "min_x": -613,
+        "min_y": 158,
+        "max_x": -525,
+        "max_y": 273
+      },
+      "right": {
+        "min_x": -676,
+        "min_y": 160,
+        "max_x": -613,
+        "max_y": 181
+      },
+      "response_ab": {
+        "revision": 326,
+        "left_revision": 326,
+        "right_revision": 326,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 326,
+        "left_revision": 326,
+        "right_revision": 326,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 325,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 4,
+      "left": {
+        "min_x": 511,
+        "min_y": 373,
+        "max_x": 640,
+        "max_y": 429
+      },
+      "right": {
+        "min_x": 459,
+        "min_y": 373,
+        "max_x": 511,
+        "max_y": 412
+      },
+      "response_ab": {
+        "revision": 327,
+        "left_revision": 327,
+        "right_revision": 327,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 327,
+        "left_revision": 327,
+        "right_revision": 327,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 326,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 3,
+      "left": {
+        "min_x": -414,
+        "min_y": -73,
+        "max_x": -310,
+        "max_y": -16
+      },
+      "right": {
+        "min_x": -538,
+        "min_y": -16,
+        "max_x": -414,
+        "max_y": 72
+      },
+      "response_ab": {
+        "revision": 328,
+        "left_revision": 328,
+        "right_revision": 328,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 328,
+        "left_revision": 328,
+        "right_revision": 328,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 327,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 2,
+      "left": {
+        "min_x": 513,
+        "min_y": -147,
+        "max_x": 649,
+        "max_y": -117
+      },
+      "right": {
+        "min_x": 379,
+        "min_y": -131,
+        "max_x": 513,
+        "max_y": -64
+      },
+      "response_ab": {
+        "revision": 329,
+        "left_revision": 329,
+        "right_revision": 329,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 329,
+        "left_revision": 329,
+        "right_revision": 329,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 328,
+      "wanted": "C1_TOUCH_DISJOINT",
+      "local_class": "C1_TOUCH_DISJOINT",
+      "server_class": "C1_TOUCH_DISJOINT",
+      "accepted": true,
+      "deficit_before": 1,
+      "left": {
+        "min_x": 334,
+        "min_y": 237,
+        "max_x": 376,
+        "max_y": 294
+      },
+      "right": {
+        "min_x": 363,
+        "min_y": 294,
+        "max_x": 438,
+        "max_y": 345
+      },
+      "response_ab": {
+        "revision": 330,
+        "left_revision": 330,
+        "right_revision": 330,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      },
+      "response_ba": {
+        "revision": 330,
+        "left_revision": 330,
+        "right_revision": 330,
+        "intersects": false,
+        "left_contains": false,
+        "right_contains": false,
+        "distance_squared": 0
+      }
+    },
+    {
+      "pair_index": 329,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 29,
+      "left": {
+        "min_x": -269,
+        "min_y": -186,
+        "max_x": -183,
+        "max_y": -160
+      },
+      "right": {
+        "min_x": -270,
+        "min_y": -187,
+        "max_x": -182,
+        "max_y": -159
+      },
+      "response_ab": {
+        "revision": 331,
+        "left_revision": 331,
+        "right_revision": 331,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -269,
+          "min_y": -186,
+          "max_x": -183,
+          "max_y": -160
+        }
+      },
+      "response_ba": {
+        "revision": 331,
+        "left_revision": 331,
+        "right_revision": 331,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -269,
+          "min_y": -186,
+          "max_x": -183,
+          "max_y": -160
+        }
+      }
+    },
+    {
+      "pair_index": 330,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 28,
+      "left": {
+        "min_x": -586,
+        "min_y": -125,
+        "max_x": -529,
+        "max_y": -54
+      },
+      "right": {
+        "min_x": -587,
+        "min_y": -126,
+        "max_x": -528,
+        "max_y": -53
+      },
+      "response_ab": {
+        "revision": 332,
+        "left_revision": 332,
+        "right_revision": 332,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -586,
+          "min_y": -125,
+          "max_x": -529,
+          "max_y": -54
+        }
+      },
+      "response_ba": {
+        "revision": 332,
+        "left_revision": 332,
+        "right_revision": 332,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -586,
+          "min_y": -125,
+          "max_x": -529,
+          "max_y": -54
+        }
+      }
+    },
+    {
+      "pair_index": 331,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 27,
+      "left": {
+        "min_x": -604,
+        "min_y": -755,
+        "max_x": -558,
+        "max_y": -690
+      },
+      "right": {
+        "min_x": -605,
+        "min_y": -756,
+        "max_x": -557,
+        "max_y": -689
+      },
+      "response_ab": {
+        "revision": 333,
+        "left_revision": 333,
+        "right_revision": 333,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -604,
+          "min_y": -755,
+          "max_x": -558,
+          "max_y": -690
+        }
+      },
+      "response_ba": {
+        "revision": 333,
+        "left_revision": 333,
+        "right_revision": 333,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -604,
+          "min_y": -755,
+          "max_x": -558,
+          "max_y": -690
+        }
+      }
+    },
+    {
+      "pair_index": 332,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 26,
+      "left": {
+        "min_x": -546,
+        "min_y": 305,
+        "max_x": -453,
+        "max_y": 408
+      },
+      "right": {
+        "min_x": -547,
+        "min_y": 304,
+        "max_x": -452,
+        "max_y": 409
+      },
+      "response_ab": {
+        "revision": 334,
+        "left_revision": 334,
+        "right_revision": 334,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -546,
+          "min_y": 305,
+          "max_x": -453,
+          "max_y": 408
+        }
+      },
+      "response_ba": {
+        "revision": 334,
+        "left_revision": 334,
+        "right_revision": 334,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -546,
+          "min_y": 305,
+          "max_x": -453,
+          "max_y": 408
+        }
+      }
+    },
+    {
+      "pair_index": 333,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 25,
+      "left": {
+        "min_x": -185,
+        "min_y": 59,
+        "max_x": -61,
+        "max_y": 166
+      },
+      "right": {
+        "min_x": -186,
+        "min_y": 58,
+        "max_x": -60,
+        "max_y": 167
+      },
+      "response_ab": {
+        "revision": 335,
+        "left_revision": 335,
+        "right_revision": 335,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -185,
+          "min_y": 59,
+          "max_x": -61,
+          "max_y": 166
+        }
+      },
+      "response_ba": {
+        "revision": 335,
+        "left_revision": 335,
+        "right_revision": 335,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -185,
+          "min_y": 59,
+          "max_x": -61,
+          "max_y": 166
+        }
+      }
+    },
+    {
+      "pair_index": 334,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 24,
+      "left": {
+        "min_x": 344,
+        "min_y": -118,
+        "max_x": 449,
+        "max_y": -73
+      },
+      "right": {
+        "min_x": 343,
+        "min_y": -119,
+        "max_x": 450,
+        "max_y": -72
+      },
+      "response_ab": {
+        "revision": 336,
+        "left_revision": 336,
+        "right_revision": 336,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 344,
+          "min_y": -118,
+          "max_x": 449,
+          "max_y": -73
+        }
+      },
+      "response_ba": {
+        "revision": 336,
+        "left_revision": 336,
+        "right_revision": 336,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 344,
+          "min_y": -118,
+          "max_x": 449,
+          "max_y": -73
+        }
+      }
+    },
+    {
+      "pair_index": 335,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 23,
+      "left": {
+        "min_x": 745,
+        "min_y": 180,
+        "max_x": 770,
+        "max_y": 286
+      },
+      "right": {
+        "min_x": 744,
+        "min_y": 179,
+        "max_x": 771,
+        "max_y": 287
+      },
+      "response_ab": {
+        "revision": 337,
+        "left_revision": 337,
+        "right_revision": 337,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 745,
+          "min_y": 180,
+          "max_x": 770,
+          "max_y": 286
+        }
+      },
+      "response_ba": {
+        "revision": 337,
+        "left_revision": 337,
+        "right_revision": 337,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 745,
+          "min_y": 180,
+          "max_x": 770,
+          "max_y": 286
+        }
+      }
+    },
+    {
+      "pair_index": 336,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 22,
+      "left": {
+        "min_x": -386,
+        "min_y": -329,
+        "max_x": -268,
+        "max_y": -238
+      },
+      "right": {
+        "min_x": -387,
+        "min_y": -330,
+        "max_x": -267,
+        "max_y": -237
+      },
+      "response_ab": {
+        "revision": 338,
+        "left_revision": 338,
+        "right_revision": 338,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -386,
+          "min_y": -329,
+          "max_x": -268,
+          "max_y": -238
+        }
+      },
+      "response_ba": {
+        "revision": 338,
+        "left_revision": 338,
+        "right_revision": 338,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -386,
+          "min_y": -329,
+          "max_x": -268,
+          "max_y": -238
+        }
+      }
+    },
+    {
+      "pair_index": 337,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 21,
+      "left": {
+        "min_x": 367,
+        "min_y": -529,
+        "max_x": 421,
+        "max_y": -435
+      },
+      "right": {
+        "min_x": 366,
+        "min_y": -530,
+        "max_x": 422,
+        "max_y": -434
+      },
+      "response_ab": {
+        "revision": 339,
+        "left_revision": 339,
+        "right_revision": 339,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 367,
+          "min_y": -529,
+          "max_x": 421,
+          "max_y": -435
+        }
+      },
+      "response_ba": {
+        "revision": 339,
+        "left_revision": 339,
+        "right_revision": 339,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 367,
+          "min_y": -529,
+          "max_x": 421,
+          "max_y": -435
+        }
+      }
+    },
+    {
+      "pair_index": 338,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 20,
+      "left": {
+        "min_x": -530,
+        "min_y": -513,
+        "max_x": -503,
+        "max_y": -436
+      },
+      "right": {
+        "min_x": -531,
+        "min_y": -514,
+        "max_x": -502,
+        "max_y": -435
+      },
+      "response_ab": {
+        "revision": 340,
+        "left_revision": 340,
+        "right_revision": 340,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -530,
+          "min_y": -513,
+          "max_x": -503,
+          "max_y": -436
+        }
+      },
+      "response_ba": {
+        "revision": 340,
+        "left_revision": 340,
+        "right_revision": 340,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -530,
+          "min_y": -513,
+          "max_x": -503,
+          "max_y": -436
+        }
+      }
+    },
+    {
+      "pair_index": 339,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 19,
+      "left": {
+        "min_x": -27,
+        "min_y": -51,
+        "max_x": 0,
+        "max_y": -27
+      },
+      "right": {
+        "min_x": -28,
+        "min_y": -52,
+        "max_x": 1,
+        "max_y": -26
+      },
+      "response_ab": {
+        "revision": 341,
+        "left_revision": 341,
+        "right_revision": 341,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -27,
+          "min_y": -51,
+          "max_x": 0,
+          "max_y": -27
+        }
+      },
+      "response_ba": {
+        "revision": 341,
+        "left_revision": 341,
+        "right_revision": 341,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -27,
+          "min_y": -51,
+          "max_x": 0,
+          "max_y": -27
+        }
+      }
+    },
+    {
+      "pair_index": 340,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 18,
+      "left": {
+        "min_x": 261,
+        "min_y": 552,
+        "max_x": 286,
+        "max_y": 598
+      },
+      "right": {
+        "min_x": 260,
+        "min_y": 551,
+        "max_x": 287,
+        "max_y": 599
+      },
+      "response_ab": {
+        "revision": 342,
+        "left_revision": 342,
+        "right_revision": 342,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 261,
+          "min_y": 552,
+          "max_x": 286,
+          "max_y": 598
+        }
+      },
+      "response_ba": {
+        "revision": 342,
+        "left_revision": 342,
+        "right_revision": 342,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 261,
+          "min_y": 552,
+          "max_x": 286,
+          "max_y": 598
+        }
+      }
+    },
+    {
+      "pair_index": 341,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 17,
+      "left": {
+        "min_x": -740,
+        "min_y": -660,
+        "max_x": -653,
+        "max_y": -618
+      },
+      "right": {
+        "min_x": -741,
+        "min_y": -661,
+        "max_x": -652,
+        "max_y": -617
+      },
+      "response_ab": {
+        "revision": 343,
+        "left_revision": 343,
+        "right_revision": 343,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -740,
+          "min_y": -660,
+          "max_x": -653,
+          "max_y": -618
+        }
+      },
+      "response_ba": {
+        "revision": 343,
+        "left_revision": 343,
+        "right_revision": 343,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -740,
+          "min_y": -660,
+          "max_x": -653,
+          "max_y": -618
+        }
+      }
+    },
+    {
+      "pair_index": 342,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 16,
+      "left": {
+        "min_x": -377,
+        "min_y": 662,
+        "max_x": -330,
+        "max_y": 722
+      },
+      "right": {
+        "min_x": -378,
+        "min_y": 661,
+        "max_x": -329,
+        "max_y": 723
+      },
+      "response_ab": {
+        "revision": 344,
+        "left_revision": 344,
+        "right_revision": 344,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -377,
+          "min_y": 662,
+          "max_x": -330,
+          "max_y": 722
+        }
+      },
+      "response_ba": {
+        "revision": 344,
+        "left_revision": 344,
+        "right_revision": 344,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -377,
+          "min_y": 662,
+          "max_x": -330,
+          "max_y": 722
+        }
+      }
+    },
+    {
+      "pair_index": 343,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 15,
+      "left": {
+        "min_x": -702,
+        "min_y": -621,
+        "max_x": -602,
+        "max_y": -581
+      },
+      "right": {
+        "min_x": -703,
+        "min_y": -622,
+        "max_x": -601,
+        "max_y": -580
+      },
+      "response_ab": {
+        "revision": 345,
+        "left_revision": 345,
+        "right_revision": 345,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -702,
+          "min_y": -621,
+          "max_x": -602,
+          "max_y": -581
+        }
+      },
+      "response_ba": {
+        "revision": 345,
+        "left_revision": 345,
+        "right_revision": 345,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -702,
+          "min_y": -621,
+          "max_x": -602,
+          "max_y": -581
+        }
+      }
+    },
+    {
+      "pair_index": 344,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 14,
+      "left": {
+        "min_x": 483,
+        "min_y": 277,
+        "max_x": 586,
+        "max_y": 386
+      },
+      "right": {
+        "min_x": 482,
+        "min_y": 276,
+        "max_x": 587,
+        "max_y": 387
+      },
+      "response_ab": {
+        "revision": 346,
+        "left_revision": 346,
+        "right_revision": 346,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 483,
+          "min_y": 277,
+          "max_x": 586,
+          "max_y": 386
+        }
+      },
+      "response_ba": {
+        "revision": 346,
+        "left_revision": 346,
+        "right_revision": 346,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 483,
+          "min_y": 277,
+          "max_x": 586,
+          "max_y": 386
+        }
+      }
+    },
+    {
+      "pair_index": 345,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 13,
+      "left": {
+        "min_x": 481,
+        "min_y": 82,
+        "max_x": 568,
+        "max_y": 211
+      },
+      "right": {
+        "min_x": 480,
+        "min_y": 81,
+        "max_x": 569,
+        "max_y": 212
+      },
+      "response_ab": {
+        "revision": 347,
+        "left_revision": 347,
+        "right_revision": 347,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 481,
+          "min_y": 82,
+          "max_x": 568,
+          "max_y": 211
+        }
+      },
+      "response_ba": {
+        "revision": 347,
+        "left_revision": 347,
+        "right_revision": 347,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 481,
+          "min_y": 82,
+          "max_x": 568,
+          "max_y": 211
+        }
+      }
+    },
+    {
+      "pair_index": 346,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 12,
+      "left": {
+        "min_x": -490,
+        "min_y": 699,
+        "max_x": -409,
+        "max_y": 833
+      },
+      "right": {
+        "min_x": -491,
+        "min_y": 698,
+        "max_x": -408,
+        "max_y": 834
+      },
+      "response_ab": {
+        "revision": 348,
+        "left_revision": 348,
+        "right_revision": 348,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -490,
+          "min_y": 699,
+          "max_x": -409,
+          "max_y": 833
+        }
+      },
+      "response_ba": {
+        "revision": 348,
+        "left_revision": 348,
+        "right_revision": 348,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -490,
+          "min_y": 699,
+          "max_x": -409,
+          "max_y": 833
+        }
+      }
+    },
+    {
+      "pair_index": 347,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 11,
+      "left": {
+        "min_x": 57,
+        "min_y": -289,
+        "max_x": 108,
+        "max_y": -203
+      },
+      "right": {
+        "min_x": 56,
+        "min_y": -290,
+        "max_x": 109,
+        "max_y": -202
+      },
+      "response_ab": {
+        "revision": 349,
+        "left_revision": 349,
+        "right_revision": 349,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 57,
+          "min_y": -289,
+          "max_x": 108,
+          "max_y": -203
+        }
+      },
+      "response_ba": {
+        "revision": 349,
+        "left_revision": 349,
+        "right_revision": 349,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 57,
+          "min_y": -289,
+          "max_x": 108,
+          "max_y": -203
+        }
+      }
+    },
+    {
+      "pair_index": 348,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 10,
+      "left": {
+        "min_x": -173,
+        "min_y": 51,
+        "max_x": -95,
+        "max_y": 107
+      },
+      "right": {
+        "min_x": -174,
+        "min_y": 50,
+        "max_x": -94,
+        "max_y": 108
+      },
+      "response_ab": {
+        "revision": 350,
+        "left_revision": 350,
+        "right_revision": 350,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -173,
+          "min_y": 51,
+          "max_x": -95,
+          "max_y": 107
+        }
+      },
+      "response_ba": {
+        "revision": 350,
+        "left_revision": 350,
+        "right_revision": 350,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -173,
+          "min_y": 51,
+          "max_x": -95,
+          "max_y": 107
+        }
+      }
+    },
+    {
+      "pair_index": 349,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 9,
+      "left": {
+        "min_x": 466,
+        "min_y": -47,
+        "max_x": 597,
+        "max_y": 74
+      },
+      "right": {
+        "min_x": 465,
+        "min_y": -48,
+        "max_x": 598,
+        "max_y": 75
+      },
+      "response_ab": {
+        "revision": 351,
+        "left_revision": 351,
+        "right_revision": 351,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 466,
+          "min_y": -47,
+          "max_x": 597,
+          "max_y": 74
+        }
+      },
+      "response_ba": {
+        "revision": 351,
+        "left_revision": 351,
+        "right_revision": 351,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 466,
+          "min_y": -47,
+          "max_x": 597,
+          "max_y": 74
+        }
+      }
+    },
+    {
+      "pair_index": 350,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 8,
+      "left": {
+        "min_x": -624,
+        "min_y": 434,
+        "max_x": -521,
+        "max_y": 567
+      },
+      "right": {
+        "min_x": -625,
+        "min_y": 433,
+        "max_x": -520,
+        "max_y": 568
+      },
+      "response_ab": {
+        "revision": 352,
+        "left_revision": 352,
+        "right_revision": 352,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -624,
+          "min_y": 434,
+          "max_x": -521,
+          "max_y": 567
+        }
+      },
+      "response_ba": {
+        "revision": 352,
+        "left_revision": 352,
+        "right_revision": 352,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -624,
+          "min_y": 434,
+          "max_x": -521,
+          "max_y": 567
+        }
+      }
+    },
+    {
+      "pair_index": 351,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 7,
+      "left": {
+        "min_x": -561,
+        "min_y": 625,
+        "max_x": -489,
+        "max_y": 659
+      },
+      "right": {
+        "min_x": -562,
+        "min_y": 624,
+        "max_x": -488,
+        "max_y": 660
+      },
+      "response_ab": {
+        "revision": 353,
+        "left_revision": 353,
+        "right_revision": 353,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -561,
+          "min_y": 625,
+          "max_x": -489,
+          "max_y": 659
+        }
+      },
+      "response_ba": {
+        "revision": 353,
+        "left_revision": 353,
+        "right_revision": 353,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -561,
+          "min_y": 625,
+          "max_x": -489,
+          "max_y": 659
+        }
+      }
+    },
+    {
+      "pair_index": 352,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 6,
+      "left": {
+        "min_x": -374,
+        "min_y": -233,
+        "max_x": -318,
+        "max_y": -122
+      },
+      "right": {
+        "min_x": -375,
+        "min_y": -234,
+        "max_x": -317,
+        "max_y": -121
+      },
+      "response_ab": {
+        "revision": 354,
+        "left_revision": 354,
+        "right_revision": 354,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -374,
+          "min_y": -233,
+          "max_x": -318,
+          "max_y": -122
+        }
+      },
+      "response_ba": {
+        "revision": 354,
+        "left_revision": 354,
+        "right_revision": 354,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -374,
+          "min_y": -233,
+          "max_x": -318,
+          "max_y": -122
+        }
+      }
+    },
+    {
+      "pair_index": 353,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 5,
+      "left": {
+        "min_x": 511,
+        "min_y": -340,
+        "max_x": 557,
+        "max_y": -214
+      },
+      "right": {
+        "min_x": 510,
+        "min_y": -341,
+        "max_x": 558,
+        "max_y": -213
+      },
+      "response_ab": {
+        "revision": 355,
+        "left_revision": 355,
+        "right_revision": 355,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 511,
+          "min_y": -340,
+          "max_x": 557,
+          "max_y": -214
+        }
+      },
+      "response_ba": {
+        "revision": 355,
+        "left_revision": 355,
+        "right_revision": 355,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 511,
+          "min_y": -340,
+          "max_x": 557,
+          "max_y": -214
+        }
+      }
+    },
+    {
+      "pair_index": 354,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 4,
+      "left": {
+        "min_x": -143,
+        "min_y": -714,
+        "max_x": -5,
+        "max_y": -674
+      },
+      "right": {
+        "min_x": -144,
+        "min_y": -715,
+        "max_x": -4,
+        "max_y": -673
+      },
+      "response_ab": {
+        "revision": 356,
+        "left_revision": 356,
+        "right_revision": 356,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -143,
+          "min_y": -714,
+          "max_x": -5,
+          "max_y": -674
+        }
+      },
+      "response_ba": {
+        "revision": 356,
+        "left_revision": 356,
+        "right_revision": 356,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -143,
+          "min_y": -714,
+          "max_x": -5,
+          "max_y": -674
+        }
+      }
+    },
+    {
+      "pair_index": 355,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 3,
+      "left": {
+        "min_x": -4,
+        "min_y": 44,
+        "max_x": 100,
+        "max_y": 77
+      },
+      "right": {
+        "min_x": -5,
+        "min_y": 43,
+        "max_x": 101,
+        "max_y": 78
+      },
+      "response_ab": {
+        "revision": 357,
+        "left_revision": 357,
+        "right_revision": 357,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -4,
+          "min_y": 44,
+          "max_x": 100,
+          "max_y": 77
+        }
+      },
+      "response_ba": {
+        "revision": 357,
+        "left_revision": 357,
+        "right_revision": 357,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -4,
+          "min_y": 44,
+          "max_x": 100,
+          "max_y": 77
+        }
+      }
+    },
+    {
+      "pair_index": 356,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 2,
+      "left": {
+        "min_x": 446,
+        "min_y": -125,
+        "max_x": 540,
+        "max_y": -1
+      },
+      "right": {
+        "min_x": 445,
+        "min_y": -126,
+        "max_x": 541,
+        "max_y": 0
+      },
+      "response_ab": {
+        "revision": 358,
+        "left_revision": 358,
+        "right_revision": 358,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 446,
+          "min_y": -125,
+          "max_x": 540,
+          "max_y": -1
+        }
+      },
+      "response_ba": {
+        "revision": 358,
+        "left_revision": 358,
+        "right_revision": 358,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": 446,
+          "min_y": -125,
+          "max_x": 540,
+          "max_y": -1
+        }
+      }
+    },
+    {
+      "pair_index": 357,
+      "wanted": "C3_REVERSE_CONTAINMENT",
+      "local_class": "C3_REVERSE_CONTAINMENT",
+      "server_class": "C3_REVERSE_CONTAINMENT",
+      "accepted": true,
+      "deficit_before": 1,
+      "left": {
+        "min_x": -131,
+        "min_y": -362,
+        "max_x": -3,
+        "max_y": -294
+      },
+      "right": {
+        "min_x": -132,
+        "min_y": -363,
+        "max_x": -2,
+        "max_y": -293
+      },
+      "response_ab": {
+        "revision": 359,
+        "left_revision": 359,
+        "right_revision": 359,
+        "intersects": true,
+        "left_contains": false,
+        "right_contains": true,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -131,
+          "min_y": -362,
+          "max_x": -3,
+          "max_y": -294
+        }
+      },
+      "response_ba": {
+        "revision": 359,
+        "left_revision": 359,
+        "right_revision": 359,
+        "intersects": true,
+        "left_contains": true,
+        "right_contains": false,
+        "distance_squared": 0,
+        "intersection": {
+          "min_x": -131,
+          "min_y": -362,
+          "max_x": -3,
+          "max_y": -294
+        }
+      }
+    }
+  ]
+}

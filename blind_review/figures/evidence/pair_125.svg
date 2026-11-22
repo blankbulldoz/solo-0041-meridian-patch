@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="248" height="550" font-family="Helvetica, Arial, sans-serif">
+<rect width="100%" height="100%" fill="white"/>
+<rect x="46.45" y="46.45" width="154.84" height="251.61" fill="#1f77b4" fill-opacity="0.25" stroke="#1f77b4" stroke-width="2"/>
+<rect x="65.81" y="166.45" width="123.87" height="267.10" fill="#d62728" fill-opacity="0.3" stroke="#d62728" stroke-width="2"/>
+<text x="8" y="18" font-size="14" fill="#333">pair_125 · C2_PARTIAL_OVERLAP 正面积相交但互不包含</text>
+<text x="8" y="520" font-size="13" fill="#222">intersects=True  left_contains=False  right_contains=False  distance_squared=0</text>
+<text x="8" y="540" font-size="13" fill="#444">正面积相交，互不包含</text>
+</svg>
