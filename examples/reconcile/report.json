@@ -1,0 +1,769 @@
+{
+  "buckets": {
+    "control-marks": {
+      "multiple": [],
+      "unassigned": [
+        "R001",
+        "R005",
+        "R006",
+        "R007",
+        "R008",
+        "R009",
+        "R012",
+        "R013",
+        "R014",
+        "R015"
+      ],
+      "unique": [
+        "R002",
+        "R003",
+        "R004",
+        "R010",
+        "R011"
+      ]
+    },
+    "service-zones": {
+      "multiple": [],
+      "unassigned": [
+        "R001",
+        "R002",
+        "R003",
+        "R004",
+        "R005",
+        "R006",
+        "R008",
+        "R009",
+        "R011",
+        "R012",
+        "R013",
+        "R014",
+        "R015"
+      ],
+      "unique": [
+        "R007",
+        "R010"
+      ]
+    },
+    "survey-parcels": {
+      "multiple": [
+        "R002",
+        "R003",
+        "R004",
+        "R005",
+        "R011",
+        "R013"
+      ],
+      "unassigned": [
+        "R007",
+        "R008",
+        "R009",
+        "R010",
+        "R012",
+        "R014",
+        "R015"
+      ],
+      "unique": [
+        "R001",
+        "R006"
+      ]
+    }
+  },
+  "co_located": [
+    {
+      "consistent": true,
+      "records": [
+        "R002",
+        "R003",
+        "R004",
+        "R011"
+      ],
+      "x": 7,
+      "y": 7
+    }
+  ],
+  "database": {
+    "layers": [
+      {
+        "bounds": {
+          "max_x": 100,
+          "max_y": 100,
+          "min_x": -100,
+          "min_y": -100
+        },
+        "count": 2,
+        "exclusive": true,
+        "kind": "mark",
+        "name": "control-marks",
+        "revision": 6
+      },
+      {
+        "bounds": {
+          "max_x": 100,
+          "max_y": 100,
+          "min_x": -100,
+          "min_y": -100
+        },
+        "count": 2,
+        "exclusive": true,
+        "kind": "extent",
+        "name": "service-zones",
+        "revision": 5
+      },
+      {
+        "bounds": {
+          "max_x": 100,
+          "max_y": 100,
+          "min_x": -100,
+          "min_y": -100
+        },
+        "count": 3,
+        "exclusive": false,
+        "kind": "extent",
+        "name": "survey-parcels",
+        "revision": 4
+      }
+    ],
+    "revision": 6
+  },
+  "duplicate_point_ids": [
+    {
+      "by_layer": {
+        "control-marks": {
+          "R001": [],
+          "R002": [
+            "cp-01"
+          ]
+        },
+        "service-zones": {
+          "R001": [],
+          "R002": []
+        },
+        "survey-parcels": {
+          "R001": [
+            "parcel-a"
+          ],
+          "R002": [
+            "parcel-a",
+            "parcel-b"
+          ]
+        }
+      },
+      "divergent": true,
+      "divergent_layers": [
+        "survey-parcels",
+        "control-marks"
+      ],
+      "point_id": "P-001",
+      "records": [
+        "R001",
+        "R002"
+      ]
+    },
+    {
+      "by_layer": {
+        "control-marks": {
+          "R003": [
+            "cp-01"
+          ],
+          "R004": [
+            "cp-01"
+          ]
+        },
+        "service-zones": {
+          "R003": [],
+          "R004": []
+        },
+        "survey-parcels": {
+          "R003": [
+            "parcel-a",
+            "parcel-b"
+          ],
+          "R004": [
+            "parcel-a",
+            "parcel-b"
+          ]
+        }
+      },
+      "divergent": false,
+      "divergent_layers": [],
+      "point_id": "P-002",
+      "records": [
+        "R003",
+        "R004"
+      ]
+    },
+    {
+      "by_layer": {
+        "control-marks": {
+          "R005": [],
+          "R013": []
+        },
+        "service-zones": {
+          "R005": [],
+          "R013": []
+        },
+        "survey-parcels": {
+          "R005": [
+            "parcel-b",
+            "parcel-c"
+          ],
+          "R013": [
+            "parcel-b",
+            "parcel-c"
+          ]
+        }
+      },
+      "divergent": false,
+      "divergent_layers": [],
+      "point_id": "P-003",
+      "records": [
+        "R005",
+        "R013"
+      ]
+    }
+  ],
+  "invariants": [
+    {
+      "label": "同坐标记录的定位结果一致",
+      "name": "same-coordinate-same-assignment",
+      "status": "pass"
+    },
+    {
+      "label": "定位期间全库与图层修订稳定",
+      "name": "stable-revision-across-locates",
+      "status": "pass"
+    },
+    {
+      "label": "每笔记录在每层恰好落入一个归属桶",
+      "name": "every-record-bucketed-once-per-layer",
+      "status": "pass"
+    }
+  ],
+  "records": [
+    {
+      "crew": "alpha",
+      "line": 2,
+      "locate": {
+        "control-marks": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 6,
+          "revision": 6
+        },
+        "service-zones": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 5,
+          "revision": 6
+        },
+        "survey-parcels": {
+          "bucket": "unique",
+          "features": [
+            "parcel-a"
+          ],
+          "layer_revision": 4,
+          "revision": 6
+        }
+      },
+      "observed_at": "2026-11-18T09:12:00Z",
+      "point_id": "P-001",
+      "reading": "512.4",
+      "record_id": "R001",
+      "x": 2,
+      "y": 2
+    },
+    {
+      "crew": "alpha",
+      "line": 3,
+      "locate": {
+        "control-marks": {
+          "bucket": "unique",
+          "features": [
+            "cp-01"
+          ],
+          "layer_revision": 6,
+          "revision": 6
+        },
+        "service-zones": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 5,
+          "revision": 6
+        },
+        "survey-parcels": {
+          "bucket": "multiple",
+          "features": [
+            "parcel-a",
+            "parcel-b"
+          ],
+          "layer_revision": 4,
+          "revision": 6
+        }
+      },
+      "observed_at": "2026-11-18T09:47:00Z",
+      "point_id": "P-001",
+      "reading": "511.9",
+      "record_id": "R002",
+      "x": 7,
+      "y": 7
+    },
+    {
+      "crew": "bravo",
+      "line": 4,
+      "locate": {
+        "control-marks": {
+          "bucket": "unique",
+          "features": [
+            "cp-01"
+          ],
+          "layer_revision": 6,
+          "revision": 6
+        },
+        "service-zones": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 5,
+          "revision": 6
+        },
+        "survey-parcels": {
+          "bucket": "multiple",
+          "features": [
+            "parcel-a",
+            "parcel-b"
+          ],
+          "layer_revision": 4,
+          "revision": 6
+        }
+      },
+      "observed_at": "2026-11-18T10:05:00Z",
+      "point_id": "P-002",
+      "reading": "511.8",
+      "record_id": "R003",
+      "x": 7,
+      "y": 7
+    },
+    {
+      "crew": "bravo",
+      "line": 5,
+      "locate": {
+        "control-marks": {
+          "bucket": "unique",
+          "features": [
+            "cp-01"
+          ],
+          "layer_revision": 6,
+          "revision": 6
+        },
+        "service-zones": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 5,
+          "revision": 6
+        },
+        "survey-parcels": {
+          "bucket": "multiple",
+          "features": [
+            "parcel-a",
+            "parcel-b"
+          ],
+          "layer_revision": 4,
+          "revision": 6
+        }
+      },
+      "observed_at": "2026-11-19T08:31:00Z",
+      "point_id": "P-002",
+      "reading": "512.1",
+      "record_id": "R004",
+      "x": 7,
+      "y": 7
+    },
+    {
+      "crew": "alpha",
+      "line": 6,
+      "locate": {
+        "control-marks": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 6,
+          "revision": 6
+        },
+        "service-zones": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 5,
+          "revision": 6
+        },
+        "survey-parcels": {
+          "bucket": "multiple",
+          "features": [
+            "parcel-b",
+            "parcel-c"
+          ],
+          "layer_revision": 4,
+          "revision": 6
+        }
+      },
+      "observed_at": "2026-11-19T09:02:00Z",
+      "point_id": "P-003",
+      "reading": "508.6",
+      "record_id": "R005",
+      "x": 10,
+      "y": 5
+    },
+    {
+      "crew": "charlie",
+      "line": 7,
+      "locate": {
+        "control-marks": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 6,
+          "revision": 6
+        },
+        "service-zones": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 5,
+          "revision": 6
+        },
+        "survey-parcels": {
+          "bucket": "unique",
+          "features": [
+            "parcel-a"
+          ],
+          "layer_revision": 4,
+          "revision": 6
+        }
+      },
+      "observed_at": "2026-11-19T09:20:00Z",
+      "point_id": "P-004",
+      "reading": "505.0",
+      "record_id": "R006",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "crew": "charlie",
+      "line": 8,
+      "locate": {
+        "control-marks": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 6,
+          "revision": 6
+        },
+        "service-zones": {
+          "bucket": "unique",
+          "features": [
+            "zone-south"
+          ],
+          "layer_revision": 5,
+          "revision": 6
+        },
+        "survey-parcels": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 4,
+          "revision": 6
+        }
+      },
+      "observed_at": "2026-11-19T09:44:00Z",
+      "point_id": "P-005",
+      "reading": "506.7",
+      "record_id": "R007",
+      "x": 20,
+      "y": 10
+    },
+    {
+      "crew": "alpha",
+      "line": 9,
+      "locate": {
+        "control-marks": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 6,
+          "revision": 6
+        },
+        "service-zones": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 5,
+          "revision": 6
+        },
+        "survey-parcels": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 4,
+          "revision": 6
+        }
+      },
+      "observed_at": "2026-11-19T10:15:00Z",
+      "point_id": "P-006",
+      "reading": "503.3",
+      "record_id": "R008",
+      "x": 95,
+      "y": 95
+    },
+    {
+      "crew": "alpha",
+      "line": 10,
+      "locate": {
+        "control-marks": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 6,
+          "revision": 6
+        },
+        "service-zones": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 5,
+          "revision": 6
+        },
+        "survey-parcels": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 4,
+          "revision": 6
+        }
+      },
+      "observed_at": "2026-11-19T10:16:00Z",
+      "point_id": "P-007",
+      "reading": "503.1",
+      "record_id": "R009",
+      "x": 100,
+      "y": 100
+    },
+    {
+      "crew": "bravo",
+      "line": 11,
+      "locate": {
+        "control-marks": {
+          "bucket": "unique",
+          "features": [
+            "cp-02"
+          ],
+          "layer_revision": 6,
+          "revision": 6
+        },
+        "service-zones": {
+          "bucket": "unique",
+          "features": [
+            "zone-north"
+          ],
+          "layer_revision": 5,
+          "revision": 6
+        },
+        "survey-parcels": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 4,
+          "revision": 6
+        }
+      },
+      "observed_at": "2026-11-19T11:03:00Z",
+      "point_id": "P-008",
+      "reading": "499.8",
+      "record_id": "R010",
+      "x": 20,
+      "y": 50
+    },
+    {
+      "crew": "charlie",
+      "line": 12,
+      "locate": {
+        "control-marks": {
+          "bucket": "unique",
+          "features": [
+            "cp-01"
+          ],
+          "layer_revision": 6,
+          "revision": 6
+        },
+        "service-zones": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 5,
+          "revision": 6
+        },
+        "survey-parcels": {
+          "bucket": "multiple",
+          "features": [
+            "parcel-a",
+            "parcel-b"
+          ],
+          "layer_revision": 4,
+          "revision": 6
+        }
+      },
+      "observed_at": "2026-11-20T08:12:00Z",
+      "point_id": "P-009",
+      "reading": "512.0",
+      "record_id": "R011",
+      "x": 7,
+      "y": 7
+    },
+    {
+      "crew": "alpha",
+      "line": 13,
+      "locate": {
+        "control-marks": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 6,
+          "revision": 6
+        },
+        "service-zones": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 5,
+          "revision": 6
+        },
+        "survey-parcels": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 4,
+          "revision": 6
+        }
+      },
+      "observed_at": "2026-11-20T08:40:00Z",
+      "point_id": "P-010",
+      "reading": "510.2",
+      "record_id": "R012",
+      "x": -5,
+      "y": -5
+    },
+    {
+      "crew": "bravo",
+      "line": 14,
+      "locate": {
+        "control-marks": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 6,
+          "revision": 6
+        },
+        "service-zones": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 5,
+          "revision": 6
+        },
+        "survey-parcels": {
+          "bucket": "multiple",
+          "features": [
+            "parcel-b",
+            "parcel-c"
+          ],
+          "layer_revision": 4,
+          "revision": 6
+        }
+      },
+      "observed_at": "2026-11-20T09:25:00Z",
+      "point_id": "P-003",
+      "reading": "508.4",
+      "record_id": "R013",
+      "x": 12,
+      "y": 5
+    },
+    {
+      "crew": "charlie",
+      "line": 15,
+      "locate": {
+        "control-marks": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 6,
+          "revision": 6
+        },
+        "service-zones": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 5,
+          "revision": 6
+        },
+        "survey-parcels": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 4,
+          "revision": 6
+        }
+      },
+      "observed_at": "2026-11-20T10:01:00Z",
+      "point_id": "P-011",
+      "reading": "498.9",
+      "record_id": "R014",
+      "x": 40,
+      "y": 50
+    },
+    {
+      "crew": "alpha",
+      "line": 16,
+      "locate": {
+        "control-marks": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 6,
+          "revision": 6
+        },
+        "service-zones": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 5,
+          "revision": 6
+        },
+        "survey-parcels": {
+          "bucket": "unassigned",
+          "features": [],
+          "layer_revision": 4,
+          "revision": 6
+        }
+      },
+      "observed_at": "2026-11-20T10:30:00Z",
+      "point_id": "P-012",
+      "reading": "515.5",
+      "record_id": "R015",
+      "x": -100,
+      "y": -100
+    }
+  ],
+  "seed_order": [
+    {
+      "name": "survey-parcels"
+    },
+    {
+      "name": "service-zones"
+    },
+    {
+      "name": "control-marks"
+    }
+  ],
+  "source": {
+    "file": "points.csv",
+    "records": 15,
+    "sha256": "ee0a2e0e370512ec0f06137b1a3bf1a67eb2b867b2cb00768eaaa61b4589b558"
+  },
+  "summary": {
+    "divergent_groups": 1,
+    "duplicate_groups": 3,
+    "per_layer": {
+      "control-marks": {
+        "multiple": 0,
+        "unassigned": 10,
+        "unique": 5
+      },
+      "service-zones": {
+        "multiple": 0,
+        "unassigned": 13,
+        "unique": 2
+      },
+      "survey-parcels": {
+        "multiple": 6,
+        "unassigned": 7,
+        "unique": 2
+      }
+    },
+    "records": 15
+  },
+  "tool": "examples/reconcile.py"
+}

@@ -1,0 +1,36 @@
+{
+  "comment": "Deterministic layer seed for the reconciliation checklist. Layers are created in list order, then each layer's features are committed as one edit packet in the same order, so layer revisions are stable across reruns.",
+  "layers": [
+    {
+      "name": "survey-parcels",
+      "kind": "extent",
+      "bounds": {"min_x": -100, "min_y": -100, "max_x": 100, "max_y": 100},
+      "exclusive": false,
+      "features": [
+        {"id": "parcel-a", "class": "lot", "shape": {"extent": {"min_x": 0, "min_y": 0, "max_x": 10, "max_y": 10}}},
+        {"id": "parcel-b", "class": "lot", "shape": {"extent": {"min_x": 5, "min_y": 5, "max_x": 15, "max_y": 15}}},
+        {"id": "parcel-c", "class": "lot", "shape": {"extent": {"min_x": 10, "min_y": 0, "max_x": 20, "max_y": 10}}}
+      ]
+    },
+    {
+      "name": "service-zones",
+      "kind": "extent",
+      "bounds": {"min_x": -100, "min_y": -100, "max_x": 100, "max_y": 100},
+      "exclusive": true,
+      "features": [
+        {"id": "zone-north", "class": "zone", "shape": {"extent": {"min_x": 0, "min_y": 50, "max_x": 40, "max_y": 80}}},
+        {"id": "zone-south", "class": "zone", "shape": {"extent": {"min_x": 0, "min_y": 10, "max_x": 40, "max_y": 50}}}
+      ]
+    },
+    {
+      "name": "control-marks",
+      "kind": "mark",
+      "bounds": {"min_x": -100, "min_y": -100, "max_x": 100, "max_y": 100},
+      "exclusive": true,
+      "features": [
+        {"id": "cp-01", "class": "benchmark", "shape": {"mark": {"x": 7, "y": 7}}},
+        {"id": "cp-02", "class": "benchmark", "shape": {"mark": {"x": 20, "y": 50}}}
+      ]
+    }
+  ]
+}

@@ -50,3 +50,12 @@ python3 examples/walkthrough.py --workflow coverage
 `409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
 
 边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。
+
+## 实测点表对账
+
+`examples/reconcile.py` 演示用 `locate` 结果对外部实测点表做可复跑对账：以 `examples/reconcile/layers.json` 为种子搭建临时实例，逐笔定位 `examples/reconcile/points.csv`（含重复测点编号、同坐标不同观测和边界点），输出无归属、唯一归属、多重归属分桶及重复编号的几何分歧判定，生成 `examples/reconcile/report.json` 与 `report.md`。
+
+```sh
+python3 examples/reconcile.py          # 重新生成对账清单
+python3 examples/reconcile.py --check  # 复跑并逐字节核对已提交的基线
+```
