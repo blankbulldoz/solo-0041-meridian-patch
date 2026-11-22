@@ -155,7 +155,84 @@ def reframe(s):
     assert result['layers'][0]['bounds'] == WINDOW and result['revision'] == rev+1
     same, _ = s.request('PUT', path, dict(bounds=WINDOW))
     assert same == result
+    shrink_rev = reframe_migrations(s, result['revision'])
+    reframe_rollback(s, shrink_rev)
     return result
+
+
+def feature(feature, shape=None, category='fixture', mode='replace'):
+    item = dict(id=feature, mode=mode)
+    if shape is not None:
+        kind = 'mark' if 'x' in shape else 'extent'
+        item['value'] = dict(id=feature, **{'class': category}, shape={kind: shape})
+    return item
+
+
+def reframe_migrations(s, rev):
+    # Shrink again: the surviving features need explicit replacement or
+    # removal, while untouched layers keep their revision and contents.
+    path = f'/strata/{FIELD}/layout'
+    tight = box(0, 0, 4, 3)
+    edits = [
+        feature('ferrule', box(0, 0, 2, 2), 'sleeve'),
+        feature('dowel', mode='remove'),
+    ]
+    result, _ = s.request('PUT', path, dict(bounds=tight, edits=edits, if_revision=rev))
+    assert result['revision'] == rev + 1
+    layer = result['layers'][0]
+    assert layer['bounds'] == tight and layer['count'] == 2
+    located = s.query(FIELD, 'locate', point(1, 1))
+    assert ids(located) == ['ferrule', 'prong']
+    strata = {row['name']: row for row in s.get('/strata')['layers']}
+    assert strata[BED]['count'] == 1 and strata[BED]['bounds'] == BOUNDS
+    # A mark layer can shrink in the same change; the out-of-bounds mark is
+    # removed and the surviving one keeps the exclusive policy.
+    pin_path = f'/strata/{PINS}/layout'
+    pin_rev = s.get('/status')['revision']
+    pin_result, _ = s.request('PUT', pin_path, dict(
+        bounds=box(0, 0, 6, 4), exclusive=True,
+        edits=[dict(id='stud', mode='remove')],
+    ))
+    assert pin_result['revision'] == pin_rev + 1
+    assert pin_result['layers'][0]['count'] == 1
+    assert ids(s.query(PINS, 'locate', point(4, 1))) == ['brad']
+    assert ids(s.query(PINS, 'locate', point(6, 1))) == []
+    return pin_result['revision']
+
+
+def reframe_rollback(s, rev):
+    # Any single violation rejects the whole package: the old layout and the
+    # old feature set both stay readable at the previous revision.
+    path = f'/strata/{FIELD}/layout'
+    tight = box(0, 0, 4, 3)
+    current = {row['id']: row for row in s.query(FIELD, 'window', dict(bounds=WINDOW, limit=256))['features']}
+    assert set(current) == {'ferrule', 'prong'}
+    # A surviving feature left outside the new bounds cannot ride along.
+    problem, _ = s.request('PUT', path, dict(
+        bounds=box(0, 0, 1, 1),
+        edits=[feature('ferrule', box(0, 0, 2, 2), 'sleeve')],
+    ), 400)
+    assert problem['code'] == 'invalid'
+    assert s.get('/status')['revision'] == rev
+    after = {row['id']: row for row in s.query(FIELD, 'window', dict(bounds=WINDOW, limit=256))['features']}
+    assert after == current
+    # Flipping exclusivity validates the final set once: overlapping
+    # survivors are a conflict and must not leave a partial layout behind.
+    conflict, _ = s.request('PUT', path, dict(bounds=tight, exclusive=True), 409)
+    assert conflict['code'] == 'conflict'
+    assert s.get('/status')['revision'] == rev
+    strata = {row['name']: row for row in s.get('/strata')['layers']}
+    assert strata[FIELD]['bounds'] == tight and strata[FIELD]['exclusive'] is False
+    # Unknown features and malformed edits reject without publishing.
+    missing, _ = s.request('PUT', path, dict(
+        bounds=tight, edits=[dict(id='ghost', mode='remove')],
+    ), 404)
+    assert missing['code'] == 'missing'
+    malformed, _ = s.request('PUT', path, dict(
+        bounds=tight, edits=[dict(id='ferrule', mode='replace')],
+    ), 400)
+    assert malformed['code'] == 'invalid'
+    assert s.get('/status')['revision'] == rev
 
 
 def window(s):

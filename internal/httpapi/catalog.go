@@ -13,7 +13,8 @@ type createLayerRequest struct {
 
 type reframe struct {
 	catalog.Layout
-	IfRevision *uint64 `json:"if_revision,omitempty"`
+	Edits      []catalog.FeatureEdit `json:"edits,omitempty"`
+	IfRevision *uint64               `json:"if_revision,omitempty"`
 }
 
 func (a *api) list(w http.ResponseWriter, _ *http.Request) {
@@ -31,7 +32,7 @@ func (a *api) register(w http.ResponseWriter, r *http.Request) {
 func (a *api) reframe(w http.ResponseWriter, r *http.Request) {
 	var request reframe
 	if a.input(w, r, &request) {
-		commit, err := a.db.Reframe(r.PathValue("layer"), request.Layout, request.IfRevision)
+		commit, err := a.db.Reframe(r.PathValue("layer"), request.Layout, request.Edits, request.IfRevision)
 		a.respond(w, http.StatusOK, commit, err)
 	}
 }

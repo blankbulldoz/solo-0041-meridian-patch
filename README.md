@@ -23,7 +23,7 @@ python3 examples/walkthrough.py --workflow coverage
 | `GET /status` | 返回全库 `revision` 和 `writable` |
 | `GET /strata` | 返回当前图层和各自修订、边界、排他标记与条目数 |
 | `POST /strata` | `name`, `kind`, `bounds`, `exclusive`, 可选 `if_revision` |
-| `PUT /strata/{layer}/layout` | 新 `bounds`、`exclusive` 及可选 `if_revision`。形状类型保持原样 |
+| `PUT /strata/{layer}/layout` | 新 `bounds`、`exclusive`、可选 `edits`（该层地物的 insert/replace/remove）及可选 `if_revision`。形状类型保持原样，末态按新边界与排他策略一次校验 |
 | `POST /edits` | `edits` 与可选 `if_revision`。每项有 `layer`, `id`, `mode`，写入时提供同 ID 的 `value` |
 | `POST /strata/{layer}/window` | `bounds`, `limit`, 可选 `class`, `bookmark`。按 ID 返回 `features`，有更多数据时返回 `next` |
 | `POST /strata/{layer}/locate` | `{ "x": 2, "y": 1 }`。返回拥有该点的 `features` |
@@ -45,6 +45,12 @@ python3 examples/walkthrough.py --workflow coverage
 
 ```json
 {"edits":[{"layer":"ochre-field","id":"prong","mode":"insert","value":{"id":"prong","class":"fixture","shape":{"extent":{"min_x":0,"min_y":0,"max_x":4,"max_y":3}}}}]}
+```
+
+收缩图层边界时，可以在同一个布局请求中处理越界地物：明确替换到新边界内或删除，未提及的地物和其他图层保持原样。暂存后的最终地物集合按新边界和排他策略校验一次，任何一项越界或冲突都整包拒绝，不会留下新边界配旧地物（或旧边界配新地物）的中间状态。
+
+```json
+{"bounds":{"min_x":0,"min_y":0,"max_x":4,"max_y":3},"exclusive":false,"edits":[{"id":"ferrule","mode":"replace","value":{"id":"ferrule","class":"sleeve","shape":{"extent":{"min_x":0,"min_y":0,"max_x":2,"max_y":2}}}},{"id":"dowel","mode":"remove"}]}
 ```
 
 `409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
