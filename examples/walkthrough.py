@@ -2,6 +2,7 @@
 """Exercise the normal HTTP surface in a clean temporary database."""
 import argparse
 from contextlib import contextmanager
+import hashlib
 import json
 from pathlib import Path
 import select
@@ -66,10 +67,10 @@ class Session:
             request['if_revision'] = revision
         return self.post('/edits', request, status)
 
-    def restore(self, raw, revision, status=200):
+    def restore(self, raw, revision, status=200, media=IMAGE):
         return self.request('PUT', '/image', raw, status, {
-            'Content-Type': IMAGE, 'If-Meridian-Revision': str(revision),
-        })[0]
+            'Content-Type': media, 'If-Meridian-Revision': str(revision),
+        })
 
 
 @contextmanager
@@ -265,11 +266,193 @@ def export(s):
     rev = seed(s)
     first, headers = s.request('GET', '/image')
     assert headers.get_content_type() == IMAGE and int(headers['Meridian-Revision']) == rev
-    assert first.startswith(b'MRDNMPB\x01') and len(first) == int(headers['Content-Length'])
+    assert first.startswith(b'MRDNMPB\x02')
+    assert headers['Meridian-Image-Version'] == '2' and len(first) == int(headers['Content-Length'])
     assert s.get('/image') == first
+    legacy, legacy_headers = s.request('GET', '/image?version=1')
+    assert legacy.startswith(b'MRDNMPB\x01') and legacy_headers['Meridian-Image-Version'] == '1'
+    assert s.request('GET', '/image', headers={'Accept': 'application/vnd.meridian.image.v1'})[0] == legacy
+    assert legacy != first
     s.edit(op(BED, 'shim', mode='remove'))
     assert s.get('/image') != first
-    return dict(revision=rev, bytes=len(first))
+    return dict(revision=rev, bytes=len(first), legacy_bytes=len(legacy))
+
+
+def _geometry(s):
+    """A comparable read used by the image-format workflows.
+
+    Revisions are dropped: they are expected to differ after a restore, while
+    features, ordering, distances and areas must be identical.
+    """
+    def stable(value):
+        if isinstance(value, dict):
+            return {k: stable(v) for k, v in sorted(value.items())
+                    if k not in ('revision', 'layer_revision')}
+        if isinstance(value, list):
+            return [stable(v) for v in value]
+        return value
+
+    return stable(dict(
+        field=s.query(FIELD, 'window', dict(bounds=WINDOW, limit=8))['features'],
+        bed=s.query(BED, 'locate', point(4, 0))['features'],
+        coverage=s.query(FIELD, 'coverage', dict(bounds=WINDOW)),
+        nearest=s.query(FIELD, 'nearest', dict(point=point(4, 0), limit=2))['neighbors'],
+    ))
+
+
+def imagecompat(s):
+    # An empty database is a valid image in both versions.
+    empty = s.get('/image')
+    empty_legacy = s.get('/image?version=1')
+    assert empty.startswith(b'MRDNMPB\x02') and empty_legacy.startswith(b'MRDNMPB\x01')
+    restored, empty_headers = s.restore(empty, 0)
+    assert empty_headers['Meridian-Image-Version'] == '2'
+    assert restored['revision'] == 1 and restored['layers'] == []
+
+    rev = seed(s)
+    before = _geometry(s)
+    legacy, headers = s.request('GET', '/image?version=1')
+    current, current_headers = s.request('GET', '/image?version=2')
+    assert legacy.startswith(b'MRDNMPB\x01') and headers['Meridian-Image-Version'] == '1'
+    assert current.startswith(b'MRDNMPB\x02') and current_headers['Meridian-Image-Version'] == '2'
+    assert legacy != current
+
+    # Legacy deliveries are deterministic and selectable without a query too.
+    assert s.request('GET', '/image', headers={
+        'Accept': 'application/vnd.meridian.image.v1'})[0] == legacy
+    s.request('GET', '/image?version=3', status=400)
+    s.request('GET', '/image?version=1&version=2', status=400)
+    s.request('GET', '/image', status=406, headers={'Accept': 'application/zip'})
+    assert s.request('GET', '/image', headers={
+        'Accept': 'application/vnd.meridian.image.v1, application/vnd.meridian.image'})[0] == current
+
+    # Import both containers into the same database and compare geometry.
+    edited = s.edit(op(BED, 'shim', mode='remove'))['revision']
+    first, first_headers = s.restore(legacy, edited, media='application/vnd.meridian.image.v1')
+    assert first_headers['Meridian-Image-Version'] == '1'
+    assert first['revision'] == edited + 1
+    assert {row['revision'] for row in first['layers']} == {edited + 1}
+    assert _geometry(s) == before
+
+    edited = s.edit(op(BED, 'shim', mode='remove'))['revision']
+    second, second_headers = s.restore(current, edited)
+    assert second_headers['Meridian-Image-Version'] == '2'
+    assert second['revision'] == edited + 1
+    assert {row['revision'] for row in second['layers']} == {edited + 1}
+    assert _geometry(s) == before
+    return dict(legacy_revision=first['revision'], current_revision=second['revision'],
+                legacy_bytes=len(legacy), current_bytes=len(current))
+
+
+def parse_v2(raw):
+    """Split an MPB v2 container into revision and independently checkable segments."""
+    assert raw[:8] == b'MRDNMPB\x02'
+    payload = raw[44:]
+    revision = int.from_bytes(payload[0:8], 'big')
+    count = int.from_bytes(payload[8:12], 'big')
+    segments, offset = [], 12
+    for index in range(count):
+        name_len = int.from_bytes(payload[offset:offset+4], 'big')
+        body_len = int.from_bytes(payload[offset+4:offset+8], 'big')
+        digest = payload[offset+8:offset+40]
+        start = offset + 40
+        name = payload[start:start+name_len]
+        body_start = start + name_len
+        body = payload[body_start:body_start+body_len]
+        offset = body_start + body_len
+        segments.append(dict(index=index + 1, name=name.decode(), body=body,
+                             digest=digest, body_start=body_start,
+                             valid=hashlib.sha256(name + b'\0' + body).digest() == digest))
+    assert offset == len(payload)
+    return revision, segments
+
+
+def build_v2(revision, layers):
+    """Assemble an MPB v2 container from (name, canonical body) pairs."""
+    payload = revision.to_bytes(8, 'big') + len(layers).to_bytes(4, 'big')
+    for name, body in layers:
+        encoded = name.encode()
+        payload += (len(encoded).to_bytes(4, 'big') + len(body).to_bytes(4, 'big')
+                    + hashlib.sha256(encoded + b'\0' + body).digest() + encoded + body)
+    return (b'MRDNMPB\x02' + len(payload).to_bytes(4, 'big')
+            + hashlib.sha256(payload).digest() + payload)
+
+
+def imagerecover(binary, data):
+    with running(binary, data) as s:
+        rev = seed(s)
+        before = _geometry(s)
+        raw, headers = s.request('GET', '/image')
+        assert headers['Meridian-Image-Version'] == '2'
+        revision, segments = parse_v2(raw)
+        assert revision == rev and [s['name'] for s in segments] == sorted([BED, FIELD, PINS])
+        assert all(s['valid'] for s in segments)
+
+        # Corrupt only the final layer's body. Every earlier segment still
+        # verifies, yet the whole image must be refused and the live view kept.
+        damaged = bytearray(raw)
+        target = segments[-1]
+        damaged[44 + target['body_start'] + 3] ^= 1
+        damaged = bytes(damaged)
+        revised, parsed = parse_v2(damaged)
+        assert revised == rev and [s['valid'] for s in parsed] == [True, True, False]
+
+        error, _ = s.restore(damaged, rev, status=400)
+        assert error['code'] == 'invalid'
+        assert (error['image_version'], error['segment'], error['layer']) == (
+            '2', len(segments), target['name'])
+        assert s.get('/status')['revision'] == rev and _geometry(s) == before
+
+        # Truncating the damaged tail is refused too, not partially installed.
+        s.restore(damaged[:-1], rev, status=400)
+        assert s.get('/status')['revision'] == rev and _geometry(s) == before
+
+        # A well-checksummed segment can still violate geometry rules. The
+        # damaged layer is still named and nothing replaces the live view.
+        bodies = [(row['name'], row['body']) for row in segments]
+        name, body = bodies[-1]
+        bodies[-1] = (name, body.replace(b'"x":6', b'"x":600', 1))
+        assert bodies[-1][1] != body
+        semantic = build_v2(rev, bodies)
+        assert all(row['valid'] for row in parse_v2(semantic)[1])
+        error, _ = s.restore(semantic, rev, status=400)
+        assert error['code'] == 'invalid' and error['layer'] == name
+        assert b'outside' in error['message'].encode()
+        assert s.get('/status')['revision'] == rev and _geometry(s) == before
+
+    # Import the same damaged image into a genuinely empty database: the two
+    # intact leading layers must not appear as a partial installation.
+    with tempfile.TemporaryDirectory(prefix='meridian-target-') as target_dir:
+        with running(binary, Path(target_dir)) as blank:
+            assert blank.get('/status')['revision'] == 0
+            for payload in (damaged, semantic):
+                blank.restore(payload, 0, status=400)
+                assert blank.get('/status')['revision'] == 0
+                assert blank.get('/strata')['layers'] == []
+    return dict(revision=rev, segments=len(segments), damaged_layer=target['name'],
+                intact_before_damage=sum(row['valid'] for row in parsed))
+
+
+def imagemigrate(binary, data):
+    with running(binary, data) as s:
+        rev = seed(s)
+        before = _geometry(s)
+        legacy = s.get('/image?version=1')
+        assert legacy.startswith(b'MRDNMPB\x01')
+    state = data / 'meridian-state.mpb'
+    state.write_bytes(legacy)
+    with running(binary, data) as s:
+        assert s.get('/status')['revision'] == rev
+        assert _geometry(s) == before
+        assert s.get('/image?version=1') == legacy
+    assert state.read_bytes()[:8] == b'MRDNMPB\x02'
+    with running(binary, data) as s:
+        assert s.get('/status')['revision'] == rev and _geometry(s) == before
+    state.write_bytes(legacy[:-1])
+    broken = subprocess.run([str(binary), '-listen', '127.0.0.1:0', '-data', str(data)],
+                            capture_output=True, timeout=5)
+    assert broken.returncode != 0 and b'reopen state' in broken.stderr
+    return dict(revision=rev, upgraded_version=2, legacy_bytes=len(legacy))
 
 
 def restore(s):
@@ -279,7 +462,9 @@ def restore(s):
     s.restore(backup, rev, 409)
     s.restore(backup[:-1] + bytes([backup[-1] ^ 1]), edited, 400)
     assert s.get('/status')['revision'] == edited
-    restored = s.restore(backup, edited)
+    restored, headers = s.request('PUT', '/image', backup, 200, {
+        'Content-Type': IMAGE, 'If-Meridian-Revision': str(edited)})
+    assert headers['Meridian-Image-Version'] == '2'
     assert restored['revision'] == edited + 1
     assert {row['revision'] for row in restored['layers']} == {edited + 1}
     assert ids(s.query(BED, 'locate', point(4, 0))) == ['shim']
@@ -304,19 +489,22 @@ def reopen(binary, data):
 
 
 WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
-                                     inspect, seams, relation, audit, export, restore, reopen)}
+                                     inspect, seams, relation, audit, export, imagecompat, restore) if not f.__name__.startswith('_')}
+
+SEPARATE = ('reopen', 'imagerecover', 'imagemigrate')
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--workflow', required=True, choices=WORKFLOWS)
+    parser.add_argument('--workflow', required=True, choices=sorted(set(WORKFLOWS) | set(SEPARATE)))
     args = parser.parse_args()
     with tempfile.TemporaryDirectory(prefix='meridian-walk-') as temporary:
         root = Path(temporary)
         binary, data = root/'meridian', root/'space'
         subprocess.run(['go', 'build', '-o', str(binary), './cmd/meridian'], check=True, cwd=ROOT, timeout=90)
-        if args.workflow == 'reopen':
-            result = reopen(binary, data)
+        if args.workflow in SEPARATE:
+            result = (reopen if args.workflow == 'reopen' else
+                      imagerecover if args.workflow == 'imagerecover' else imagemigrate)(binary, data)
         else:
             with running(binary, data) as session:
                 result = WORKFLOWS[args.workflow](session)

@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/db"
+	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/folio"
 )
 
 func (a *api) respond(w http.ResponseWriter, status int, value any, err error) {
@@ -33,5 +34,16 @@ func (a *api) respond(w http.ResponseWriter, status int, value any, err error) {
 	if code >= 500 {
 		a.log.Error("database unavailable", "error", err)
 	}
-	a.json(w, code, issue{problem.Code, problem.Message})
+	report := imageIssue{issue: issue{Code: problem.Code, Message: problem.Message}}
+	var damaged *folio.ImageError
+	if errors.As(err, &damaged) {
+		report.ImageVersion = damaged.Version.String()
+		report.Segment = damaged.Segment
+		report.Layer = damaged.Layer
+	}
+	var semantic *db.LayerImageError
+	if errors.As(err, &semantic) {
+		report.Layer = semantic.Layer
+	}
+	a.json(w, code, report)
 }

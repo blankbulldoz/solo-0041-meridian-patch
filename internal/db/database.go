@@ -45,9 +45,25 @@ func openStore(store *folio.Store) (*Database, error) {
 		return nil, fmt.Errorf("read state: %w", err)
 	}
 	if present {
-		s, err = readImage(raw)
+		image, err := folio.Decode(raw)
 		if err != nil {
 			return nil, fmt.Errorf("reopen state: %w", err)
+		}
+		s, err = fromImage(image.Catalog)
+		if err != nil {
+			return nil, fmt.Errorf("reopen state: %w", err)
+		}
+		if image.Version != folio.CurrentVersion {
+			// Upgrade a readable legacy file in place. The catalog and its
+			// revisions are preserved; only the container version changes, and
+			// the swap uses the same staged replace as every commit. A failed
+			// upgrade keeps the readable legacy view: the next successful commit
+			// writes version 2 anyway.
+			if upgraded, err := folio.Encode(image.Catalog, folio.CurrentVersion); err == nil {
+				if renamed, err := store.Replace(upgraded); err != nil && renamed {
+					return nil, fmt.Errorf("migrate state: replaced but durability was not confirmed: %w", err)
+				}
+			}
 		}
 	}
 	d.head.Store(s)
@@ -94,7 +110,7 @@ func (d *Database) commit(expected *uint64, prepare func(*state, uint64) (*state
 	if next == current {
 		return current, nil
 	}
-	raw, err := folio.Encode(next.image())
+	raw, err := folio.Encode(next.image(), folio.CurrentVersion)
 	if err != nil {
 		return nil, fmt.Errorf("encode commit: %w", err)
 	}

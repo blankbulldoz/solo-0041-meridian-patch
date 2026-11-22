@@ -15,6 +15,15 @@ type issue struct {
 	Message string `json:"message"`
 }
 
+// imageIssue extends issue with the location of a rejected image segment. Its
+// embedded issue keeps "code" and "message" at the top level of the response.
+type imageIssue struct {
+	issue
+	ImageVersion string `json:"image_version,omitempty"`
+	Segment      int    `json:"segment,omitempty"`
+	Layer        string `json:"layer,omitempty"`
+}
+
 func (a *api) json(w http.ResponseWriter, code int, value any) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Cache-Control", "no-store")

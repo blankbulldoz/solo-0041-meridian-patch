@@ -66,6 +66,18 @@
     {
       "workflow_id": "reopen",
       "command": "python3 examples/walkthrough.py --workflow reopen"
+    },
+    {
+      "workflow_id": "imagecompat",
+      "command": "python3 examples/walkthrough.py --workflow imagecompat"
+    },
+    {
+      "workflow_id": "imagerecover",
+      "command": "python3 examples/walkthrough.py --workflow imagerecover"
+    },
+    {
+      "workflow_id": "imagemigrate",
+      "command": "python3 examples/walkthrough.py --workflow imagemigrate"
     }
   ]
 }

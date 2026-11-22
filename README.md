@@ -34,8 +34,8 @@ python3 examples/walkthrough.py --workflow coverage
 | `POST /relation` | `left` 与 `right` 分别含 `layer` 和 `id`。返回相交、双向包含和闭包距离 |
 | `GET /strata/{layer}/index` | 返回 `tree` 结构统计 |
 | `GET /strata/{layer}/index-audit` | 核对索引和目录，返回 `records` 与 `checked_nodes` |
-| `GET /image` | 返回 MPB v1 镜像及 `Meridian-Revision` |
-| `PUT /image` | 二进制 `application/vnd.meridian.image` 与必需的 `If-Meridian-Revision` |
+| `GET /image` | 返回 MPB 镜像及 `Meridian-Revision`、`Meridian-Image-Version`。默认 v2；`?version=1` 或 `Accept: application/vnd.meridian.image.v1` 选择旧版 |
+| `PUT /image` | 二进制 `application/vnd.meridian.image` 与必需的 `If-Meridian-Revision`。接受 v1 与 v2 |
 
 例如，创建矩形图层并写入一个地物使用下面的 JSON 对象。
 
@@ -47,6 +47,18 @@ python3 examples/walkthrough.py --workflow coverage
 {"edits":[{"layer":"ochre-field","id":"prong","mode":"insert","value":{"id":"prong","class":"fixture","shape":{"extent":{"min_x":0,"min_y":0,"max_x":4,"max_y":3}}}}]}
 ```
 
-`409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
+`409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。拒绝 v2 镜像时，错误体额外带 `image_version`、`segment` 与 `layer`，可定位受损图层名；报告不等于部分安装，目标库仍保持原修订与视图。
+
+## 镜像版本
+
+- **MPB v2** 是当前默认：每个图层是独立长度和独立 SHA-256 的分段，容器摘要覆盖修订、计数与所有分段。导入时逐段校验并报告损坏图层，任何一段失败都整镜像拒绝。
+- **MPB v1** 是旧格式，仍在读取、导入和导出中支持。向未升级实例交付时使用 `GET /meridian/v1/image?version=1`，或发送 `Accept: application/vnd.meridian.image.v1`；两者字节相同。带 `?version=2` 的请求优先于 `Accept`，不支持的版本或 Accept 分别返回 `400`/`406`。
+- 旧数据目录以 v1 打开后保持原修订与几何，并在持锁启动期间改写为 v2 文件；后续每次提交也只写 v2。
+
+```sh
+python3 examples/walkthrough.py --workflow imagecompat    # 新旧导出与导入的几何对照
+python3 examples/walkthrough.py --workflow imagerecover   # 后段图层损坏时整镜像拒绝
+python3 examples/walkthrough.py --workflow imagemigrate   # v1 数据目录重启升级
+```
 
 边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。

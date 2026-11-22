@@ -360,6 +360,65 @@
       "success": "带回原修订并提供正常查询",
       "failure": "目录被另一进程占用或镜像损坏时拒绝",
       "verification": "python3 examples/walkthrough.py --workflow reopen"
+    },
+    {
+      "id": "imagecompat",
+      "name": "新旧镜像互操作",
+      "entry": "GET /image?version=1|2 与 PUT /image",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "catalog",
+        "folio"
+      ],
+      "steps": [
+        "分别导出 v1 与 v2",
+        "导入同一目标库",
+        "对照几何与层修订"
+      ],
+      "success": "两种容器的图层、地物、排序、距离与面积一致",
+      "failure": "不支持的版本或 Accept 被明确拒绝，目标库不变",
+      "verification": "python3 examples/walkthrough.py --workflow imagecompat"
+    },
+    {
+      "id": "imagerecover",
+      "name": "分段损坏镜像",
+      "entry": "PUT /image",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "folio",
+        "catalog",
+        "packed"
+      ],
+      "steps": [
+        "解析各图层独立摘要",
+        "定位后段受损分段",
+        "拒绝整镜像并保留旧视图"
+      ],
+      "success": "报告受损分段序号与图层名，先前已校验分段也不安装",
+      "failure": "截断、逐段摘要或几何规则任一失败均不改变目标库",
+      "verification": "python3 examples/walkthrough.py --workflow imagerecover"
+    },
+    {
+      "id": "imagemigrate",
+      "name": "旧镜像目录升级",
+      "entry": "服务启动及 GET /status",
+      "module_ids": [
+        "cmd",
+        "db",
+        "folio",
+        "packed",
+        "catalog"
+      ],
+      "steps": [
+        "读取 v1 数据文件",
+        "保修订重建索引",
+        "持锁改写为 v2"
+      ],
+      "success": "重启后修订与几何不变，磁盘文件为 v2",
+      "failure": "截断的旧文件拒绝启动",
+      "verification": "python3 examples/walkthrough.py --workflow imagemigrate"
     }
   ]
 }

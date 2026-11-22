@@ -81,9 +81,25 @@ func (s *state) image() catalog.CatalogImage {
 	return image
 }
 
+// LayerImageError ties a semantic image rejection to the declared layer so a
+// caller can name the damaged segment even though nothing is installed.
+type LayerImageError struct {
+	Layer  string
+	Reason string
+}
+
+func (e *LayerImageError) Error() string { return e.Reason }
+
+func layerImageError(name, format string, args ...any) error {
+	return &LayerImageError{Layer: name, Reason: fmt.Sprintf(format, args...)}
+}
+
 func fromImage(image catalog.CatalogImage) (*state, error) {
-	if len(image.Layers) > catalog.MaxLayers || (image.Revision == 0 && len(image.Layers) > 0) {
-		return nil, fmt.Errorf("invalid layer count or revision")
+	if len(image.Layers) > catalog.MaxLayers {
+		return nil, fmt.Errorf("invalid layer count %d", len(image.Layers))
+	}
+	if image.Revision == 0 && len(image.Layers) > 0 {
+		return nil, fmt.Errorf("nonempty image has revision zero")
 	}
 	s := &state{revision: image.Revision, layers: make(map[string]*layer)}
 	var total int
@@ -91,28 +107,28 @@ func fromImage(image catalog.CatalogImage) (*state, error) {
 	for _, entry := range image.Layers {
 		name := entry.Definition.Name
 		if name <= previousLayer || entry.Revision == 0 || entry.Revision > s.revision || entry.Features == nil {
-			return nil, fmt.Errorf("invalid image layer order or revision for %q", name)
+			return nil, layerImageError(name, "invalid image layer order or revision for %q", name)
 		}
 		previousLayer = name
 		if len(entry.Features) > catalog.MaxLayerRows {
-			return nil, fmt.Errorf("layer %q exceeds feature capacity", name)
+			return nil, layerImageError(name, "layer %q exceeds feature capacity", name)
 		}
 		total += len(entry.Features)
 		if total > catalog.MaxRows {
-			return nil, fmt.Errorf("database exceeds feature capacity")
+			return nil, layerImageError(name, "database exceeds feature capacity")
 		}
 		rows := make(map[string]catalog.Feature, len(entry.Features))
 		var previousID string
 		for _, feature := range entry.Features {
 			if feature.ID <= previousID {
-				return nil, fmt.Errorf("invalid image feature order in %q", name)
+				return nil, layerImageError(name, "invalid image feature order in %q", name)
 			}
 			previousID = feature.ID
 			rows[feature.ID] = feature
 		}
 		l, err := buildLayer(entry.Definition, entry.Revision, rows)
 		if err != nil {
-			return nil, err
+			return nil, layerImageError(name, "%s", err.Error())
 		}
 		s.layers[name] = l
 	}
