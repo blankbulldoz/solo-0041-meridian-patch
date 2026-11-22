@@ -32,6 +32,7 @@ python3 examples/walkthrough.py --workflow coverage
 | `POST /strata/{layer}/seams` | `bounds`, `limit`。按 ID 对返回正长度共享边 |
 | `POST /join` | `left`, `right`, `bounds`, `limit`。返回同一全库修订的相交对 |
 | `POST /relation` | `left` 与 `right` 分别含 `layer` 和 `id`。返回相交、双向包含和闭包距离 |
+| `POST /assignments` | `markers`、`candidates` 与可选 `occupied`。返回最大化放置数、再最小化总平方位移的确定性分配及未分配标记 |
 | `GET /strata/{layer}/index` | 返回 `tree` 结构统计 |
 | `GET /strata/{layer}/index-audit` | 核对索引和目录，返回 `records` 与 `checked_nodes` |
 | `GET /image` | 返回 MPB v1 镜像及 `Meridian-Revision` |
@@ -48,5 +49,22 @@ python3 examples/walkthrough.py --workflow coverage
 ```
 
 `409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
+
+分配请求把施工标记（`id`、整数 `point`、含边界的可行 `radius`）安排到候选坐标（`id`、`point`），每个坐标最多用一次；`occupied` 中的坐标对所有标记禁用，半径按欧氏距离平方判定。服务先最大化可放置标记数，再最小化 `total_squared_cost`，剩余并列按固定次序打破，因此同一请求（无论数组顺序）总是返回同一结果；放不下的标记显式列在 `unassigned` 中。标记和候选各不超过 256 个。
+
+```json
+{
+  "markers": [
+    {"id": "alpha", "point": {"x": 0, "y": 0}, "radius": 1},
+    {"id": "bravo", "point": {"x": 0, "y": 1}, "radius": 1}
+  ],
+  "candidates": [
+    {"id": "shared", "point": {"x": 0, "y": 0}},
+    {"id": "alt", "point": {"x": 1, "y": 0}}
+  ]
+}
+```
+
+就近贪心在该例上会失败：它先把 `alpha` 放到零距离的 `shared`，`bravo` 唯一可行坐标也是 `shared`，于是只放进一个标记；最优解让 `alpha` 改用 `alt`、`bravo` 使用 `shared`，两个标记都能放置（总平方位移 2）。
 
 边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。

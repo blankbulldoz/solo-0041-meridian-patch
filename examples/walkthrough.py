@@ -238,6 +238,82 @@ def relation(s):
     return right
 
 
+def assignment(s):
+    # Nearest-first greedy failure (two markers, two free candidates):
+    #   alpha at (0,0), radius 1 -> shared=(0,0) distance 0, alt=(1,0) distance 1
+    #   bravo at (0,1), radius 1 -> shared=(0,0) distance 1 only
+    # Nearest-first greedy assigns alpha->shared (its zero-distance choice),
+    # then bravo has no available coordinate: greedy places one marker and
+    # reports one unassigned. The optimum yields: alpha->alt and
+    # bravo->shared, placing both markers with total squared cost 1+1=2.
+    query = dict(
+        markers=[
+            dict(id='alpha', **{'point': point(0, 0)}, radius=1),
+            dict(id='bravo', **{'point': point(0, 1)}, radius=1),
+        ],
+        candidates=[
+            dict(id='shared', **{'point': point(0, 0)}),
+            dict(id='alt', **{'point': point(1, 0)}),
+        ],
+    )
+    result = s.post('/assignments', query)
+    assert result['assigned'] == 2 and result['unassigned'] == []
+    assert result['total_squared_cost'] == 2
+    assert result['placements'] == [
+        dict(marker_id='alpha', candidate_id='alt', **{'point': point(1, 0)}, distance_squared=1),
+        dict(marker_id='bravo', candidate_id='shared', **{'point': point(0, 0)}, distance_squared=1),
+    ]
+
+    # Occupied coordinates shrink the candidate pool before matching, and an
+    # unassignable marker is reported explicitly.
+    stranded = dict(
+        markers=[
+            dict(id='alpha', **{'point': point(0, 0)}, radius=0),
+            dict(id='bravo', **{'point': point(1, 0)}, radius=1),
+        ],
+        candidates=[
+            dict(id='p0', **{'point': point(0, 0)}),
+            dict(id='p1', **{'point': point(1, 0)}),
+        ],
+        occupied=[point(0, 0)],
+    )
+    stranded_result = s.post('/assignments', stranded)
+    assert stranded_result['assigned'] == 1
+    assert stranded_result['unassigned'] == ['alpha']
+    assert stranded_result['placements'] == [
+        dict(marker_id='bravo', candidate_id='p1', **{'point': point(1, 0)}, distance_squared=0),
+    ]
+    assert stranded_result['total_squared_cost'] == 0
+
+    # Same data in a different array order yields the identical response, so
+    # tie breaking is reproducible rather than map/iteration dependent.
+    shuffled = dict(
+        markers=list(reversed(stranded['markers'])),
+        candidates=list(reversed(stranded['candidates'])),
+        occupied=stranded['occupied'],
+    )
+    assert s.post('/assignments', shuffled) == stranded_result
+
+    # A marker outside every feasible radius stays unassigned.
+    loose = dict(
+        markers=[dict(id='stray', **{'point': point(9, 9)}, radius=1)],
+        candidates=[dict(id='p0', **{'point': point(0, 0)})],
+    )
+    loose_result = s.post('/assignments', loose)
+    assert loose_result == {
+        'assigned': 0, 'unassigned': ['stray'], 'placements': [], 'total_squared_cost': 0,
+    }
+
+    s.post('/assignments', dict(markers=[], candidates=query['candidates']), 400)
+    s.post('/assignments', dict(
+        markers=query['markers'],
+        candidates=[dict(id='p0', **{'point': point(0, 0)}),
+                    dict(id='p2', **{'point': point(0, 0)})],
+    ), 400)
+    return result
+
+
+
 def load_index(s):
     s.layer(PINS, 'mark')
     s.edit(*(op(PINS, f'peg-{i}', point(i-12, i % 3)) for i in range(24)))
@@ -304,7 +380,7 @@ def reopen(binary, data):
 
 
 WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
-                                     inspect, seams, relation, audit, export, restore, reopen)}
+                                     inspect, seams, relation, assignment, audit, export, restore, reopen)}
 
 
 def main():
