@@ -20,6 +20,8 @@ type layer struct {
 type state struct {
 	revision uint64
 	layers   map[string]*layer
+	// requests is the durable retry ledger, ordered oldest first.
+	requests []catalog.RequestRecord
 }
 
 func (l *layer) summary() catalog.Summary {
@@ -78,6 +80,9 @@ func (s *state) image() catalog.CatalogImage {
 			Features:   l.features(),
 		})
 	}
+	if len(s.requests) > 0 {
+		image.Requests = slices.Clone(s.requests)
+	}
 	return image
 }
 
@@ -85,7 +90,10 @@ func fromImage(image catalog.CatalogImage) (*state, error) {
 	if len(image.Layers) > catalog.MaxLayers || (image.Revision == 0 && len(image.Layers) > 0) {
 		return nil, fmt.Errorf("invalid layer count or revision")
 	}
-	s := &state{revision: image.Revision, layers: make(map[string]*layer)}
+	if len(image.Requests) > catalog.MaxRequestRecords {
+		return nil, fmt.Errorf("retry ledger exceeds capacity")
+	}
+	s := &state{revision: image.Revision, layers: make(map[string]*layer), requests: image.Requests}
 	var total int
 	var previousLayer string
 	for _, entry := range image.Layers {
@@ -115,6 +123,26 @@ func fromImage(image catalog.CatalogImage) (*state, error) {
 			return nil, err
 		}
 		s.layers[name] = l
+	}
+	seen := make(map[string]struct{}, len(s.requests))
+	var previousRevision uint64
+	for _, record := range s.requests {
+		if err := record.Validate(s.revision); err != nil {
+			return nil, err
+		}
+		if record.Revision < previousRevision {
+			return nil, fmt.Errorf("retry ledger is not in commit order at request %q", record.ID)
+		}
+		previousRevision = record.Revision
+		if _, duplicate := seen[record.ID]; duplicate {
+			return nil, fmt.Errorf("retry ledger repeats request %q", record.ID)
+		}
+		seen[record.ID] = struct{}{}
+		for _, layer := range record.Layers {
+			if s.layers[layer.Name] == nil {
+				return nil, fmt.Errorf("retry ledger names absent layer %q", layer.Name)
+			}
+		}
 	}
 	return s, nil
 }

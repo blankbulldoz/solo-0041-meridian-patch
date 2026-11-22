@@ -8,6 +8,7 @@ import (
 	"sync/atomic"
 
 	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/bookmark"
+	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/catalog"
 	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/folio"
 )
 
@@ -68,15 +69,29 @@ func (d *Database) Close() error {
 type Status struct {
 	Revision uint64 `json:"revision"`
 	Writable bool   `json:"writable"`
+	// Requests is how many retry records the ledger currently retains and
+	// RequestWindow is the fixed bound it never exceeds.
+	Requests      int `json:"requests"`
+	RequestWindow int `json:"request_window"`
 }
 
 func (d *Database) Status() Status {
-	return Status{Revision: d.head.Load().revision, Writable: !d.blocked.Load()}
+	s := d.head.Load()
+	return Status{
+		Revision:      s.revision,
+		Writable:      !d.blocked.Load(),
+		Requests:      len(s.requests),
+		RequestWindow: catalog.MaxRequestRecords,
+	}
 }
 
 func (d *Database) commit(expected *uint64, prepare func(*state, uint64) (*state, error)) (*state, error) {
 	d.write.Lock()
 	defer d.write.Unlock()
+	return d.commitLocked(expected, prepare)
+}
+
+func (d *Database) commitLocked(expected *uint64, prepare func(*state, uint64) (*state, error)) (*state, error) {
 	if d.blocked.Load() {
 		return nil, &Error{Code: "unavailable", Message: "database is fenced; reopen the data directory"}
 	}

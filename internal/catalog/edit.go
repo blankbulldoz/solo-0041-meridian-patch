@@ -11,7 +11,11 @@ type Edit struct {
 
 type EditBatch struct {
 	IfRevision *uint64 `json:"if_revision,omitempty"`
-	Edits      []Edit  `json:"edits"`
+	// RequestID makes the batch retryable. Repeating the same identifier with
+	// the same content returns the original commit; reusing it with different
+	// content is rejected.
+	RequestID string `json:"request_id,omitempty"`
+	Edits     []Edit `json:"edits"`
 }
 
 func (e Edit) Validate() error {
@@ -36,6 +40,11 @@ func (e Edit) Validate() error {
 type CatalogImage struct {
 	Revision uint64       `json:"revision"`
 	Layers   []LayerImage `json:"layers"`
+	// Requests carries the bounded retry ledger. It is optional so images made
+	// before the ledger existed, and images exported purely for portability,
+	// remain decodable; an absent array is not the same as a present empty one
+	// and decodes to nil without changing canonicality.
+	Requests []RequestRecord `json:"requests,omitempty"`
 }
 
 type LayerImage struct {

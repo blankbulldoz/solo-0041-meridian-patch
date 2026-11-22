@@ -10,6 +10,9 @@ import (
 type Commit struct {
 	Revision uint64            `json:"revision"`
 	Layers   []catalog.Summary `json:"layers"`
+	// Replayed reports that a repeated request identifier returned the original
+	// commit instead of applying the batch again.
+	Replayed bool `json:"replayed,omitempty"`
 }
 
 func summaries(s *state, names []string) Commit {
@@ -37,7 +40,7 @@ func (d *Database) Register(def catalog.Definition, expected *uint64) (Commit, e
 		if err != nil {
 			return nil, err
 		}
-		next := &state{revision: revision, layers: maps.Clone(current.layers)}
+		next := &state{revision: revision, layers: maps.Clone(current.layers), requests: current.requests}
 		next.layers[def.Name] = l
 		return next, nil
 	})
@@ -62,7 +65,7 @@ func (d *Database) Reframe(name string, layout catalog.Layout, expected *uint64)
 		if err != nil {
 			return nil, err
 		}
-		next := &state{revision: revision, layers: maps.Clone(current.layers)}
+		next := &state{revision: revision, layers: maps.Clone(current.layers), requests: current.requests}
 		next.layers[name] = l
 		return next, nil
 	})
@@ -73,11 +76,30 @@ func (d *Database) Reframe(name string, layout catalog.Layout, expected *uint64)
 }
 
 func (d *Database) Edit(batch catalog.EditBatch) (Commit, error) {
+	if batch.RequestID != "" && !catalog.ValidRequestID(batch.RequestID) {
+		return Commit{}, invalid("request_id must be 1..64 characters of letters, digits, '_' or '-'")
+	}
 	if len(batch.Edits) == 0 || len(batch.Edits) > catalog.MaxEdits {
 		return Commit{}, invalid("edit batch must contain 1..%d operations", catalog.MaxEdits)
 	}
+	digest := ""
+	if batch.RequestID != "" {
+		digest = catalog.EditDigest(batch)
+	}
+	// The unlocked probe answers the common retry without contending with
+	// readers or writers. It is only an optimisation: the write lock is taken
+	// regardless, and the ledger is re-checked inside that critical section, so
+	// two copies of one identifier can never both be applied.
+	if replay, found, err := d.lookupReplay(d.head.Load(), batch.RequestID, digest); found || err != nil {
+		return replay, err
+	}
+	d.write.Lock()
+	defer d.write.Unlock()
+	if replay, found, err := d.lookupReplay(d.head.Load(), batch.RequestID, digest); found || err != nil {
+		return replay, err
+	}
 	changed := make([]string, 0)
-	s, err := d.commit(batch.IfRevision, func(current *state, revision uint64) (*state, error) {
+	s, err := d.commitLocked(batch.IfRevision, func(current *state, revision uint64) (*state, error) {
 		staged := make(map[string]map[string]catalog.Feature)
 		for i, edit := range batch.Edits {
 			l, err := current.getLayer(edit.Layer)
@@ -93,7 +115,7 @@ func (d *Database) Edit(batch catalog.EditBatch) (Commit, error) {
 			}
 		}
 		slices.Sort(changed)
-		next := &state{revision: revision, layers: maps.Clone(current.layers)}
+		next := &state{revision: revision, layers: maps.Clone(current.layers), requests: current.requests}
 		for _, name := range changed {
 			l, err := buildLayer(current.layers[name].definition, revision, staged[name])
 			if err != nil {
@@ -108,12 +130,33 @@ func (d *Database) Edit(batch catalog.EditBatch) (Commit, error) {
 		if total > catalog.MaxRows {
 			return nil, exhausted("database feature capacity reached")
 		}
+		if batch.RequestID != "" {
+			record := catalog.RequestRecord{ID: batch.RequestID, Digest: digest, Revision: revision}
+			for _, name := range changed {
+				record.Layers = append(record.Layers, next.layers[name].summary())
+			}
+			next.requests = catalog.AppendRequest(current.requests, record)
+		}
 		return next, nil
 	})
 	if err != nil {
 		return Commit{}, err
 	}
 	return summaries(s, changed), nil
+}
+
+func (d *Database) lookupReplay(current *state, id, digest string) (Commit, bool, error) {
+	if id == "" {
+		return Commit{}, false, nil
+	}
+	record, found := catalog.FindRequest(current.requests, id)
+	if !found {
+		return Commit{}, false, nil
+	}
+	if record.Digest != digest {
+		return Commit{}, true, conflict("request_id %q was already used with different content", id)
+	}
+	return Commit{Revision: record.Revision, Layers: slices.Clone(record.Layers), Replayed: true}, true, nil
 }
 
 func applyEdit(def catalog.Definition, rows map[string]catalog.Feature, edit catalog.Edit, index int) error {

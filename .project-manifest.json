@@ -360,6 +360,26 @@
       "success": "带回原修订并提供正常查询",
       "failure": "目录被另一进程占用或镜像损坏时拒绝",
       "verification": "python3 examples/walkthrough.py --workflow reopen"
+    },
+    {
+      "id": "replay",
+      "name": "请求标识重试",
+      "entry": "POST /edits",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "catalog",
+        "folio",
+        "cmd"
+      ],
+      "steps": [
+        "校验标识与内容摘要",
+        "写锁内查重并提交",
+        "随镜像恢复账本"
+      ],
+      "success": "相同内容返回原修订与受影响图层，重启后仍成立",
+      "failure": "相同标识配不同内容被拒绝，窗口外的标识不再保证重放",
+      "verification": "python3 examples/walkthrough.py --workflow replay"
     }
   ]
 }

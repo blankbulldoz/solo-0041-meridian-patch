@@ -1,6 +1,9 @@
 package db
 
-import "github.com/blankbulldoz/solo-0041-meridian-patch/internal/folio"
+import (
+	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/catalog"
+	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/folio"
+)
 
 func readImage(raw []byte) (*state, error) {
 	image, err := folio.Decode(raw)
@@ -26,6 +29,12 @@ func (d *Database) Restore(raw []byte, expected uint64) (Commit, error) {
 		for _, l := range candidate.layers {
 			l.revision = revision
 		}
+		// The restored image replaces the target catalog wholesale, so its retry
+		// ledger replaces the target one too. Records are rebased onto the
+		// install revision because that is the commit a replay of those requests
+		// now observes. Identifiers accepted only by the discarded catalog are
+		// forgotten: their effects no longer exist.
+		candidate.requests = catalog.RebaseRequests(candidate.requests, revision)
 		return candidate, nil
 	})
 	if err != nil {

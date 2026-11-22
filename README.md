@@ -24,7 +24,7 @@ python3 examples/walkthrough.py --workflow coverage
 | `GET /strata` | 返回当前图层和各自修订、边界、排他标记与条目数 |
 | `POST /strata` | `name`, `kind`, `bounds`, `exclusive`, 可选 `if_revision` |
 | `PUT /strata/{layer}/layout` | 新 `bounds`、`exclusive` 及可选 `if_revision`。形状类型保持原样 |
-| `POST /edits` | `edits` 与可选 `if_revision`。每项有 `layer`, `id`, `mode`，写入时提供同 ID 的 `value` |
+| `POST /edits` | `edits` 与可选 `if_revision`、`request_id`。每项有 `layer`, `id`, `mode`，写入时提供同 ID 的 `value` |
 | `POST /strata/{layer}/window` | `bounds`, `limit`, 可选 `class`, `bookmark`。按 ID 返回 `features`，有更多数据时返回 `next` |
 | `POST /strata/{layer}/locate` | `{ "x": 2, "y": 1 }`。返回拥有该点的 `features` |
 | `POST /strata/{layer}/nearest` | `point`, `limit`, 可选 `class`。返回带 `distance_squared` 的 `neighbors` |
@@ -48,5 +48,7 @@ python3 examples/walkthrough.py --workflow coverage
 ```
 
 `409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
+
+客户端若无法确定 `POST /edits` 是否已提交，应原样重发同一 `request_id`。相同标识与相同内容返回原修订与受影响图层并标记 `replayed`，跨重启与镜像恢复仍然成立；相同标识配不同内容返回 `409 conflict`。标识与内容摘要进入镜像，最多保留最近 64 条记录，超出后旧标识可被重新使用。`GET /status` 的 `requests` 与 `request_window` 报告当前保留量和固定上限。不含账本的旧镜像仍可恢复，恢复后账本为空。
 
 边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。

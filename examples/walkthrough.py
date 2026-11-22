@@ -60,11 +60,13 @@ class Session:
     def layer(self, name, kind='extent', exclusive=False, status=201):
         return self.post('/strata', dict(name=name, kind=kind, bounds=BOUNDS, exclusive=exclusive), status)
 
-    def edit(self, *items, status=200, revision=None):
-        request = dict(edits=list(items))
+    def edit(self, *items, status=200, revision=None, request=None):
+        request_body = dict(edits=list(items))
         if revision is not None:
-            request['if_revision'] = revision
-        return self.post('/edits', request, status)
+            request_body['if_revision'] = revision
+        if request is not None:
+            request_body['request_id'] = request
+        return self.post('/edits', request_body, status)
 
     def restore(self, raw, revision, status=200):
         return self.request('PUT', '/image', raw, status, {
@@ -303,8 +305,78 @@ def reopen(binary, data):
     return result
 
 
+def replay(binary, data):
+    """A lost /edits response is retryable by request_id, across a restart."""
+    with running(binary, data) as s:
+        s.layer(FIELD)
+        s.layer(BED)
+        first = s.edit(op(FIELD, 'prong', box(0, 0, 2, 2)), op(BED, 'shim', box(2, 0, 4, 2)), request='drop-1')
+        assert not first.get('replayed')
+        again = s.edit(op(FIELD, 'prong', box(0, 0, 2, 2)), op(BED, 'shim', box(2, 0, 4, 2)), request='drop-1')
+        assert again['revision'] == first['revision'] and again['replayed']
+        assert [row['name'] for row in again['layers']] == [BED, FIELD]
+        assert again['layers'] == first['layers']
+        assert s.get('/status')['revision'] == first['revision']
+        assert s.get('/status')['requests'] == 1
+        s.edit(op(FIELD, 'prong', box(0, 0, 3, 3)), request='drop-1', status=409)
+        s.edit(op(FIELD, 'prong', box(0, 0, 2, 2)), request='drop-1', revision=first['revision'], status=409)
+        s.edit(op(FIELD, 'dowel', box(4, 0, 6, 2)), request='drop-1', status=409)
+        # An unchanged retry still replays even after later commits moved the
+        # database revision past the one the first attempt observed.
+        moved = s.edit(op(BED, 'shim', mode='remove'))['revision']
+        late = s.edit(op(FIELD, 'prong', box(0, 0, 2, 2)), op(BED, 'shim', box(2, 0, 4, 2)), request='drop-1')
+        assert late['revision'] == first['revision'] and late['replayed']
+        assert s.get('/status')['revision'] == moved
+        # A replay reports the original commit; it does not re-run the edits, so
+        # the later removal of shim stands and the catalog revision stays put.
+        assert ids(s.query(BED, 'locate', point(2, 0))) == []
+        # An identifier whose attempt was rejected is not consumed: the same
+        # identifier may be used once the content itself becomes valid.
+        s.edit(op(FIELD, 'ferrule', box(40, 40, 41, 41)), request='retry-rejected', status=400)
+        accepted = s.edit(op(FIELD, 'ferrule', box(6, 0, 8, 1)), request='retry-rejected')
+        assert accepted['revision'] == moved + 1
+        assert s.edit(op(FIELD, 'ferrule', box(7, 0, 9, 1)), request='retry-rejected', status=409)
+        backup = s.get('/image')
+        backup_revision = s.get('/status')['revision']
+    with running(binary, data) as s:
+        assert s.get('/status')['revision'] == backup_revision
+        assert s.get('/status')['requests'] == 2
+        restored = s.edit(op(FIELD, 'prong', box(0, 0, 2, 2)), op(BED, 'shim', box(2, 0, 4, 2)), request='drop-1')
+        assert restored['revision'] == first['revision'] and restored['replayed']
+        assert {row['revision'] for row in restored['layers']} == {first['revision']}
+        # The ledger is durable, so a retry that lands in a fresh process still
+        # reports the original commit rather than applying an insert twice.
+        booted = s.edit(op(FIELD, 'ferrule', box(6, 0, 8, 1)), request='retry-rejected')
+        assert booted['replayed'] and booted['revision'] == backup_revision
+        assert s.edit(op(FIELD, 'ferrule', box(7, 0, 9, 1)), request='retry-rejected', status=409)
+        bounded = s.get('/status')
+        for n in range(80):
+            s.edit(op(FIELD, f'batch-{n:03d}', box(n % 19, 2, n % 19 + 1, 3)), request=f'filler-{n:03d}')
+        pruned = s.get('/status')
+        assert bounded['request_window'] == pruned['request_window'] == 64
+        assert pruned['requests'] == 64
+        # The window is a bound, not a promise: once 80 newer batches arrive the
+        # oldest identifiers fall out, and a late retry is no longer recognised
+        # as the same request. Its insert now collides with the committed row.
+        s.edit(op(FIELD, 'prong', box(0, 0, 2, 2)), op(BED, 'shim', box(2, 0, 4, 2)), request='drop-1', status=409)
+    with running(binary, data) as s:
+        loaded_revision = s.get('/status')['revision']
+        assert s.get('/status')['requests'] == 64
+        s.restore(backup, loaded_revision)
+        rebased = s.edit(op(FIELD, 'prong', box(0, 0, 2, 2)), op(BED, 'shim', box(2, 0, 4, 2)), request='drop-1')
+        assert rebased['replayed'] and rebased['revision'] == loaded_revision + 1
+        assert {row['revision'] for row in rebased['layers']} == {loaded_revision + 1}
+        assert s.edit(op(FIELD, 'prong', box(0, 0, 3, 3)), request='drop-1', status=409)
+        # An identifier accepted only by the discarded catalog is forgotten,
+        # because its effects did not come back with the restored image.
+        reused = s.edit(op(FIELD, 'batch-079', box(0, 0, 1, 1)), request='filler-079')
+        assert not reused.get('replayed') and reused['revision'] == loaded_revision + 2
+        assert 'filler-079' not in ids(s.query(FIELD, 'window', dict(bounds=WINDOW, limit=256)))
+    return dict(revision=first['revision'], window=pruned['request_window'], replay=restored['revision'])
+
+
 WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
-                                     inspect, seams, relation, audit, export, restore, reopen)}
+                                     inspect, seams, relation, audit, export, restore, reopen, replay)}
 
 
 def main():
@@ -315,8 +387,8 @@ def main():
         root = Path(temporary)
         binary, data = root/'meridian', root/'space'
         subprocess.run(['go', 'build', '-o', str(binary), './cmd/meridian'], check=True, cwd=ROOT, timeout=90)
-        if args.workflow == 'reopen':
-            result = reopen(binary, data)
+        if args.workflow in ('reopen', 'replay'):
+            result = WORKFLOWS[args.workflow](binary, data)
         else:
             with running(binary, data) as session:
                 result = WORKFLOWS[args.workflow](session)
