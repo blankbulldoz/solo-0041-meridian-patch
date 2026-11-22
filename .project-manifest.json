@@ -360,6 +360,28 @@
       "success": "带回原修订并提供正常查询",
       "failure": "目录被另一进程占用或镜像损坏时拒绝",
       "verification": "python3 examples/walkthrough.py --workflow reopen"
+    },
+    {
+      "id": "concurrency",
+      "name": "并发换位读取",
+      "entry": "POST /edits 与 GET /status、POST /strata/{layer}/locate、POST /join",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "spatial",
+        "packed",
+        "plane",
+        "folio"
+      ],
+      "steps": [
+        "相邻两个排他矩形在同一批次内成对换位",
+        "读取方反复取修订、定位与窗口配对",
+        "按修订核对每次读取都落在某个合法提交视图",
+        "两位写者用同一全库修订条件竞争"
+      ],
+      "success": "每次读取的空间证据都由单一提交视图解释，两组同位写者只有一位成功",
+      "failure": "读取混用不同视图、修订倒退或同位写者双双成功时失败并留存请求、响应顺序与并发区间",
+      "verification": "python3 examples/walkthrough.py --workflow concurrency"
     }
   ]
 }

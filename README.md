@@ -50,3 +50,7 @@ python3 examples/walkthrough.py --workflow coverage
 `409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
 
 边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。
+
+## 并发验证
+
+`python3 examples/walkthrough.py --workflow concurrency` 可反复运行，用一个写入方在同一批写包里把相邻两个排他矩形成对换位，同时由多个读取方反复取 `/status`、`/locate` 与 `/join`，最后让两位写者拿同一个 `if_revision` 竞争同一批换位。脚本按提交修订核对每次读取：定位归属、配对结果与层修订都必须能由某一个合法提交视图解释，且已完成的读不会看到比之后开始的读更新的修订。同位写者必须恰好一位成功、一位得到 `409 conflict`。失败时脚本向标准错误输出一行 JSON，含 `failure`、`committed_views` 以及按 `[started_ms, ended_ms]` 记录每个请求与响应的 `journal`，便于区分返回不一致还是客户端拿到了不同读的修订。

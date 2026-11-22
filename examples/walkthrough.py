@@ -2,11 +2,15 @@
 """Exercise the normal HTTP surface in a clean temporary database."""
 import argparse
 from contextlib import contextmanager
+import heapq
 import json
 from pathlib import Path
 import select
 import subprocess
+import sys
 import tempfile
+import threading
+import time
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
@@ -32,21 +36,30 @@ class Session:
     def __init__(self, url):
         self.url = url
 
-    def request(self, method, path, value=None, status=200, headers=None):
+    def exchange(self, method, path, value=None, headers=None):
+        """Issue one request without asserting, keeping its timing interval."""
         args = dict(headers or {})
         if isinstance(value, (dict, list)):
             value = json.dumps(value).encode()
             args['Content-Type'] = 'application/json'
         req = Request(self.url + PREFIX + path, data=value, method=method, headers=args)
+        started = time.monotonic_ns()
         try:
             response = urlopen(req, timeout=5)
         except HTTPError as error:
             response = error
         with response:
             raw = response.read()
-            assert response.status == status, (method, path, response.status, status, raw[:512])
-            body = json.loads(raw) if response.headers.get_content_type() == 'application/json' else raw
-            return body, response.headers
+            ended = time.monotonic_ns()
+            kind = response.headers.get_content_type()
+            body = json.loads(raw) if kind == 'application/json' else raw
+            return dict(status=response.status, body=body, headers=response.headers,
+                        raw=raw, started=started, ended=ended)
+
+    def request(self, method, path, value=None, status=200, headers=None):
+        result = self.exchange(method, path, value, headers)
+        assert result['status'] == status, (method, path, result['status'], status, result['raw'][:512])
+        return result['body'], result['headers']
 
     def get(self, path, status=200):
         return self.request('GET', path, status=status)[0]
@@ -303,8 +316,310 @@ def reopen(binary, data):
     return result
 
 
+SWAP = 'swap-yard'
+PROBE = 'probe-yard'
+ALPHA, BRAVO = 'alpha', 'bravo'
+ANCHOR = 'anchor'
+LEFT = box(0, 0, 2, 2)
+RIGHT = box(2, 0, 4, 2)
+JOIN_BOUNDS = box(0, 0, 4, 2)
+CONCURRENCY_ROUNDS = 24
+CONCURRENCY_READERS = 3
+CONCURRENCY_CYCLE_LIMIT = 400
+
+
+class Journal:
+    """Keep every request's body, outcome and [start, end] interval."""
+
+    def __init__(self):
+        self.lock = threading.Lock()
+        self.origin = time.monotonic_ns()
+        self.entries = []
+
+    def note(self, thread, label, request, result):
+        body = result['body']
+        entry = dict(
+            thread=thread, label=label, request=request,
+            status=result['status'],
+            started_ms=round((result['started'] - self.origin) / 1e6, 3),
+            ended_ms=round((result['ended'] - self.origin) / 1e6, 3),
+        )
+        if isinstance(body, dict):
+            for field in ('revision', 'layer_revision', 'left_revision', 'right_revision',
+                          'code', 'writable'):
+                if field in body:
+                    entry[field] = body[field]
+            if 'features' in body:
+                entry['ids'] = [row['id'] for row in body['features']]
+            if 'pairs' in body:
+                entry['pairs'] = body['pairs']
+        with self.lock:
+            self.entries.append(entry)
+
+    def render(self):
+        with self.lock:
+            entries = sorted(self.entries, key=lambda row: (row['started_ms'], row['thread']))
+        return entries
+
+
+def probe(journal, session, thread, label, method, path, value=None):
+    result = session.exchange(method, path, value)
+    journal.note(thread, label, dict(method=method, path=path, body=value), result)
+    return result
+
+
+def swap_edits(occupancy):
+    """Move both adjacent rectangles to the other's slot in one atomic batch."""
+    targets = {occupancy['right']: LEFT, occupancy['left']: RIGHT}
+    edits = [op(SWAP, feature, slot, mode='replace') for feature, slot in sorted(targets.items())]
+    return edits, dict(left=occupancy['right'], right=occupancy['left'])
+
+
+def swap_batch(occupancy):
+    edits, _ = swap_edits(occupancy)
+    return dict(edits=edits)
+
+
+def setup_swap(s, journal):
+    created = probe(journal, s, 'setup', 'create-swap-layer', 'POST', '/strata',
+                    dict(name=SWAP, kind='extent', bounds=BOUNDS, exclusive=True))
+    assert created['status'] == 201, created
+    created = probe(journal, s, 'setup', 'create-probe-layer', 'POST', '/strata',
+                    dict(name=PROBE, kind='extent', bounds=BOUNDS, exclusive=False))
+    assert created['status'] == 201, created
+    seeded = probe(journal, s, 'setup', 'seed', 'POST', '/edits', dict(edits=[
+        op(SWAP, ALPHA, LEFT), op(SWAP, BRAVO, RIGHT), op(PROBE, ANCHOR, RIGHT, 'anchor'),
+    ]))
+    assert seeded['status'] == 200, seeded
+    revision = seeded['body']['revision']
+    listing = probe(journal, s, 'setup', 'catalog', 'GET', '/strata')
+    assert listing['status'] == 200, listing
+    layers = {row['name']: row for row in listing['body']['layers']}
+    assert layers[SWAP]['revision'] == revision and layers[PROBE]['revision'] == revision
+    return revision
+
+
+def observe(journal, session, thread, observations):
+    """One status/locate/join cycle; every result is verified after threads stop."""
+    status = probe(journal, session, thread, 'status', 'GET', '/status')
+    assert status['status'] == 200, status['body']
+    observations.append(dict(kind='status', thread=thread, revision=status['body']['revision'],
+                             writable=status['body']['writable'],
+                             started=status['started'], ended=status['ended']))
+    for x in (1, 3, 2):
+        located = probe(journal, session, thread, f'locate-x{x}', 'POST',
+                        f'/strata/{SWAP}/locate', point(x, 1))
+        assert located['status'] == 200, located['body']
+        observations.append(dict(kind='locate', thread=thread, x=x,
+                                 ids=[row['id'] for row in located['body']['features']],
+                                 revision=located['body']['revision'],
+                                 layer_revision=located['body']['layer_revision'],
+                                 started=located['started'], ended=located['ended']))
+    joined = probe(journal, session, thread, 'join', 'POST', '/join',
+                   dict(left=SWAP, right=PROBE, bounds=JOIN_BOUNDS, limit=10))
+    assert joined['status'] == 200, joined['body']
+    observations.append(dict(kind='join', thread=thread, pairs=joined['body']['pairs'],
+                             revision=joined['body']['revision'],
+                             left_revision=joined['body']['left_revision'],
+                             right_revision=joined['body']['right_revision'],
+                             started=joined['started'], ended=joined['ended']))
+
+
+def expected_layout(views, revision, observation):
+    assert revision in views, ('read reports a revision that is not a committed view', observation)
+    return views[revision]
+
+
+def verify_views(views, observations, seed_revision, swap_revision, last_revision):
+    """Prove every read's evidence belongs to one legal committed layout."""
+    expected = set(range(seed_revision, last_revision + 1))
+    assert set(views) == expected, ('committed revisions are not contiguous', sorted(views))
+    for revision, layout in views.items():
+        assert layout['left'] != layout['right'], ('both rectangles share one slot', layout)
+        assert {layout['left'], layout['right']} == {ALPHA, BRAVO}, ('layout lost a rectangle', layout)
+        assert (revision - seed_revision) % 2 == (0 if layout['right'] == BRAVO else 1), (
+            'layout parity does not match the swap history', revision, layout)
+    for row in observations:
+        layout = expected_layout(views, row['revision'], row)
+        if row['kind'] == 'status':
+            assert row['writable'] is True, ('writer fence observed during swap reads', row)
+        elif row['kind'] == 'locate':
+            slot = 'left' if row['x'] == 1 else 'right'
+            assert row['layer_revision'] == row['revision'], (
+                'locate mixes a layer revision with another database revision', row)
+            assert row['ids'] == [layout[slot]], (
+                'half-open ownership disagrees with the committed slot', slot, row, layout)
+        else:
+            assert row['left_revision'] == row['revision'], (
+                'join pairs layers from different reads of the same layer', row)
+            assert row['right_revision'] == seed_revision, (
+                'join reflects a change to the untouched probe layer', row)
+            assert row['pairs'] == [dict(left=layout['right'], right=ANCHOR, intersection=RIGHT)], (
+                'window pairing disagrees with the committed slot', row, layout)
+    verify_order(observations)
+    verify_interleaving(observations, seed_revision, swap_revision)
+
+
+def verify_interleaving(observations, seed_revision, swap_revision):
+    """Confirm the readers really overlapped commits instead of observing one view."""
+    per_thread = {}
+    for row in sorted(observations, key=lambda item: item['started']):
+        previous = per_thread.get(row['thread'])
+        assert previous is None or row['revision'] >= previous, (
+            'one client observed a revision going backwards', row['thread'], previous, row)
+        per_thread[row['thread']] = row['revision']
+    readers = {}
+    for row in observations:
+        if row['thread'].startswith('reader-'):
+            readers.setdefault(row['thread'], []).append(row['revision'])
+    assert readers, ('no reader observations were captured', sorted(per_thread))
+    for name, seen in readers.items():
+        observed = sorted(set(seen))
+        assert observed != [seed_revision], ('reader only ever saw the seed view', name, observed)
+        assert seed_revision in seen, ('reader missed the pre-swap seed view', name, observed)
+        assert swap_revision in seen, ('reader stopped before the last swap landed', name, observed)
+
+
+def verify_order(observations):
+    """A read that finished before another started cannot report a newer revision."""
+    finished = []
+    latest = -1
+    for row in sorted(observations, key=lambda item: item['started']):
+        while finished and finished[0][0] <= row['started']:
+            _, revision = heapq.heappop(finished)
+            latest = max(latest, revision)
+        assert latest <= row['revision'], (
+            'an earlier completed read saw a newer revision than a later read', latest, row)
+        heapq.heappush(finished, (row['ended'], row['revision']))
+
+
+def concurrency(s, rounds=None):
+    rounds = CONCURRENCY_ROUNDS if rounds is None else rounds
+    journal = Journal()
+    views = {}
+    try:
+        return run_concurrency(s, journal, views, rounds)
+    except BaseException as error:
+        report = dict(workflow='concurrency', failure=repr(error),
+                      committed_views=dict(sorted(views.items())),
+                      journal=journal.render())
+        sys.stderr.write(json.dumps(report, sort_keys=True) + '\n')
+        raise
+
+
+def run_concurrency(s, journal, views, rounds):
+    races = max(4, rounds // 2)
+    observations = []
+    observations_lock = threading.Lock()
+    failures = []
+    seed_revision = setup_swap(s, journal)
+    final_revision = seed_revision + rounds
+    views[seed_revision] = dict(left=ALPHA, right=BRAVO)
+    occupancy = dict(left=ALPHA, right=BRAVO)
+    barrier = threading.Barrier(1 + CONCURRENCY_READERS)
+    warm = threading.Barrier(1 + CONCURRENCY_READERS)
+
+    def record_failure(name, error):
+        with observations_lock:
+            failures.append((name, repr(error)))
+
+    def reader(name):
+        session = Session(s.url)
+        seen = []
+        try:
+            barrier.wait(timeout=10)
+            # Take one read before any swap so each client is known to hold the
+            # seed view; then run alongside the writer until the last swap shows.
+            cycle = []
+            observe(journal, session, name, cycle)
+            with observations_lock:
+                observations.extend(cycle)
+            seen.extend(row['revision'] for row in cycle)
+            warm.wait(timeout=10)
+            for _ in range(CONCURRENCY_CYCLE_LIMIT):
+                if max(seen, default=0) >= final_revision:
+                    return
+                cycle = []
+                observe(journal, session, name, cycle)
+                with observations_lock:
+                    observations.extend(cycle)
+                seen.extend(row['revision'] for row in cycle)
+        except BaseException as error:
+            record_failure(name, error)
+
+    def writer():
+        session = Session(s.url)
+        try:
+            barrier.wait(timeout=10)
+            warm.wait(timeout=10)
+            for index in range(rounds):
+                edits, occupancy_next = swap_edits(occupancy)
+                result = probe(journal, session, 'writer', f'swap-{index}', 'POST', '/edits',
+                               dict(edits=edits))
+                assert result['status'] == 200, result['body']
+                revision = result['body']['revision']
+                assert revision == seed_revision + index + 1, (
+                    'swap did not publish exactly one revision', revision, index)
+                occupancy.update(occupancy_next)
+                with observations_lock:
+                    views[revision] = dict(occupancy)
+        except BaseException as error:
+            record_failure('writer', error)
+
+    workers = [threading.Thread(target=reader, args=(f'reader-{i}',), name=f'reader-{i}')
+               for i in range(CONCURRENCY_READERS)]
+    workers.append(threading.Thread(target=writer, name='writer'))
+    for worker in workers:
+        worker.start()
+    for worker in workers:
+        worker.join()
+    if failures:
+        raise AssertionError(failures)
+
+    revision = seed_revision + rounds
+    for index in range(races):
+        batch = swap_batch(occupancy)
+        start = threading.Barrier(2)
+        results = []
+        results_lock = threading.Lock()
+
+        def racer(name):
+            session = Session(s.url)
+            start.wait(timeout=10)
+            result = probe(journal, session, name, f'race-{index}', 'POST', '/edits',
+                           dict(batch, if_revision=revision))
+            with results_lock:
+                results.append(result)
+
+        contenders = [threading.Thread(target=racer, args=(f'writer-{i}',), name=f'writer-{i}')
+                      for i in range(2)]
+        for contender in contenders:
+            contender.start()
+        for contender in contenders:
+            contender.join()
+        winners = [row for row in results if row['status'] == 200]
+        losers = [row for row in results if row['status'] == 409]
+        assert len(winners) == 1 and len(losers) == 1, (
+            'same-revision writers did not resolve to one success', revision,
+            [(row['status'], row['body']) for row in results])
+        assert losers[0]['body']['code'] == 'conflict', losers[0]['body']
+        assert winners[0]['body']['revision'] == revision + 1, winners[0]['body']
+        _, occupancy = swap_edits(occupancy)
+        revision += 1
+        views[revision] = dict(occupancy)
+        latest = probe(journal, s, 'verifier', f'race-{index}-status', 'GET', '/status')
+        assert latest['status'] == 200 and latest['body']['revision'] == revision, latest['body']
+        observe(journal, s, 'verifier', observations)
+
+    verify_views(views, observations, seed_revision, final_revision, revision)
+    return dict(swaps=rounds, races=races, reads=len(observations),
+                revisions=dict(first=seed_revision, last=revision),
+                final=views[revision])
+
+
 WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
-                                     inspect, seams, relation, audit, export, restore, reopen)}
+                                     inspect, seams, relation, audit, export, restore, reopen,
+                                     concurrency)}
 
 
 def main():
