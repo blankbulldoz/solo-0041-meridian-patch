@@ -13,6 +13,7 @@ const (
 	MaxLayerRows = 4096
 	MaxRows      = 16384
 	MaxEdits     = 512
+	MaxGroups    = 64
 )
 
 var namePattern = regexp.MustCompile(`^[a-z][a-z0-9-]{0,47}$`)

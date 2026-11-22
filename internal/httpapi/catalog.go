@@ -43,3 +43,11 @@ func (a *api) edit(w http.ResponseWriter, r *http.Request) {
 		a.respond(w, http.StatusOK, commit, err)
 	}
 }
+
+func (a *api) editGroups(w http.ResponseWriter, r *http.Request) {
+	var request catalog.GroupBatch
+	if a.input(w, r, &request) {
+		commit, err := a.db.EditGroups(request)
+		a.respond(w, http.StatusOK, commit, err)
+	}
+}

@@ -66,6 +66,12 @@ class Session:
             request['if_revision'] = revision
         return self.post('/edits', request, status)
 
+    def edit_groups(self, *groups, status=200, revision=None):
+        request = dict(groups=[dict(edits=list(group)) for group in groups])
+        if revision is not None:
+            request['if_revision'] = revision
+        return self.post('/edits/groups', request, status)
+
     def restore(self, raw, revision, status=200):
         return self.request('PUT', '/image', raw, status, {
             'Content-Type': IMAGE, 'If-Meridian-Revision': str(revision),
@@ -303,8 +309,62 @@ def reopen(binary, data):
     return result
 
 
+def groups(s):
+    s.layer(FIELD, exclusive=True)
+    s.layer(PINS, 'mark', True)
+    rev = s.edit(op(FIELD, 'prong', box(0, 0, 4, 3)), op(PINS, 'brad', point(2, 2)))['revision']
+    # Accepted groups share one new revision. A group that selects an
+    # exclusive range an accepted group already holds is skipped as a whole.
+    result = s.edit_groups(
+        [op(FIELD, 'dowel', box(4, 0, 8, 3))],
+        [op(FIELD, 'ferrule', box(6, 1, 7, 2))],
+        [op(FIELD, 'sleeve', box(8, 0, 12, 3))],
+    )
+    assert result['revision'] == rev + 1
+    assert [row['status'] for row in result['groups']] == ['accepted', 'skipped', 'accepted']
+    clash = result['groups'][1]['conflict']
+    assert clash['reason'] == 'exclusive_range' and clash['layer'] == FIELD
+    assert (clash['first'], clash['second']) == ('dowel', 'ferrule')
+    assert [(row['name'], row['count']) for row in result['layers']] == [(FIELD, 3)]
+    assert ids(s.query(FIELD, 'locate', point(6, 1))) == ['dowel']
+    assert ids(s.query(FIELD, 'locate', point(8, 0))) == ['sleeve']
+    # Two groups moving the same feature: the later group is skipped and the
+    # response names the feature and the group that won.
+    moved = s.edit_groups(
+        [op(FIELD, 'prong', box(0, 0, 2, 2), mode='replace')],
+        [op(FIELD, 'prong', mode='remove')],
+        [op(PINS, 'brad', point(4, 4), mode='replace')],
+    )
+    assert moved['revision'] == rev + 2
+    skip = moved['groups'][1]
+    assert skip['status'] == 'skipped' and skip['conflict']['reason'] == 'feature_moved'
+    assert skip['conflict']['feature'] == 'prong' and skip['conflict']['accepted_by'] == 0
+    assert ids(s.query(FIELD, 'locate', point(1, 1))) == ['prong']
+    assert ids(s.query(PINS, 'locate', point(4, 4))) == ['brad']
+    # When every group is skipped the revision stays unchanged.
+    before = s.get('/status')['revision']
+    none = s.edit_groups([op(PINS, 'stud', point(4, 4))], [op(PINS, 'tack', point(4, 4))])
+    assert none['revision'] == before and none['layers'] == []
+    assert [row['status'] for row in none['groups']] == ['skipped', 'skipped']
+    assert s.get('/status')['revision'] == before
+    # The revision condition still applies, and request-level problems still
+    # reject the whole batch.
+    s.edit_groups([op(PINS, 'stud', point(6, 6))], status=409, revision=before - 1)
+    accepted = s.edit_groups([op(PINS, 'stud', point(6, 6))], revision=before)
+    assert accepted['revision'] == before + 1
+    s.post('/edits/groups', dict(groups=[]), 400)
+    s.post('/edits/groups', dict(groups=[dict(edits=[])]), 400)
+    s.post('/edits/groups', dict(groups=[dict(edits=[dict(layer=FIELD, id='x', mode='bogus')])]), 400)
+    s.post('/edits/groups', dict(groups=[dict(edits=[op(PINS, f'peg-{i}', point(0, 0))]) for i in range(65)]), 400)
+    s.edit_groups([op('missing', 'x', box(0, 0, 1, 1))], status=404)
+    s.edit_groups([op(FIELD, 'prong', box(0, 0, 1, 1))], status=409)
+    s.edit_groups([op(FIELD, 'gone', mode='remove')], status=404)
+    assert s.get('/status')['revision'] == before + 1
+    return result
+
+
 WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
-                                     inspect, seams, relation, audit, export, restore, reopen)}
+                                     inspect, seams, relation, audit, export, restore, reopen, groups)}
 
 
 def main():

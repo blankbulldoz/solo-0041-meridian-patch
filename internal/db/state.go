@@ -26,26 +26,46 @@ func (l *layer) summary() catalog.Summary {
 	return catalog.Summary{Definition: l.definition, Revision: l.revision, Count: len(l.rows)}
 }
 
-func buildLayer(def catalog.Definition, revision uint64, rows map[string]catalog.Feature) (*layer, error) {
+// conflictPair names the lexically first overlapping pair in an exclusive layer.
+type conflictPair struct {
+	left  string
+	right string
+}
+
+// stageLayer validates rows against the definition and builds the index. An
+// exclusive policy violation is reported as a conflict pair rather than an
+// error so grouped commits can skip one group instead of failing the request.
+func stageLayer(def catalog.Definition, revision uint64, rows map[string]catalog.Feature) (*layer, *conflictPair, error) {
 	if err := def.Validate(); err != nil {
-		return nil, invalid("%v", err)
+		return nil, nil, invalid("%v", err)
 	}
 	if len(rows) > catalog.MaxLayerRows {
-		return nil, exhausted("layer %s exceeds feature capacity", def.Name)
+		return nil, nil, exhausted("layer %s exceeds feature capacity", def.Name)
 	}
 	l := &layer{definition: def, revision: revision, rows: rows}
 	ordered := l.features()
 	for _, row := range ordered {
 		if err := row.Validate(def); err != nil {
-			return nil, invalid("%v", err)
+			return nil, nil, invalid("%v", err)
 		}
 	}
 	l.tree = packed.Build(ordered)
 	if def.Exclusive {
 		left, right, overlap := l.tree.Conflict(ordered)
 		if overlap {
-			return nil, conflict("exclusive layer %s: %s intersects %s", def.Name, left, right)
+			return nil, &conflictPair{left: left, right: right}, nil
 		}
+	}
+	return l, nil, nil
+}
+
+func buildLayer(def catalog.Definition, revision uint64, rows map[string]catalog.Feature) (*layer, error) {
+	l, pair, err := stageLayer(def, revision, rows)
+	if err != nil {
+		return nil, err
+	}
+	if pair != nil {
+		return nil, conflict("exclusive layer %s: %s intersects %s", def.Name, pair.left, pair.right)
 	}
 	return l, nil
 }

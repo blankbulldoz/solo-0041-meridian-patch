@@ -25,6 +25,7 @@ python3 examples/walkthrough.py --workflow coverage
 | `POST /strata` | `name`, `kind`, `bounds`, `exclusive`, 可选 `if_revision` |
 | `PUT /strata/{layer}/layout` | 新 `bounds`、`exclusive` 及可选 `if_revision`。形状类型保持原样 |
 | `POST /edits` | `edits` 与可选 `if_revision`。每项有 `layer`, `id`, `mode`，写入时提供同 ID 的 `value` |
+| `POST /edits/groups` | `groups` 与可选 `if_revision`。每组含 `edits` 且不可拆；按组序以已接受组为基准检查，返回每组 `status` 与跳过原因 |
 | `POST /strata/{layer}/window` | `bounds`, `limit`, 可选 `class`, `bookmark`。按 ID 返回 `features`，有更多数据时返回 `next` |
 | `POST /strata/{layer}/locate` | `{ "x": 2, "y": 1 }`。返回拥有该点的 `features` |
 | `POST /strata/{layer}/nearest` | `point`, `limit`, 可选 `class`。返回带 `distance_squared` 的 `neighbors` |
@@ -48,5 +49,7 @@ python3 examples/walkthrough.py --workflow coverage
 ```
 
 `409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
+
+`/edits/groups` 用于导入：一次请求声明若干不可拆的小组，按声明顺序以前面已接受的组并入后的状态为检查基准。移动了前面组已移动地物的组（`feature_moved`）或选到基准已持有排他范围的组（`exclusive_range`）整组跳过，返回的 `conflict` 说明争用的地物、胜出的组或相交的一对。其余组在同一个新修订落地；全部跳过时修订保持原样。组内的结构错误与状态错误（如未知图层、重复插入）仍拒绝整个请求。
 
 边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。
