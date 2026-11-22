@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PREFIX = '/meridian/v1'
 IMAGE = 'application/vnd.meridian.image'
 FIELD, BED, PINS = 'ochre-field', 'mica-bed', 'plumb-marks'
+GRID = 'gridded-blocks'
 
 
 def box(x0, y0, x1, y1):
@@ -225,6 +226,75 @@ def seams(s):
     return result
 
 
+def seam_partitions(s):
+    s.layer(GRID)
+    s.edit(
+        # rail is one long edge against three stacked short blocks.
+        op(GRID, 'rail', box(0, 0, 2, 9)),
+        op(GRID, 'short-a', box(2, 0, 4, 3)),
+        op(GRID, 'short-b', box(2, 3, 4, 6)),
+        op(GRID, 'short-c', box(2, 6, 4, 9)),
+        # A chain whose middle link is outside the first window, so the window
+        # cuts the originally complete connection into two partitions.
+        op(GRID, 'link-l', box(4, 0, 6, 3)),
+        op(GRID, 'link-m', box(6, 0, 8, 3)),
+        op(GRID, 'link-r', box(8, 0, 10, 3)),
+        # Corner-only contact with short-c: never connects.
+        op(GRID, 'corner', box(4, 9, 6, 11)),
+        # Fully isolated feature inside the layer bounds.
+        op(GRID, 'loner', box(12, 12, 14, 14)),
+    )
+
+    full = s.query(GRID, 'partitions', dict(bounds=box(0, 0, 16, 16)))
+    by_members = {tuple(part['members']): part for part in full['partitions']}
+    assert list(by_members) == [
+        ('corner',),
+        ('link-l', 'link-m', 'link-r', 'rail', 'short-a', 'short-b', 'short-c'),
+        ('loner',),
+    ]
+    chain = by_members[('link-l', 'link-m', 'link-r', 'rail', 'short-a', 'short-b', 'short-c')]
+    # Seams sort by ID pair; the long rail proves adjacency to every short
+    # block, and every other shared edge completes the connectivity proof.
+    assert chain['seams'] == [
+        dict(first='link-l', second='link-m', seam=dict(axis='vertical', fixed=6, **{'from': 0}, to=3)),
+        dict(first='link-l', second='short-a', seam=dict(axis='vertical', fixed=4, **{'from': 0}, to=3)),
+        dict(first='link-m', second='link-r', seam=dict(axis='vertical', fixed=8, **{'from': 0}, to=3)),
+        dict(first='rail', second='short-a', seam=dict(axis='vertical', fixed=2, **{'from': 0}, to=3)),
+        dict(first='rail', second='short-b', seam=dict(axis='vertical', fixed=2, **{'from': 3}, to=6)),
+        dict(first='rail', second='short-c', seam=dict(axis='vertical', fixed=2, **{'from': 6}, to=9)),
+        dict(first='short-a', second='short-b', seam=dict(axis='horizontal', fixed=3, **{'from': 2}, to=4)),
+        dict(first='short-b', second='short-c', seam=dict(axis='horizontal', fixed=6, **{'from': 2}, to=4)),
+    ]
+    assert by_members[('corner',)]['seams'] == [] and by_members[('loner',)]['seams'] == []
+
+    # A window ending at x=6 (open) cuts the chain: link-r drops out entirely
+    # and the seam at x=6 between link-l and link-m is on the excluded side, so
+    # link-m becomes a singleton while the rail component stays intact.
+    clipped = s.query(GRID, 'partitions', dict(bounds=box(0, 0, 6, 12)))
+    clipped_groups = [tuple(part['members']) for part in clipped['partitions']]
+    assert clipped_groups == [
+        ('corner',),
+        ('link-l', 'rail', 'short-a', 'short-b', 'short-c'),
+        ('link-m',),
+    ]
+    singleton = next(part for part in clipped['partitions'] if part['members'] == ['link-m'])
+    assert singleton['seams'] == []
+    rail_group = next(part for part in clipped['partitions'] if 'rail' in part['members'])
+    assert all(seam['first'] != 'link-l' or seam['second'] != 'link-m'
+               for seam in rail_group['seams'])
+    # link-m still meets the closed window envelope at x=6, proving inclusion
+    # comes from the seam rule rather than from positive-area window overlap.
+    assert ('link-m',) in clipped_groups
+
+    # Recomputing on the same layer revision and window is byte-for-byte stable.
+    again = s.query(GRID, 'partitions', dict(bounds=box(0, 0, 16, 16)))
+    assert again == full
+    s.layer(PINS, 'mark', True)
+    s.query(PINS, 'partitions', dict(bounds=WINDOW), 400)
+    s.query(GRID, 'partitions', dict(bounds=box(4, 4, 4, 8)), 400)
+    return full
+
+
 def relation(s):
     seed(s)
     pin = dict(layer=PINS, id='brad')
@@ -304,7 +374,7 @@ def reopen(binary, data):
 
 
 WORKFLOWS = {f.__name__: f for f in (register, edit, reframe, window, locate, nearest, join, coverage,
-                                     inspect, seams, relation, audit, export, restore, reopen)}
+                                     inspect, seams, seam_partitions, relation, audit, export, restore, reopen)}
 
 
 def main():

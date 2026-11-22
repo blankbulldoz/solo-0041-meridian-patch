@@ -266,6 +266,26 @@
       "verification": "python3 examples/walkthrough.py --workflow seams"
     },
     {
+      "id": "seam-partitions",
+      "name": "接边连通分区",
+      "entry": "POST /strata/{layer}/partitions",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "spatial",
+        "packed",
+        "plane"
+      ],
+      "steps": [
+        "枚举窗口剪裁后的正长度共享边",
+        "以共享边为邻接做并查集",
+        "输出有序分区、成员和连通证明清单"
+      ],
+      "success": "角点不连通、孤立地物保留且同修订同窗口稳定重算",
+      "failure": "候选预算耗尽时整次拒绝",
+      "verification": "python3 examples/walkthrough.py --workflow seam_partitions"
+    },
+    {
       "id": "audit",
       "name": "索引一致性核验",
       "entry": "GET /strata/{layer}/index-audit",
