@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/db"
-	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/plane"
 )
 
 func (a *api) window(w http.ResponseWriter, r *http.Request) {
@@ -16,11 +15,17 @@ func (a *api) window(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *api) locate(w http.ResponseWriter, r *http.Request) {
-	var request plane.Point
-	if a.input(w, r, &request) {
-		result, err := a.db.Locate(r.PathValue("layer"), request)
-		a.respond(w, http.StatusOK, result, err)
+	var request db.LocateQuery
+	if !a.input(w, r, &request) {
+		return
 	}
+	if request.Batch() {
+		result, err := a.db.LocateBatch(r.PathValue("layer"), request)
+		a.respond(w, http.StatusOK, result, err)
+		return
+	}
+	result, err := a.db.Locate(r.PathValue("layer"), request)
+	a.respond(w, http.StatusOK, result, err)
 }
 
 func (a *api) nearest(w http.ResponseWriter, r *http.Request) {

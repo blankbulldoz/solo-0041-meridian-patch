@@ -10,6 +10,14 @@ import (
 	"github.com/blankbulldoz/solo-0041-meridian-patch/internal/plane"
 )
 
+const (
+	// MaxLocatePoints bounds the sample points accepted by one batch locate.
+	MaxLocatePoints = 256
+	// MaxLocateResults bounds the total features one locate request may
+	// return across all groups. It matches the per-layer feature capacity.
+	MaxLocateResults = 4096
+)
+
 type MatchSet struct {
 	Features []catalog.Feature `json:"features"`
 	Visit    packed.Visit      `json:"visit"`

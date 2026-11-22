@@ -61,23 +61,100 @@ func (d *Database) Window(name string, q WindowQuery) (WindowPage, error) {
 	return page, nil
 }
 
+// LocateQuery accepts either a single point through the promoted x/y members
+// or a batch of sample points. Limit caps the total features returned across
+// all groups; zero selects the default budget.
+type LocateQuery struct {
+	plane.Point
+	Points []plane.Point `json:"points,omitempty"`
+	Limit  int           `json:"limit,omitempty"`
+}
+
+func (q LocateQuery) Batch() bool { return q.Points != nil }
+
+func locateBudget(limit int) (int, error) {
+	switch {
+	case limit < 0 || limit > spatial.MaxLocateResults:
+		return 0, invalid("locate limit must be 0..%d", spatial.MaxLocateResults)
+	case limit == 0:
+		return spatial.MaxLocateResults, nil
+	default:
+		return limit, nil
+	}
+}
+
 type LocateResult struct {
 	ReadStamp
 	spatial.MatchSet
 }
 
-func (d *Database) Locate(name string, p plane.Point) (LocateResult, error) {
-	if err := p.Validate(); err != nil {
+func (d *Database) Locate(name string, q LocateQuery) (LocateResult, error) {
+	if err := q.Point.Validate(); err != nil {
 		return LocateResult{}, invalid("%v", err)
+	}
+	budget, err := locateBudget(q.Limit)
+	if err != nil {
+		return LocateResult{}, err
 	}
 	s := d.head.Load()
 	l, err := s.getLayer(name)
 	if err != nil {
 		return LocateResult{}, err
 	}
-	result := spatial.Locate(l.tree, p)
+	result := spatial.Locate(l.tree, q.Point)
+	if len(result.Features) > budget {
+		return LocateResult{}, exhausted("locate result budget %d exceeded", budget)
+	}
 	copyFeatures(result.Features)
 	return LocateResult{ReadStamp: stamp(s, l), MatchSet: result}, nil
+}
+
+type LocateGroup struct {
+	Features []catalog.Feature `json:"features"`
+	Visit    packed.Visit      `json:"visit"`
+}
+
+type LocateBatchResult struct {
+	ReadStamp
+	Groups []LocateGroup `json:"groups"`
+}
+
+func (d *Database) LocateBatch(name string, q LocateQuery) (LocateBatchResult, error) {
+	if q.Point.X != 0 || q.Point.Y != 0 {
+		return LocateBatchResult{}, invalid("locate accepts either a point or points, not both")
+	}
+	if len(q.Points) == 0 {
+		return LocateBatchResult{}, invalid("locate requires at least one point")
+	}
+	if len(q.Points) > spatial.MaxLocatePoints {
+		return LocateBatchResult{}, invalid("locate accepts at most %d points", spatial.MaxLocatePoints)
+	}
+	budget, err := locateBudget(q.Limit)
+	if err != nil {
+		return LocateBatchResult{}, err
+	}
+	for i, p := range q.Points {
+		if err := p.Validate(); err != nil {
+			return LocateBatchResult{}, invalid("points[%d]: %v", i, err)
+		}
+	}
+	s := d.head.Load()
+	l, err := s.getLayer(name)
+	if err != nil {
+		return LocateBatchResult{}, err
+	}
+	result := LocateBatchResult{ReadStamp: stamp(s, l), Groups: make([]LocateGroup, 0, len(q.Points))}
+	total := 0
+	for i, p := range q.Points {
+		match := spatial.Locate(l.tree, p)
+		total += len(match.Features)
+		if total > budget {
+			return LocateBatchResult{}, exhausted("locate result budget %d exceeded at points[%d]", budget, i)
+		}
+		copyFeatures(match.Features)
+		result.Groups = append(result.Groups, LocateGroup{Features: match.Features, Visit: match.Visit})
+	}
+	return result, nil
 }
 
 type NearestQuery struct {

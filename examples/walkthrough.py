@@ -181,7 +181,19 @@ def locate(s):
     s.query(FIELD, 'locate', point(1_000_000_001, 0), 400)
     result = s.query(FIELD, 'locate', point(4, 1))
     assert ids(result) == ['dowel', 'ferrule']
-    return result
+    batch = s.query(FIELD, 'locate', dict(points=[point(4, 0), point(8, 0), point(4, 1), point(4, 0)]))
+    assert [ids(group) for group in batch['groups']] == [['dowel'], [], ['dowel', 'ferrule'], ['dowel']]
+    assert (batch['revision'], batch['layer_revision']) == (result['revision'], result['layer_revision'])
+    pins = s.query(PINS, 'locate', dict(points=[point(4, 1), point(6, 1)]))
+    assert [ids(group) for group in pins['groups']] == [['brad'], ['stud']]
+    bad = s.query(FIELD, 'locate', dict(points=[point(4, 0), point(0, 1_000_000_001)]), 400)
+    assert bad['code'] == 'invalid' and 'points[1]' in bad['message']
+    s.query(FIELD, 'locate', dict(points=[]), 400)
+    s.query(FIELD, 'locate', dict(points=[point(4, 0)], x=1), 400)
+    s.query(FIELD, 'locate', dict(points=[point(4, 0)], limit=4097), 400)
+    dense = s.query(FIELD, 'locate', dict(points=[point(4, 1), point(4, 1)], limit=3), 422)
+    assert dense['code'] == 'capacity' and 'points[1]' in dense['message']
+    return batch
 
 
 def nearest(s):
