@@ -360,6 +360,30 @@
       "success": "带回原修订并提供正常查询",
       "failure": "目录被另一进程占用或镜像损坏时拒绝",
       "verification": "python3 examples/walkthrough.py --workflow reopen"
+    },
+    {
+      "id": "transplant",
+      "name": "区域移植",
+      "entry": "POST /transplant/preview",
+      "module_ids": [
+        "httpapi",
+        "db",
+        "catalog",
+        "plane",
+        "packed",
+        "spatial",
+        "bookmark",
+        "folio"
+      ],
+      "steps": [
+        "解码并校验源镜像",
+        "半开选点、裁切后平移",
+        "校验目标边界、ID 与末态排他",
+        "签发预览令牌并原子提交"
+      ],
+      "success": "预览无冲突并签发令牌；执行把整批并入目标层并生成新修订",
+      "failure": "冲突项全量报告；目标层在预览后变化则整批拒绝且无部分落地",
+      "verification": "python3 examples/walkthrough.py --workflow transplant"
     }
   ]
 }

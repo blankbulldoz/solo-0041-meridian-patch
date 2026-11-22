@@ -10,6 +10,14 @@ import (
 
 const maxJSON = 1 << 20
 
+// maxImageJSON leaves room for a whole MPB v1 image carried as base64 inside a
+// JSON object: 4*ceil(MaxImage/3) plus the surrounding request fields.
+const maxImageJSON = 24 << 20
+
+// maxPlanJSON leaves room for a signed plan token over a full region, whose
+// payload is bounded separately when the token is signed.
+const maxPlanJSON = 8 << 20
+
 type issue struct {
 	Code    string `json:"code"`
 	Message string `json:"message"`
@@ -25,10 +33,14 @@ func (a *api) json(w http.ResponseWriter, code int, value any) {
 }
 
 func (a *api) input(w http.ResponseWriter, r *http.Request, target any) bool {
+	return a.inputLimit(w, r, target, maxJSON)
+}
+
+func (a *api) inputLimit(w http.ResponseWriter, r *http.Request, target any, limit int64) bool {
 	if !a.media(w, r, "application/json") {
 		return false
 	}
-	reader := http.MaxBytesReader(w, r.Body, maxJSON)
+	reader := http.MaxBytesReader(w, r.Body, limit)
 	decoder := json.NewDecoder(reader)
 	decoder.DisallowUnknownFields()
 	var raw json.RawMessage

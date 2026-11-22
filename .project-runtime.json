@@ -66,6 +66,18 @@
     {
       "workflow_id": "reopen",
       "command": "python3 examples/walkthrough.py --workflow reopen"
+    },
+    {
+      "workflow_id": "transplant",
+      "command": "python3 examples/walkthrough.py --workflow transplant"
+    },
+    {
+      "workflow_id": "transplant_drift",
+      "command": "python3 examples/walkthrough.py --workflow transplant_drift"
+    },
+    {
+      "workflow_id": "transplant_capacity",
+      "command": "python3 examples/walkthrough.py --workflow transplant_capacity"
     }
   ]
 }

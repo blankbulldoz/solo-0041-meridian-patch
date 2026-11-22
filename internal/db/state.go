@@ -50,13 +50,15 @@ func buildLayer(def catalog.Definition, revision uint64, rows map[string]catalog
 	return l, nil
 }
 
-func (l *layer) features() []catalog.Feature {
-	rows := make([]catalog.Feature, 0, len(l.rows))
-	for _, row := range l.rows {
-		rows = append(rows, row)
+func (l *layer) features() []catalog.Feature { return sortedRows(l.rows) }
+
+func sortedRows(rows map[string]catalog.Feature) []catalog.Feature {
+	out := make([]catalog.Feature, 0, len(rows))
+	for _, row := range rows {
+		out = append(out, row)
 	}
-	slices.SortFunc(rows, func(a, b catalog.Feature) int { return cmp.Compare(a.ID, b.ID) })
-	return rows
+	slices.SortFunc(out, func(a, b catalog.Feature) int { return cmp.Compare(a.ID, b.ID) })
+	return out
 }
 
 func (s *state) names() []string {

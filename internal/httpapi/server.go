@@ -34,6 +34,8 @@ func New(database *db.Database, log *slog.Logger) http.Handler {
 	mux.HandleFunc("POST "+Prefix+"/relation", a.relation)
 	mux.HandleFunc("GET "+Prefix+"/image", a.export)
 	mux.HandleFunc("PUT "+Prefix+"/image", a.restore)
+	mux.HandleFunc("POST "+Prefix+"/transplant/preview", a.previewTransplant)
+	mux.HandleFunc("POST "+Prefix+"/transplant/commit", a.commitTransplant)
 	return mux
 }
 
