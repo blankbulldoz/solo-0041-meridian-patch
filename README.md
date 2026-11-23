@@ -50,3 +50,15 @@ python3 examples/walkthrough.py --workflow coverage
 `409 conflict` 表示修订条件失效、重名或末态违反排他策略。`400 invalid` 表示请求语义无效，`404 missing` 表示找不到图层或地物，`422 capacity` 表示数据库或查询工作量上限。正常窗口读带 `revision` 和 `layer_revision`。`visit` 报告索引访问开销，候选数可以超过真实命中数。
 
 边界、距离和镜像规则见 [PROJECT_SPEC.md](PROJECT_SPEC.md)。正式测试暂缓。`examples/walkthrough.py --help` 列出可离线执行的生产工作流演练。
+
+## 备份与恢复演练
+
+定期备份、GFS 轮换和恢复演练位于 [`backup/`](backup/README.md)。备份通过
+`GET /image` 抓取单个已提交修订，校验签名、SHA-256、规范 JSON 后再用
+`cmd/mpbverify` 做离线全量校验；恢复演练总是最新备份优先，损坏时自动回退到
+更早的可用镜像，离线启动后用窗口面积和跨层配对核验空间状态，并给出恢复点、
+失去的修订范围、关键空间变化和发布门槛。
+
+```sh
+python3 backup/run_drill_demo.py --artifacts ./backup-demo-artifacts
+```

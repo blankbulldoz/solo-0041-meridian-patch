@@ -18,6 +18,13 @@ const headerSize = 8 + 4 + sha256.Size
 
 var signature = [8]byte{'M', 'R', 'D', 'N', 'M', 'P', 'B', 1}
 
+// Digest is the hex SHA-256 of a complete on-disk image, used to bind backup
+// metadata to the exact bytes that were validated.
+func Digest(raw []byte) string {
+	sum := sha256.Sum256(raw)
+	return fmt.Sprintf("%x", sum[:])
+}
+
 func Encode(image catalog.CatalogImage) ([]byte, error) {
 	payload, err := json.Marshal(image)
 	if err != nil {
