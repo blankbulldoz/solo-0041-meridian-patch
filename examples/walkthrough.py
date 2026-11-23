@@ -4,7 +4,6 @@ import argparse
 from contextlib import contextmanager
 import json
 from pathlib import Path
-import select
 import subprocess
 import tempfile
 from urllib.error import HTTPError
@@ -75,14 +74,9 @@ class Session:
 @contextmanager
 def running(binary, data):
     args = [str(binary), '-listen', '127.0.0.1:0', '-data', str(data)]
-    child = subprocess.Popen(args, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+    child = subprocess.Popen(args, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True)
     try:
-        readable, _, _ = select.select([child.stderr], [], [], 10)
-        if not readable:
-            raise RuntimeError('service did not start within 10 seconds')
-        startup = json.loads(child.stderr.readline())
-        if 'address' not in startup:
-            raise RuntimeError(startup)
+        startup = read_startup(child.stderr, timeout=10)
         session = Session('http://' + startup['address'])
         assert session.get('/status')['revision'] == startup['revision']
         yield session
@@ -94,6 +88,33 @@ def running(binary, data):
         except subprocess.TimeoutExpired:
             child.kill()
             child.communicate(timeout=5)
+
+
+def read_startup(stream, timeout):
+    # Startup emits a readiness line before the address line. Read in a thread
+    # so no already-buffered line can be missed by a select() on the pipe.
+    import queue
+    import threading
+    import time
+    lines = queue.Queue()
+
+    def pump():
+        for line in stream:
+            lines.put(line)
+        lines.put(None)
+
+    threading.Thread(target=pump, daemon=True).start()
+    deadline = time.monotonic() + timeout
+    while True:
+        try:
+            line = lines.get(timeout=max(deadline - time.monotonic(), 0.01))
+        except queue.Empty:
+            raise RuntimeError('service did not start within %d seconds' % timeout)
+        if line is None:
+            raise RuntimeError('service exited before announcing readiness')
+        startup = json.loads(line)
+        if 'address' in startup:
+            return startup
 
 
 def op(layer, feature, shape=None, category='fixture', mode='insert'):

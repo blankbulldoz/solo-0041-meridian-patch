@@ -20,38 +20,11 @@ type Database struct {
 	closed  bool
 }
 
+// Open acquires the writer lock and verifies the stored image and indexes
+// without running a locate probe. Prefer OpenChecked with a probe for takeover.
 func Open(dir string) (*Database, error) {
-	store, err := folio.Open(dir)
-	if err != nil {
-		return nil, err
-	}
-	d, err := openStore(store)
-	if err != nil {
-		store.Close()
-		return nil, err
-	}
-	return d, nil
-}
-
-func openStore(store *folio.Store) (*Database, error) {
-	signer, err := bookmark.New()
-	if err != nil {
-		return nil, err
-	}
-	d := &Database{store: store, signer: signer}
-	s := &state{layers: make(map[string]*layer)}
-	raw, present, err := store.Read()
-	if err != nil {
-		return nil, fmt.Errorf("read state: %w", err)
-	}
-	if present {
-		s, err = readImage(raw)
-		if err != nil {
-			return nil, fmt.Errorf("reopen state: %w", err)
-		}
-	}
-	d.head.Store(s)
-	return d, nil
+	d, _, err := OpenChecked(dir, nil)
+	return d, err
 }
 
 func (d *Database) Close() error {

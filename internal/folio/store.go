@@ -11,6 +11,19 @@ import (
 
 const stateName = "meridian-state.mpb"
 
+// LockedError reports that another process holds the exclusive writer lock.
+// Callers can distinguish it from image or index startup failures.
+type LockedError struct{ Err error }
+
+func (e *LockedError) Error() string { return fmt.Sprintf("acquire data directory: %v", e.Err) }
+func (e *LockedError) Unwrap() error { return e.Err }
+
+// IsLocked reports whether err means another writer owns the data directory.
+func IsLocked(err error) bool {
+	var locked *LockedError
+	return errors.As(err, &locked)
+}
+
 type Store struct {
 	dir  string
 	lock *os.File
@@ -26,12 +39,15 @@ func Open(dir string) (*Store, error) {
 	}
 	if err := syscall.Flock(int(lock.Fd()), syscall.LOCK_EX|syscall.LOCK_NB); err != nil {
 		lock.Close()
-		return nil, fmt.Errorf("acquire data directory: %w", err)
+		return nil, &LockedError{Err: err}
 	}
 	return &Store{dir: dir, lock: lock}, nil
 }
 
 func (s *Store) Close() error { return s.lock.Close() }
+
+// Dir reports the directory this store has locked.
+func (s *Store) Dir() string { return s.dir }
 
 func (s *Store) Read() ([]byte, bool, error) {
 	file, err := os.Open(filepath.Join(s.dir, stateName))
